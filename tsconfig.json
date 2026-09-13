@@ -32,6 +32,7 @@
   "exclude": [
     "node_modules",
     "MAQUETTE ET HANDOFF",
-    "design_handoff_lyads_design_system"
+    "design_handoff_lyads_design_system",
+    "supabase/functions"
   ]
 }

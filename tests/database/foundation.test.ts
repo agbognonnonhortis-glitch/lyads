@@ -144,7 +144,8 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       async () => {
         await db.exec("reset role");
         const flags = await db.query<{ relrowsecurity: boolean }>(
-          "select relrowsecurity from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r' and relname like 'lyads_%'",
+          "select relrowsecurity from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r' and relname = any($1::text[])",
+          [tables.map((t) => "lyads_" + t)],
         );
         assert.equal(flags.rows.length, tables.length);
         assert.ok(flags.rows.every((r) => r.relrowsecurity));
@@ -173,6 +174,103 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
             );
           }
         }
+      },
+    );
+    await t.test(
+      "Membership never grants an unassigned account and revocation applies immediately",
+      async () => {
+        await asUser(alice);
+        const grants = JSON.stringify([
+          { ad_account_id: a.account, can_edit: true },
+        ]);
+        await db.query(
+          "select public.lyads_set_member($1,$2,'editor',$3::jsonb)",
+          [wa, bob, grants],
+        );
+        await asUser(bob);
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_campaigns where workspace_id=$1",
+              [wa],
+            )
+          ).rows.length,
+          1,
+        );
+        assert.equal(
+          (
+            await db.query<{ can_edit: boolean }>(
+              "select * from public.lyads_account_permission($1)",
+              [a.account],
+            )
+          ).rows[0].can_edit,
+          true,
+        );
+        await sqlError(
+          "select public.lyads_set_member($1,$2,'admin','[]')",
+          [wa, bob],
+          "42501",
+        );
+        await sqlError(
+          "insert into public.lyads_account_access(workspace_id,user_id,ad_account_id) values($1,$2,$3)",
+          [wa, bob, a.account],
+          "42501",
+        );
+        await asUser(alice);
+        await sqlError(
+          "select public.lyads_set_member($1,$2,'viewer',$3::jsonb)",
+          [wa, bob, grants],
+          "22023",
+        );
+        await sqlError(
+          "select public.lyads_set_member($1,$2,'editor',$3::jsonb)",
+          [
+            wa,
+            bob,
+            JSON.stringify([{ ad_account_id: b.account, can_edit: false }]),
+          ],
+          "22023",
+        );
+        await db.query("select public.lyads_set_member($1,$2,'viewer','[]')", [
+          wa,
+          bob,
+        ]);
+        await asUser(bob);
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_workspaces where id=$1",
+              [wa],
+            )
+          ).rows.length,
+          1,
+        );
+        for (const table of tables.slice(2))
+          assert.equal(
+            (
+              await db.query(
+                `select * from public.lyads_${table} where workspace_id=$1`,
+                [wa],
+              )
+            ).rows.length,
+            0,
+            table,
+          );
+        await asUser(alice);
+        await db.query("select public.lyads_set_member($1,$2,null,'[]')", [
+          wa,
+          bob,
+        ]);
+        await asUser(bob);
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_workspaces where id=$1",
+              [wa],
+            )
+          ).rows.length,
+          0,
+        );
       },
     );
     await t.test("Anonymous callers have no table privileges", async () => {
@@ -415,6 +513,340 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
           "select public.lyads_initialize_account('Anonymous')",
           [],
           "42501",
+        );
+      },
+    );
+    await t.test(
+      "Queue prioritizes user jobs and refuses completion with a stale lease",
+      async () => {
+        await admin();
+        await db.query(
+          "insert into public.lyads_jobs(workspace_id,ad_account_id,kind,idempotency_key,priority) values($1,$3,'meta.refresh_permissions','background',0),($1,$2,'meta.sync','manual',100)",
+          [wa, a.account, a.account],
+        );
+        const first = (
+          await db.query<{
+            id: string;
+            lease_token: string;
+            idempotency_key: string;
+          }>("select * from public.lyads_claim_job(60)")
+        ).rows[0];
+        assert.equal(first.idempotency_key, "manual");
+        const stale = (
+          await db.query<{ ok: boolean }>(
+            "select public.lyads_finish_job($1,$2,true) as ok",
+            [first.id, bob],
+          )
+        ).rows[0].ok;
+        assert.equal(stale, false);
+        assert.equal(
+          (
+            await db.query<{ ok: boolean }>(
+              "select public.lyads_finish_job($1,$2,true) as ok",
+              [first.id, first.lease_token],
+            )
+          ).rows[0].ok,
+          true,
+        );
+        assert.equal(
+          (
+            await db.query<{ idempotency_key: string }>(
+              "select * from public.lyads_claim_job(60)",
+            )
+          ).rows[0].idempotency_key,
+          "background",
+        );
+        await asUser(bob);
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_jobs where workspace_id=$1",
+              [wa],
+            )
+          ).rows.length,
+          0,
+        );
+        await sqlError("select * from public.lyads_claim_job(60)", [], "42501");
+        await sqlError("select payload from public.lyads_jobs", [], "42501");
+      },
+    );
+    await t.test(
+      "Credit holds prevent overspending; partial success charges only successful units",
+      async () => {
+        await admin();
+        await db.query(
+          "select public.lyads_grant_credits($1,'month-test','monthly',60,now()+interval '1 month')",
+          [wa],
+        );
+        await db.query(
+          "select public.lyads_grant_credits($1,'month-test','monthly',60,now()+interval '1 month')",
+          [wa],
+        );
+        const operation = (
+          await db.query<{ id: string }>(
+            "select public.lyads_reserve_credits($1,'studio.image','images',4,6) as id",
+            [wa],
+          )
+        ).rows[0].id;
+        assert.equal(
+          (
+            await db.query<{ id: string }>(
+              "select public.lyads_reserve_credits($1,'studio.image','images',4,6) as id",
+              [wa],
+            )
+          ).rows[0].id,
+          operation,
+        );
+        await sqlError(
+          "select public.lyads_reserve_credits($1,'studio.image','too-many',7,6)",
+          [wa],
+          "P0001",
+        );
+        await sqlError(
+          "select public.lyads_reserve_credits($1,'studio.image','wrong-price',1,1)",
+          [wa],
+          "22023",
+        );
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_credit_transactions where kind='debit'",
+            )
+          ).rows.length,
+          0,
+        );
+        assert.equal(
+          Number(
+            (
+              await db.query<{ charge: string }>(
+                "select public.lyads_settle_credits($1,3) as charge",
+                [operation],
+              )
+            ).rows[0].charge,
+          ),
+          18,
+        );
+        await db.query("select public.lyads_settle_credits($1,3)", [operation]);
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_credit_transactions where kind='debit'",
+            )
+          ).rows.length,
+          1,
+        );
+        await asUser(alice);
+        assert.equal(
+          Number(
+            (
+              await db.query<{ available: string }>(
+                "select * from public.lyads_credit_balance($1)",
+                [wa],
+              )
+            ).rows[0].available,
+          ),
+          42,
+        );
+        await sqlError(
+          "select public.lyads_grant_credits($1,'forged','monthly',1000,now()+interval '1 month')",
+          [wa],
+          "42501",
+        );
+        await admin();
+        await db.query("select public.lyads_refund_credits($1)", [operation]);
+        await db.query("select public.lyads_refund_credits($1)", [operation]);
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_credit_transactions where kind='refund'",
+            )
+          ).rows.length,
+          1,
+        );
+        assert.equal(
+          Number(
+            (
+              await db.query<{ available: string }>(
+                "select * from public.lyads_credit_balance($1)",
+                [wa],
+              )
+            ).rows[0].available,
+          ),
+          60,
+        );
+        await sqlError(
+          "delete from public.lyads_credit_transactions",
+          [],
+          "42501",
+        );
+      },
+    );
+    await t.test(
+      "Atomic sync hides staged data, rejects stale leases and removes revised empty days",
+      async () => {
+        await admin();
+        const job = await uuid(
+          "insert into public.lyads_jobs(workspace_id,ad_account_id,kind,idempotency_key,priority) values($1,$2,'meta.sync','atomic-import',100)",
+          [wa, a.account],
+        );
+        const lease = (
+          await db.query<{ id: string; lease_token: string }>(
+            "select * from public.lyads_claim_job(60)",
+          )
+        ).rows[0];
+        assert.equal(lease.id, job);
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_start_leased_job($1,$2)",
+              [job, lease.lease_token],
+            )
+          ).rows.length,
+          1,
+        );
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_start_leased_job($1,$2)",
+              [job, lease.lease_token],
+            )
+          ).rows.length,
+          0,
+        );
+        const run = await uuid(
+          "insert into public.lyads_sync_runs(workspace_id,ad_account_id,request_key,status,started_at) values($1,$2,$3,'running',now())",
+          [wa, a.account, job],
+        );
+        const row = {
+          workspace_id: wa,
+          ad_account_id: a.account,
+          sync_run_id: run,
+          level: "account",
+          date_start: "2026-09-02",
+          date_stop: "2026-09-02",
+          query_context: {},
+          deduplication_key: "atomic-row",
+          currency: "EUR",
+          metrics: { spend: "123.45" },
+          fetched_at: new Date().toISOString(),
+        };
+        assert.equal(
+          (
+            await db.query<{ ok: boolean }>(
+              "select public.lyads_stage_insights($1,$2,$3,'{}',1) ok",
+              [job, bob, JSON.stringify([row])],
+            )
+          ).rows[0].ok,
+          false,
+        );
+        await db.query("select public.lyads_stage_insights($1,$2,$3,'{}',1)", [
+          job,
+          lease.lease_token,
+          JSON.stringify([row]),
+        ]);
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_insight_snapshots where deduplication_key='atomic-row'",
+            )
+          ).rows.length,
+          0,
+        );
+        await asUser(alice);
+        await sqlError(
+          "select * from public.lyads_insight_staging",
+          [],
+          "42501",
+        );
+        await sqlError(
+          "select public.lyads_meta_encryption_key()",
+          [],
+          "42501",
+        );
+        await admin();
+        const resumed = (
+          await db.query<{ id: string; lease_token: string }>(
+            "select * from public.lyads_claim_job(60)",
+          )
+        ).rows[0];
+        assert.equal(resumed.id, job);
+        await db.query(
+          "select public.lyads_complete_sync($1,$2,'2026-09-01','2026-09-02')",
+          [job, resumed.lease_token],
+        );
+        const rows = (
+          await db.query<{ metrics: { spend: string } }>(
+            "select metrics from public.lyads_insight_snapshots where ad_account_id=$1 and date_start between '2026-09-01' and '2026-09-02'",
+            [a.account],
+          )
+        ).rows;
+        assert.deepEqual(rows, [{ metrics: { spend: "123.45" } }]);
+        assert.equal(
+          (
+            await db.query<{ status: string }>(
+              "select status from public.lyads_sync_runs where id=$1",
+              [run],
+            )
+          ).rows[0].status,
+          "succeeded",
+        );
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_insight_staging where job_id=$1",
+              [job],
+            )
+          ).rows.length,
+          0,
+        );
+      },
+    );
+    await t.test(
+      "Structure ingestion preserves identity and journals real field changes once",
+      async () => {
+        await admin();
+        const input = JSON.stringify([
+          { id: "123456", name: "Imported", effective_status: "ACTIVE" },
+        ]);
+        await db.query(
+          "select public.lyads_ingest_structure($1,$2,'campaign',$3,$4)",
+          [wa, a.account, input, alice],
+        );
+        await db.query(
+          "select public.lyads_ingest_structure($1,$2,'campaign',$3,$4)",
+          [wa, a.account, input, alice],
+        );
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_campaigns where ad_account_id=$1 and meta_campaign_id='123456'",
+              [a.account],
+            )
+          ).rows.length,
+          1,
+        );
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_audit_events where operation_id=$1 and entity_id='123456'",
+              [alice],
+            )
+          ).rows.length,
+          3,
+        );
+        await sqlError(
+          "select public.lyads_ingest_structure($1,$2,'campaign',$3,$4)",
+          [wb, a.account, input, bob],
+          "23503",
+        );
+        await db.query("select public.lyads_schedule_due_jobs()");
+        assert.equal(
+          (
+            await db.query<{ n: number }>(
+              "select public.lyads_dispatch_jobs() n",
+            )
+          ).rows[0].n,
+          0,
         );
       },
     );

@@ -1,5 +1,7 @@
 # Lyads — cadrage fonctionnel après le formulaire
 
+> Archive du premier cadrage. La [spécification backend du 13 septembre 2026](backend/SPECIFICATION.md) prévaut désormais : organisations, membres et droits par compte dès le socle ; import initial de 90 jours ; services Meta développés dans ce dépôt. Les demandes anciennes de contrat d’API externe ci-dessous sont levées.
+
 Décisions issues des réponses du propriétaire. Ce document remplace les propositions antérieures lorsqu’elles divergent des réponses ci-dessous. Les champs non renseignés ne valent pas accord.
 
 ## Confirmé
