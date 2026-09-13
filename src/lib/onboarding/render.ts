@@ -306,6 +306,11 @@ export function renderOnboarding(
     }
     setFooter(frame, step);
     if (ref === "B2") {
+      const validationNotice = leaf(
+        frame,
+        "Ce que Lyads ne fera jamais sans votre validation explicite",
+      );
+      if (validationNotice) parents(validationNotice, 2).remove();
       intro(
         frame,
         "Connectez votre compte publicitaire",
