@@ -200,20 +200,18 @@ Deno.serve(async (request: Request) => {
       );
       if (error || !connection)
         throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE");
-      const { error: jobError } = await db
-        .from("lyads_jobs")
-        .insert({
-          workspace_id: pending.workspace_id,
-          requested_by: pending.user_id,
-          kind: "meta.discover",
-          idempotency_key: "oauth:" + state,
-          priority: 100,
-          payload: { connection_id: connection },
-        });
+      const { error: jobError } = await db.from("lyads_jobs").insert({
+        workspace_id: pending.workspace_id,
+        requested_by: pending.user_id,
+        kind: "meta.discover",
+        idempotency_key: "oauth:" + state,
+        priority: 100,
+        payload: { connection_id: connection },
+      });
       if (jobError) throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE");
       return Response.redirect(
         cfg.origin +
-          "/configuration/comptes?meta=" +
+          "/configuration/business-manager?meta=" +
           (access.canReadAds ? "connected" : "partial"),
         303,
       );
@@ -287,14 +285,12 @@ Deno.serve(async (request: Request) => {
     const state = [...crypto.getRandomValues(new Uint8Array(32))]
       .map((x) => x.toString(16).padStart(2, "0"))
       .join("");
-    const { error } = await db
-      .from("lyads_meta_oauth_states")
-      .insert({
-        state_hash: await sha256(state),
-        workspace_id: body.workspaceId,
-        user_id: identity.user.id,
-        expires_at: new Date(Date.now() + 600000).toISOString(),
-      });
+    const { error } = await db.from("lyads_meta_oauth_states").insert({
+      state_hash: await sha256(state),
+      workspace_id: body.workspaceId,
+      user_id: identity.user.id,
+      expires_at: new Date(Date.now() + 600000).toISOString(),
+    });
     if (error) throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE");
     const redirect = new URL(
       `https://www.facebook.com/${cfg.version}/dialog/oauth`,

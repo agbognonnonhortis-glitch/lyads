@@ -1,3 +1,4 @@
+import { onboardingDestination } from "@/lib/onboarding/data";
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseRouteClient } from "@/lib/supabase/route";
 import {
@@ -126,7 +127,7 @@ export async function POST(
       }
       const response = client.json({
         ok: true,
-        redirect: "/app/tableau-de-bord",
+        redirect: await onboardingDestination(supabase, data.user.id),
       });
       response.cookies.set(
         "lyads-remember",
@@ -166,7 +167,10 @@ export async function POST(
         );
       if (data?.session && data.user) {
         await initializeAccount(supabase, data.user);
-        return client.json({ ok: true, redirect: "/bienvenue" });
+        return client.json({
+          ok: true,
+          redirect: await onboardingDestination(supabase, data.user.id),
+        });
       }
       return pending(client.json({ ok: true, redirect: "/verification" }));
     }

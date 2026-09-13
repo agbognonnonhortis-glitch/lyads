@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { onboardingData, onboardingDestination } from "@/lib/onboarding/data";
+import { renderOnboarding, onboardingStep } from "@/lib/onboarding/render";
+import { stepPaths } from "@/lib/onboarding/model";
 import { screens } from "@/lib/screens";
 import { renderSource, catalog } from "@/lib/source/render";
 import { privatePath } from "@/lib/auth/validation";
@@ -43,6 +46,43 @@ export async function GET(request: NextRequest) {
         return client.redirect(
           ref === "reset" ? "/mot-de-passe-oublie" : "/connexion",
         );
+      if (ref.startsWith("B")) {
+        const data = await onboardingData(
+          client.supabase,
+          user.id,
+          request.cookies.get("lyads-organization")?.value,
+        );
+        const section = url.searchParams.get("section") || "activity";
+        if (ref === "B1")
+          return client.redirect(
+            await onboardingDestination(client.supabase, user.id),
+          );
+        if (ref === "B4")
+          return client.redirect("/configuration/business-manager");
+        const step = onboardingStep(ref, section);
+        if (
+          !data.state.completed_at &&
+          step > data.state.current_step &&
+          !(ref === "B3" && data.connection) &&
+          ref !== "B8"
+        )
+          return client.redirect(
+            stepPaths[Math.min(8, data.state.current_step - 1)],
+          );
+        return client.apply(
+          new NextResponse(renderOnboarding(ref, data, section), {
+            headers: {
+              "Content-Type": "text/html; charset=utf-8",
+              "Cache-Control": "private, no-store",
+              "Referrer-Policy": "same-origin",
+            },
+          }),
+        );
+      }
+      if (url.pathname.startsWith("/app/")) {
+        const next = await onboardingDestination(client.supabase, user.id);
+        if (!next.startsWith("/app/")) return client.redirect(next);
+      }
       return client.apply(html());
     } catch {
       return NextResponse.redirect(

@@ -1,3 +1,4 @@
+import { onboardingDestination } from "@/lib/onboarding/data";
 import { NextRequest } from "next/server";
 import { createSupabaseRouteClient } from "@/lib/supabase/route";
 import { initializeAccount } from "@/lib/auth/account";
@@ -24,5 +25,7 @@ export async function GET(request: NextRequest) {
     await client.supabase.auth.signOut({ scope: "local" });
     return client.redirect("/connexion?auth=service_error");
   }
-  return client.redirect("/bienvenue");
+  return client.redirect(
+    await onboardingDestination(client.supabase, data.user.id),
+  );
 }

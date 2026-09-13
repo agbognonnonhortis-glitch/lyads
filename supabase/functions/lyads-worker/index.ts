@@ -1,3 +1,4 @@
+import { inventory } from "../_shared/inventory.ts";
 import { createClient } from "@supabase/supabase-js";
 import {
   MetaFailure,
@@ -61,22 +62,20 @@ async function finish(job: Job, result: unknown, error?: MetaFailure) {
         .eq("request_key", job.id)
         .eq("workspace_id", job.workspace_id);
     if (job.requested_by)
-      await db
-        .from("lyads_notifications")
-        .upsert(
-          {
-            workspace_id: job.workspace_id,
-            ad_account_id: job.ad_account_id,
-            user_id: job.requested_by,
-            event_key: "job:" + job.id,
-            kind: error ? "sync.failed" : "sync.complete",
-            message: error
-              ? META_MESSAGES[error.code] ||
-                META_MESSAGES.META_REQUEST_UNAVAILABLE
-              : "La synchronisation Meta est terminée.",
-          },
-          { onConflict: "user_id,event_key", ignoreDuplicates: true },
-        );
+      await db.from("lyads_notifications").upsert(
+        {
+          workspace_id: job.workspace_id,
+          ad_account_id: job.ad_account_id,
+          user_id: job.requested_by,
+          event_key: "job:" + job.id,
+          kind: error ? "sync.failed" : "sync.complete",
+          message: error
+            ? META_MESSAGES[error.code] ||
+              META_MESSAGES.META_REQUEST_UNAVAILABLE
+            : "La synchronisation Meta est terminée.",
+        },
+        { onConflict: "user_id,event_key", ignoreDuplicates: true },
+      );
   }
 }
 async function checkpoint(
@@ -188,6 +187,11 @@ async function process(job: Job) {
     };
     const get = (path: string, params: Record<string, string> = {}) =>
       readMeta({ version, path, params, token, before, after });
+    if (job.kind === "meta.inventory") {
+      const outcome = await inventory(db, job, get);
+      if (outcome.complete) await finish(job, outcome.result);
+      return;
+    }
     if (job.kind === "meta.refresh_permissions") {
       const actual = permissions((await get("me/permissions")).data);
       const { error } = await db
@@ -228,21 +232,19 @@ async function process(job: Job) {
           typeof account.timezone_name !== "string"
         )
           throw new MetaFailure("META_INVALID_RESPONSE");
-        const { error } = await db
-          .from("lyads_ad_accounts")
-          .upsert(
-            {
-              workspace_id: job.workspace_id,
-              connection_id: connection.id,
-              meta_account_id: account.id,
-              name: account.name,
-              currency: account.currency,
-              timezone_name: account.timezone_name,
-              business_meta_id: account.business?.id || null,
-              account_status: account.account_status ?? null,
-            },
-            { onConflict: "workspace_id,meta_account_id" },
-          );
+        const { error } = await db.from("lyads_ad_accounts").upsert(
+          {
+            workspace_id: job.workspace_id,
+            connection_id: connection.id,
+            meta_account_id: account.id,
+            name: account.name,
+            currency: account.currency,
+            timezone_name: account.timezone_name,
+            business_meta_id: account.business?.id || null,
+            account_status: account.account_status ?? null,
+          },
+          { onConflict: "workspace_id,meta_account_id" },
+        );
         if (error)
           throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
       }
@@ -252,21 +254,19 @@ async function process(job: Job) {
           /^\d+$/.test(account.business.id) &&
           typeof account.business.name === "string"
         ) {
-          const { error } = await db
-            .from("lyads_meta_resources")
-            .upsert(
-              {
-                workspace_id: job.workspace_id,
-                connection_id: connection.id,
-                kind: "business",
-                meta_id: account.business.id,
-                source_data: {
-                  id: account.business.id,
-                  name: account.business.name,
-                },
+          const { error } = await db.from("lyads_meta_resources").upsert(
+            {
+              workspace_id: job.workspace_id,
+              connection_id: connection.id,
+              kind: "business",
+              meta_id: account.business.id,
+              source_data: {
+                id: account.business.id,
+                name: account.business.name,
               },
-              { onConflict: "workspace_id,connection_id,kind,meta_id" },
-            );
+            },
+            { onConflict: "workspace_id,connection_id,kind,meta_id" },
+          );
           if (error)
             throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
         }
@@ -341,39 +341,35 @@ async function process(job: Job) {
       if (error || !data)
         throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
       if (job.requested_by)
-        await db
-          .from("lyads_notifications")
-          .upsert(
-            {
-              workspace_id: job.workspace_id,
-              ad_account_id: job.ad_account_id,
-              user_id: job.requested_by,
-              event_key: "job:" + job.id,
-              kind: "sync.complete",
-              message: "La synchronisation Meta est terminée.",
-            },
-            { onConflict: "user_id,event_key", ignoreDuplicates: true },
-          );
+        await db.from("lyads_notifications").upsert(
+          {
+            workspace_id: job.workspace_id,
+            ad_account_id: job.ad_account_id,
+            user_id: job.requested_by,
+            event_key: "job:" + job.id,
+            kind: "sync.complete",
+            message: "La synchronisation Meta est terminée.",
+          },
+          { onConflict: "user_id,event_key", ignoreDuplicates: true },
+        );
       return;
     }
     const spec = datasets[datasetIndex];
     const period = dates[windowIndex];
     if (!period) throw new MetaFailure("META_INVALID_REQUEST");
-    const { error: createError } = await db
-      .from("lyads_sync_runs")
-      .upsert(
-        {
-          workspace_id: job.workspace_id,
-          ad_account_id: account.id,
-          request_key: job.id,
-          status: "running",
-          started_at: new Date().toISOString(),
-        },
-        {
-          onConflict: "workspace_id,ad_account_id,request_key",
-          ignoreDuplicates: true,
-        },
-      );
+    const { error: createError } = await db.from("lyads_sync_runs").upsert(
+      {
+        workspace_id: job.workspace_id,
+        ad_account_id: account.id,
+        request_key: job.id,
+        status: "running",
+        started_at: new Date().toISOString(),
+      },
+      {
+        onConflict: "workspace_id,ad_account_id,request_key",
+        ignoreDuplicates: true,
+      },
+    );
     const { data: run, error: runError } = await db
       .from("lyads_sync_runs")
       .select("id")

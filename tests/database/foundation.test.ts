@@ -851,6 +851,217 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Onboarding persists verified resources, rejects cross-tenant choices and grants free credits once",
+      async () => {
+        await asUser(alice);
+        const ws = await uuid(
+          "insert into public.lyads_workspaces(owner_id,name) values ($1,$2)",
+          [alice, "Onboarding test"],
+        );
+        await admin();
+        const conn = await uuid(
+          "insert into public.lyads_meta_connections(workspace_id,meta_user_id,connection_status) values ($1,'onboarding-test','connected')",
+          [ws],
+        );
+        const account = await uuid(
+          "insert into public.lyads_ad_accounts(workspace_id,connection_id,meta_account_id,name,currency,timezone_name) values ($1,$2,'act_991','Onboarding account','EUR','UTC')",
+          [ws, conn],
+        );
+        for (const [kind, id, name] of [
+          ["business", "901", "Business 1"],
+          ["business", "902", "Business 2"],
+          ["page", "903", "Page"],
+          ["pixel", "904", "Pixel"],
+        ]) {
+          await db.query(
+            "insert into public.lyads_meta_resources(workspace_id,connection_id,kind,meta_id,source_data) values ($1,$2,$3,$4,$5)",
+            [ws, conn, kind, id, JSON.stringify({ name })],
+          );
+        }
+        await db.query(
+          "insert into public.lyads_business_accounts values ($1,$2,'901',$3)",
+          [ws, conn, account],
+        );
+        await db.query(
+          "insert into public.lyads_resource_links values ($1,$2,'page','903','business','901'),($1,$2,'pixel','904','account',$3)",
+          [ws, conn, account],
+        );
+        const rpc = "select * from public.lyads_save_onboarding($1,$2,$3)";
+        await asUser(bob);
+        await sqlError(rpc, [ws, 0, "{}"], "42501");
+        await asUser(alice);
+        await sqlError(
+          rpc,
+          [ws, 0, JSON.stringify({ plan_key: "free", complete: true })],
+          "22023",
+        );
+        await sqlError(
+          rpc,
+          [ws, 0, JSON.stringify({ brain: { activity: { source: "agent" } } })],
+          "22023",
+        );
+        await sqlError(
+          rpc,
+          [
+            ws,
+            0,
+            JSON.stringify({
+              business_meta_id: "901",
+              ad_account_ids: [a.account],
+            }),
+          ],
+          "42501",
+        );
+        let saved: any = (
+          await db.query(rpc, [
+            ws,
+            0,
+            JSON.stringify({
+              business_meta_id: "901",
+              ad_account_ids: [account],
+              current_step: 3,
+            }),
+          ])
+        ).rows[0];
+        assert.equal(saved.revision, 1);
+        await sqlError(rpc, [ws, 0, "{}"], "40001");
+        await sqlError(
+          rpc,
+          [ws, 1, JSON.stringify({ current_step: 5 })],
+          "22023",
+        );
+        await sqlError(
+          rpc,
+          [
+            ws,
+            1,
+            JSON.stringify({
+              pixels: [
+                { account_id: account, pixel_id: "904", event: "Purchase" },
+              ],
+            }),
+          ],
+          "22023",
+        );
+        saved = (
+          await db.query(rpc, [
+            ws,
+            1,
+            JSON.stringify({
+              page_ids: ["903"],
+              pixels: [{ account_id: account, pixel_id: "904", event: null }],
+              brain: {
+                activity: { name: "Client business" },
+                offer: { products: [{ name: "Real product", price: "29" }] },
+              },
+              current_step: 8,
+            }),
+          ])
+        ).rows[0];
+        assert.equal(saved.brain.activity.name, "Client business");
+        assert.equal(saved.provenance.activity.source, "user");
+        await sqlError(
+          rpc,
+          [ws, 2, JSON.stringify({ current_step: 10 })],
+          "23514",
+        );
+        await sqlError(
+          rpc,
+          [ws, 2, JSON.stringify({ plan_key: "free", complete: true })],
+          "22023",
+        );
+        const inventory = (
+          await db.query<any>(
+            "select public.lyads_request_inventory($1,'business') id",
+            [ws],
+          )
+        ).rows[0].id;
+        assert.equal(
+          (
+            await db.query<any>(
+              "select public.lyads_request_inventory($1,'business') id",
+              [ws],
+            )
+          ).rows[0].id,
+          inventory,
+        );
+        saved = (
+          await db.query(rpc, [
+            ws,
+            2,
+            JSON.stringify({ business_meta_id: "902", current_step: 2 }),
+          ])
+        ).rows[0];
+        assert.deepEqual(saved.ad_account_ids, []);
+        assert.deepEqual(saved.page_ids, []);
+        assert.deepEqual(saved.pixels, []);
+        assert.equal(saved.brain.activity.name, "Client business");
+        await sqlError(
+          rpc,
+          [ws, 3, JSON.stringify({ page_ids: ["903"] })],
+          "42501",
+        );
+        saved = (
+          await db.query(rpc, [
+            ws,
+            3,
+            JSON.stringify({
+              business_meta_id: "901",
+              ad_account_ids: [account],
+              pages_skipped: true,
+              pixels_skipped: true,
+              current_step: 8,
+              review: true,
+            }),
+          ])
+        ).rows[0];
+        saved = (
+          await db.query(rpc, [
+            ws,
+            4,
+            JSON.stringify({ plan_key: "free", complete: true }),
+          ])
+        ).rows[0];
+        assert.equal(saved.current_step, 10);
+        assert.ok(saved.completed_at);
+        await db.query(rpc, [
+          ws,
+          5,
+          JSON.stringify({ plan_key: "free", complete: true }),
+        ]);
+        await sqlError(
+          "update public.lyads_onboarding set brain='{}' where workspace_id=$1",
+          [ws],
+          "42501",
+        );
+        await asUser(bob);
+        assert.equal(
+          (
+            await db.query(
+              "select * from public.lyads_onboarding where workspace_id=$1",
+              [ws],
+            )
+          ).rows.length,
+          0,
+        );
+        await sqlError(
+          "select public.lyads_request_inventory($1,'root')",
+          [ws],
+          "42501",
+        );
+        await admin();
+        assert.equal(
+          (
+            await db.query<any>(
+              "select count(*)::int n from public.lyads_credit_lots where workspace_id=$1",
+              [ws],
+            )
+          ).rows[0].n,
+          1,
+        );
+      },
+    );
+    await t.test(
       "Worker can append but cannot alter or delete audit events",
       async () => {
         await admin();
