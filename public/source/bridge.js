@@ -23,7 +23,7 @@
     "Voir le raisonnement": "C2.2",
     Appliquer: "C2.3",
     Connexion: "A4",
-    "Se connecter": "C1.1",
+    "Se connecter": "A4",
     "Créer mon compte": "verify",
     "Créer mon compte gratuitement": "A5",
     "Créer un compte gratuit": "A5",
@@ -38,6 +38,8 @@
     "Mot de passe oublié ?": "A6",
     "Envoyer le lien": "sent",
     "Retour à la connexion": "A4",
+    "Revenir à la connexion": "A4",
+    "Corriger l’e-mail": "A5",
     "Enregistrer le mot de passe": "A4",
     "Tableau de bord": "C1.1",
     Agent: "C2.1",
@@ -278,7 +280,7 @@
         }
       }
     for (const el of root.querySelectorAll("div,a,button,span")) {
-      if (wired.has(el) || el.closest("svg")) continue;
+      if (wired.has(el) || el.closest("svg,[data-auth-managed]")) continue;
       const text = norm(el.textContent);
       if (!text || text.length > 160) continue;
       const childText = [...el.children].some(
@@ -301,7 +303,10 @@
         target.tabIndex = 0;
         wired.add(el);
       }
-      if (editableLabels.has(text)) {
+      if (
+        editableLabels.has(text) &&
+        !["A4", "A5", "A6", "reset"].includes(ref)
+      ) {
         let field = el.nextElementSibling;
         if (
           field &&

@@ -606,12 +606,14 @@ Ce document est un inventaire de vérification, extérieur à l’interface prod
 
 [Ouvrir](http://127.0.0.1:3000/nouveau-mot-de-passe)
 
+- [1440 px — Ordinateur · 1440](http://127.0.0.1:3000/nouveau-mot-de-passe?view=8591afcd1e7c) — Lot 7 - Site public.dc.html:1606
 - [375 px — Mobile · 375 — nouveau mot de passe](http://127.0.0.1:3000/nouveau-mot-de-passe?view=a4346596fc45) — Lot 7 - Site public.dc.html:1650
 
 ## sent — Confirmation d’envoi
 
 [Ouvrir](http://127.0.0.1:3000/confirmation-envoi)
 
+- [768 px — LLyads ConnexionCommencer Si un compte existe, le lien est parti Nous avons envoyé un lien de réinitialisation à aminata@kola.sn si cette adresse correspond à un compte. Le lien expire dans une heure et ne fonctionne qu’une fois. Pensez aux](http://127.0.0.1:3000/confirmation-envoi?view=a64e65f3706c) — Lot 7 - Site public.dc.html:1604
 - [375 px — Mobile · 375 — confirmation d’envoi](http://127.0.0.1:3000/confirmation-envoi?view=3168255011f7) — Lot 7 - Site public.dc.html:1632
 
 ## terms — Conditions générales

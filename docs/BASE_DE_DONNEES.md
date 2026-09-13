@@ -57,3 +57,7 @@ Avant les prochaines évolutions, examiner le schéma et l’historique distant 
 Après application, vérifier les tables et migrations distantes, les conseillers de sécurité et deux véritables sessions Supabase. La validation locale ne remplace pas cette recette distante. Aucun déploiement distant ne doit être annoncé sur la seule base d’un push GitHub réussi.
 
 Références techniques : [RLS Supabase](https://supabase.com/docs/guides/database/postgres/row-level-security), [permissions explicites des nouvelles tables](https://supabase.com/changelog/45329-breaking-change-tables-not-exposed-to-data-and-graphql-api-automatically), [PGlite](https://pglite.dev/docs/api).
+
+## Initialisation des comptes
+
+La migration `20260913011307_lyads_account_initialization.sql` ajoute `lyads_initialize_account(text)`, appelée après authentification. Elle crée le profil et le premier espace dans une transaction sous les droits de l’utilisateur, conserve les noms existants et sérialise les appels simultanés par utilisateur. Les tests PostgreSQL couvrent les appels répétés, l’isolation et le refus des appels anonymes. Voir `AUTHENTIFICATION.md` pour la recette du parcours complet.

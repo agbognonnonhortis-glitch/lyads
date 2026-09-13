@@ -2586,6 +2586,17 @@
   },
   {
     "ref": "reset",
+    "id": "8591afcd1e7c",
+    "width": 1440,
+    "source": "Lot 7 - Site public.dc.html",
+    "start": 478033,
+    "end": 483029,
+    "line": 1606,
+    "sha256": "0164e1039f75ac3312b5333672bd5a5944176c66dcfe289ad0ce8fa4ee008982",
+    "label": "Ordinateur · 1440"
+  },
+  {
+    "ref": "reset",
     "id": "a4346596fc45",
     "width": 375,
     "source": "Lot 7 - Site public.dc.html",
@@ -2594,6 +2605,17 @@
     "line": 1650,
     "sha256": "7b9f500b9604e44da6fc02b68834772a9b01283220d6fd761a2f21c7cf863d66",
     "label": "Mobile · 375 — nouveau mot de passe"
+  },
+  {
+    "ref": "sent",
+    "id": "a64e65f3706c",
+    "width": 768,
+    "source": "Lot 7 - Site public.dc.html",
+    "start": 477626,
+    "end": 477816,
+    "line": 1604,
+    "sha256": "67a0f27d4002a2fb324d54ce8187ce8db324e35c7d29fd833aaead278ec039f5",
+    "label": "LLyads ConnexionCommencer Si un compte existe, le lien est parti Nous avons envoyé un lien de réinitialisation à aminata@kola.sn si cette adresse correspond à un compte. Le lien expire dans une heure et ne fonctionne qu’une fois. Pensez aux"
   },
   {
     "ref": "sent",

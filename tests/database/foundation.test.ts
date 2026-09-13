@@ -358,6 +358,67 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Account initialization is retryable, isolated and preserves existing names",
+      async () => {
+        const charlie = "00000000-0000-0000-0000-000000000003";
+        await db.exec("reset role");
+        await db.query("insert into auth.users values ($1)", [charlie]);
+        await asUser(charlie);
+        const initialize = async (name: string) =>
+          (
+            await db.query<{ id: string }>(
+              "select public.lyads_initialize_account($1) as id",
+              [name],
+            )
+          ).rows[0].id;
+        await sqlError(
+          "select public.lyads_initialize_account($1)",
+          ["  "],
+          "22023",
+        );
+        const id = await initialize("Charlie");
+        assert.equal(await initialize("Replacement"), id);
+        assert.deepEqual(
+          (
+            await db.query(
+              "select user_id, display_name from public.lyads_profiles",
+            )
+          ).rows,
+          [{ user_id: charlie, display_name: "Charlie" }],
+        );
+        assert.deepEqual(
+          (
+            await db.query(
+              "select id, owner_id, name from public.lyads_workspaces",
+            )
+          ).rows,
+          [{ id, owner_id: charlie, name: "Charlie" }],
+        );
+        await asUser(alice);
+        assert.equal(await initialize("Should not overwrite"), wa);
+        assert.equal(
+          (
+            await db.query<{ display_name: string }>(
+              "select display_name from public.lyads_profiles",
+            )
+          ).rows[0].display_name,
+          "Changed",
+        );
+        await asUser("");
+        await sqlError(
+          "select public.lyads_initialize_account('No identity')",
+          [],
+          "42501",
+        );
+        await db.exec("reset role; set role anon");
+        await sqlError(
+          "select public.lyads_initialize_account('Anonymous')",
+          [],
+          "42501",
+        );
+      },
+    );
+    await t.test(
       "Worker can append but cannot alter or delete audit events",
       async () => {
         await admin();

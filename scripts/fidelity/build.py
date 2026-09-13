@@ -61,8 +61,10 @@ for n in d.nodes:
 if 'C4.7' not in cat:cat['C4.7']=cat['C4.6']
 # Auxiliary screens that actually exist in the supplied files.
 name='Lot 7 - Site public.dc.html';fs=source(name)['doc'].frames()
-for ref,indices in [('verify',[25,26]),('reset',[33]),('sent',[32])]:
+for ref,indices in [('verify',[25,26]),('reset',[31,33]),('sent',[30,32])]:
  for i in indices:f=fs[i];add(ref,name,f['node'],f['width'],f['label'])
+# Later A6 stages are not responsive variants of the initial request form.
+cat['A6']['defaults']={'375':cat['A6']['defaults']['375']}
 for ref in ['terms','privacy','cookies']:cat[ref]=cat['A7']
 # C9.5 uses the explicitly public frame rather than the editor's preview frame.
 name='Lot 5 - Intelligence marche et Rapports.dc.html';f=source(name)['doc'].frames()[65];add('C9.5',name,f['node'],1440,f['label'],True)

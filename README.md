@@ -11,7 +11,7 @@ npm run dev
 
 Ouvrir [la landing](http://127.0.0.1:3000/), [le tableau de bord](http://127.0.0.1:3000/app/tableau-de-bord) ou [l’agent](http://127.0.0.1:3000/app/agent).
 
-L’affichage des maquettes ne nécessite aucun compte externe ni fichier `.env`. Rien n’est déployé.
+Les pages publiques restent accessibles librement. Les pages de l’application exigent désormais une session Supabase. Le site reste local ; le socle de données est déployé dans Supabase.
 
 ## Raccordement Supabase
 
@@ -25,7 +25,7 @@ npm run supabase:check
 
 Ce contrôle vérifie l’accessibilité d’Auth et de l’API de données avec la clé publique. Pour PostgREST, il demande une relation de diagnostic absente avec `limit=0` : la réponse précise `PGRST205` confirme l’accès au cache de schéma, sans retourner de lignes. Un autre type de 404 reste un échec. Ce contrôle ne prouve pas une lecture de table ni la validité des règles d’accès. Le diagnostic `/api/supabase/status` est disponible en développement uniquement.
 
-État du raccordement : la clé publiable fournie par le propriétaire est configurée dans `.env.local`. Le diagnostic réel réussit pour Auth et PostgREST. Après la liaison de `main` et le push de relance `f43c2c4`, les 12 tables répondent sur le projet principal et refusent l’accès anonyme (HTTP 401, code PostgreSQL `42501`). La recette avec deux véritables sessions Auth reste à réaliser. Les écrans restent ceux des maquettes, sans authentification fonctionnelle ni données Meta réelles à ce stade.
+État du raccordement : la clé publiable fournie par le propriétaire est configurée dans `.env.local`. Le diagnostic réel réussit pour Auth et PostgREST. Après la liaison de `main` et le push de relance `f43c2c4`, les 12 tables répondent sur le projet principal et refusent l’accès anonyme (HTTP 401, code PostgreSQL `42501`). La recette avec deux véritables sessions Auth reste à réaliser. Les parcours d’authentification sont raccordés aux formulaires des maquettes ; les données Meta restent démonstratives. Voir [les parcours, la configuration et les limites de recette](docs/AUTHENTIFICATION.md).
 
 ## Vérifier
 
@@ -55,7 +55,7 @@ Les pages Contact A8 et Règles C7 n’ont pas de maquette complète exploitable
 - `src/lib/source/render.ts` : assemblage des sources et sélection de la variante.
 - `src/lib/source/catalog.json` : cadres extraits, provenance, empreintes et offsets.
 - `scripts/fidelity/build.py` : extraction reproductible, sans transformation visuelle.
-- `public/source/` : styles, polices, icônes et moteur fournis, plus `bridge.js` pour la navigation.
+- `public/source/` : styles, polices, icônes et moteur fournis, plus `bridge.js` pour la navigation et `auth.js` pour les formulaires.
 - `tests/fidelity.test.ts` : vérifications d’intégrité.
 
 Les anciens composants personnalisés dans `src/components`, styles dans `src/styles` et simulateur Zustand sont conservés comme code antérieur, mais ne participent plus aux pages servies. Leurs tests métier ne prouvent pas le fonctionnement de l’interface actuelle. Les précédentes affirmations de couverture fonctionnelle sont remplacées par cette description.
