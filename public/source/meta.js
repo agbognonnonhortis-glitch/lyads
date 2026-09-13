@@ -52,6 +52,8 @@
     return orgId;
   }
   function action(el, name) {
+    if (el.dataset.metaAction === name && el.dataset.authManaged === "meta")
+      return;
     el.dataset.metaAction = name;
     el.dataset.authManaged = "meta";
     el.tabIndex = 0;
@@ -245,11 +247,8 @@
     },
     true,
   );
-  const initialized = new WeakSet();
   function bind() {
     for (const frame of document.querySelectorAll("[data-source-width]")) {
-      if (initialized.has(frame)) continue;
-      initialized.add(frame);
       if (config.ref === "B2") {
         for (const el of frame.querySelectorAll("div,button,a"))
           if (
@@ -264,8 +263,21 @@
           )
             action(el, "connect");
       } else {
+        for (const el of frame.querySelectorAll("div,span")) {
+          const text = norm(el.textContent);
+          if (
+            /^Continuer avec \d+ comptes?$/.test(text) &&
+            ![...el.children].some((c) => norm(c.textContent) === text)
+          )
+            action(el, "sync");
+          if (
+            /^\d+ sélectionnés?(?: sur \d+)?$/.test(text) &&
+            !el.children.length
+          )
+            el.dataset.metaCount = "true";
+        }
         const name = leaf(frame, "Kola Distribution — Sénégal");
-        if (!name) continue;
+        if (!name || name.closest("[data-meta-account]")) continue;
         const template = name.parentElement.parentElement.parentElement;
         const list = template.parentElement;
         const description = [...frame.querySelectorAll("div")].find(
@@ -274,12 +286,16 @@
             norm(el.textContent).startsWith("Quatre comptes actifs"),
         );
         if (!description) continue;
+        for (let i = views.length - 1; i >= 0; i--)
+          if (!views[i].description.isConnected) views.splice(i, 1);
         views.push({ list, template: template.cloneNode(true), description });
         list.replaceChildren();
         description.textContent = "Chargement de vos comptes publicitaires…";
         for (const el of frame.querySelectorAll("div,span")) {
           if (
-            norm(el.textContent) === "2 sélectionnés" &&
+            ["2 sélectionnés", "2 sélectionnés sur 4"].includes(
+              norm(el.textContent),
+            ) &&
             !el.children.length
           ) {
             el.dataset.metaCount = "true";
@@ -298,10 +314,30 @@
       }
     }
   }
+  if (config.ref === "B2") {
+    const result = new URLSearchParams(location.search).get("meta");
+    if (result && result !== "connected")
+      window.alert(
+        result === "cancelled"
+          ? "La connexion Meta a été annulée. Vous pouvez la relancer."
+          : messages[result] ||
+              "La connexion Meta n’a pas abouti. Réessayez avec le bouton Facebook.",
+      );
+  }
   bind();
-  new MutationObserver(bind).observe(document.body, {
+  new MutationObserver(() => {
+    bind();
+    if (
+      lastPayload &&
+      views.some((v) => v.list.childElementCount === 0) &&
+      lastPayload.accounts.length
+    )
+      render(lastPayload);
+  }).observe(document.body, {
     childList: true,
     subtree: true,
+    attributes: true,
+    attributeFilter: ["data-meta-action"],
   });
   if (config.ref === "B4") {
     void refresh();

@@ -27,3 +27,11 @@ Autorisation OAuth par le propriétaire, découverte du compte, import des 90 jo
 Le catalogue complet de ressources (pages/Instagram/pixels/audiences/catalogues), la mesure proactive de l’expiration d’accès aux données via debug_token, les invitations d’équipe, la configuration utilisateur de la fréquence et le traitement asynchrone Insights de Meta restent à compléter. Le worker actuel utilise des lectures hebdomadaires paginées et un timeout borné ; les comptes dépassant ces limites devront passer au mode rapport asynchrone Meta.
 
 Les détecteurs, les écritures publicitaires, le Studio, les règles, le paiement et les autres modules ne sont pas déclarés opérationnels. Ils suivent le jalon bloquant de la spécification.
+
+## Déploiement vérifié le 13 septembre 2026
+
+Migrations appliquées via GitHub jusqu’à 20260913161126. Fonctions lyads-meta et lyads-worker actives via la configuration déclarée dans supabase/config.toml ; authentification applicative vérifiée. Health HTTP 200 avec ready=true ; appel sans bail au worker HTTP 401. La chaîne cron → pg_net → worker → mise à jour du job a été testée avec un job technique sans connexion publicitaire (échec META_RECONNECT attendu, aucun appel Meta). Le dispatch de ce projet est activé ; aucun jeton ni donnée publicitaire n’a été créé artificiellement. La clé Vault est présente sans en avoir affiché la valeur.
+
+Tests navigateur sur serveur de test séparé (port 3012, données explicitement factices) : B2 redirige via son API, B4 présente la carte obtenue du serveur, sélection/désélection mettent à jour le compteur, lancement/suivi affichent la fin du job. Le moteur des maquettes réinitialisant certains attributs, les actions sont réattachées après son chargement. Les sources HTML/CSS, polices et images restent identiques.
+
+Validation réelle Meta encore en attente du consentement OAuth du propriétaire. Aucun tableau de bord n’est annoncé comme alimenté par Meta avant cet import.
