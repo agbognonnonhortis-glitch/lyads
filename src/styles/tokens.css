@@ -1,0 +1,190 @@
+/* Lyads — Design System v1.0 · jetons canoniques
+   Source de vérité. Ne pas coder de valeur en dur : utiliser ces variables. */
+
+:root {
+  /* ---- Primaire « Argile » ---- */
+  --ly-primary-50: #fdf5f1;
+  --ly-primary-100: #fae8df;
+  --ly-primary-200: #f4cdbb;
+  --ly-primary-300: #ebaa8d;
+  --ly-primary-400: #df815b;
+  --ly-primary-500: #ce5f35;
+  --ly-primary-600: #b44a26;
+  --ly-primary-700: #94391d;
+  --ly-primary-800: #74301c;
+  --ly-primary-900: #5d2a1b;
+  --ly-primary-950: #33150c;
+
+  /* ---- Neutres « Sable » (chauds) ---- */
+  --ly-neutral-0: #ffffff;
+  --ly-neutral-50: #fbf9f6;
+  --ly-neutral-100: #f4f1eb;
+  --ly-neutral-200: #e8e3d9;
+  --ly-neutral-300: #d6cfc2;
+  --ly-neutral-400: #a9a196;
+  --ly-neutral-500: #6e6862;
+  --ly-neutral-600: #5c564e;
+  --ly-neutral-700: #423d37;
+  --ly-neutral-800: #2c2925;
+  --ly-neutral-900: #1b1916;
+  --ly-neutral-950: #0f0e0c;
+
+  /* ---- Agent (usage exclusif : contenu généré) ---- */
+  --ly-agent-50: #edeffc;
+  --ly-agent-200: #c4caf5;
+  --ly-agent-300: #8e9bf0;
+  --ly-agent-500: #3b4fd1;
+  --ly-agent-700: #2a3aa3;
+  --ly-agent-900: #1a2470;
+
+  /* ---- Sémantique ---- */
+  --ly-success: #146b4a;
+  --ly-success-bg: #e3f0ea;
+  --ly-warning: #8f5f08;
+  --ly-warning-bg: #f8edd8;
+  --ly-warning-text: #7a5208;
+  --ly-error: #c0311f;
+  --ly-error-bg: #fbe9e6;
+  --ly-info: #3b4fd1;
+  --ly-info-bg: #edeffc;
+
+  /* ---- Performance publicitaire (couleur + glyphe + mot) ---- */
+  --ly-perf-good: #ffffff;
+  --ly-perf-good-bg: #146b4a;
+  --ly-perf-watch: #ffffff;
+  --ly-perf-watch-bg: #8f5f08;
+  --ly-perf-bad: #ffffff;
+  --ly-perf-bad-bg: #c0311f;
+  --ly-perf-learning: #2a3aa3;
+  --ly-perf-learning-bg: #edeffc;
+  --ly-perf-depleted: #423d37;
+  --ly-perf-depleted-bg: #e8e3d9;
+  --ly-perf-paused: #5c564e;
+  --ly-perf-paused-border: #a9a196;
+
+  /* ---- Rôles ---- */
+  --ly-bg: var(--ly-neutral-100);
+  --ly-surface: var(--ly-neutral-0);
+  --ly-surface-sunken: var(--ly-neutral-50);
+  --ly-border: var(--ly-neutral-200);
+  --ly-border-strong: var(--ly-neutral-300);
+  --ly-text: #1b1916;
+  --ly-text-secondary: var(--ly-neutral-600);
+  --ly-text-muted: var(
+    --ly-neutral-500
+  ); /* 5,5:1 sur blanc · 4,9:1 sur neutral-100 */
+  --ly-text-disabled: #c0bbb2; /* décoratif uniquement — ne jamais porter de texte utile */
+  --ly-action: var(--ly-primary-600);
+  --ly-action-hover: var(--ly-primary-700);
+  --ly-action-active: var(--ly-primary-800);
+  --ly-focus-ring: var(--ly-primary-200);
+
+  /* ---- Typographie ---- */
+  --ly-font-sans: "Figtree", system-ui, sans-serif;
+  --ly-font-mono: "Space Grotesk", ui-monospace, monospace;
+
+  --ly-display: 800 34px/1.15 var(--ly-font-sans);
+  --ly-title: 700 26px/1.25 var(--ly-font-sans);
+  --ly-heading: 700 19px/1.35 var(--ly-font-sans);
+  --ly-body: 400 16px/1.65 var(--ly-font-sans);
+  --ly-body-sm: 400 14px/1.55 var(--ly-font-sans);
+  --ly-label: 600 13px/1.3 var(--ly-font-sans);
+  --ly-caption: 400 12px/1.45 var(--ly-font-sans);
+  --ly-mono-label: 500 11px/1.3 var(--ly-font-mono);
+
+  --ly-num-hero: 700 38px/1 var(--ly-font-mono);
+  --ly-num-lg: 700 30px/1 var(--ly-font-mono);
+  --ly-num-md: 700 20px/1.3 var(--ly-font-mono);
+  --ly-num-sm: 500 14px/1.4 var(--ly-font-mono);
+
+  /* ---- Espacement ---- */
+  --ly-space-1: 4px;
+  --ly-space-2: 8px;
+  --ly-space-3: 12px;
+  --ly-space-4: 16px;
+  --ly-space-5: 24px;
+  --ly-space-6: 32px;
+  --ly-space-7: 40px;
+  --ly-space-8: 48px;
+  --ly-space-9: 64px;
+  --ly-space-10: 80px;
+  --ly-gutter-mobile: 20px;
+  --ly-gutter-desktop: 32px;
+  --ly-touch-min: 48px;
+  --ly-content-max: 1280px;
+
+  /* ---- Rayons ---- */
+  --ly-radius-sm: 6px;
+  --ly-radius-md: 10px;
+  --ly-radius-lg: 14px;
+  --ly-radius-xl: 20px;
+  --ly-radius-pill: 999px;
+
+  /* ---- Élévation ---- */
+  --ly-e1: 0 1px 2px rgba(45, 35, 25, 0.06);
+  --ly-e2: 0 2px 8px rgba(45, 35, 25, 0.1);
+  --ly-e3: 0 8px 24px rgba(45, 35, 25, 0.14);
+
+  /* ---- Mouvement ---- */
+  --ly-fast: 140ms;
+  --ly-base: 200ms;
+  --ly-slow: 320ms;
+  --ly-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Points de rupture (référence) ---- */
+  --ly-bp-sm: 360px;
+  --ly-bp-md: 768px;
+  --ly-bp-lg: 1024px;
+  --ly-bp-xl: 1280px;
+  --ly-bp-2xl: 1600px;
+}
+
+[data-theme="dark"] {
+  --ly-bg: var(--ly-neutral-950);
+  --ly-surface: var(--ly-neutral-900);
+  --ly-surface-sunken: #262320;
+  --ly-border: #35312b;
+  --ly-border-strong: #6a6357;
+  --ly-text: #f4f1eb;
+  --ly-text-secondary: #c9c3b8;
+  --ly-text-muted: var(--ly-neutral-400);
+  --ly-text-disabled: #7d766c;
+  --ly-action: var(--ly-primary-300);
+  --ly-action-hover: var(--ly-primary-200);
+  --ly-action-active: var(--ly-primary-100);
+  --ly-focus-ring: var(--ly-primary-700);
+
+  --ly-success: #6fd3a6;
+  --ly-success-bg: #12352a;
+  --ly-warning: #e7b54b;
+  --ly-warning-bg: #33260b;
+  --ly-error: #f07064;
+  --ly-error-bg: #3a1512;
+  --ly-info: #8e9bf0;
+  --ly-info-bg: #171a33;
+
+  --ly-perf-good: #6fd3a6;
+  --ly-perf-good-bg: #12352a;
+  --ly-perf-watch: #e7b54b;
+  --ly-perf-watch-bg: #33260b;
+  --ly-perf-bad: #f07064;
+  --ly-perf-bad-bg: #3a1512;
+  --ly-perf-learning: #8e9bf0;
+  --ly-perf-learning-bg: #171a33;
+  --ly-perf-depleted: #d6cfc2;
+  --ly-perf-depleted-bg: #35312b;
+  --ly-perf-paused: #a9a196;
+  --ly-perf-paused-border: #5c564e;
+
+  --ly-e1: none;
+  --ly-e2: none;
+  --ly-e3: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ly-fast: 0ms;
+    --ly-base: 0ms;
+    --ly-slow: 0ms;
+  }
+}

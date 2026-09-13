@@ -1,0 +1,18 @@
+import { notFound } from "next/navigation";
+import { screens } from "@/lib/screens";
+import { Application } from "@/components/application";
+type Props = {
+  params: Promise<{ slug?: string[] }>;
+  searchParams: Promise<{ id?: string }>;
+};
+export async function generateMetadata({ params }: Props) {
+  const { slug = [] } = await params;
+  const screen = screens.find((s) => s.path === "/" + slug.join("/"));
+  return { title: screen?.title ?? "Page introuvable" };
+}
+export default async function Page({ params, searchParams }: Props) {
+  const { slug = [] } = await params;
+  const screen = screens.find((s) => s.path === "/" + slug.join("/"));
+  if (!screen) notFound();
+  return <Application screen={screen} publicId={(await searchParams).id} />;
+}

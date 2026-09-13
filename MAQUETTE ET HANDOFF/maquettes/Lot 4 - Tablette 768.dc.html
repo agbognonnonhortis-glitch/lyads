@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+  body { margin:0; background:#F4F1EB; font-family:'Figtree',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#B44A26; text-decoration:underline; text-underline-offset:2px; }
+  a:hover { color:#94391D; }
+  i.ph { line-height:1; display:inline-block; }
+</style>
+</helmet>
+
+<section style="padding:56px 48px 96px;display:flex;flex-direction:column;gap:40px">
+
+  <div style="max-width:1040px;display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">Lyads · Lot 4 — tablette 768 · les 13 écrans</div>
+    <h1 style="margin:0;font:800 40px/1.12 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Studio et Analyse en 768</h1>
+    <p style="margin:0;max-width:840px;font:400 16px/1.65 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Une règle unique gouverne la transposition : <b style="font-weight:700">le brief et son résultat ne tiennent plus côte à côte</b>. Ils deviennent deux temps, avec une barre de coût collée en bas qui ne quitte jamais l'écran.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1180px">
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Brief puis résultats, deux onglets</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">En 1440, on règle à gauche et on regarde à droite. En 704 px utiles, la colonne de brief à 360 px laisserait 320 px aux vignettes — inutilisable pour juger une image.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Les deux zones deviennent donc <b style="font-weight:700">deux onglets</b>, avec la pastille de résultats sur le second. La bascule est immédiate, le brief reste modifiable.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Le coût ne quitte jamais l'écran</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Quel que soit l'onglet actif, une <b style="font-weight:700">barre basse collée</b> porte le montant, le solde après opération et le bouton de lancement. C'est la traduction en 768 de la carte de coût du desktop.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Elle est la seule zone fixe de l'écran : tout le reste défile sous elle.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Les grilles perdent une colonne, jamais une information</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">5 vignettes deviennent 3, 4 deviennent 2, 6 métriques passent en 3 × 2. Aucun chiffre n'est retiré : le tableau de C6.3 conserve ses cinq colonnes, dont la <b style="font-weight:700">colonne « Base »</b>.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">La courbe de rétention garde sa pleine largeur — c'est le seul graphique qu'on ne réduit pas.</div>
+    </div>
+  </div>
+
+  <!-- ===== C5.1 ===== -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C5.1 · Accueil du Studio — 768</div>
+    <div style="width:768px;flex:0 0 auto;height:968px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+        <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+        <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+        <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-megaphone" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-palette" style="font-size:22px;color:#94391D"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-chart-bar" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="flex:1"></div>
+        <div style="width:40px;height:40px;border-radius:11px;background:#FDF5F1;border:1px solid #F4CDBB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;margin:6px 0"><i class="ph ph-lightning" style="font-size:16px;color:#B44A26"></i><div style="font:700 9px/1 'Space Grotesk',monospace;color:#94391D">86</div></div>
+        <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+          <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Studio créatif</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Que voulez-vous produire ?</div></div>
+          <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:10px 14px;border-radius:10px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Bibliothèque · 148</div>
+        </div>
+        <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+          <div style="background:#F8EDD8;border:1px solid #E9CF9B;border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px">
+            <i class="ph ph-brain" style="font-size:20px;color:#7A5208"></i>
+            <div style="flex:1;min-width:0"><div style="font:700 14px/1.35 'Figtree',sans-serif;color:#5C4A25">Business Brain à 60 %</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C4A25">Sans arguments de vente, les textes resteront génériques.</div></div>
+            <div style="border:1.5px solid #8F5F08;color:#7A5208;padding:10px 14px;border-radius:10px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Compléter</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="width:40px;height:40px;border-radius:11px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-text-aa" style="font-size:22px;color:#423D37"></i></div><div style="text-align:right"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#1B1916">2</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">crédits</div></div></div>
+              <div style="font:700 18px/1.25 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Textes publicitaires</div>
+              <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#423D37">5 variantes comparables : accroches, titres, descriptions, appels à l'action.</div>
+              <div style="display:flex;align-items:center;gap:7px;border-top:1px solid #E8E3D9;padding-top:11px"><i class="ph ph-clock" style="font-size:16px;color:#5C564E"></i><span style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E">≈ 15 secondes</span></div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:13px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;text-align:center">Générer</div>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="width:40px;height:40px;border-radius:11px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-image" style="font-size:22px;color:#423D37"></i></div><div style="text-align:right"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#1B1916">6</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">crédits / variante</div></div></div>
+              <div style="font:700 18px/1.25 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Visuel publicitaire</div>
+              <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#423D37">Une image depuis un brief, déclinée dans les formats Meta choisis.</div>
+              <div style="display:flex;align-items:center;gap:7px;border-top:1px solid #E8E3D9;padding-top:11px"><i class="ph ph-clock" style="font-size:16px;color:#5C564E"></i><span style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E">≈ 40 secondes</span></div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:13px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;text-align:center">Générer</div>
+            </div>
+            <div style="background:#FFFFFF;border:1.5px solid #B44A26;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="width:40px;height:40px;border-radius:11px;background:#FAE8DF;display:flex;align-items:center;justify-content:center"><i class="ph ph-video-camera" style="font-size:22px;color:#B44A26"></i></div><div style="text-align:right"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#94391D">45</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#94391D">crédits</div></div></div>
+              <div style="font:700 18px/1.25 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Vidéo publicitaire</div>
+              <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#423D37">Script, animation, voix off, sous-titres. Vous validez le script avant de payer.</div>
+              <div style="display:flex;align-items:center;gap:7px;border-top:1px solid #F4CDBB;padding-top:11px"><i class="ph ph-clock" style="font-size:16px;color:#94391D"></i><span style="font:500 11px/1.4 'Space Grotesk',monospace;color:#94391D">4 à 7 minutes</span></div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:13px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;text-align:center">Générer</div>
+              <div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#94391D;text-align:center">Solde après : 41 / 200</div>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="width:40px;height:40px;border-radius:11px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-copy" style="font-size:22px;color:#423D37"></i></div><div style="text-align:right"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#1B1916">4</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">crédits / variante</div></div></div>
+              <div style="font:700 18px/1.25 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Déclinaisons</div>
+              <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#423D37">Variantes d'une créative existante, une variable modifiée à la fois.</div>
+              <div style="display:flex;align-items:center;gap:7px;border-top:1px solid #E8E3D9;padding-top:11px"><i class="ph ph-trend-up" style="font-size:16px;color:#146B4A"></i><span style="font:500 11px/1.4 'Space Grotesk',monospace;color:#0E4E36">3 gagnantes prêtes</span></div>
+              <div style="border:1.5px solid #B44A26;color:#94391D;padding:11.5px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;text-align:center">Décliner</div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Générations récentes</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#94391D">Tout voir · 34</div></div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+              <div style="border:1px solid #E8E3D9;border-radius:10px;overflow:hidden"><div style="height:76px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i><div style="position:absolute;top:6px;right:6px;background:#146B4A;color:#FFFFFF;padding:3px 7px;border-radius:999px;font:700 9px/1.3 'Figtree',sans-serif">Utilisée</div></div><div style="padding:8px;font:600 11px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Cartable bleu</div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:10px;overflow:hidden"><div style="height:76px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i></div><div style="padding:8px;font:600 11px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Trio rentrée</div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:10px;overflow:hidden"><div style="height:76px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-play-circle" style="font-size:20px;color:#A9A196"></i></div><div style="padding:8px;font:600 11px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Déballage 18 s</div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:10px;overflow:hidden"><div style="height:76px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-text-aa" style="font-size:20px;color:#A9A196"></i></div><div style="padding:8px;font:600 11px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">5 accroches</div></div>
+            </div>
+            <div style="border-top:1px solid #E8E3D9;padding-top:11px;display:flex;align-items:center;gap:11px"><i class="ph ph-clock-counter-clockwise" style="font-size:16px;color:#5C564E"></i><div style="flex:1;font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">2 brouillons de génération</div><i class="ph ph-caret-right" style="font-size:16px;color:#A9A196"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Les quatre types passent en 2 × 2 et conservent leur coût en gros chiffre. La carte vidéo garde sa bordure accentuée et son solde après opération — l'arbitrage qu'elle demande ne dépend pas de la largeur.</div>
+  </div>
+
+  <!-- ===== C5.2 ===== -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C5.2 · Génération de textes — 768 · onglet Résultats actif</div>
+    <div style="width:768px;flex:0 0 auto;height:990px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+        <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+        <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+        <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-palette" style="font-size:22px;color:#94391D"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-chart-bar" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="flex:1"></div>
+        <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-arrow-left" style="font-size:16px;color:#423D37"></i></div>
+            <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Génération de textes</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Cartables Rentrée · 5 variantes</div></div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:10px 14px;border-radius:10px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Régénérer tout</div>
+          </div>
+          <div style="display:flex;border:1.5px solid #D6CFC2;border-radius:10px;overflow:hidden">
+            <div style="flex:1;color:#423D37;padding:11px;font:600 14px/1 'Figtree',sans-serif;text-align:center">Brief</div>
+            <div style="flex:1;background:#2C2925;color:#FFFFFF;padding:11px;font:600 14px/1 'Figtree',sans-serif;text-align:center;border-left:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;gap:8px">Résultats<span style="background:#B44A26;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">5</span></div>
+          </div>
+        </div>
+        <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:12px;background:#F4F1EB;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="display:flex;align-items:center;gap:7px"><i class="ph ph-sparkle" style="font-size:13px;color:#3B4FD1"></i><span style="font:500 11px/1.4 'Space Grotesk',monospace;color:#2A3AA3">Écrit par Lyads</span></div>
+            <div style="flex:1"></div>
+            <div style="display:flex;align-items:center;gap:7px;border:1.5px solid #D6CFC2;border-radius:10px;padding:8px 12px"><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">Troncature : Fil Facebook</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+          </div>
+
+          <div style="flex:0 0 auto;background:#FFFFFF;border:1.5px solid #B44A26;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+            <div style="padding:11px 16px;background:#FDF5F1;border-bottom:1px solid #F4CDBB;display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Variante 1</div><div style="display:flex;align-items:center;gap:6px"><i class="ph ph-pencil-simple" style="font-size:13px;color:#B44A26"></i><span style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#94391D">Modifiée</span></div></div>
+            <div style="padding:16px;display:flex;gap:16px;align-items:flex-start">
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:11px">
+                <div style="display:flex;flex-direction:column;gap:6px"><div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Texte principal</div><div style="font:400 15px/1.55 'Figtree',sans-serif;color:#1B1916">Le cartable qui tient 3 rentrées — et pas seulement une. Garanti 3 ans, livré en 48 h à Dakar.</div><div style="display:flex;align-items:center;gap:10px"><div style="flex:1;height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:76%;height:100%;background:#146B4A;border-radius:999px"></div></div><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">95 / 125</span></div></div>
+                <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #F4F1EB;padding-top:10px"><div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Titre · appel à l'action</div><div style="display:flex;align-items:center;gap:10px"><div style="flex:1;font:600 15px/1.4 'Figtree',sans-serif;color:#1B1916">Solide, léger, garanti 3 ans</div><span style="white-space:nowrap;background:#F4F1EB;color:#423D37;padding:5px 10px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Acheter</span></div></div>
+                <div style="display:flex;gap:7px;border-top:1px solid #F4F1EB;padding-top:10px"><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:9px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;text-align:center">Modifier</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:9px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;text-align:center">Régénérer</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:9px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;text-align:center">Décliner</div></div>
+              </div>
+              <div style="width:196px;flex:0 0 196px;border:1px solid #E8E3D9;border-radius:10px;overflow:hidden;background:#FBF9F6">
+                <div style="padding:8px 10px;display:flex;align-items:center;gap:7px;border-bottom:1px solid #F4F1EB"><div style="width:22px;height:22px;border-radius:999px;background:#E8E3D9;flex:0 0 auto"></div><div style="font:700 10px/1.2 'Figtree',sans-serif;color:#1B1916">Kola Distribution</div></div>
+                <div style="padding:8px 10px;font:400 10px/1.45 'Figtree',sans-serif;color:#423D37">Le cartable qui tient 3 rentrées — et pas seulement une…</div>
+                <div style="height:104px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #C4CAF5;border-radius:14px;overflow:hidden">
+            <div style="padding:11px 16px;background:#F7F8FE;border-bottom:1px solid #C4CAF5;display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Variante 2</div><div style="display:flex;align-items:center;gap:6px"><i class="ph ph-sparkle" style="font-size:13px;color:#3B4FD1"></i><span style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#2A3AA3">Écrit par Lyads</span></div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:11px">
+              <div style="font:400 15px/1.55 'Figtree',sans-serif;color:#1B1916">Chaque rentrée, le même cartable qui lâche en novembre. Le nôtre est garanti 3 ans, livré en 48 h.</div>
+              <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:80%;height:100%;background:#146B4A;border-radius:999px"></div></div><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">100 / 125</span></div>
+              <div style="display:flex;align-items:center;gap:10px;border-top:1px solid #F4F1EB;padding-top:10px"><div style="flex:1;font:600 15px/1.4 'Figtree',sans-serif;color:#1B1916">Fini les cartables qui lâchent</div><span style="white-space:nowrap;background:#F4F1EB;color:#423D37;padding:5px 10px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Acheter</span></div>
+            </div>
+          </div>
+
+          <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E9CF9B;border-radius:14px;overflow:hidden">
+            <div style="padding:11px 16px;background:#F8EDD8;border-bottom:1px solid #E9CF9B;display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:5px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Variante 4</div><div style="display:flex;align-items:center;gap:6px"><i class="ph ph-warning" style="font-size:13px;color:#8F5F08"></i><span style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#7A5208">Trop long</span></div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:11px">
+              <div style="font:400 15px/1.55 'Figtree',sans-serif;color:#1B1916">Votre enfant use un cartable par an ? Le nôtre est conçu pour tenir trois années scolaires complètes, avec une garantie de 3 ans…</div>
+              <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:100%;height:100%;background:#C0311F;border-radius:999px"></div></div><span style="font:700 11px/1 'Space Grotesk',monospace;color:#8E2317">158 / 125</span></div>
+              <div style="display:flex;gap:7px"><div style="flex:1;background:#8F5F08;color:#FFFFFF;padding:10px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif;text-align:center">Raccourcir</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:9px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;text-align:center">Régénérer</div></div>
+            </div>
+          </div>
+
+          <div style="text-align:center;font:600 13px/1 'Figtree',sans-serif;color:#94391D">Variantes 3 et 5 ▾</div>
+        </div>
+        <div style="flex:0 0 auto;background:#FFFFFF;border-top:1px solid #E8E3D9;box-shadow:0 -2px 8px rgba(45,35,25,.10);padding:13px 24px;display:flex;align-items:center;gap:14px">
+          <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">2 variantes sélectionnées</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Régénérer tout coûterait 2 crédits · solde 84 / 200</div></div>
+          <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:12px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Enregistrer</div>
+          <div style="background:#B44A26;color:#FFFFFF;padding:13px 17px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Utiliser en campagne</div>
+        </div>
+      </div>
+    </div>
+    <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">La variante active garde son aperçu Meta à droite ; les suivantes s'affichent sans aperçu, en liste. C'est le seul moyen de garder trois variantes visibles à l'écran sans réduire le texte sous 15 px.</div>
+  </div>
+
+  <!-- ===== C5.3 + C5.4 ===== -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C5.3 visuels &amp; C5.4 vidéos — 768</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C5.3 · Visuels — onglet Résultats, échec partiel</div>
+        <div style="width:768px;height:820px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-palette" style="font-size:22px;color:#94391D"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-chart-bar" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-arrow-left" style="font-size:16px;color:#423D37"></i></div>
+                <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Génération de visuels</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Cartables Rentrée · session du 2 août</div></div>
+              </div>
+              <div style="display:flex;border:1.5px solid #D6CFC2;border-radius:10px;overflow:hidden"><div style="flex:1;color:#423D37;padding:11px;font:600 14px/1 'Figtree',sans-serif;text-align:center">Brief</div><div style="flex:1;background:#2C2925;color:#FFFFFF;padding:11px;font:600 14px/1 'Figtree',sans-serif;text-align:center;border-left:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;gap:8px">Résultats<span style="background:#B44A26;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">5 / 6</span></div></div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:12px;background:#F4F1EB;overflow:hidden">
+              <div style="display:flex;gap:6px;align-items:center"><div style="background:#2C2925;color:#FFFFFF;padding:8px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Tous · 6</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">1:1</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">4:5</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">9:16</div><div style="flex:1"></div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E">3 sélectionnés</div></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+                <div style="background:#FFFFFF;border:1.5px solid #B44A26;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:150px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:30px;color:#A9A196"></i><div style="position:absolute;top:9px;left:9px;width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="position:absolute;top:9px;right:9px;background:#2C2925;color:#FFFFFF;padding:4px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">1:1</div></div><div style="padding:11px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916">Variante A</div></div>
+                <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden"><div style="height:150px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:30px;color:#A9A196"></i><div style="position:absolute;top:9px;left:9px;width:20px;height:20px;border-radius:5px;border:1.5px solid #FFFFFF;background:rgba(255,255,255,.6)"></div><div style="position:absolute;top:9px;right:9px;background:#2C2925;color:#FFFFFF;padding:4px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">1:1</div></div><div style="padding:11px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916">Variante B</div></div>
+                <div style="background:#FFFFFF;border:1.5px solid #B44A26;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:150px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:30px;color:#A9A196"></i><div style="position:absolute;top:9px;left:9px;width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="position:absolute;top:9px;right:9px;background:#2C2925;color:#FFFFFF;padding:4px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">4:5</div></div><div style="padding:11px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916">Variante A</div></div>
+                <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden"><div style="height:150px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:30px;color:#A9A196"></i><div style="position:absolute;top:9px;left:9px;width:20px;height:20px;border-radius:5px;border:1.5px solid #FFFFFF;background:rgba(255,255,255,.6)"></div><div style="position:absolute;top:9px;right:9px;background:#2C2925;color:#FFFFFF;padding:4px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">4:5</div></div><div style="padding:11px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916">Variante B</div></div>
+                <div style="background:#FFFFFF;border:1.5px solid #B44A26;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:150px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:30px;color:#A9A196"></i><div style="position:absolute;top:9px;left:9px;width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="position:absolute;top:9px;right:9px;background:#2C2925;color:#FFFFFF;padding:4px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">9:16</div></div><div style="padding:11px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916">Variante A</div></div>
+                <div style="background:#FFFFFF;border:1.5px solid #C0311F;border-radius:12px;overflow:hidden"><div style="height:150px;background:#FBE9E6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:12px;position:relative"><div style="position:absolute;top:9px;right:9px;background:#2C2925;color:#FFFFFF;padding:4px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">9:16</div><i class="ph ph-warning" style="font-size:24px;color:#C0311F"></i><div style="font:700 12px/1.3 'Figtree',sans-serif;color:#8E2317;text-align:center">Échec fournisseur</div></div><div style="padding:11px;display:flex;flex-direction:column;gap:7px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#0E4E36">6 crédits non débités</div><div style="background:#C0311F;color:#FFFFFF;padding:9px;border-radius:8px;font:700 11px/1 'Figtree',sans-serif;text-align:center">Relancer</div></div></div>
+              </div>
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;font-variant-numeric:tabular-nums">
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Obtenus</div><div style="font:700 20px/1.1 'Space Grotesk',monospace;color:#1B1916">5 / 6</div></div>
+                <div style="border-left:1px solid #E8E3D9;padding-left:14px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Débités</div><div style="font:700 20px/1.1 'Space Grotesk',monospace;color:#94391D">30</div></div>
+                <div style="border-left:1px solid #E8E3D9;padding-left:14px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Solde</div><div style="font:700 20px/1.1 'Space Grotesk',monospace;color:#1B1916">32 / 200</div></div>
+                <div style="border-left:1px solid #E8E3D9;padding-left:14px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Non facturés</div><div style="font:700 20px/1.1 'Space Grotesk',monospace;color:#0E4E36">6</div></div>
+              </div>
+            </div>
+            <div style="flex:0 0 auto;background:#FFFFFF;border-top:1px solid #E8E3D9;box-shadow:0 -2px 8px rgba(45,35,25,.10);padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0;font:400 12px/1.45 'Figtree',sans-serif;color:#423D37">Un visuel échoué côté fournisseur n'est jamais facturé.</div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:12px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Enregistrer · 3</div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:13px 17px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Utiliser en campagne</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C5.4 · Vidéo — script et image empilés, coût en barre basse</div>
+        <div style="width:768px;height:665px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-palette" style="font-size:22px;color:#94391D"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-chart-bar" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-arrow-left" style="font-size:16px;color:#423D37"></i></div>
+                <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Génération de vidéo</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Étape 2 sur 2 — validation avant lancement</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:24px;border-radius:999px;background:#146B4A;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><span style="font:600 13px/1 'Figtree',sans-serif;color:#423D37;white-space:nowrap">Brief</span></div>
+                <div style="width:24px;height:2px;background:#146B4A"></div>
+                <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:24px;border-radius:999px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#FFFFFF">2</div><span style="font:700 13px/1 'Figtree',sans-serif;color:#1B1916;white-space:nowrap">Script et image</span></div>
+              </div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:12px;background:#F4F1EB;overflow:hidden">
+              <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px"><i class="ph ph-eye" style="font-size:20px;color:#3B4FD1"></i><div style="flex:1;font:400 13px/1.5 'Figtree',sans-serif;color:#2A3AA3"><b style="font-weight:700">Vérifiez avant de dépenser.</b> Script et image sont gratuits ; la facturation démarre au lancement.</div></div>
+
+              <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:12px;align-items:start">
+                <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+                  <div style="padding:12px 16px;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Script — 18 s</div><div style="display:flex;align-items:center;gap:6px;margin-top:3px"><i class="ph ph-sparkle" style="font-size:13px;color:#3B4FD1"></i><span style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2A3AA3">Écrit par Lyads</span></div></div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:8px 11px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;flex:0 0 auto">Modifier</div></div>
+                  <div style="padding:4px 16px 12px">
+                    <div style="display:grid;grid-template-columns:66px minmax(0,1fr);gap:11px;padding:11px 0;border-bottom:1px solid #F4F1EB"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#94391D">0 – 3 s</div><div style="font:400 14px/1.5 'Figtree',sans-serif;color:#1B1916">« Le cartable de ma fille a tenu trois rentrées. »</div></div>
+                    <div style="display:grid;grid-template-columns:66px minmax(0,1fr);gap:11px;padding:11px 0;border-bottom:1px solid #F4F1EB"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#423D37">3 – 9 s</div><div style="font:400 14px/1.5 'Figtree',sans-serif;color:#1B1916">« Avant, j'en rachetais un chaque année en novembre. »</div></div>
+                    <div style="display:grid;grid-template-columns:66px minmax(0,1fr);gap:11px;padding:11px 0;border-bottom:1px solid #F4F1EB"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#423D37">9 – 15 s</div><div style="font:400 14px/1.5 'Figtree',sans-serif;color:#1B1916">« Garanti trois ans, livré en 48 heures à Dakar. »</div></div>
+                    <div style="display:grid;grid-template-columns:66px minmax(0,1fr);gap:11px;padding:11px 0"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#423D37">15 – 18 s</div><div style="font:400 14px/1.5 'Figtree',sans-serif;color:#1B1916">« Commandez avant la rentrée. »</div></div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+                    <div style="padding:12px 14px;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:10px"><div style="flex:1;font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Image de départ</div><i class="ph ph-arrows-clockwise" style="font-size:16px;color:#5C564E"></i></div>
+                    <div style="height:216px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:30px;color:#A9A196"></i><div style="position:absolute;bottom:9px;left:9px;background:#2C2925;color:#FFFFFF;padding:4px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">9:16</div></div>
+                  </div>
+                  <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:9px">
+                    <div style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Ce qui sera produit</div>
+                    <div style="display:flex;align-items:center;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><span style="font:500 12px/1.4 'Figtree',sans-serif;color:#423D37">1 vidéo 9:16 · 18 s</span></div>
+                    <div style="display:flex;align-items:center;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><span style="font:500 12px/1.4 'Figtree',sans-serif;color:#423D37">Voix off synchronisée</span></div>
+                    <div style="display:flex;align-items:center;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><span style="font:500 12px/1.4 'Figtree',sans-serif;color:#423D37">Sous-titres incrustés</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:0 0 auto;background:#FFFFFF;border-top:1.5px solid #B44A26;box-shadow:0 -2px 8px rgba(45,35,25,.10);padding:14px 24px;display:flex;align-items:center;gap:16px">
+              <div style="flex:0 0 auto"><div style="font:500 10px/1.4 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5C564E">Coût</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font:700 26px/1 'Space Grotesk',monospace;color:#1B1916">45</div><div style="font:600 13px/1 'Figtree',sans-serif;color:#6E6862">crédits</div></div></div>
+              <div style="flex:1;min-width:0;font:400 12px/1.45 'Figtree',sans-serif;color:#423D37">Animation 32 · voix 9 · sous-titres 4 · <b style="font-weight:700">solde après : 41 / 200</b></div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Lancer · 4 à 7 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">En C5.4, la carte de coût du desktop devient la barre basse bordée de terracotta — la seule zone fixe de l'écran. Le script garde son découpage par plan, l'image de départ passe à côté plutôt qu'en dessous.</div>
+  </div>
+
+  <!-- ===== C5.5 · C5.6 · C5.7 ===== -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C5.5 galerie · C5.6 éditeur · C5.7 bibliothèque — 768</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C5.5 · Galerie — 3 colonnes, en-tête de sélection sombre</div>
+        <div style="width:768px;height:514px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-palette" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#2C2925;padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #5C564E;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-x" style="font-size:16px;color:#F4F1EB"></i></div>
+              <div style="flex:1;min-width:0"><div style="font:700 18px/1.2 'Figtree',sans-serif;color:#FFFFFF">3 sélectionnées</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#A9A196">sur 14 · session du 2 août</div></div>
+              <div style="border:1.5px solid #5C564E;color:#F4F1EB;padding:10px 14px;border-radius:10px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Comparer</div>
+              <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #5C564E;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-download-simple" style="font-size:16px;color:#F4F1EB"></i></div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:11px 15px;border-radius:10px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Utiliser</div>
+            </div>
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:11px 24px;display:flex;align-items:center;gap:10px">
+              <div style="display:flex;gap:6px"><div style="background:#2C2925;color:#FFFFFF;padding:8px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Tout · 14</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Visuels · 11</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Vidéos · 3</div></div>
+              <div style="flex:1"></div>
+              <div style="display:flex;border:1.5px solid #D6CFC2;border-radius:10px;overflow:hidden"><div style="padding:8px 11px;display:flex;align-items:center"><i class="ph ph-squares-four" style="font-size:16px;color:#5C564E"></i></div><div style="padding:8px 11px;background:#2C2925;display:flex;align-items:center;border-left:1px solid #D6CFC2"><i class="ph ph-grid-nine" style="font-size:16px;color:#FFFFFF"></i></div></div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-content:start;background:#F4F1EB;overflow:hidden">
+              <div style="background:#FFFFFF;border:1.5px solid #B44A26;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="position:absolute;top:8px;right:8px;background:#2C2925;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">1:1</div></div><div style="padding:10px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Écolière cour A</div></div>
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden"><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:20px;height:20px;border-radius:5px;border:1.5px solid #FFFFFF;background:rgba(255,255,255,.6)"></div><div style="position:absolute;top:8px;right:8px;background:#2C2925;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">1:1</div></div><div style="padding:10px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Écolière cour B</div></div>
+              <div style="background:#FFFFFF;border:1.5px solid #B44A26;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="position:absolute;top:8px;right:8px;background:#2C2925;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">4:5</div></div><div style="padding:10px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Écolière cour A</div></div>
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden"><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-play-circle" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:20px;height:20px;border-radius:5px;border:1.5px solid #FFFFFF;background:rgba(255,255,255,.6)"></div><div style="position:absolute;bottom:8px;right:8px;background:#2C2925;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">18 s</div></div><div style="padding:10px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Témoignage</div></div>
+              <div style="background:#FFFFFF;border:1.5px solid #B44A26;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="position:absolute;top:8px;right:8px;background:#2C2925;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">9:16</div></div><div style="padding:10px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Écolière cour A</div></div>
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden"><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:20px;height:20px;border-radius:5px;border:1.5px solid #FFFFFF;background:rgba(255,255,255,.6)"></div><div style="position:absolute;top:8px;right:8px;background:#2C2925;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 10px/1.3 'Space Grotesk',monospace">1:1</div></div><div style="padding:10px;font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Produit studio</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C5.6 · Éditeur — outils en barre haute, propriétés en tiroir bas</div>
+        <div style="width:768px;height:700px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:12px 20px;display:flex;align-items:center;gap:12px">
+            <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-arrow-left" style="font-size:16px;color:#423D37"></i></div>
+            <div style="flex:1;min-width:0"><div style="font:700 18px/1.2 'Figtree',sans-serif;color:#1B1916">Écolière cour A</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Version 2 · l'originale est conservée</div></div>
+            <div style="display:flex;gap:6px"><div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center"><i class="ph ph-arrow-counter-clockwise" style="font-size:16px;color:#423D37"></i></div><div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #E8E3D9;display:flex;align-items:center;justify-content:center"><i class="ph ph-arrow-clockwise" style="font-size:16px;color:#A9A196"></i></div></div>
+            <div style="background:#B44A26;color:#FFFFFF;padding:12px 16px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Enregistrer</div>
+          </div>
+          <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:10px 20px;display:flex;align-items:center;gap:8px">
+            <div style="display:flex;gap:5px"><div style="border:1.5px solid #B44A26;background:#FDF5F1;color:#94391D;padding:8px 11px;border-radius:9px;font:600 12px/1 'Space Grotesk',monospace">1:1</div><div style="border:1px solid #E8E3D9;color:#6E6862;padding:8.5px 11px;border-radius:9px;font:600 12px/1 'Space Grotesk',monospace">4:5</div><div style="border:1px solid #E8E3D9;color:#6E6862;padding:8.5px 11px;border-radius:9px;font:600 12px/1 'Space Grotesk',monospace">9:16</div><div style="border:1px solid #E8E3D9;color:#6E6862;padding:8.5px 11px;border-radius:9px;font:600 12px/1 'Space Grotesk',monospace">16:9</div></div>
+            <div style="width:1px;height:22px;background:#E8E3D9"></div>
+            <div style="display:flex;gap:5px"><div style="width:38px;height:38px;border-radius:9px;border:1.5px solid #B44A26;background:#FDF5F1;display:flex;align-items:center;justify-content:center"><i class="ph ph-text-t" style="font-size:16px;color:#B44A26"></i></div><div style="width:38px;height:38px;border-radius:9px;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center"><i class="ph ph-seal" style="font-size:16px;color:#5C564E"></i></div><div style="width:38px;height:38px;border-radius:9px;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center"><i class="ph ph-bookmark-simple" style="font-size:16px;color:#5C564E"></i></div><div style="width:38px;height:38px;border-radius:9px;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center"><i class="ph ph-rectangle" style="font-size:16px;color:#5C564E"></i></div><div style="width:38px;height:38px;border-radius:9px;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center"><i class="ph ph-arrow-bend-up-right" style="font-size:16px;color:#5C564E"></i></div></div>
+            <div style="width:1px;height:22px;background:#E8E3D9"></div>
+            <div style="border:1px solid #E8E3D9;border-radius:9px;padding:8.5px 11px;display:flex;align-items:center;gap:7px"><i class="ph ph-sun" style="font-size:16px;color:#5C564E"></i><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">Réglages</span></div>
+            <div style="flex:1"></div>
+            <div style="border:1px solid #E8E3D9;border-radius:9px;padding:8.5px 11px;display:flex;align-items:center;gap:7px"><i class="ph ph-eye" style="font-size:16px;color:#5C564E"></i><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">Aperçu</span></div>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:20px;background:#F4F1EB;min-height:0">
+            <div style="width:340px;height:340px;background:#F4F1EB;border:2px solid #B44A26;border-radius:12px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+              <i class="ph ph-image" style="font-size:30px;color:#A9A196"></i>
+              <div style="position:absolute;left:22px;right:22px;top:26px;border:2px dashed #B44A26;border-radius:8px;padding:11px 13px;background:rgba(255,255,255,.9)"><div style="font:800 21px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916;text-align:center">GARANTI 3 ANS</div></div>
+              <div style="position:absolute;left:16px;bottom:16px;width:54px;height:28px;background:rgba(255,255,255,.92);border:1px dashed #A9A196;border-radius:6px;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Figtree',sans-serif;color:#B44A26">KOLA</div>
+              <div style="position:absolute;right:16px;bottom:16px;background:#146B4A;color:#FFFFFF;padding:7px 11px;border-radius:999px;font:700 11px/1 'Figtree',sans-serif">Livré 48 h</div>
+            </div>
+          </div>
+          <div style="flex:0 0 auto;background:#FFFFFF;border-top:1px solid #E8E3D9;box-shadow:0 -2px 8px rgba(45,35,25,.10);padding:14px 20px;display:flex;flex-direction:column;gap:11px">
+            <div style="display:flex;align-items:center;gap:12px"><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Texte sélectionné</div><div style="flex:1"></div><div style="background:#F8EDD8;color:#5C4A25;padding:5px 10px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">Texte sur image : 14 %</div></div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <div style="flex:1;border:1.5px solid #D6CFC2;border-radius:10px;padding:10px 13px;font:500 14px/1 'Figtree',sans-serif;color:#1B1916">GARANTI 3 ANS</div>
+              <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:10px 13px;display:flex;align-items:center;gap:8px;flex:0 0 auto"><span style="font:600 13px/1 'Figtree',sans-serif;color:#1B1916">Figtree ExtraBold</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+              <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:10px 13px;font:600 13px/1 'Space Grotesk',monospace;color:#1B1916;flex:0 0 auto">72 px</div>
+              <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;flex:0 0 auto"><span style="width:18px;height:18px;border-radius:5px;background:#1B1916"></span><span style="font:500 12px/1 'Space Grotesk',monospace;color:#1B1916">1B1916</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C5.7 · Bibliothèque — dossiers en menu déroulant, grille en 3</div>
+        <div style="width:768px;height:720px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-palette" style="font-size:22px;color:#94391D"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-chart-bar" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Ma bibliothèque</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">148 créatives · 51 avec performance</div></div>
+                <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:10px 13px;display:flex;align-items:center;gap:7px;flex:0 0 auto"><i class="ph ph-folder" style="font-size:16px;color:#5C564E"></i><span style="font:600 13px/1 'Figtree',sans-serif;color:#1B1916">Toutes</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px">
+                <div style="flex:1;display:flex;align-items:center;gap:9px;border:1.5px solid #D6CFC2;border-radius:10px;padding:10px 13px"><i class="ph ph-magnifying-glass" style="font-size:16px;color:#5C564E"></i><span style="font:400 13px/1 'Figtree',sans-serif;color:#A9A196">Rechercher</span></div>
+                <div style="border:1.5px solid #D6CFC2;border-radius:999px;padding:6.5px 12px;display:flex;gap:6px;align-items:center;flex:0 0 auto"><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">Statut</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+                <div style="border:1.5px solid #D6CFC2;border-radius:999px;padding:6.5px 12px;display:flex;gap:6px;align-items:center;flex:0 0 auto"><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">ROAS ↓</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+              </div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-content:start;background:#F4F1EB;overflow:hidden">
+              <div style="background:#FFFFFF;border:1px solid #A9D3BF;border-radius:12px;overflow:hidden">
+                <div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">▲ Gagnante</div><div style="position:absolute;bottom:8px;left:8px;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.94);padding:4px 9px;border-radius:999px"><span style="width:7px;height:7px;border-radius:999px;background:#146B4A"></span><span style="font:600 10px/1 'Figtree',sans-serif;color:#1B1916">En diffusion</span></div></div>
+                <div style="padding:11px;display:flex;flex-direction:column;gap:9px">
+                  <div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Tabaski Carrousel</div>
+                  <div style="display:flex;gap:10px;font-variant-numeric:tabular-nums;border-top:1px solid #F4F1EB;padding-top:9px"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">4,12</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">313 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div>
+                  <div style="display:flex;gap:6px"><div style="flex:1;background:#B44A26;color:#FFFFFF;padding:8px;border-radius:8px;font:700 11px/1 'Figtree',sans-serif;text-align:center">Décliner</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:7px;border-radius:8px;font:600 11px/1 'Figtree',sans-serif;text-align:center">Analyse</div></div>
+                </div>
+              </div>
+              <div style="background:#FFFFFF;border:1px solid #A9D3BF;border-radius:12px;overflow:hidden">
+                <div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-play-circle" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">▲ Gagnante</div><div style="position:absolute;bottom:8px;left:8px;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.94);padding:4px 9px;border-radius:999px"><span style="width:7px;height:7px;border-radius:999px;background:#146B4A"></span><span style="font:600 10px/1 'Figtree',sans-serif;color:#1B1916">En diffusion</span></div></div>
+                <div style="padding:11px;display:flex;flex-direction:column;gap:9px">
+                  <div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Témoignage 22 s</div>
+                  <div style="display:flex;gap:10px;font-variant-numeric:tabular-nums;border-top:1px solid #F4F1EB;padding-top:9px"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">3,42</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">248 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div>
+                  <div style="display:flex;gap:6px"><div style="flex:1;background:#B44A26;color:#FFFFFF;padding:8px;border-radius:8px;font:700 11px/1 'Figtree',sans-serif;text-align:center">Décliner</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:7px;border-radius:8px;font:600 11px/1 'Figtree',sans-serif;text-align:center">Analyse</div></div>
+                </div>
+              </div>
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E9CF9B;border-radius:12px;overflow:hidden">
+                <div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#8F5F08;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">◆ Fatigue</div><div style="position:absolute;bottom:8px;left:8px;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.94);padding:4px 9px;border-radius:999px"><span style="width:7px;height:7px;border-radius:999px;background:#146B4A"></span><span style="font:600 10px/1 'Figtree',sans-serif;color:#1B1916">En diffusion</span></div></div>
+                <div style="padding:11px;display:flex;flex-direction:column;gap:9px">
+                  <div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Livraison gratuite</div>
+                  <div style="display:flex;gap:10px;font-variant-numeric:tabular-nums;border-top:1px solid #F4F1EB;padding-top:9px"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#7A5208">1,72</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">118 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div>
+                  <div style="display:flex;gap:6px"><div style="flex:1;background:#B44A26;color:#FFFFFF;padding:8px;border-radius:8px;font:700 11px/1 'Figtree',sans-serif;text-align:center">Décliner</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:7px;border-radius:8px;font:600 11px/1 'Figtree',sans-serif;text-align:center">Analyse</div></div>
+                </div>
+              </div>
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+                <div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#F4F1EB;border:1px solid #D6CFC2;color:#423D37;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">Données insuffisantes</div></div>
+                <div style="padding:11px;display:flex;flex-direction:column;gap:9px">
+                  <div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Bannière test</div>
+                  <div style="border-top:1px solid #F4F1EB;padding-top:9px;font:400 11px/1.5 'Figtree',sans-serif;color:#5C564E">12 400 FCFA sur 50 000 requis.</div>
+                </div>
+              </div>
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+                <div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;bottom:8px;left:8px;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.94);padding:4px 9px;border-radius:999px"><span style="width:7px;height:7px;border-radius:999px;border:1.5px solid #A9A196"></span><span style="font:600 10px/1 'Figtree',sans-serif;color:#1B1916">Jamais utilisée</span></div></div>
+                <div style="padding:11px;display:flex;flex-direction:column;gap:9px">
+                  <div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Écolière cour A</div>
+                  <div style="border-top:1px solid #F4F1EB;padding-top:9px;font:400 11px/1.5 'Figtree',sans-serif;color:#5C564E">Générée aujourd'hui.</div>
+                  <div style="background:#B44A26;color:#FFFFFF;padding:8px;border-radius:8px;font:700 11px/1 'Figtree',sans-serif;text-align:center">Utiliser</div>
+                </div>
+              </div>
+              <div style="background:#FFFFFF;border:1px solid #E9A79E;border-radius:12px;overflow:hidden">
+                <div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-play-circle" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#C0311F;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">▼ Sous-perf.</div><div style="position:absolute;bottom:8px;left:8px;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.94);padding:4px 9px;border-radius:999px"><span style="width:7px;height:7px;border-radius:999px;background:#A9A196"></span><span style="font:600 10px/1 'Figtree',sans-serif;color:#1B1916">Déjà diffusée</span></div></div>
+                <div style="padding:11px;display:flex;flex-direction:column;gap:9px">
+                  <div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Vidéo été 15 s</div>
+                  <div style="display:flex;gap:10px;font-variant-numeric:tabular-nums;border-top:1px solid #F4F1EB;padding-top:9px"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#C0311F">0,64</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">186 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div>
+                  <div style="display:flex;gap:6px"><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:7px;border-radius:8px;font:600 11px/1 'Figtree',sans-serif;text-align:center">Analyse</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:7px;border-radius:8px;font:600 11px/1 'Figtree',sans-serif;text-align:center">Archiver</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">La barre latérale de dossiers du desktop devient un menu déroulant dans l'en-tête ; les étiquettes et le statut d'utilisation passent en filtres. Les trois métriques restent sur la vignette — c'est ce qui fait la valeur de cet écran.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== C6.1 · C6.2 ===== -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C6.1 classement &amp; C6.2 détail — 768</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C6.1 · Classement — 3 vignettes par groupe de format</div>
+        <div style="width:768px;height:760px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-palette" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-chart-bar" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Analyse créative</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">38 créatives diffusées · 30 derniers jours</div></div>
+                <div style="display:flex;border:1.5px solid #D6CFC2;border-radius:10px;overflow:hidden;flex:0 0 auto"><div style="background:#2C2925;padding:9px 12px;display:flex;align-items:center"><i class="ph ph-squares-four" style="font-size:16px;color:#FFFFFF"></i></div><div style="padding:9px 12px;display:flex;align-items:center;border-left:1px solid #D6CFC2"><i class="ph ph-rows" style="font-size:16px;color:#5C564E"></i></div></div>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="background:#2C2925;color:#FFFFFF;padding:8px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Toutes · 38</div>
+                <div style="border:1.5px solid #A9D3BF;background:#E3F0EA;color:#0E4E36;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Gagnantes · 6</div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Prometteuses · 9</div>
+                <div style="border:1.5px solid #D6CFC2;color:#6E6862;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Insuffisant · 11</div>
+                <div style="flex:1"></div>
+                <div style="border:1.5px solid #D6CFC2;border-radius:999px;padding:6.5px 12px;display:flex;gap:6px;align-items:center;flex:0 0 auto"><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">ROAS ↓</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+              </div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:14px">
+                <div style="flex:1;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37"><b style="font-weight:700">Seuil de jugement :</b> 50 000 FCFA et 10 conversions. 11 créatives sont en dessous.</div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Régler</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px"><i class="ph ph-caret-down" style="font-size:16px;color:#5C564E"></i><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Format 9:16</div><span style="white-space:nowrap;background:#F4F1EB;color:#423D37;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">14</span><div style="flex:1;height:1px;background:#E8E3D9"></div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">ROAS moyen 2,71</div></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+                <div style="flex:0 0 auto;background:#FFFFFF;border:1.5px solid #146B4A;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:140px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-play-circle" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">▲ Gagnante</div></div><div style="padding:11px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Témoignage cliente</div><div style="display:flex;gap:10px;font-variant-numeric:tabular-nums"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">3,42</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">248 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div></div></div>
+                <div style="background:#FFFFFF;border:1px solid #C4CAF5;border-radius:12px;overflow:hidden"><div style="height:140px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-play-circle" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#EDEFFC;color:#2A3AA3;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">◐ Prometteuse</div></div><div style="padding:11px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Déballage produit</div><div style="display:flex;gap:10px;font-variant-numeric:tabular-nums"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">2,88</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">84 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div></div></div>
+                <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden;opacity:.86"><div style="height:140px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-play-circle" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#F4F1EB;border:1px solid #D6CFC2;color:#423D37;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">Insuffisant</div></div><div style="padding:11px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Reels test rentrée</div><div style="font:400 11px/1.5 'Figtree',sans-serif;color:#5C564E">18 200 sur 50 000 FCFA</div><div style="height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:36%;height:100%;background:#A9A196;border-radius:999px"></div></div></div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px"><i class="ph ph-caret-down" style="font-size:16px;color:#5C564E"></i><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Format 1:1</div><span style="white-space:nowrap;background:#F4F1EB;color:#423D37;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">16</span><div style="flex:1;height:1px;background:#E8E3D9"></div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">ROAS moyen 2,94</div></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+                <div style="flex:0 0 auto;background:#FFFFFF;border:1.5px solid #146B4A;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:140px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">▲ Gagnante</div></div><div style="padding:11px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Tabaski Carrousel</div><div style="display:flex;gap:10px;font-variant-numeric:tabular-nums"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">4,12</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">313 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div></div></div>
+                <div style="flex:0 0 auto;background:#FFFFFF;border:1.5px solid #146B4A;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:140px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">▲ Gagnante</div><div style="position:absolute;bottom:8px;left:8px;background:#EDEFFC;color:#2A3AA3;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">Enterré</div></div><div style="padding:11px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Preuve sociale</div><div style="display:flex;gap:10px;font-variant-numeric:tabular-nums"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">5,04</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#8E2317">54 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div></div></div>
+                <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E9CF9B;border-radius:12px;overflow:hidden"><div style="height:140px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;background:#8F5F08;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">◆ À surveiller</div></div><div style="padding:11px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Livraison gratuite</div><div style="display:flex;gap:10px;font-variant-numeric:tabular-nums"><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#7A5208">1,72</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">118 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C6.2 · Détail — la courbe de rétention garde sa pleine largeur</div>
+        <div style="width:768px;height:776px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-palette" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-chart-bar" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-arrow-left" style="font-size:16px;color:#423D37"></i></div>
+              <div style="flex:1;min-width:0"><div style="font:700 19px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Témoignage cliente — 22 s</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">9:16 · lancée le 9 juillet · en diffusion</div></div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:10px 13px;border-radius:10px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Pause</div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:11px 15px;border-radius:10px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Décliner</div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:12px;background:#F4F1EB;overflow:hidden">
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;font-variant-numeric:tabular-nums">
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Dépense</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#1B1916">248 100</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">ROAS</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#0E4E36">3,42</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">CPA</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#0E4E36">6 240</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Fréquence</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#7A5208">4,20</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Impressions</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#1B1916">412 800</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Clics</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#1B1916">5 862</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">CTR</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#1B1916">1,42 %</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Conversions</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#1B1916">40</div></div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1.5px solid #D6CFC2;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+                <div style="display:flex;align-items:flex-start;gap:16px">
+                  <div style="flex:1"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Courbe de rétention</div><div style="font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E;margin-top:3px">À quelle seconde ils partent · 412 800 impressions</div></div>
+                  <div style="display:flex;gap:16px;font-variant-numeric:tabular-nums;flex:0 0 auto"><div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Moyen</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#1B1916">9,2 s</div></div><div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Complétion</div><div style="font:700 19px/1.1 'Space Grotesk',monospace;color:#1B1916">18 %</div></div></div>
+                </div>
+                <svg width="608" height="212" viewBox="0 0 608 212" style="display:block">
+                  <line x1="42" y1="16" x2="608" y2="16" stroke="#E8E3D9" stroke-width="1"></line>
+                  <line x1="42" y1="58" x2="608" y2="58" stroke="#F4F1EB" stroke-width="1"></line>
+                  <line x1="42" y1="100" x2="608" y2="100" stroke="#F4F1EB" stroke-width="1"></line>
+                  <line x1="42" y1="142" x2="608" y2="142" stroke="#E8E3D9" stroke-width="1"></line>
+                  <text x="0" y="20" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">100 %</text>
+                  <text x="0" y="62" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">67 %</text>
+                  <text x="0" y="104" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">33 %</text>
+                  <text x="0" y="146" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">0 %</text>
+                  <rect x="42" y="16" width="77" height="126" fill="#FBE9E6" opacity=".55"></rect>
+                  <path d="M42,16 L68,29 L94,47 L119,68 L145,77 L171,83 L196,87 L222,91 L248,95 L273,98 L299,101 L325,104 L350,106 L376,109 L402,111 L427,113 L453,115 L479,117 L504,118 L530,120 L556,121 L581,122 L608,123 L608,142 L42,142 Z" fill="#E3F0EA"></path>
+                  <polyline points="42,16 68,29 94,47 119,68 145,77 171,83 196,87 222,91 248,95 273,98 299,101 325,104 350,106 376,109 402,111 427,113 453,115 479,117 504,118 530,120 556,121 581,122 608,123" fill="none" stroke="#146B4A" stroke-width="2.5" stroke-linejoin="round"></polyline>
+                  <line x1="119" y1="16" x2="119" y2="142" stroke="#C0311F" stroke-width="2" stroke-dasharray="5 4"></line>
+                  <circle cx="119" cy="68" r="5" fill="#C0311F" stroke="#FFFFFF" stroke-width="2"></circle>
+                  <text x="129" y="40" style="font:700 12px 'Figtree',sans-serif" fill="#8E2317">Décrochage à 3 s</text>
+                  <text x="129" y="56" style="font:500 11px 'Space Grotesk',monospace" fill="#8E2317">59 % restants — 41 % perdus</text>
+                  <text x="42" y="166" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">0 s</text>
+                  <text x="112" y="166" style="font:500 10px 'Space Grotesk',monospace" fill="#8E2317">3 s</text>
+                  <text x="290" y="166" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">10 s</text>
+                  <text x="576" y="166" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">22 s</text>
+                  <text x="46" y="190" style="font:500 10px 'Space Grotesk',monospace" fill="#8E2317">zone d'accroche — 41 % de l'audience se joue ici</text>
+                </svg>
+                <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;border-top:1px solid #E8E3D9;padding-top:14px;font-variant-numeric:tabular-nums">
+                  <div style="background:#FBF9F6;border-radius:9px;padding:10px 12px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">3 s</div><div style="font:700 18px/1.1 'Space Grotesk',monospace;color:#1B1916">59 %</div></div>
+                  <div style="background:#FBF9F6;border-radius:9px;padding:10px 12px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">25 %</div><div style="font:700 18px/1.1 'Space Grotesk',monospace;color:#1B1916">48 %</div></div>
+                  <div style="background:#FBF9F6;border-radius:9px;padding:10px 12px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">50 %</div><div style="font:700 18px/1.1 'Space Grotesk',monospace;color:#1B1916">34 %</div></div>
+                  <div style="background:#FBF9F6;border-radius:9px;padding:10px 12px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">75 %</div><div style="font:700 18px/1.1 'Space Grotesk',monospace;color:#1B1916">24 %</div></div>
+                  <div style="background:#FBF9F6;border-radius:9px;padding:10px 12px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">100 %</div><div style="font:700 18px/1.1 'Space Grotesk',monospace;color:#1B1916">18 %</div></div>
+                </div>
+                <div style="background:#EDEFFC;border-left:3px solid #3B4FD1;border-radius:0 10px 10px 0;padding:13px 15px;display:flex;gap:11px;align-items:flex-start"><i class="ph ph-sparkle" style="font-size:16px;color:#3B4FD1;margin-top:1px"></i><div style="flex:1;font:400 13px/1.5 'Figtree',sans-serif;color:#2A3AA3"><b style="font-weight:700">Décrochage à 3 s</b>, au passage du visage au produit. Les vidéos gardant le visage jusqu'à 5 s retiennent 12 points de plus. <b style="font-weight:700">Base : 6 vidéos</b> — à confirmer.</div><div style="background:#3B4FD1;color:#FFFFFF;padding:10px 13px;border-radius:9px;font:700 12px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Décliner</div></div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;gap:20px;align-items:center">
+                <div style="flex:0 0 auto;font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Position</div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:5px"><div style="display:flex;justify-content:space-between"><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">ROAS 3,42</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">moy. 2,84</span></div><div style="position:relative;height:7px;background:#F4F1EB;border-radius:999px"><div style="position:absolute;left:0;width:78%;height:100%;background:#146B4A;border-radius:999px"></div><div style="position:absolute;left:62%;top:-3px;bottom:-3px;width:2px;background:#2C2925"></div></div></div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:5px"><div style="display:flex;justify-content:space-between"><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">CPA 6 240</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">moy. 9 568</span></div><div style="position:relative;height:7px;background:#F4F1EB;border-radius:999px"><div style="position:absolute;left:0;width:54%;height:100%;background:#146B4A;border-radius:999px"></div><div style="position:absolute;left:83%;top:-3px;bottom:-3px;width:2px;background:#2C2925"></div></div></div>
+                <div style="flex:0 0 auto;font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E">Rang 2 / 14</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Les 12 métriques passent en 4 × 2 et la comparaison au compte devient une ligne horizontale à deux jauges. La courbe de rétention est le seul bloc qui garde sa surface : c'est le graphique qui porte la décision.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== C6.3 · C6.4 · C6.5 · C6.6 ===== -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C6.3 éléments · C6.4 fatigue · C6.5 gagnants enterrés · C6.6 itérations — 768</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C6.3 · Analyse par éléments — le tableau garde sa colonne « Base »</div>
+        <div style="width:768px;height:872px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-palette" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-chart-bar" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Analyse par éléments</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">38 créatives étiquetées · 90 derniers jours</div></div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:10px 13px;border-radius:10px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Métrique : ROAS</div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:12px;background:#F4F1EB;overflow:hidden">
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px"><i class="ph ph-warning" style="font-size:16px;color:#8F5F08"></i><div style="flex:1;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37"><b style="font-weight:700">Sous 8 créatives par groupe, aucune conclusion n'est rendue.</b> La ligne reste grise avec la mention « volume insuffisant ».</div></div>
+
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 132px 70px 96px;gap:10px;padding:10px 16px;background:#FBF9F6;border-bottom:1px solid #E8E3D9;font:700 10px/1.3 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5C564E"><div>Élément</div><div style="text-align:right">Avec</div><div>Écart</div><div style="text-align:right">Sans</div><div style="text-align:right">Base</div></div>
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 132px 70px 96px;gap:10px;padding:12px 16px;border-bottom:1px solid #F4F1EB;align-items:center;font-variant-numeric:tabular-nums;border-left:3px solid #146B4A"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Présence humaine</div><div style="text-align:right;font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">3,48</div><div><div style="height:7px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:72%;height:100%;background:#146B4A;border-radius:999px"></div></div><div style="font:700 10px/1.4 'Space Grotesk',monospace;color:#0E4E36;margin-top:3px">+58 %</div></div><div style="text-align:right;font:500 15px/1.1 'Space Grotesk',monospace;color:#5C564E">2,20</div><div style="text-align:right"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#1B1916">21 vs 17</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#0E4E36">solide</div></div></div>
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 132px 70px 96px;gap:10px;padding:12px 16px;border-bottom:1px solid #F4F1EB;align-items:center;font-variant-numeric:tabular-nums;border-left:3px solid #146B4A;background:#FBF9F6"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Texte minimal</div><div style="text-align:right;font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">3,26</div><div><div style="height:7px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:64%;height:100%;background:#146B4A;border-radius:999px"></div></div><div style="font:700 10px/1.4 'Space Grotesk',monospace;color:#0E4E36;margin-top:3px">+41 %</div></div><div style="text-align:right;font:500 15px/1.1 'Space Grotesk',monospace;color:#5C564E">2,31</div><div style="text-align:right"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#1B1916">24 vs 14</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#0E4E36">solide</div></div></div>
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 132px 70px 96px;gap:10px;padding:12px 16px;border-bottom:1px solid #F4F1EB;align-items:center;font-variant-numeric:tabular-nums;border-left:3px solid #146B4A"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Sous-titres</div><div style="text-align:right;font:700 15px/1.1 'Space Grotesk',monospace;color:#0E4E36">3,04</div><div><div style="height:7px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:56%;height:100%;background:#146B4A;border-radius:999px"></div></div><div style="font:700 10px/1.4 'Space Grotesk',monospace;color:#0E4E36;margin-top:3px">+34 %</div></div><div style="text-align:right;font:500 15px/1.1 'Space Grotesk',monospace;color:#5C564E">2,27</div><div style="text-align:right"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#1B1916">9 vs 5</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#7A5208">étroite</div></div></div>
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 132px 70px 96px;gap:10px;padding:12px 16px;border-bottom:1px solid #F4F1EB;align-items:center;font-variant-numeric:tabular-nums;background:#FBF9F6"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Scène extérieure</div><div style="text-align:right;font:700 15px/1.1 'Space Grotesk',monospace;color:#1B1916">2,91</div><div><div style="height:7px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:22%;height:100%;background:#A9A196;border-radius:999px"></div></div><div style="font:700 10px/1.4 'Space Grotesk',monospace;color:#5C564E;margin-top:3px">non significatif</div></div><div style="text-align:right;font:500 15px/1.1 'Space Grotesk',monospace;color:#5C564E">2,67</div><div style="text-align:right"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#1B1916">18 vs 20</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">écart faible</div></div></div>
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 132px 70px 96px;gap:10px;padding:12px 16px;border-bottom:1px solid #F4F1EB;align-items:center;font-variant-numeric:tabular-nums;border-left:3px solid #C0311F"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Texte &gt; 20 %</div><div style="text-align:right;font:700 15px/1.1 'Space Grotesk',monospace;color:#C0311F">1,64</div><div><div style="position:relative;height:7px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="position:absolute;right:0;width:48%;height:100%;background:#C0311F;border-radius:999px"></div></div><div style="font:700 10px/1.4 'Space Grotesk',monospace;color:#8E2317;margin-top:3px">−44 %</div></div><div style="text-align:right;font:500 15px/1.1 'Space Grotesk',monospace;color:#5C564E">2,93</div><div style="text-align:right"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#1B1916">11 vs 27</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#0E4E36">solide</div></div></div>
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 132px 70px 96px;gap:10px;padding:12px 16px;align-items:center;font-variant-numeric:tabular-nums;opacity:.62"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Coupe rapide</div><div style="text-align:right;font:500 15px/1.1 'Space Grotesk',monospace;color:#6E6862">—</div><div style="display:flex;align-items:center;gap:7px"><i class="ph ph-prohibit" style="font-size:13px;color:#8E2317"></i><span style="font:500 10px/1.4 'Space Grotesk',monospace;color:#8E2317">Volume insuffisant</span></div><div style="text-align:right;font:500 15px/1.1 'Space Grotesk',monospace;color:#6E6862">—</div><div style="text-align:right"><div style="font:700 12px/1.2 'Space Grotesk',monospace;color:#5C564E">4 vs 10</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#8E2317">sous seuil</div></div></div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div style="border:1.5px solid #146B4A;background:#E3F0EA;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span style="white-space:nowrap;background:#FFFFFF;color:#0E4E36;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">Présence humaine</span><span style="font:700 12px/1 'Figtree',sans-serif;color:#0E4E36">+</span><span style="white-space:nowrap;background:#FFFFFF;color:#0E4E36;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">Texte minimal</span></div>
+                  <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#0E4E36">4,06</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#2F4A3F">contre 2,84 au compte</div></div>
+                  <div style="border-top:1px solid #A9D3BF;padding-top:8px;font:700 11px/1.4 'Space Grotesk',monospace;color:#0E4E36">Base : 13 créatives</div>
+                </div>
+                <div style="border:1px solid #E9CF9B;background:#F8EDD8;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span style="white-space:nowrap;background:#FFFFFF;color:#7A5208;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">Vidéo &gt; 20 s</span><span style="font:700 12px/1 'Figtree',sans-serif;color:#7A5208">+</span><span style="white-space:nowrap;background:#FFFFFF;color:#7A5208;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">Sans sous-titres</span></div>
+                  <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#7A5208">1,58</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#5C4A25">la moins performante</div></div>
+                  <div style="border-top:1px solid #E9CF9B;padding-top:8px;font:700 11px/1.4 'Space Grotesk',monospace;color:#7A5208">Base : 8 créatives · au seuil</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#EDEFFC;border:1px solid #C4CAF5;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:11px">
+                <div style="display:flex;align-items:center;gap:8px"><i class="ph ph-sparkle" style="font-size:16px;color:#3B4FD1"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#2A3AA3">Ce que l'agent en déduit</div></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div style="background:#FFFFFF;border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:7px"><div style="font:700 14px/1.35 'Figtree',sans-serif;color:#1B1916">Montrez une personne, écrivez peu</div><div style="font:400 12px/1.5 'Figtree',sans-serif;color:#423D37">4,06 de ROAS contre 2,84 en moyenne.</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#0E4E36">Base : 13 · fiable</div></div>
+                  <div style="background:#FFFFFF;border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:7px"><div style="font:700 14px/1.35 'Figtree',sans-serif;color:#1B1916">Arrêtez le texte plein cadre</div><div style="font:400 12px/1.5 'Figtree',sans-serif;color:#423D37">−44 % de ROAS, CPM en hausse de 38 %.</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#0E4E36">Base : 11 vs 27 · fiable</div></div>
+                </div>
+                <div style="background:#3B4FD1;color:#FFFFFF;padding:13px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;text-align:center">Générer selon ces conclusions</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C6.4 · Fatigue — réglages en tiroir, cartes pleine largeur</div>
+        <div style="width:768px;height:838px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-palette" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-chart-bar" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Détecteur de fatigue</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">4 créatives en déclin sur 38</div></div>
+              <div style="display:flex;gap:6px;flex:0 0 auto"><span style="white-space:nowrap;background:#C0311F;color:#FFFFFF;padding:5px 10px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">1 épuisée</span><span style="white-space:nowrap;background:#8F5F08;color:#FFFFFF;padding:5px 10px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">2 confirmées</span></div>
+              <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-sliders-horizontal" style="font-size:16px;color:#423D37"></i></div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:12px;background:#F4F1EB;overflow:hidden">
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1.5px solid #C0311F;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+                <div style="padding:12px 18px;background:#FBE9E6;border-bottom:1px solid #F2C3BC;display:flex;align-items:center;gap:11px"><i class="ph ph-warning" style="font-size:16px;color:#C0311F"></i><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#8E2317">Épuisée — arrêt recommandé</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6B3129">4 signaux franchis · 14 j</div></div>
+                <div style="padding:16px 18px;display:flex;gap:16px;align-items:flex-start">
+                  <div style="width:88px;height:88px;background:#F4F1EB;border:1px solid #E8E3D9;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i></div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:11px">
+                    <div><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Offre livraison gratuite</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">1:1 · 26 jours · 118 k FCFA</div></div>
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+                      <div style="background:#FBE9E6;border-radius:9px;padding:9px 11px;font-variant-numeric:tabular-nums"><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#6B3129">Fréquence</div><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#8E2317">5,2</div></div>
+                      <div style="background:#FBE9E6;border-radius:9px;padding:9px 11px;font-variant-numeric:tabular-nums"><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#6B3129">CTR 14 j</div><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#8E2317">−41 %</div></div>
+                      <div style="background:#FBE9E6;border-radius:9px;padding:9px 11px;font-variant-numeric:tabular-nums"><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#6B3129">CPA</div><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#8E2317">+68 %</div></div>
+                      <div style="background:#FBE9E6;border-radius:9px;padding:9px 11px;font-variant-numeric:tabular-nums"><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#6B3129">Conversion</div><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#8E2317">−36 %</div></div>
+                    </div>
+                    <svg width="516" height="104" viewBox="0 0 516 104" style="display:block">
+                      <line x1="36" y1="10" x2="516" y2="10" stroke="#E8E3D9" stroke-width="1"></line>
+                      <line x1="36" y1="76" x2="516" y2="76" stroke="#E8E3D9" stroke-width="1"></line>
+                      <text x="0" y="14" style="font:500 9px 'Space Grotesk',monospace" fill="#6E6862">2,0 %</text>
+                      <text x="0" y="80" style="font:500 9px 'Space Grotesk',monospace" fill="#6E6862">0,4 %</text>
+                      <rect x="248" y="10" width="268" height="66" fill="#FBE9E6" opacity=".6"></rect>
+                      <polyline points="36,30 72,28 108,31 144,30 180,33 216,34 248,37 284,44 320,51 356,57 392,62 428,66 464,69 516,72" fill="none" stroke="#C0311F" stroke-width="2.5" stroke-linejoin="round"></polyline>
+                      <line x1="248" y1="10" x2="248" y2="76" stroke="#2C2925" stroke-width="2" stroke-dasharray="5 4"></line>
+                      <circle cx="248" cy="37" r="4" fill="#2C2925" stroke="#FFFFFF" stroke-width="2"></circle>
+                      <text x="256" y="26" style="font:700 11px 'Figtree',sans-serif" fill="#1B1916">Bascule — 19 juillet</text>
+                      <text x="36" y="96" style="font:500 9px 'Space Grotesk',monospace" fill="#6E6862">8 juil.</text>
+                      <text x="482" y="96" style="font:500 9px 'Space Grotesk',monospace" fill="#6E6862">2 août</text>
+                    </svg>
+                    <div style="display:flex;gap:8px;align-items:center"><div style="background:#C0311F;color:#FFFFFF;padding:11px 15px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Mettre en pause</div><div style="border:1.5px solid #B44A26;color:#94391D;padding:9.5px 13px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Décliner</div><div style="flex:1"></div><div style="color:#5C564E;padding:11px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Ignorer</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E9CF9B;border-radius:12px;overflow:hidden">
+                <div style="padding:12px 18px;background:#F8EDD8;border-bottom:1px solid #E9CF9B;display:flex;align-items:center;gap:11px"><i class="ph ph-warning" style="font-size:16px;color:#8F5F08"></i><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#5C4A25">Fatigue confirmée · 2 signaux</div></div>
+                <div style="padding:15px 18px;display:flex;gap:14px;align-items:center">
+                  <div style="width:66px;height:66px;background:#F4F1EB;border:1px solid #E8E3D9;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-play-circle" style="font-size:20px;color:#A9A196"></i></div>
+                  <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Témoignage cliente — 22 s</div><div style="font:400 12px/1.5 'Figtree',sans-serif;color:#423D37;margin-top:3px">Encore rentable à 3,42 — <b style="font-weight:700">déclinez avant de mettre en pause</b>.</div></div>
+                  <div style="display:flex;gap:12px;flex:0 0 auto;font-variant-numeric:tabular-nums"><div><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#5C564E">Fréq.</div><div style="font:700 16px/1.1 'Space Grotesk',monospace;color:#7A5208">4,2</div></div><div><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#5C564E">CPA</div><div style="font:700 16px/1.1 'Space Grotesk',monospace;color:#7A5208">+31 %</div></div></div>
+                  <div style="background:#B44A26;color:#FFFFFF;padding:11px 15px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Décliner</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden;opacity:.92">
+                <div style="padding:12px 18px;background:#FBF9F6;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:11px"><i class="ph ph-eye" style="font-size:16px;color:#5C564E"></i><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#423D37">Début de fatigue · un seul signal</div></div>
+                <div style="padding:15px 18px;display:flex;gap:14px;align-items:center">
+                  <div style="width:66px;height:66px;background:#F4F1EB;border:1px solid #E8E3D9;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i></div>
+                  <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Bannière rentrée</div><div style="font:400 12px/1.5 'Figtree',sans-serif;color:#423D37;margin-top:3px">Fréquence au-dessus du seuil, mais <b style="font-weight:700">CTR et CPA stables</b>. Aucune action recommandée.</div></div>
+                  <div style="display:flex;gap:12px;flex:0 0 auto;font-variant-numeric:tabular-nums"><div><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#5C564E">Fréq.</div><div style="font:700 16px/1.1 'Space Grotesk',monospace;color:#7A5208">4,3</div></div><div><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#5C564E">CTR</div><div style="font:700 16px/1.1 'Space Grotesk',monospace;color:#0E4E36">−4 %</div></div></div>
+                  <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9.5px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Surveiller</div>
+                </div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:16px">
+                <div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E;flex:0 0 auto">Seuils</div>
+                <div style="flex:1;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Fréquence <b style="font-weight:700">4,0</b> · baisse de CTR <b style="font-weight:700">25 %</b> · observation <b style="font-weight:700">14 jours</b> · dépense minimale <b style="font-weight:700">50 000 FCFA</b>. Deux signaux requis pour confirmer.</div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:10px 14px;border-radius:10px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Modifier</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C6.5 · Gagnants enterrés — le contraste reste en gros chiffres</div>
+        <div style="width:768px;height:716px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-palette" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-chart-bar" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Gagnants enterrés</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">3 créatives sous-financées</div></div>
+              <div style="display:flex;align-items:center;gap:8px;border:1px solid #A9D3BF;background:#E3F0EA;border-radius:10px;padding:8px 12px;flex:0 0 auto"><i class="ph ph-trend-up" style="font-size:16px;color:#146B4A"></i><div><div style="font:700 12px/1.1 'Figtree',sans-serif;color:#0E4E36">+1,24 M FCFA</div><div style="font:500 9px/1.1 'Space Grotesk',monospace;color:#2F4A3F">de potentiel</div></div></div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:12px;background:#F4F1EB;overflow:hidden">
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:13px 15px;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37"><b style="font-weight:700">Critères :</b> ROAS supérieur de 40 % à la moyenne de l'ensemble, dépense inférieure à 25 % de la dominante, au moins 10 conversions.</div>
+
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1.5px solid #146B4A;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+                <div style="padding:12px 18px;background:#E3F0EA;border-bottom:1px solid #A9D3BF;display:flex;align-items:center;gap:11px"><i class="ph ph-trend-up" style="font-size:16px;color:#146B4A"></i><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#0E4E36">Concurrence interne dans l'ensemble</div></div>
+                <div style="padding:16px 18px;display:flex;flex-direction:column;gap:13px">
+                  <div style="display:flex;gap:14px;align-items:center">
+                    <div style="width:76px;height:76px;background:#F4F1EB;border:1px solid #E8E3D9;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i></div>
+                    <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Preuve sociale 2 000</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Acquisition — Large 25-45 · lancée le 21 juillet</div></div>
+                    <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#5C564E">ROAS</div><div style="font:700 28px/1 'Space Grotesk',monospace;color:#0E4E36">5,04</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#2F4A3F">+77 %</div></div>
+                    <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums;border-left:1px solid #E8E3D9;padding-left:14px"><div style="font:500 9px/1.4 'Space Grotesk',monospace;color:#5C564E">Dépense</div><div style="font:700 28px/1 'Space Grotesk',monospace;color:#8E2317">54 k</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6B3129">11 % du budget</div></div>
+                  </div>
+                  <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E;margin-bottom:6px">Répartition du budget dans l'ensemble</div><div style="display:flex;height:24px;border-radius:8px;overflow:hidden;gap:2px"><div style="width:62%;background:#A9A196;display:flex;align-items:center;justify-content:center;font:700 10px/1 'Figtree',sans-serif;color:#FFFFFF">Angle prix · 62 %</div><div style="width:27%;background:#D6CFC2;display:flex;align-items:center;justify-content:center;font:700 10px/1 'Figtree',sans-serif;color:#423D37">Livraison · 27 %</div><div style="width:11%;background:#146B4A;display:flex;align-items:center;justify-content:center;font:700 10px/1 'Figtree',sans-serif;color:#FFFFFF">11 %</div></div></div>
+                  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:12px">
+                    <div style="background:#F8EDD8;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:12px 14px;font:400 13px/1.5 'Figtree',sans-serif;color:#5C4A25"><b style="font-weight:700">Cause :</b> « Angle prix » est partie 11 jours plus tôt et a capté l'apprentissage. Meta la finance par inertie.</div>
+                    <div style="background:#E3F0EA;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:5px"><div style="font:500 9px/1.4 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#0E4E36">Potentiel / 30 j</div><div style="font:700 22px/1 'Space Grotesk',monospace;color:#0E4E36">+ 0,68 à 0,94 M</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2F4A3F">fiabilité 74 %</div></div>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:center"><div style="background:#B44A26;color:#FFFFFF;padding:12px 16px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Isoler dans un ensemble</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:10.5px 14px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Augmenter le budget</div></div>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div style="background:#FFFFFF;border:1px solid #A9D3BF;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:9px">
+                  <div style="display:flex;align-items:center;gap:9px"><i class="ph ph-trend-up" style="font-size:16px;color:#146B4A"></i><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#0E4E36">Lancement tardif</div></div>
+                  <div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Déballage produit — 12 s</div>
+                  <div style="display:flex;gap:12px;font-variant-numeric:tabular-nums"><div><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#0E4E36">4,38</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS · +28 %</div></div><div><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#8E2317">31 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense · 8 %</div></div></div>
+                  <div style="background:#E3F0EA;border-radius:9px;padding:9px 11px;font:400 11px/1.5 'Figtree',sans-serif;color:#2F4A3F"><b style="font-weight:700">+ 0,21 à 0,34 M</b> · fiabilité 61 %</div>
+                </div>
+                <div style="background:#FFFFFF;border:1px solid #A9D3BF;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:9px">
+                  <div style="display:flex;align-items:center;gap:9px"><i class="ph ph-trend-up" style="font-size:16px;color:#146B4A"></i><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#0E4E36">Ciblage trop étroit</div></div>
+                  <div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Trio cartables — 4:5</div>
+                  <div style="display:flex;gap:12px;font-variant-numeric:tabular-nums"><div><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#0E4E36">2,94</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS · +52 %</div></div><div><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#8E2317">62 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense · 19 %</div></div></div>
+                  <div style="background:#E3F0EA;border-radius:9px;padding:9px 11px;font:400 11px/1.5 'Figtree',sans-serif;color:#2F4A3F"><b style="font-weight:700">+ 0,18 à 0,29 M</b> · élargir l'audience</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C6.6 · Itérations — la source passe en bandeau, l'arbre en pleine largeur</div>
+        <div style="width:768px;height:1052px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-palette" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-chart-bar" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-arrow-left" style="font-size:16px;color:#423D37"></i></div>
+              <div style="flex:1;min-width:0"><div style="font:700 19px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Itérations — Tabaski Carrousel</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">créative source · ROAS 4,12</div></div>
+              <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #D6CFC2;border-radius:10px;padding:8px 12px;flex:0 0 auto"><div style="font:700 15px/1 'Space Grotesk',monospace;color:#1B1916">3 / 6</div><div style="width:48px;height:6px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:50%;height:100%;background:#B44A26;border-radius:999px"></div></div></div>
+            </div>
+            <div style="flex:1;padding:16px 24px;display:flex;flex-direction:column;gap:12px;background:#F4F1EB;overflow:hidden">
+              <div style="background:#FFFFFF;border:1.5px solid #146B4A;border-radius:12px;padding:14px;display:flex;align-items:center;gap:14px">
+                <div style="width:66px;height:66px;background:#E3F0EA;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:24px;color:#146B4A"></i></div>
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Source · Tabaski Carrousel 5</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px"><span style="white-space:nowrap;background:#E3F0EA;color:#0E4E36;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">Présence humaine</span><span style="white-space:nowrap;background:#E3F0EA;color:#0E4E36;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">Texte 8 %</span><span style="white-space:nowrap;background:#F4F1EB;color:#423D37;padding:4px 9px;border-radius:999px;font:600 11px/1 'Figtree',sans-serif">Extérieur</span></div></div>
+                <div style="display:flex;gap:14px;flex:0 0 auto;font-variant-numeric:tabular-nums"><div><div style="font:700 20px/1.1 'Space Grotesk',monospace;color:#0E4E36">4,12</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 20px/1.1 'Space Grotesk',monospace;color:#1B1916">313 k</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#6E6862">dépense</div></div></div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#EDEFFC;border:1px solid #C4CAF5;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:16px">
+                <i class="ph ph-flask" style="font-size:20px;color:#3B4FD1;flex:0 0 auto"></i>
+                <div style="flex:1;font:400 13px/1.5 'Figtree',sans-serif;color:#2A3AA3"><b style="font-weight:700">Une variable à la fois.</b> Ordre : accroche, angle, visuel, format. Une itération qui change deux choses ne dit rien.</div>
+                <div style="display:flex;gap:5px;flex:0 0 auto"><div style="width:22px;height:22px;border-radius:999px;background:#146B4A;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace">1</div><div style="width:22px;height:22px;border-radius:999px;background:#146B4A;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace">2</div><div style="width:22px;height:22px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace">3</div><div style="width:22px;height:22px;border-radius:999px;border:1.5px solid #A9A196;color:#6E6862;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace">4</div></div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+                <div><div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Itération 4 — changer le visuel</div><div style="font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E;margin-top:3px">Accroche, angle, format et texte identiques à la source.</div></div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+                  <div style="border:1.5px solid #B44A26;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)"><div style="height:110px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:18px;height:18px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div></div><div style="padding:11px;display:flex;flex-direction:column;gap:6px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Intérieur maison</div><div style="font:400 11px/1.5 'Figtree',sans-serif;color:#423D37">Teste si le contexte extérieur porte la performance.</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Change : décor · 6 crédits</div></div></div>
+                  <div style="border:1px solid #C4CAF5;background:#F7F8FE;border-radius:11px;overflow:hidden"><div style="height:110px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:18px;height:18px;border-radius:5px;border:1.5px solid #A9A196;background:#FFFFFF"></div></div><div style="padding:11px;display:flex;flex-direction:column;gap:6px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Deux enfants</div><div style="font:400 11px/1.5 'Figtree',sans-serif;color:#423D37">Pas encore assez de créatives à deux personnes.</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Change : nombre · 6 crédits</div></div></div>
+                  <div style="border:1px solid #C4CAF5;background:#F7F8FE;border-radius:11px;overflow:hidden"><div style="height:110px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:8px;left:8px;width:18px;height:18px;border-radius:5px;border:1.5px solid #A9A196;background:#FFFFFF"></div></div><div style="padding:11px;display:flex;flex-direction:column;gap:6px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Gros plan produit</div><div style="font:400 11px/1.5 'Figtree',sans-serif;color:#423D37">Contre-test : la présence humaine vaut-elle +58 % ?</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Change : humain · 6 crédits</div></div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;border-top:1px solid #E8E3D9;padding-top:12px"><div style="flex:1;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">1 sélectionnée · le brief de la source part prérempli au Studio.</div><div style="background:#B44A26;color:#FFFFFF;padding:12px 16px;border-radius:10px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Générer · 6 crédits</div></div>
+              </div>
+
+              <div style="flex:0 0 auto;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:11px">
+                <div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Arbre des itérations</div>
+                <div style="border:1.5px solid #146B4A;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+                  <div style="width:44px;height:44px;background:#F4F1EB;border:1px solid #E8E3D9;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:16px;color:#A9A196"></i></div>
+                  <div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:7px"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Itér. 1 — Accroche</div><span style="white-space:nowrap;background:#146B4A;color:#FFFFFF;padding:3px 8px;border-radius:999px;font:700 10px/1.3 'Figtree',sans-serif">Meilleure</span></div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">seule variable : l'accroche · 12 j</div></div>
+                  <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#0E4E36">5,04</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#0E4E36">+22 %</div></div>
+                  <div style="border:1.5px solid #146B4A;color:#0E4E36;padding:9px 12px;border-radius:9px;font:700 12px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Poursuivre</div>
+                </div>
+                <div style="border:1px solid #E8E3D9;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+                  <div style="width:44px;height:44px;background:#F4F1EB;border:1px solid #E8E3D9;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:16px;color:#A9A196"></i></div>
+                  <div style="flex:1;min-width:0"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Itér. 2 — Angle « Urgence »</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">seule variable : l'angle · 9 j</div></div>
+                  <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#7A5208">3,18</div><div style="font:500 9px/1.3 'Space Grotesk',monospace;color:#7A5208">−23 %</div></div>
+                  <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 12px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Abandonner</div>
+                </div>
+                <div style="border:1px solid #E8E3D9;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:12px;opacity:.88">
+                  <div style="width:44px;height:44px;background:#F4F1EB;border:1px solid #E8E3D9;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:16px;color:#A9A196"></i></div>
+                  <div style="flex:1;min-width:0"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Itér. 3 — Angle « Économie »</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#8E2317">4 j · 21 400 FCFA</div></div>
+                  <span style="white-space:nowrap;background:#F4F1EB;border:1px solid #D6CFC2;color:#423D37;padding:5px 10px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif;flex:0 0 auto">Données insuffisantes</span>
+                </div>
+                <div style="background:#EDEFFC;border-left:3px solid #3B4FD1;border-radius:0 10px 10px 0;padding:12px 14px;font:400 13px/1.5 'Figtree',sans-serif;color:#2A3AA3"><b style="font-weight:700">La branche « accroche » est la bonne piste.</b> +22 % en changeant l'accroche, −23 % en changeant l'angle : le message d'origine tenait déjà.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">L'arbre perd sa représentation graphique en branches — illisible sous 900 px — et devient une liste ordonnée où chaque ligne nomme sa variable et son écart contre la source. La méthode reste lisible, le dessin disparaît.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>

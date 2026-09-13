@@ -1,0 +1,24 @@
+import type { Metadata } from "next";
+import "@/styles/fonts.css";
+import "@/styles/tokens.css";
+import "@/styles/integration-tokens.css";
+import "@/styles/app.css";
+export const metadata: Metadata = {
+  title: {
+    default: "Lyads — vos publicités, vos décisions",
+    template: "%s · Lyads",
+  },
+  description: "Intégration locale de Lyads, espace de pilotage publicitaire.",
+  robots: { index: false, follow: false },
+};
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="fr" suppressHydrationWarning>
+      <body>{children}</body>
+    </html>
+  );
+}

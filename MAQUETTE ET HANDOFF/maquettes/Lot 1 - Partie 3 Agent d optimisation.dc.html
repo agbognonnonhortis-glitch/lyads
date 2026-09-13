@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+  body { margin:0; background:#F4F1EB; font-family:'Figtree',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#B44A26; text-decoration:underline; text-underline-offset:2px; }
+  a:hover { color:#94391D; }
+  i.ph { line-height:1; display:inline-block; }
+</style>
+</helmet>
+
+<section style="padding:56px 48px 96px;display:flex;flex-direction:column;gap:44px">
+
+  <div style="max-width:1040px;display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">Lyads · Lot 1 · Partie 3 — Agent d'optimisation · C2.1 à C2.5</div>
+    <h1 style="margin:0;font:800 40px/1.12 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Agent d'optimisation</h1>
+    <p style="margin:0;max-width:840px;font:400 16px/1.65 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Une recommandation sans justification chiffrée est une injonction. Dans tout ce module, le chiffre qui fonde le diagnostic est au même niveau typographique que l'action proposée — jamais relégué à un détail dépliable.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1180px">
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Deux niveaux, un seul écran</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Le débutant et le media buyer lisent la même carte. Ce qui change, c'est la profondeur : <b style="font-weight:700">l'essentiel</b> — action, trois chiffres, impact, fiabilité — est toujours visible ; <b style="font-weight:700">le raisonnement</b> — période analysée, volume, seuil de référence, alternatives écartées — est à un clic.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Aucun jargon dans le titre, le jargon exact dans le détail. On ne fait pas deux interfaces, on hiérarchise une seule.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Le groupage est la réponse au volume</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Vingt cartes par jour découragent. Quand l'agent propose la même action sur plusieurs objets, une <b style="font-weight:700">carte-mère</b> porte le diagnostic commun et liste les objets avec une case à cocher chacun : on applique les huit d'un coup ou on en décoche deux.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Effet mesuré sur ce compte : 7 cartes au lieu de 19.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">L'historique note l'agent</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Chaque action appliquée est confrontée à son estimation : <b style="font-weight:700">réel contre projeté</b>, sur une même barre. Un agent qui promet 1,72 et livre 1,58 est fiable ; un agent qui promet 1,72 et livre 0,91 doit le montrer.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Un taux de réalisation global est affiché en tête de l'historique. C'est le seul chiffre qui construit la confiance sur la durée.</div>
+    </div>
+  </div>
+
+  <!-- ================= C2.1 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C2.1 · Fil des recommandations — desktop 1440</div>
+
+    <div style="width:1440px;flex:0 0 auto;height:1560px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:14px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="width:240px;flex:0 0 240px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column">
+        <div style="padding:20px 16px 14px;display:flex;align-items:center;gap:9px"><div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div><div style="font:800 19px/1 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Lyads</div></div>
+        <div style="padding:0 12px 14px">
+          <div style="border:1px solid #E8E3D9;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;background:#FBF9F6">
+            <div style="position:relative;flex:0 0 auto"><div style="width:32px;height:32px;border-radius:9px;background:#E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;border-radius:999px;background:#146B4A;border:2px solid #FBF9F6"></div></div>
+            <div style="flex:1;min-width:0"><div style="font:700 13px/1.2 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kola Distribution</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">FCFA · Actif</div></div>
+            <i class="ph ph-caret-up-down" style="font-size:16px;color:#6E6862"></i>
+          </div>
+        </div>
+        <div style="flex:1;padding:0 12px;display:flex;flex-direction:column;gap:2px">
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px"><i class="ph ph-squares-four" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Tableau de bord</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px 11px 9px;border-left:3px solid #B44A26;border-radius:0 10px 10px 0;background:#FAE8DF"><i class="ph ph-sparkle" style="font-size:20px;color:#94391D"></i><div style="flex:1;font:700 14px/1.2 'Figtree',sans-serif;color:#94391D">Agent d'optimisation</div><div style="min-width:22px;height:20px;padding:0 6px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;font:700 11px/20px 'Space Grotesk',monospace;text-align:center">7</div></div>
+          <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862;padding:18px 12px 8px">Campagnes</div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px"><i class="ph ph-megaphone" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Gestionnaire de publicités</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px"><i class="ph ph-rocket-launch" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Constructeur de campagne</div></div>
+          <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862;padding:18px 12px 8px">Créatif</div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px"><i class="ph ph-palette" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Studio créatif</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px"><i class="ph ph-chart-bar" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Analyse créative</div></div>
+          <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862;padding:18px 12px 8px">Pilotage</div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px"><i class="ph ph-flow-arrow" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Règles automatisées</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px"><i class="ph ph-globe-hemisphere-west" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Analyse marché</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px"><i class="ph ph-file-text" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Rapports</div></div>
+        </div>
+        <div style="padding:14px 12px;border-top:1px solid #E8E3D9;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:12px;padding:9px 12px"><i class="ph ph-brain" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Business Brain</div><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i></div>
+          <div style="border:1px solid #F4CDBB;background:#FDF5F1;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:600 12px/1 'Figtree',sans-serif;color:#5C564E">Crédits</div><div style="font:700 13px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#94391D">38 / 200</div></div>
+            <div style="height:6px;background:#F4CDBB;border-radius:999px;overflow:hidden"><div style="width:19%;height:100%;background:#B44A26;border-radius:999px"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 4px"><div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div><div style="flex:1;min-width:0"><div style="font:700 13px/1.2 'Figtree',sans-serif;color:#1B1916">Aminata Diallo</div><div style="font:400 11px/1.3 'Figtree',sans-serif;color:#6E6862">Administratrice</div></div></div>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:16px 32px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:16px">
+            <div><div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Agent d'optimisation</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Dernier scan aujourd'hui 06:00 · prochain scan demain 06:00 · 90 j analysés</div></div>
+            <div style="flex:1"></div>
+            <div style="display:flex;align-items:center;gap:8px;border:1px solid #C4CAF5;background:#EDEFFC;border-radius:10px;padding:9px 13px"><i class="ph ph-sparkle" style="font-size:16px;color:#3B4FD1"></i><div><div style="font:700 13px/1.1 'Figtree',sans-serif;color:#2A3AA3">7 en attente</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#2A3AA3">2 critiques · 3 élevées · 2 moyennes</div></div></div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;display:flex;align-items:center;gap:8px"><i class="ph ph-arrows-clockwise" style="font-size:16px;color:#5C564E"></i>Lancer un scan · 2 crédits</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;display:flex;align-items:center;gap:8px"><i class="ph ph-clock-counter-clockwise" style="font-size:16px;color:#5C564E"></i>Historique</div>
+            <div style="width:44px;height:44px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center"><i class="ph ph-sliders-horizontal" style="font-size:16px;color:#423D37"></i></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <div style="display:flex;gap:6px">
+              <div style="background:#2C2925;color:#FFFFFF;padding:8px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Toutes · 7</div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Critiques · 2</div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Budget · 3</div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Créative · 2</div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Ciblage · 1</div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Enchère · 1</div>
+            </div>
+            <div style="width:1px;height:22px;background:#E8E3D9"></div>
+            <div style="display:flex;align-items:center gap:6px;border:1.5px solid #D6CFC2;border-radius:999px;padding:6.5px 13px;display:flex;gap:7px;align-items:center"><span style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">Toutes les campagnes</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+            <div style="flex:1"></div>
+            <div style="display:flex;align-items:center;gap:7px"><span style="font:500 12px/1 'Space Grotesk',monospace;color:#6E6862">Trier</span><div style="display:flex;gap:0;border:1.5px solid #D6CFC2;border-radius:999px;overflow:hidden"><div style="background:#2C2925;color:#FFFFFF;padding:7px 13px;font:600 13px/1 'Figtree',sans-serif">Priorité</div><div style="color:#423D37;padding:7px 13px;font:600 13px/1 'Figtree',sans-serif">Impact estimé</div></div></div>
+          </div>
+        </div>
+
+        <div style="flex:1;padding:20px 32px 32px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB">
+
+          <!-- carte 1 -->
+          <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px">
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+                  <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#C0311F;padding:5px 9px;border-radius:999px">▼ Critique</div>
+                  <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#FFFFFF;padding:5px 9px;border-radius:999px">Budget</div>
+                  <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#3B4FD1;padding:5px 9px;border-radius:999px">Lyads propose</div>
+                  <div style="font:500 11px/1 'Space Grotesk',monospace;color:#2A3AA3">détectée aujourd'hui 06:00</div>
+                </div>
+                <div style="font:700 22px/1.3 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916;text-wrap:pretty">Réallouer 180 000 FCFA de « Acquisition — Large 25-45 » vers « Retargeting — Visiteurs 30 j »</div>
+                <div style="display:flex;align-items:center;gap:8px;font:500 12px/1 'Space Grotesk',monospace;color:#5C564E"><i class="ph ph-megaphone" style="font-size:13px;color:#5C564E"></i>2 ensembles de publicités · campagne « Acquisition Q3 »</div>
+              </div>
+              <div style="flex:0 0 auto;text-align:right;display:flex;flex-direction:column;gap:3px">
+                <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Fiabilité</div>
+                <div style="font:700 20px/1.2 'Figtree',sans-serif;color:#0E4E36">Élevée</div>
+                <div style="font:700 13px/1 'Space Grotesk',monospace;color:#0E4E36">87 %</div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Ce qui fonde le diagnostic</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-variant-numeric:tabular-nums">
+                <div style="display:flex;flex-direction:column;gap:4px"><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">CPA constaté</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#C0311F">18 550</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#6E6862">FCFA</div></div><div style="font:400 12px/1.4 'Figtree',sans-serif;color:#5C564E">contre 12 000 de cible — dépassement de 55 %</div></div>
+                <div style="display:flex;flex-direction:column;gap:4px;border-left:1px solid #F4F1EB;padding-left:16px"><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">Sur la période</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#1B1916">12</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#6E6862">jours</div></div><div style="font:400 12px/1.4 'Figtree',sans-serif;color:#5C564E">482 300 FCFA dépensés · 26 achats</div></div>
+                <div style="display:flex;flex-direction:column;gap:4px;border-left:1px solid #F4F1EB;padding-left:16px"><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">Ensemble receveur</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font:700 24px/1 'Space Grotesk',monospace;color:#0E4E36">6 240</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#6E6862">FCFA</div></div><div style="font:400 12px/1.4 'Figtree',sans-serif;color:#5C564E">CPA stable sur 14 j · plafonné par le budget depuis 6 j</div></div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:14px;align-items:stretch">
+              <div style="flex:1;background:#FFFFFF;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+                <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Impact estimé sur 30 jours</div>
+                <div style="display:flex;align-items:baseline;gap:8px"><div style="font:700 26px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#0E4E36">+ 0,86 à 1,21 M</div><div style="font:600 13px/1 'Figtree',sans-serif;color:#6E6862">FCFA de revenu</div></div>
+                <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;height:8px;background:#F4F1EB;border-radius:999px;position:relative;overflow:hidden"><div style="position:absolute;left:34%;width:32%;top:0;bottom:0;background:#146B4A;border-radius:999px"></div></div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">fourchette à 80 %</div></div>
+                <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C564E">ROAS du compte projeté de 2,84 à 3,18. Aucune baisse de volume attendue : le budget total est inchangé.</div>
+              </div>
+              <div style="flex:0 0 300px;background:#FFFFFF;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:9px">
+                <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Ce qui change</div>
+                <div style="display:flex;flex-direction:column;gap:7px;font-variant-numeric:tabular-nums">
+                  <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0;font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Acquisition Large</div><div style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862;text-decoration:line-through">420 000</div><i class="ph ph-arrow-right" style="font-size:13px;color:#6E6862"></i><div style="font:700 13px/1 'Space Grotesk',monospace;color:#C0311F">240 000</div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0;font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Retargeting 30 j</div><div style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862;text-decoration:line-through">90 000</div><i class="ph ph-arrow-right" style="font-size:13px;color:#6E6862"></i><div style="font:700 13px/1 'Space Grotesk',monospace;color:#0E4E36">270 000</div></div>
+                </div>
+                <div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;border-top:1px solid #F4F1EB;padding-top:8px">Budget quotidien du compte inchangé : 510 000 FCFA</div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+              <div style="background:#3B4FD1;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Examiner et appliquer</div>
+              <div style="background:#FFFFFF;border:1.5px solid #C4CAF5;color:#2A3AA3;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Voir le raisonnement</div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Reporter</div>
+              <div style="color:#5C564E;padding:15px 12px;font:600 15px/1 'Figtree',sans-serif">Ignorer</div>
+              <div style="flex:1"></div>
+              <div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#5C564E;text-align:right">Aucune modification ne sera appliquée sans votre confirmation<br>Application : 0 crédit · annulable 7 jours</div>
+            </div>
+          </div>
+
+          <!-- carte 2 : groupée -->
+          <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px">
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+                  <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#8F5F08;padding:5px 9px;border-radius:999px">◆ Élevée</div>
+                  <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#FFFFFF;padding:5px 9px;border-radius:999px">Créative</div>
+                  <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#2C2925;padding:5px 9px;border-radius:999px">8 objets groupés</div>
+                </div>
+                <div style="font:700 22px/1.3 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916;text-wrap:pretty">Mettre en pause 8 publicités en fatigue avancée</div>
+                <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Même diagnostic sur les 8 objets : fréquence supérieure à 4,5 et CTR sortant en baisse de plus de 30 % sur les 9 derniers jours. Décochez celles que vous voulez conserver.</div>
+              </div>
+              <div style="flex:0 0 auto;text-align:right;display:flex;flex-direction:column;gap:3px">
+                <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Fiabilité</div>
+                <div style="font:700 20px/1.2 'Figtree',sans-serif;color:#7A5208">Moyenne</div>
+                <div style="font:700 13px/1 'Space Grotesk',monospace;color:#7A5208">71 %</div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF;border-radius:12px;overflow:hidden">
+              <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 100px 90px 90px 110px;gap:12px;align-items:center;padding:10px 16px;background:#FBF9F6;border-bottom:1px solid #E8E3D9;font:600 11px/1 'Figtree',sans-serif;color:#5C564E">
+                <div style="width:20px;height:20px;border-radius:5px;background:#3B4FD1;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div>
+                <div>Publicité</div><div style="text-align:right">Dépense 9 j</div><div style="text-align:right">Fréquence</div><div style="text-align:right">CTR</div><div>État</div>
+              </div>
+              <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 100px 90px 90px 110px;gap:12px;align-items:center;padding:11px 16px;border-bottom:1px solid #F4F1EB;font-variant-numeric:tabular-nums">
+                <div style="width:20px;height:20px;border-radius:5px;background:#3B4FD1;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div>
+                <div style="font:600 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Offre livraison gratuite — Statique</div>
+                <div style="text-align:right;font:500 13px/1 'Space Grotesk',monospace;color:#423D37">118 200</div>
+                <div style="text-align:right;font:700 13px/1 'Space Grotesk',monospace;color:#C0311F">5,2</div>
+                <div style="text-align:right;font:700 13px/1 'Space Grotesk',monospace;color:#C0311F">−41 %</div>
+                <div><span style="white-space:nowrap;display:inline-block;background:#8F5F08;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">◆ Fatigue</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 100px 90px 90px 110px;gap:12px;align-items:center;padding:11px 16px;border-bottom:1px solid #F4F1EB;font-variant-numeric:tabular-nums;background:#FBF9F6">
+                <div style="width:20px;height:20px;border-radius:5px;background:#3B4FD1;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div>
+                <div style="font:600 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Bannière rentrée — Statique 1:1</div>
+                <div style="text-align:right;font:500 13px/1 'Space Grotesk',monospace;color:#423D37">94 600</div>
+                <div style="text-align:right;font:700 13px/1 'Space Grotesk',monospace;color:#C0311F">4,9</div>
+                <div style="text-align:right;font:700 13px/1 'Space Grotesk',monospace;color:#C0311F">−38 %</div>
+                <div><span style="white-space:nowrap;display:inline-block;background:#8F5F08;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">◆ Fatigue</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 100px 90px 90px 110px;gap:12px;align-items:center;padding:11px 16px;border-bottom:1px solid #F4F1EB;font-variant-numeric:tabular-nums">
+                <div style="width:20px;height:20px;border-radius:5px;border:1.5px solid #A9A196;background:#FFFFFF"></div>
+                <div style="font:600 14px/1.3 'Figtree',sans-serif;color:#5C564E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Témoignage cliente — Vidéo 22 s</div>
+                <div style="text-align:right;font:500 13px/1 'Space Grotesk',monospace;color:#5C564E">248 100</div>
+                <div style="text-align:right;font:700 13px/1 'Space Grotesk',monospace;color:#7A5208">4,6</div>
+                <div style="text-align:right;font:700 13px/1 'Space Grotesk',monospace;color:#7A5208">−31 %</div>
+                <div><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">▲ ROAS 3,42</span></div>
+              </div>
+              <div style="padding:11px 16px;background:#FBF9F6;display:flex;align-items:center;justify-content:space-between">
+                <div style="font:600 13px/1 'Figtree',sans-serif;color:#2A3AA3">5 publicités de plus ▾</div>
+                <div style="font:500 11px/1 'Space Grotesk',monospace;color:#5C564E">7 sélectionnées sur 8 · 461 200 FCFA de dépense concernée</div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:12px 14px;display:flex;gap:10px;align-items:flex-start">
+              <i class="ph ph-warning" style="font-size:16px;color:#7A5208;margin-top:1px"></i>
+              <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#423D37">« Témoignage cliente » est décochée par défaut : sa fréquence est élevée mais son ROAS reste à 3,42. L'agent signale, il ne tranche pas à votre place.</div>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+              <div style="background:#3B4FD1;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Examiner les 7 sélectionnées</div>
+              <div style="background:#FFFFFF;border:1.5px solid #C4CAF5;color:#2A3AA3;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Voir le raisonnement</div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Reporter</div>
+              <div style="color:#5C564E;padding:15px 12px;font:600 15px/1 'Figtree',sans-serif">Ignorer le groupe</div>
+            </div>
+          </div>
+
+          <!-- carte 3 : compacte -->
+          <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:20px">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;gap:7px;align-items:center">
+                <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#8F5F08;padding:5px 9px;border-radius:999px">◆ Élevée</div>
+                <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#FFFFFF;padding:5px 9px;border-radius:999px">Ciblage</div>
+              </div>
+              <div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Exclure Audience Network de 2 ensembles</div>
+              <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#423D37">7 % de la dépense pour 1,2 % des achats sur 30 jours — ROAS 0,41 contre 2,84 sur le compte.</div>
+            </div>
+            <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Économie estimée / 30 j</div><div style="font:700 22px/1.2 'Space Grotesk',monospace;color:#0E4E36">+ 185 000</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E">FCFA · fiabilité 71 %</div></div>
+            <div style="flex:0 0 auto;display:flex;gap:8px"><div style="background:#3B4FD1;color:#FFFFFF;padding:14px 18px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif">Examiner</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:12.5px 14px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Reporter</div></div>
+          </div>
+
+          <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:20px">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;gap:7px;align-items:center">
+                <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#423D37;background:#E8E3D9;padding:5px 9px;border-radius:999px">Moyenne</div>
+                <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#FFFFFF;padding:5px 9px;border-radius:999px">Enchère</div>
+              </div>
+              <div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Passer « Retargeting 30 j » au coût par résultat cible</div>
+              <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#423D37">CPA stable à 6 240 FCFA sur 14 jours — l'ensemble supporte un plafond d'enchère sans perdre de volume.</div>
+            </div>
+            <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Volume estimé / 30 j</div><div style="font:700 22px/1.2 'Space Grotesk',monospace;color:#0E4E36">+ 18 achats</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E">fiabilité 64 %</div></div>
+            <div style="flex:0 0 auto;display:flex;gap:8px"><div style="background:#3B4FD1;color:#FFFFFF;padding:14px 18px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif">Examiner</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:12.5px 14px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Reporter</div></div>
+          </div>
+
+          <div style="text-align:center;padding:10px;font:600 14px/1 'Figtree',sans-serif;color:#2A3AA3">3 recommandations de plus ▾</div>
+        </div>
+      </div>
+    </div>
+    <div style="width:1180px;font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Densité variable assumée : les deux premières cartes sont développées (critique et groupée), les suivantes compactes sur une ligne. Le fil reste lisible à vingt entrées parce que seule la carte du haut occupe de la place.</div>
+  </div>
+
+  <!-- ============ C2.1 : 375 + états ============ -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C2.1 · mobile 375 &amp; les quatre états</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">375 — fil</div>
+        <div style="width:375px;flex:0 0 auto;height:1400px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:12px 16px 10px;display:flex;flex-direction:column;gap:10px;flex:0 0 auto">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="flex:1;min-width:0;display:flex;align-items:center;gap:8px;border:1px solid #E8E3D9;background:#FBF9F6;border-radius:999px;padding:6px 10px 6px 6px">
+                <div style="width:28px;height:28px;border-radius:999px;background:#E8E3D9;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace;color:#423D37;flex:0 0 auto">KD</div>
+                <div style="flex:1;min-width:0;font:700 13px/1.2 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kola Distribution</div>
+                <i class="ph ph-caret-up-down" style="font-size:16px;color:#6E6862"></i>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;border:1px solid #F4CDBB;background:#FDF5F1;border-radius:999px;padding:8px 11px;flex:0 0 auto"><i class="ph ph-lightning" style="font-size:13px;color:#B44A26"></i><span style="font:700 12px/1 'Space Grotesk',monospace;color:#94391D">38</span></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Agent</div>
+              <div style="display:flex;align-items:center;gap:8px"><div style="white-space:nowrap;font:700 11px/1 'Figtree',sans-serif;color:#FFFFFF;background:#3B4FD1;padding:6px 10px;border-radius:999px">7 en attente</div><div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center"><i class="ph ph-sliders-horizontal" style="font-size:16px;color:#423D37"></i></div></div>
+            </div>
+            <div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">Dernier scan 06:00 · prochain demain 06:00</div>
+            <div style="display:flex;gap:6px"><div style="background:#2C2925;color:#FFFFFF;padding:8px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Toutes · 7</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Critiques · 2</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Budget</div></div>
+          </div>
+
+          <div style="flex:1;padding:14px 20px;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+            <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#C0311F;padding:5px 9px;border-radius:999px">▼ Critique</div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#FFFFFF;padding:5px 9px;border-radius:999px">Budget</div></div>
+              <div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916;text-wrap:pretty">Réallouer 180 000 FCFA vers « Retargeting 30 j »</div>
+              <div style="background:#FFFFFF;border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:10px">
+                <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Ce qui fonde le diagnostic</div>
+                <div style="display:flex;flex-direction:column;gap:8px;font-variant-numeric:tabular-nums">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span style="font:400 13px/1.4 'Figtree',sans-serif;color:#5C564E">CPA constaté</span><span style="font:700 15px/1 'Space Grotesk',monospace;color:#C0311F">18 550 FCFA</span></div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span style="font:400 13px/1.4 'Figtree',sans-serif;color:#5C564E">Cible fixée</span><span style="font:700 15px/1 'Space Grotesk',monospace;color:#1B1916">12 000 FCFA</span></div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span style="font:400 13px/1.4 'Figtree',sans-serif;color:#5C564E">Sur</span><span style="font:700 15px/1 'Space Grotesk',monospace;color:#1B1916">12 j · 482 300 FCFA</span></div>
+                </div>
+              </div>
+              <div style="background:#FFFFFF;border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;justify-content:space-between"><div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Impact / 30 j</div><div style="font:700 12px/1 'Figtree',sans-serif;color:#0E4E36">Fiabilité 87 %</div></div>
+                <div style="font:700 22px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#0E4E36">+ 0,86 à 1,21 M</div>
+                <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">ROAS du compte projeté de 2,84 à 3,18</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="background:#3B4FD1;color:#FFFFFF;padding:15px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Examiner et appliquer</div>
+                <div style="display:flex;gap:8px"><div style="flex:1;background:#FFFFFF;border:1.5px solid #C4CAF5;color:#2A3AA3;padding:13.5px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;text-align:center">Reporter</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;text-align:center">Ignorer</div></div>
+              </div>
+              <div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#5C564E;text-align:center">Rien n'est appliqué sans votre confirmation</div>
+            </div>
+
+            <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#8F5F08;padding:5px 9px;border-radius:999px">◆ Élevée</div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#2C2925;padding:5px 9px;border-radius:999px">8 objets</div></div>
+              <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Mettre en pause 8 publicités en fatigue</div>
+              <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#423D37">Fréquence &gt; 4,5 et CTR en baisse de plus de 30 % sur 9 jours.</div>
+              <div style="background:#FFFFFF;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:5px;background:#3B4FD1;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="flex:1;min-width:0;font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Offre livraison gratuite</div><div style="font:700 12px/1 'Space Grotesk',monospace;color:#C0311F;flex:0 0 auto">5,2</div></div>
+                <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:5px;background:#3B4FD1;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><div style="flex:1;min-width:0;font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Bannière rentrée</div><div style="font:700 12px/1 'Space Grotesk',monospace;color:#C0311F;flex:0 0 auto">4,9</div></div>
+                <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:5px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="flex:1;min-width:0;font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Témoignage cliente</div><div style="font:700 12px/1 'Space Grotesk',monospace;color:#7A5208;flex:0 0 auto">4,6</div></div>
+                <div style="border-top:1px solid #F4F1EB;padding-top:9px;font:600 13px/1 'Figtree',sans-serif;color:#2A3AA3">5 de plus ▾ · 7 sur 8 sélectionnées</div>
+              </div>
+              <div style="background:#3B4FD1;color:#FFFFFF;padding:15px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Examiner les 7 sélectionnées</div>
+            </div>
+
+            <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:6px"><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#8F5F08;padding:5px 9px;border-radius:999px">◆ Élevée</div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#FFFFFF;padding:5px 9px;border-radius:999px">Ciblage</div></div>
+              <div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Exclure Audience Network de 2 ensembles</div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;background:#FFFFFF;border-radius:10px;padding:11px 13px"><span style="font:400 13px/1.4 'Figtree',sans-serif;color:#5C564E">Économie / 30 j</span><span style="font:700 17px/1 'Space Grotesk',monospace;color:#0E4E36">+ 185 000</span></div>
+              <div style="background:#3B4FD1;color:#FFFFFF;padding:15px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Examiner</div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border-top:1px solid #E8E3D9;box-shadow:0 -2px 8px rgba(45,35,25,.10);padding:8px 8px 12px;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;flex:0 0 auto">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 0 7px"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i><span style="font:600 10px/1.1 'Figtree',sans-serif;color:#5C564E">Bord</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 0 7px;border-radius:10px;background:#FAE8DF;position:relative"><div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;background:#B44A26;border-radius:0 0 3px 3px"></div><div style="position:relative"><i class="ph ph-sparkle" style="font-size:22px;color:#94391D"></i><div style="position:absolute;top:-4px;right:-9px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;font:700 10px/18px 'Space Grotesk',monospace;text-align:center;border:2px solid #FAE8DF">7</div></div><span style="font:700 10px/1.1 'Figtree',sans-serif;color:#94391D">Agent</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 0 7px"><i class="ph ph-megaphone" style="font-size:22px;color:#5C564E"></i><span style="font:600 10px/1.1 'Figtree',sans-serif;color:#5C564E">Publicités</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 0 7px"><i class="ph ph-file-text" style="font-size:22px;color:#5C564E"></i><span style="font:600 10px/1.1 'Figtree',sans-serif;color:#5C564E">Rapports</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 0 7px"><i class="ph ph-dots-three-circle" style="font-size:22px;color:#5C564E"></i><span style="font:600 10px/1.1 'Figtree',sans-serif;color:#5C564E">Plus</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">État 1 — Aucune recommandation</div>
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:13px;align-items:flex-start">
+            <div style="width:48px;height:48px;border-radius:13px;background:#E3F0EA;display:flex;align-items:center;justify-content:center"><i class="ph ph-check-circle" style="font-size:24px;color:#146B4A"></i></div>
+            <div style="font:700 22px/1.28 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Rien à corriger ce matin</div>
+            <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37">Le scan de 06:00 a passé en revue 31 campagnes, 84 ensembles et 540 créatives. Tous vos CPA sont sous leur cible et aucune créative n'est en fatigue.</div>
+            <div style="background:#FBF9F6;border:1px solid #E8E3D9;border-radius:10px;padding:12px 14px;width:100%;display:flex;gap:20px;font-variant-numeric:tabular-nums">
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">ROAS du compte</div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#0E4E36">2,84</div></div>
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">CPA moyen</div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#1B1916">11 340</div></div>
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Prochain scan</div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#1B1916">demain 06:00</div></div>
+            </div>
+            <div style="display:flex;gap:10px"><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:12.5px 16px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Voir l'historique</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:12.5px 16px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Régler la sensibilité</div></div>
+            <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E;border-top:1px solid #E8E3D9;padding-top:12px">Un fil vide est une bonne nouvelle : on l'énonce, avec le périmètre réellement analysé pour prouver que le scan a bien eu lieu.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">État 2 — Scan en cours</div>
+          <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:13px">
+            <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-circle-notch" style="font-size:22px;color:#3B4FD1"></i><div style="flex:1"><div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Analyse en cours</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#2A3AA3">Étape 3 sur 5 · ≈ 40 s restantes</div></div></div>
+            <div style="height:6px;background:#C4CAF5;border-radius:999px;overflow:hidden"><div style="width:58%;height:100%;background:#3B4FD1;border-radius:999px"></div></div>
+            <div style="background:#FFFFFF;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:9px;font:500 12px/1 'Space Grotesk',monospace">
+              <div style="display:flex;align-items:center;gap:10px;color:#0E4E36"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i>Comptes et campagnes lus · 31</div>
+              <div style="display:flex;align-items:center;gap:10px;color:#0E4E36"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i>Ensembles agrégés · 84</div>
+              <div style="display:flex;align-items:center;gap:10px;color:#2A3AA3;font-weight:700"><i class="ph ph-circle-notch" style="font-size:16px;color:#3B4FD1"></i>Créatives analysées · 312 sur 540</div>
+              <div style="display:flex;align-items:center;gap:10px;color:#6E6862"><i class="ph ph-circle-dashed" style="font-size:16px;color:#A9A196"></i>Audiences et chevauchements</div>
+              <div style="display:flex;align-items:center;gap:10px;color:#6E6862"><i class="ph ph-circle-dashed" style="font-size:16px;color:#A9A196"></i>Synthèse et priorisation</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center"><div style="border:1.5px solid #C4CAF5;color:#2A3AA3;padding:12.5px 16px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Annuler le scan</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#3D4470;flex:1">Les 7 recommandations précédentes restent consultables pendant l'analyse.</div></div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">État 3 — Pas encore assez de données</div>
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:13px;align-items:flex-start">
+            <div style="width:48px;height:48px;border-radius:13px;background:#EDEFFC;display:flex;align-items:center;justify-content:center"><i class="ph ph-hourglass" style="font-size:24px;color:#3B4FD1"></i></div>
+            <div style="font:700 22px/1.28 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">L'agent a besoin d'un peu plus d'historique</div>
+            <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37">Ce compte diffuse depuis 4 jours et compte 11 achats. En dessous de 7 jours et 50 conversions, une recommandation reposerait sur du bruit statistique, pas sur une tendance.</div>
+            <div style="width:100%;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between"><span style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">Jours de diffusion</span><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">4 / 7</span></div><div style="height:8px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:57%;height:100%;background:#3B4FD1;border-radius:999px"></div></div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between"><span style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">Conversions</span><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">11 / 50</span></div><div style="height:8px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:22%;height:100%;background:#3B4FD1;border-radius:999px"></div></div></div>
+            </div>
+            <div style="background:#EDEFFC;border-radius:10px;padding:12px 14px;width:100%;font:400 14px/1.55 'Figtree',sans-serif;color:#2A3AA3">Premier scan estimé au <b style="font-weight:700">8 août</b>. En attendant, l'agent surveille les alertes bloquantes — budget épuisé, publicité rejetée — qui ne demandent aucune statistique.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">État 4 — Tout traité aujourd'hui</div>
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:13px;align-items:flex-start">
+            <div style="width:48px;height:48px;border-radius:13px;background:#E3F0EA;display:flex;align-items:center;justify-content:center"><i class="ph ph-check-circle" style="font-size:24px;color:#146B4A"></i></div>
+            <div style="font:700 22px/1.28 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Les 7 recommandations du jour sont traitées</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <div style="white-space:nowrap;background:#E3F0EA;color:#0E4E36;padding:7px 12px;border-radius:999px;font:700 13px/1 'Figtree',sans-serif">4 appliquées</div>
+              <div style="white-space:nowrap;background:#EDEFFC;color:#2A3AA3;padding:7px 12px;border-radius:999px;font:700 13px/1 'Figtree',sans-serif">2 reportées à demain</div>
+              <div style="white-space:nowrap;background:#F4F1EB;color:#423D37;padding:7px 12px;border-radius:999px;font:700 13px/1 'Figtree',sans-serif">1 ignorée</div>
+            </div>
+            <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37">Les effets des actions appliquées seront mesurables à partir du 5 août. Prochain scan demain à 06:00.</div>
+            <div style="display:flex;gap:10px"><div style="background:#B44A26;color:#FFFFFF;padding:14px 18px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Voir l'impact réel</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:12.5px 16px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Les 2 reportées</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= C2.2 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C2.2 · Détail — panneau latéral desktop &amp; plein écran mobile</div>
+    <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">Panneau latéral — 640 px</div>
+        <div style="width:640px;flex:0 0 auto;background:#FFFFFF;border:1px solid #D6CFC2;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);overflow:hidden;display:flex;flex-direction:column">
+          <div style="padding:16px 20px;border-bottom:1px solid #E8E3D9;display:flex;align-items:flex-start;gap:14px;background:#FBF9F6">
+            <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#C0311F;padding:5px 9px;border-radius:999px">▼ Critique</div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#EDEFFC;padding:5px 9px;border-radius:999px">Budget</div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#3B4FD1;padding:5px 9px;border-radius:999px">Lyads propose</div></div>
+              <div style="font:700 20px/1.3 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Réallouer 180 000 FCFA vers « Retargeting 30 j »</div>
+            </div>
+            <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto;background:#FFFFFF"><i class="ph ph-x" style="font-size:16px;color:#423D37"></i></div>
+          </div>
+
+          <div style="padding:20px;display:flex;flex-direction:column;gap:18px">
+
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">1 · Diagnostic</div>
+              <div style="font:400 16px/1.65 'Figtree',sans-serif;color:#1B1916;text-wrap:pretty">Deux tiers de votre budget partent vers un ensemble qui coûte 18 550 FCFA par achat, alors que vous visez 12 000. Dans le même temps, l'ensemble qui ramène vos anciens visiteurs achète à 6 240 FCFA mais il est bloqué par son budget depuis six jours : il pourrait absorber plus de dépense sans perdre en rentabilité.</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E8E3D9;padding-top:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">2 · Données justificatives</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">12 j · 482 300 FCFA · 26 achats</div></div>
+              <div style="background:#FBF9F6;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:center;gap:16px"><div style="display:flex;align-items:center;gap:7px"><span style="display:inline-block;width:16px;height:3px;border-radius:2px;background:#C0311F"></span><span style="font:600 12px/1 'Figtree',sans-serif;color:#423D37">CPA — Acquisition Large</span></div><div style="display:flex;align-items:center;gap:7px"><span style="display:inline-block;width:16px;height:0;border-top:2px dashed #146B4A"></span><span style="font:600 12px/1 'Figtree',sans-serif;color:#0E4E36">Cible 12 000</span></div></div>
+                <svg width="566" height="180" viewBox="0 0 566 180" style="display:block">
+                  <line x1="46" y1="20" x2="566" y2="20" stroke="#E8E3D9" stroke-width="1"></line>
+                  <line x1="46" y1="70" x2="566" y2="70" stroke="#F4F1EB" stroke-width="1"></line>
+                  <line x1="46" y1="120" x2="566" y2="120" stroke="#F4F1EB" stroke-width="1"></line>
+                  <line x1="46" y1="150" x2="566" y2="150" stroke="#E8E3D9" stroke-width="1"></line>
+                  <text x="0" y="24" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">20 000</text>
+                  <text x="0" y="74" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">13 000</text>
+                  <text x="0" y="124" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">6 000</text>
+                  <line x1="46" y1="63" x2="566" y2="63" stroke="#146B4A" stroke-width="2" stroke-dasharray="6 5"></line>
+                  <text x="510" y="57" style="font:700 10px 'Space Grotesk',monospace" fill="#0E4E36">cible</text>
+                  <polyline points="46,96 93,89 140,84 187,78 234,71 281,66 328,58 375,49 422,42 469,35 516,29 563,24" fill="none" stroke="#C0311F" stroke-width="2.5" stroke-linejoin="round"></polyline>
+                  <circle cx="563" cy="24" r="4" fill="#C0311F" stroke="#FFFFFF" stroke-width="2"></circle>
+                  <text x="46" y="170" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">22 juil.</text>
+                  <text x="290" y="170" text-anchor="middle" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">27 juil.</text>
+                  <text x="540" y="170" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">2 août</text>
+                </svg>
+                <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#423D37;border-top:1px solid #E8E3D9;padding-top:10px">Le CPA a franchi la cible le 26 juillet et n'est jamais redescendu depuis. La dérive est continue, pas accidentelle — c'est ce qui rend la fiabilité élevée.</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div style="border:1px solid #E8E3D9;border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:5px"><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">Acquisition — Large 25-45</div><div style="display:flex;gap:12px;font-variant-numeric:tabular-nums"><div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#C0311F">0,84</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#1B1916">18 550</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">CPA</div></div><div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#1B1916">26</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">achats</div></div></div></div>
+                <div style="border:1px solid #E8E3D9;border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:5px"><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">Retargeting — Visiteurs 30 j</div><div style="display:flex;gap:12px;font-variant-numeric:tabular-nums"><div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#0E4E36">3,42</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">ROAS</div></div><div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#1B1916">6 240</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">CPA</div></div><div><div style="font:700 17px/1.2 'Space Grotesk',monospace;color:#1B1916">40</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">achats</div></div></div></div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E8E3D9;padding-top:16px">
+              <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">3 · Ce qui va changer exactement</div>
+              <div style="border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);background:#FBF9F6;border-bottom:1px solid #E8E3D9">
+                  <div style="padding:9px 14px;font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Avant</div>
+                  <div style="background:#E8E3D9"></div>
+                  <div style="padding:9px 14px;font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#2A3AA3">Après</div>
+                </div>
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);border-bottom:1px solid #F4F1EB">
+                  <div style="padding:13px 14px;display:flex;flex-direction:column;gap:4px"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">Acquisition — Large 25-45</div><div style="display:flex;align-items:baseline;gap:5px;font-variant-numeric:tabular-nums"><span style="font:700 20px/1 'Space Grotesk',monospace;color:#5C564E">420 000</span><span style="font:600 11px/1 'Figtree',sans-serif;color:#6E6862">FCFA / jour</span></div></div>
+                  <div style="background:#F4F1EB"></div>
+                  <div style="padding:13px 14px;display:flex;flex-direction:column;gap:4px;background:#F7F8FE"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">Acquisition — Large 25-45</div><div style="display:flex;align-items:baseline;gap:5px;font-variant-numeric:tabular-nums"><span style="font:700 20px/1 'Space Grotesk',monospace;color:#C0311F">240 000</span><span style="font:600 11px/1 'Figtree',sans-serif;color:#6E6862">FCFA / jour</span><span style="font:700 11px/1 'Space Grotesk',monospace;color:#8E2317">−43 %</span></div></div>
+                </div>
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);border-bottom:1px solid #F4F1EB">
+                  <div style="padding:13px 14px;display:flex;flex-direction:column;gap:4px"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">Retargeting — Visiteurs 30 j</div><div style="display:flex;align-items:baseline;gap:5px;font-variant-numeric:tabular-nums"><span style="font:700 20px/1 'Space Grotesk',monospace;color:#5C564E">90 000</span><span style="font:600 11px/1 'Figtree',sans-serif;color:#6E6862">FCFA / jour</span></div></div>
+                  <div style="background:#F4F1EB"></div>
+                  <div style="padding:13px 14px;display:flex;flex-direction:column;gap:4px;background:#F7F8FE"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">Retargeting — Visiteurs 30 j</div><div style="display:flex;align-items:baseline;gap:5px;font-variant-numeric:tabular-nums"><span style="font:700 20px/1 'Space Grotesk',monospace;color:#0E4E36">270 000</span><span style="font:600 11px/1 'Figtree',sans-serif;color:#6E6862">FCFA / jour</span><span style="font:700 11px/1 'Space Grotesk',monospace;color:#0E4E36">+200 %</span></div></div>
+                </div>
+                <div style="padding:11px 14px;background:#FBF9F6;display:flex;align-items:center;gap:10px">
+                  <i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i>
+                  <div style="font:500 12px/1.5 'Space Grotesk',monospace;color:#423D37">Budget quotidien du compte inchangé : 510 000 FCFA · aucun ciblage, aucune créative, aucune enchère modifiés</div>
+                </div>
+              </div>
+              <div style="background:#F8EDD8;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:12px 14px;display:flex;gap:10px;align-items:flex-start">
+                <i class="ph ph-warning" style="font-size:16px;color:#7A5208;margin-top:1px"></i>
+                <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C4A25"><b style="font-weight:700">Conséquence :</b> une variation de budget supérieure à 20 % renvoie l'ensemble en phase d'apprentissage pendant 3 à 7 jours. Les performances des premiers jours ne seront pas représentatives.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E8E3D9;padding-top:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">4 · Impact estimé</div><div style="display:flex;align-items:center;gap:7px"><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">Fiabilité</span><span style="white-space:nowrap;background:#E3F0EA;color:#0E4E36;padding:4px 9px;border-radius:999px;font:700 12px/1.2 'Figtree',sans-serif">Élevée · 87 %</span></div></div>
+              <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:13px">
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;font-variant-numeric:tabular-nums">
+                  <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2A3AA3">Revenu / 30 j</div><div style="font:700 20px/1.2 'Space Grotesk',monospace;color:#0E4E36">+0,86 à 1,21 M</div></div>
+                  <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2A3AA3">ROAS du compte</div><div style="font:700 20px/1.2 'Space Grotesk',monospace;color:#1B1916">2,84 → 3,18</div></div>
+                  <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2A3AA3">Achats / 30 j</div><div style="font:700 20px/1.2 'Space Grotesk',monospace;color:#0E4E36">+21 à 29</div></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:7px">
+                  <div style="position:relative;height:34px">
+                    <div style="position:absolute;left:0;right:0;top:14px;height:8px;background:#FFFFFF;border-radius:999px"></div>
+                    <div style="position:absolute;left:34%;width:32%;top:14px;height:8px;background:#146B4A;border-radius:999px"></div>
+                    <div style="position:absolute;left:34%;top:0;font:500 10px/1 'Space Grotesk',monospace;color:#0E4E36;transform:translateX(-50%)">0,86 M</div>
+                    <div style="position:absolute;left:66%;top:0;font:500 10px/1 'Space Grotesk',monospace;color:#0E4E36;transform:translateX(-50%)">1,21 M</div>
+                  </div>
+                  <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#2A3AA3">Fourchette à 80 % de confiance, calculée sur le CPA observé de l'ensemble receveur au cours des 14 derniers jours. Une fourchette, jamais une promesse chiffrée unique.</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E8E3D9;padding-top:16px">
+              <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">5 · Alternatives envisagées</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="border:1.5px solid #C4CAF5;background:#F7F8FE;border-radius:12px;padding:14px;display:flex;align-items:center;gap:14px">
+                  <div style="width:20px;height:20px;border-radius:999px;border:5px solid #3B4FD1;background:#FFFFFF;flex:0 0 auto"></div>
+                  <div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Réallouer 180 000 FCFA <span style="font:600 11px/1 'Space Grotesk',monospace;color:#2A3AA3;background:#EDEFFC;padding:3px 7px;border-radius:999px;margin-left:4px">recommandé</span></div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#5C564E">Meilleur rapport gain / risque. Retour en apprentissage de l'ensemble receveur.</div></div>
+                  <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#0E4E36">+1,04 M</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">médiane</div></div>
+                </div>
+                <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;align-items:center;gap:14px">
+                  <div style="width:20px;height:20px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div>
+                  <div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Réallouer 90 000 FCFA seulement</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#5C564E">Moins agressif : reste sous le seuil des 20 %, donc <b style="font-weight:700">pas de retour en apprentissage</b>.</div></div>
+                  <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#0E4E36">+0,48 M</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">médiane</div></div>
+                </div>
+                <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;align-items:center;gap:14px">
+                  <div style="width:20px;height:20px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div>
+                  <div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Mettre « Acquisition Large » en pause</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#5C564E">Écarté : supprime 62 % du volume d'impressions et coupe l'alimentation du retargeting.</div></div>
+                  <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#8E2317">−0,31 M</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">médiane</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:16px 20px;border-top:1px solid #E8E3D9;background:#FBF9F6;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+            <div style="background:#3B4FD1;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Appliquer</div>
+            <div style="background:#FFFFFF;border:1.5px solid #C4CAF5;color:#2A3AA3;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Modifier avant d'appliquer</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 16px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Reporter</div>
+            <div style="color:#5C564E;padding:15px 12px;font:600 15px/1 'Figtree',sans-serif">Ignorer avec motif</div>
+            <div style="flex:1"></div>
+            <div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#5C564E;text-align:right">Application : 0 crédit<br>Annulable pendant 7 jours</div>
+          </div>
+        </div>
+        <div style="width:640px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Cinq sections numérotées, toujours dans le même ordre. Le débutant lit 1, 3 et 4 ; le media buyer saute directement à 2 et 5. La numérotation rend le saut possible sans onglets ni accordéon.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">375 — plein écran</div>
+        <div style="width:375px;flex:0 0 auto;height:1450px;background:#FFFFFF;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="padding:12px 20px;border-bottom:1px solid #E8E3D9;background:#FBF9F6;display:flex;align-items:center;gap:12px;flex:0 0 auto">
+            <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;background:#FFFFFF;flex:0 0 auto"><i class="ph ph-arrow-left" style="font-size:16px;color:#423D37"></i></div>
+            <div style="flex:1;min-width:0"><div style="font:700 15px/1.2 'Figtree',sans-serif;color:#1B1916">Recommandation</div><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">1 sur 7 · Budget</div></div>
+            <div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#C0311F;padding:6px 10px;border-radius:999px;flex:0 0 auto">▼ Critique</div>
+          </div>
+
+          <div style="flex:1;overflow:hidden;padding:16px 20px;display:flex;flex-direction:column;gap:16px">
+            <div style="font:700 21px/1.3 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916;text-wrap:pretty">Réallouer 180 000 FCFA vers « Retargeting 30 j »</div>
+
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">1 · Diagnostic</div>
+              <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#1B1916;text-wrap:pretty">Deux tiers de votre budget partent vers un ensemble qui coûte 18 550 FCFA par achat, alors que vous visez 12 000. L'ensemble de retargeting achète à 6 240 FCFA mais reste bloqué par son budget depuis six jours.</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:9px;border-top:1px solid #E8E3D9;padding-top:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">2 · Données</div><div style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">12 j · 26 achats</div></div>
+              <div style="background:#FBF9F6;border:1px solid #E8E3D9;border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:10px">
+                <svg width="303" height="130" viewBox="0 0 303 130" style="display:block">
+                  <line x1="0" y1="14" x2="303" y2="14" stroke="#E8E3D9" stroke-width="1"></line>
+                  <line x1="0" y1="105" x2="303" y2="105" stroke="#E8E3D9" stroke-width="1"></line>
+                  <line x1="0" y1="46" x2="303" y2="46" stroke="#146B4A" stroke-width="2" stroke-dasharray="6 5"></line>
+                  <text x="240" y="40" style="font:700 10px 'Space Grotesk',monospace" fill="#0E4E36">cible 12 000</text>
+                  <polyline points="0,72 27,68 55,64 82,59 110,53 137,49 165,42 192,35 220,30 247,25 275,20 300,17" fill="none" stroke="#C0311F" stroke-width="2.5" stroke-linejoin="round"></polyline>
+                  <circle cx="300" cy="17" r="4" fill="#C0311F" stroke="#FBF9F6" stroke-width="2"></circle>
+                  <text x="0" y="124" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">22 juil.</text>
+                  <text x="266" y="124" style="font:500 10px 'Space Grotesk',monospace" fill="#6E6862">2 août</text>
+                </svg>
+                <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37;border-top:1px solid #E8E3D9;padding-top:9px">CPA au-dessus de la cible depuis le 26 juillet, sans retour. Dérive continue, pas accidentelle.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:9px;border-top:1px solid #E8E3D9;padding-top:14px">
+              <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">3 · Ce qui va changer</div>
+              <div style="border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+                <div style="padding:12px 13px;border-bottom:1px solid #F4F1EB;display:flex;flex-direction:column;gap:6px">
+                  <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">Acquisition — Large 25-45</div>
+                  <div style="display:flex;align-items:center;gap:9px;font-variant-numeric:tabular-nums"><span style="font:500 15px/1 'Space Grotesk',monospace;color:#5C564E;text-decoration:line-through">420 000</span><i class="ph ph-arrow-right" style="font-size:13px;color:#6E6862"></i><span style="font:700 19px/1 'Space Grotesk',monospace;color:#C0311F">240 000</span><span style="font:600 11px/1 'Figtree',sans-serif;color:#6E6862">FCFA / j</span></div>
+                </div>
+                <div style="padding:12px 13px;border-bottom:1px solid #F4F1EB;background:#F7F8FE;display:flex;flex-direction:column;gap:6px">
+                  <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">Retargeting — Visiteurs 30 j</div>
+                  <div style="display:flex;align-items:center;gap:9px;font-variant-numeric:tabular-nums"><span style="font:500 15px/1 'Space Grotesk',monospace;color:#5C564E;text-decoration:line-through">90 000</span><i class="ph ph-arrow-right" style="font-size:13px;color:#6E6862"></i><span style="font:700 19px/1 'Space Grotesk',monospace;color:#0E4E36">270 000</span><span style="font:600 11px/1 'Figtree',sans-serif;color:#6E6862">FCFA / j</span></div>
+                </div>
+                <div style="padding:10px 13px;background:#FBF9F6;display:flex;gap:9px;align-items:center"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#423D37">Budget du compte inchangé : 510 000 FCFA</div></div>
+              </div>
+              <div style="background:#F8EDD8;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:12px 13px;font:400 13px/1.5 'Figtree',sans-serif;color:#5C4A25"><b style="font-weight:700">Conséquence :</b> retour en apprentissage 3 à 7 jours pour l'ensemble receveur.</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:9px;border-top:1px solid #E8E3D9;padding-top:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">4 · Impact estimé</div><span style="white-space:nowrap;background:#E3F0EA;color:#0E4E36;padding:4px 9px;border-radius:999px;font:700 12px/1.2 'Figtree',sans-serif">Élevée · 87 %</span></div>
+              <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;font-variant-numeric:tabular-nums">
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2A3AA3">Revenu sur 30 jours</div><div style="font:700 24px/1.1 'Space Grotesk',monospace;color:#0E4E36">+0,86 à 1,21 M</div></div>
+                <div style="display:flex;gap:16px"><div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2A3AA3">ROAS</div><div style="font:700 16px/1.2 'Space Grotesk',monospace;color:#1B1916">2,84 → 3,18</div></div><div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2A3AA3">Achats</div><div style="font:700 16px/1.2 'Space Grotesk',monospace;color:#0E4E36">+21 à 29</div></div></div>
+                <div style="font:400 12px/1.5 'Figtree',sans-serif;color:#2A3AA3">Fourchette à 80 % de confiance — jamais une valeur unique.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:9px;border-top:1px solid #E8E3D9;padding-top:14px">
+              <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">5 · Alternatives</div>
+              <div style="border:1.5px solid #C4CAF5;background:#F7F8FE;border-radius:12px;padding:13px;display:flex;align-items:center;gap:12px"><div style="width:20px;height:20px;border-radius:999px;border:5px solid #3B4FD1;background:#FFFFFF;flex:0 0 auto"></div><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">180 000 FCFA — recommandé</div><div style="font:500 12px/1.3 'Space Grotesk',monospace;color:#0E4E36">+1,04 M médiane</div></div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:12px;padding:13px;display:flex;align-items:center;gap:12px"><div style="width:20px;height:20px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">90 000 FCFA — sans apprentissage</div><div style="font:500 12px/1.3 'Space Grotesk',monospace;color:#0E4E36">+0,48 M médiane</div></div></div>
+            </div>
+          </div>
+
+          <div style="padding:12px 20px 16px;border-top:1px solid #E8E3D9;background:#FFFFFF;box-shadow:0 -2px 8px rgba(45,35,25,.10);display:flex;flex-direction:column;gap:8px;flex:0 0 auto">
+            <div style="background:#3B4FD1;color:#FFFFFF;padding:16px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Appliquer</div>
+            <div style="display:flex;gap:8px"><div style="flex:1;border:1.5px solid #C4CAF5;color:#2A3AA3;padding:13.5px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;text-align:center">Modifier</div><div style="flex:1;border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;text-align:center">Reporter</div><div style="flex:1;color:#5C564E;padding:13.5px;font:600 14px/1 'Figtree',sans-serif;text-align:center">Ignorer</div></div>
+            <div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E;text-align:center">0 crédit · annulable 7 jours</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= C2.3 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C2.3 · Modale de confirmation — quatre variantes</div>
+    <div style="max-width:1040px;font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Dernier point avant écriture sur un compte qui dépense. Structure identique dans les quatre cas : ce qui change, avant → après, portée, conséquence, coût, réversibilité. Ce qui varie, c'est le niveau de friction — et il est proportionnel au risque, jamais décoratif.</div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">A — Action simple et réversible</div>
+        <div style="background:#FFFFFF;border:1px solid #D6CFC2;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);overflow:hidden">
+          <div style="padding:18px 20px 14px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid #E8E3D9">
+            <div style="width:40px;height:40px;border-radius:11px;background:#EDEFFC;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-sparkle" style="font-size:20px;color:#3B4FD1"></i></div>
+            <div style="flex:1"><div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Appliquer la réallocation de budget ?</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Proposition de l'agent · 2 ensembles de publicités</div></div>
+          </div>
+          <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+            <div style="border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 88px 88px;gap:8px;padding:9px 14px;background:#FBF9F6;border-bottom:1px solid #E8E3D9;font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E"><div>Ensemble</div><div style="text-align:right">Avant</div><div style="text-align:right">Après</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 88px 88px;gap:8px;padding:11px 14px;border-bottom:1px solid #F4F1EB;align-items:baseline;font-variant-numeric:tabular-nums"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Acquisition Large</div><div style="text-align:right;font:500 13px/1 'Space Grotesk',monospace;color:#5C564E">420 000</div><div style="text-align:right;font:700 14px/1 'Space Grotesk',monospace;color:#C0311F">240 000</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 88px 88px;gap:8px;padding:11px 14px;align-items:baseline;font-variant-numeric:tabular-nums"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Retargeting 30 j</div><div style="text-align:right;font:500 13px/1 'Space Grotesk',monospace;color:#5C564E">90 000</div><div style="text-align:right;font:700 14px/1 'Space Grotesk',monospace;color:#0E4E36">270 000</div></div>
+            </div>
+            <div style="background:#F8EDD8;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:12px 14px;display:flex;gap:10px;align-items:flex-start"><i class="ph ph-warning" style="font-size:16px;color:#7A5208;margin-top:1px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C4A25"><b style="font-weight:700">Conséquence :</b> « Retargeting 30 j » repart en apprentissage 3 à 7 jours.</div></div>
+            <div style="display:flex;gap:20px;padding:12px 14px;background:#FBF9F6;border-radius:10px;font-variant-numeric:tabular-nums">
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Coût</div><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#1B1916">0 crédit</div></div>
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Annulable</div><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#0E4E36">7 jours</div></div>
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Effet</div><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#1B1916">immédiat</div></div>
+            </div>
+          </div>
+          <div style="padding:14px 20px;border-top:1px solid #E8E3D9;background:#FBF9F6;display:flex;gap:10px;align-items:center">
+            <div style="background:#3B4FD1;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Appliquer maintenant</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Annuler</div>
+            <div style="flex:1"></div>
+            <div style="font:500 11px/1 'Space Grotesk',monospace;color:#5C564E">↵ confirmer</div>
+          </div>
+        </div>
+        <div style="width:560px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Friction minimale : un bouton, focus par défaut dessus, <span style="font:500 11px/1 'Space Grotesk',monospace">↵</span> suffit. C'est réversible et l'agent est fiable — ralentir serait punitif.</div>
+      </div>
+
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">B — Action groupée</div>
+        <div style="background:#FFFFFF;border:1px solid #D6CFC2;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);overflow:hidden">
+          <div style="padding:18px 20px 14px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid #E8E3D9">
+            <div style="width:40px;height:40px;border-radius:11px;background:#EDEFFC;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-stack" style="font-size:20px;color:#3B4FD1"></i></div>
+            <div style="flex:1"><div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Mettre 7 publicités en pause ?</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Sur 8 proposées · 3 campagnes concernées</div></div>
+          </div>
+          <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;gap:10px;padding:14px;background:#FBF9F6;border-radius:12px;font-variant-numeric:tabular-nums">
+              <div style="flex:1"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Publicités</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">7</div></div>
+              <div style="flex:1;border-left:1px solid #E8E3D9;padding-left:10px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Campagnes</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">3</div></div>
+              <div style="flex:1;border-left:1px solid #E8E3D9;padding-left:10px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Dépense / 9 j</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">461 200</div></div>
+            </div>
+            <div style="border:1px solid #E8E3D9;border-radius:12px;overflow:hidden;max-height:150px">
+              <div style="padding:10px 14px;background:#FBF9F6;border-bottom:1px solid #E8E3D9;font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Objets affectés</div>
+              <div style="padding:10px 14px;border-bottom:1px solid #F4F1EB;display:flex;justify-content:space-between;gap:10px"><span style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Offre livraison gratuite — Statique</span><span style="font:500 12px/1.3 'Space Grotesk',monospace;color:#6E6862;flex:0 0 auto">Actif → Pause</span></div>
+              <div style="padding:10px 14px;border-bottom:1px solid #F4F1EB;display:flex;justify-content:space-between;gap:10px"><span style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Bannière rentrée — Statique 1:1</span><span style="font:500 12px/1.3 'Space Grotesk',monospace;color:#6E6862;flex:0 0 auto">Actif → Pause</span></div>
+              <div style="padding:10px 14px;font:600 13px/1 'Figtree',sans-serif;color:#2A3AA3">5 autres ▾</div>
+            </div>
+            <div style="background:#F8EDD8;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:12px 14px;display:flex;gap:10px;align-items:flex-start"><i class="ph ph-warning" style="font-size:16px;color:#7A5208;margin-top:1px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C4A25"><b style="font-weight:700">Conséquence :</b> 2 ensembles se retrouveront avec une seule publicité active et repartiront en apprentissage.</div></div>
+            <div style="display:flex;gap:20px;padding:12px 14px;background:#FBF9F6;border-radius:10px;font-variant-numeric:tabular-nums">
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Coût</div><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#1B1916">0 crédit</div></div>
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Annulable</div><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#0E4E36">7 jours · en un clic</div></div>
+            </div>
+          </div>
+          <div style="padding:14px 20px;border-top:1px solid #E8E3D9;background:#FBF9F6;display:flex;gap:10px;align-items:center">
+            <div style="background:#3B4FD1;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Mettre les 7 en pause</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Annuler</div>
+          </div>
+        </div>
+        <div style="width:560px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Le nombre est répété trois fois — titre, compteur, libellé du bouton. C'est ce qui empêche d'appliquer sur 40 objets en croyant en toucher 4.</div>
+      </div>
+
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C — Action irréversible</div>
+        <div style="background:#FFFFFF;border:1.5px solid #C0311F;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);overflow:hidden">
+          <div style="padding:18px 20px 14px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid #F2C3BC;background:#FBE9E6">
+            <div style="width:40px;height:40px;border-radius:11px;background:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-warning" style="font-size:20px;color:#C0311F"></i></div>
+            <div style="flex:1"><div style="font:700 19px/1.3 'Figtree',sans-serif;color:#8E2317">Supprimer définitivement 4 publicités ?</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6B3129;margin-top:3px">Action irréversible · l'historique de performance sera perdu</div></div>
+          </div>
+          <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+            <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">La suppression est définitive côté Meta. Les 4 publicités, leurs créatives et <b style="font-weight:700">18 mois d'historique de performance</b> disparaîtront. Vous ne pourrez plus les comparer à vos futures créatives.</div>
+            <div style="background:#FBF9F6;border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:9px">
+              <div style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Alternative recommandée</div>
+              <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#423D37">La mise en pause arrête la diffusion et conserve l'historique. Elle produit exactement le même effet sur votre dépense.</div>
+              <div style="align-self:flex-start;border:1.5px solid #146B4A;color:#0E4E36;padding:11px 15px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif">Mettre en pause plutôt que supprimer</div>
+            </div>
+            <div style="display:flex;gap:11px;align-items:flex-start;padding:13px 14px;border:1.5px solid #C0311F;border-radius:10px;background:#FFFFFF">
+              <div style="width:20px;height:20px;border-radius:5px;border:1.5px solid #C0311F;background:#FFFFFF;flex:0 0 auto;margin-top:1px"></div>
+              <div style="font:600 14px/1.5 'Figtree',sans-serif;color:#1B1916">Je comprends que cette action est définitive et que l'historique de ces 4 publicités sera perdu.</div>
+            </div>
+            <div style="display:flex;gap:20px;padding:12px 14px;background:#FBE9E6;border-radius:10px;font-variant-numeric:tabular-nums">
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6B3129">Coût</div><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#1B1916">0 crédit</div></div>
+              <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6B3129">Annulable</div><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#8E2317">Non</div></div>
+            </div>
+          </div>
+          <div style="padding:14px 20px;border-top:1px solid #E8E3D9;background:#FBF9F6;display:flex;gap:10px;align-items:center">
+            <div style="background:#E8E3D9;color:#A9A196;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Supprimer définitivement</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Annuler</div>
+            <div style="flex:1"></div>
+            <div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E;text-align:right">Cochez la case<br>pour activer</div>
+          </div>
+        </div>
+        <div style="width:560px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Trois différences avec la variante A : bordure et en-tête rouges, l'alternative non destructive est proposée <b style="font-weight:700">avant</b> le bouton, et le bouton reste désactivé jusqu'à la case cochée. Pas de saisie de nom à recopier : la friction doit être franchissable.</div>
+      </div>
+
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">D — Crédits insuffisants</div>
+        <div style="background:#FFFFFF;border:1px solid #D6CFC2;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);overflow:hidden">
+          <div style="padding:18px 20px 14px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid #E8E3D9">
+            <div style="width:40px;height:40px;border-radius:11px;background:#FDF5F1;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-lightning-slash" style="font-size:20px;color:#B44A26"></i></div>
+            <div style="flex:1"><div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Il manque 7 crédits pour cette action</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Génération de 8 variantes créatives · 45 crédits requis</div></div>
+          </div>
+          <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+            <div style="background:#FDF5F1;border:1px solid #F4CDBB;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;font-variant-numeric:tabular-nums"><div style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">Solde disponible</div><div style="font:700 20px/1 'Space Grotesk',monospace;color:#94391D">38 / 45</div></div>
+              <div style="height:8px;background:#F4CDBB;border-radius:999px;overflow:hidden;position:relative"><div style="width:84%;height:100%;background:#B44A26;border-radius:999px"></div></div>
+              <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#94391D">Renouvellement automatique le 1 septembre. L'action est bloquée d'ici là.</div>
+            </div>
+            <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px">
+              <div style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Deux façons de continuer</div>
+              <div style="display:flex;align-items:center;gap:12px;padding-bottom:11px;border-bottom:1px solid #F4F1EB"><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Racheter 200 crédits</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#5C564E">Disponibles immédiatement</div></div><div style="background:#B44A26;color:#FFFFFF;padding:11px 15px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;flex:0 0 auto">Racheter</div></div>
+              <div style="display:flex;align-items:center;gap:12px"><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Réduire à 6 variantes</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#5C564E">34 crédits — tient dans votre solde</div></div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:10px 14px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto">Réduire</div></div>
+            </div>
+          </div>
+          <div style="padding:14px 20px;border-top:1px solid #E8E3D9;background:#FBF9F6;display:flex;gap:10px;align-items:center">
+            <div style="background:#E8E3D9;color:#A9A196;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Générer 8 variantes</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Fermer</div>
+            <div style="flex:1"></div>
+            <div style="font:500 11px/1 'Space Grotesk',monospace;color:#5C564E">Bloqué</div>
+          </div>
+        </div>
+        <div style="width:560px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Un blocage n'est jamais une impasse : deux issues sont proposées, dont une gratuite. Le manque est chiffré (« il manque 7 »), pas seulement constaté.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= C2.4 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C2.4 · Historique — réel contre estimé</div>
+
+    <div style="width:1180px;flex:0 0 auto;background:#FFFFFF;border:1px solid #D6CFC2;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="padding:18px 24px;border-bottom:1px solid #E8E3D9;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:flex-start;gap:20px">
+          <div style="flex:1"><div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Historique des recommandations</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;margin-top:4px">64 recommandations depuis le 2 mai · 41 appliquées</div></div>
+          <div style="flex:0 0 auto;background:#E3F0EA;border:1px solid #A9D3BF;border-radius:12px;padding:14px 18px;display:flex;gap:24px;font-variant-numeric:tabular-nums">
+            <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#0E4E36">Taux de réalisation</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font:700 26px/1.1 'Space Grotesk',monospace;color:#0E4E36">86 %</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#2F4A3F">du gain promis</div></div></div>
+            <div style="border-left:1px solid #A9D3BF;padding-left:24px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#0E4E36">Gain cumulé</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font:700 26px/1.1 'Space Grotesk',monospace;color:#0E4E36">+8,4 M</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#2F4A3F">FCFA</div></div></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div style="display:flex;gap:6px">
+            <div style="background:#2C2925;color:#FFFFFF;padding:8px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Toutes · 64</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Appliquées · 41</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Ignorées · 16</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Reportées · 4</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Expirées · 3</div>
+          </div>
+          <div style="width:1px;height:22px;background:#E8E3D9"></div>
+          <div style="border:1.5px solid #D6CFC2;border-radius:999px;padding:6.5px 13px;display:flex;gap:7px;align-items:center"><span style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">90 derniers jours</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+          <div style="border:1.5px solid #D6CFC2;border-radius:999px;padding:6.5px 13px;display:flex;gap:7px;align-items:center"><span style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">Tous les types</span><i class="ph ph-caret-down" style="font-size:13px;color:#5C564E"></i></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 128px 300px 132px;gap:16px;padding:11px 24px;background:#FBF9F6;border-bottom:1px solid #E8E3D9;font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">
+        <div>Date</div><div>Recommandation</div><div>Statut</div><div>Impact réel contre estimé</div><div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 128px 300px 132px;gap:16px;padding:16px 24px;border-bottom:1px solid #F4F1EB;align-items:center">
+        <div><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">28 juil.</div><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">06:12</div></div>
+        <div style="min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Réallouer 240 000 FCFA vers « Tabaski — Carrousel »</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Budget · 2 ensembles · appliquée par Aminata Diallo</div></div>
+        <div><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▲ Appliquée</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-variant-numeric:tabular-nums">
+          <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 17px/1 'Space Grotesk',monospace;color:#0E4E36">+1,18 M</span><span style="font:500 12px/1 'Space Grotesk',monospace;color:#6E6862">réel · estimé +1,04 M</span></div>
+          <div style="position:relative;height:8px;background:#F4F1EB;border-radius:999px"><div style="position:absolute;left:0;width:78%;top:0;bottom:0;background:#146B4A;border-radius:999px"></div><div style="position:absolute;left:69%;top:-3px;bottom:-3px;width:2px;background:#2C2925"></div></div>
+          <div style="font:500 10px/1 'Space Grotesk',monospace;color:#0E4E36">113 % de l'estimation · ROAS 1,58 contre 1,72 projeté</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px"><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif">Détail</div><div style="width:38px;height:38px;border-radius:9px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center"><i class="ph ph-arrow-counter-clockwise" style="font-size:16px;color:#423D37"></i></div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 128px 300px 132px;gap:16px;padding:16px 24px;border-bottom:1px solid #F4F1EB;align-items:center;background:#FBF9F6">
+        <div><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">24 juil.</div><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">06:08</div></div>
+        <div style="min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Exclure Audience Network de 3 ensembles</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Ciblage · 3 ensembles · appliquée par Aminata Diallo</div></div>
+        <div><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▲ Appliquée</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-variant-numeric:tabular-nums">
+          <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 17px/1 'Space Grotesk',monospace;color:#7A5208">+96 000</span><span style="font:500 12px/1 'Space Grotesk',monospace;color:#6E6862">réel · estimé +185 000</span></div>
+          <div style="position:relative;height:8px;background:#F4F1EB;border-radius:999px"><div style="position:absolute;left:0;width:36%;top:0;bottom:0;background:#8F5F08;border-radius:999px"></div><div style="position:absolute;left:69%;top:-3px;bottom:-3px;width:2px;background:#2C2925"></div></div>
+          <div style="font:500 10px/1 'Space Grotesk',monospace;color:#7A5208">52 % de l'estimation · une partie du volume s'est reportée sur Stories</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px"><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif">Détail</div><div style="width:38px;height:38px;border-radius:9px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center"><i class="ph ph-arrow-counter-clockwise" style="font-size:16px;color:#423D37"></i></div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 128px 300px 132px;gap:16px;padding:16px 24px;border-bottom:1px solid #F4F1EB;align-items:center">
+        <div><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">31 juil.</div><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">06:04</div></div>
+        <div style="min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Augmenter le budget de « Retargeting 30 j » de 40 %</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Budget · 1 ensemble · appliquée par Aminata Diallo</div></div>
+        <div><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▲ Appliquée</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px"><i class="ph ph-hourglass" style="font-size:16px;color:#2A3AA3"></i><span style="font:700 14px/1.3 'Figtree',sans-serif;color:#2A3AA3">Pas encore mesurable</span></div>
+          <div style="position:relative;height:8px;background:#F4F1EB;border-radius:999px"><div style="position:absolute;left:0;width:42%;top:0;bottom:0;background:#C4CAF5;border-radius:999px"></div></div>
+          <div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2A3AA3">Sortie d'apprentissage le 5 août · 3 j restants avant mesure fiable</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px"><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif">Détail</div><div style="width:38px;height:38px;border-radius:9px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center"><i class="ph ph-arrow-counter-clockwise" style="font-size:16px;color:#423D37"></i></div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 128px 300px 132px;gap:16px;padding:16px 24px;border-bottom:1px solid #F4F1EB;align-items:center;background:#FBF9F6">
+        <div><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">19 juil.</div><div style="font:500 11px/1.3 'Space Grotesk',monospace;color:#6E6862">06:15</div></div>
+        <div style="min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#5C564E">Mettre en pause « Notoriété — Vidéo été »</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Structure · 1 campagne · ignorée — motif : « campagne de marque, hors ROAS »</div></div>
+        <div><span style="white-space:nowrap;display:inline-block;background:#F4F1EB;color:#423D37;padding:4px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">■ Ignorée</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="font:600 13px/1.4 'Figtree',sans-serif;color:#423D37">Manque à gagner estimé : <span style="font-family:'Space Grotesk',monospace;font-weight:700">+310 000 FCFA</span></div>
+          <div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Motif enregistré : l'agent ne propose plus la mise en pause de cette campagne</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px"><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif">Détail</div></div>
+      </div>
+
+      <div style="padding:14px 24px;background:#FBF9F6;display:flex;align-items:center;justify-content:space-between">
+        <div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#5C564E">Le trait vertical noir marque l'estimation ; la barre colorée le réel. Au-delà du trait, l'agent a sous-promis.</div>
+        <div style="font:600 14px/1 'Figtree',sans-serif;color:#94391D">Charger 20 entrées de plus</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">État — Aucun historique</div>
+        <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:13px;align-items:flex-start">
+          <div style="width:48px;height:48px;border-radius:13px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-clock-counter-clockwise" style="font-size:24px;color:#5C564E"></i></div>
+          <div style="font:700 22px/1.28 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Aucune recommandation traitée pour l'instant</div>
+          <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37">L'historique se remplit dès votre première décision — appliquée, reportée ou ignorée. C'est ici que vous pourrez vérifier si l'agent tient ses promesses.</div>
+          <div style="background:#B44A26;color:#FFFFFF;padding:14px 18px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Voir les 7 recommandations en attente</div>
+        </div>
+      </div>
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">État — Impact pas encore mesurable</div>
+        <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px">
+          <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:11px">
+            <div style="display:flex;align-items:center;gap:11px"><i class="ph ph-hourglass" style="font-size:20px;color:#3B4FD1"></i><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">4 actions en cours de mesure</div></div>
+            <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#2A3AA3">Une modification de budget renvoie l'ensemble en apprentissage : les 3 à 7 premiers jours ne sont pas représentatifs. Lyads attend la sortie d'apprentissage avant d'afficher un chiffre.</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;background:#FFFFFF;border-radius:9px;padding:11px 13px"><span style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Retargeting 30 j · budget +40 %</span><span style="font:700 12px/1 'Space Grotesk',monospace;color:#2A3AA3;flex:0 0 auto;white-space:nowrap">mesure le 5 août</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;background:#FFFFFF;border-radius:9px;padding:11px 13px"><span style="font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Tabaski — enchère au coût cible</span><span style="font:700 12px/1 'Space Grotesk',monospace;color:#2A3AA3;flex:0 0 auto;white-space:nowrap">mesure le 7 août</span></div>
+            </div>
+          </div>
+          <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Afficher un impact prématuré serait la façon la plus rapide de détruire la confiance : un ROAS mesuré en phase d'apprentissage est presque toujours mauvais.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= C2.5 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C2.5 · Réglages de l'agent</div>
+
+    <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+      <div style="width:820px;flex:0 0 auto;display:flex;flex-direction:column;gap:16px">
+
+        <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+            <div><div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Objectifs de performance</div><div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E;margin-top:4px">Ce sont ces valeurs que l'agent compare à vos résultats. Sans elles, il utilise la médiane de votre secteur.</div></div>
+            <div style="font:600 13px/1 'Figtree',sans-serif;color:#94391D;white-space:nowrap;text-decoration:underline;text-underline-offset:3px">Valeurs par défaut</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">CPA cible — global</div>
+              <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 15px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#1B1916">12 000</span><span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">FCFA</span></div>
+              <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Médiane de votre secteur : 14 200 FCFA. Un CPA au-delà de 1,25 × cette valeur déclenche une recommandation.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">ROAS cible</div>
+              <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 15px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#1B1916">2,50</span><span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">×</span></div>
+              <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Votre seuil de rentabilité est à 1,60. La cible doit rester au-dessus.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Budget quotidien maximum du compte</div>
+              <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 15px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#1B1916">600 000</span><span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">FCFA</span></div>
+              <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Plafond dur : l'agent ne proposera jamais de dépasser cette valeur. Actuellement engagé : 510 000.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Fenêtre d'attribution utilisée pour l'analyse</div>
+              <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font:500 15px/1 'Figtree',sans-serif;color:#1B1916">Clic 7 jours · vue 1 jour</span><i class="ph ph-caret-down" style="font-size:16px;color:#5C564E"></i></div>
+              <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Doit correspondre à celle de votre Gestionnaire Meta, sinon les chiffres divergeront.</div>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid #E8E3D9;padding-top:16px;display:flex;flex-direction:column;gap:11px">
+            <div style="display:flex;align-items:center;justify-content:space-between"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Cibles par campagne</div><div style="font:600 13px/1 'Figtree',sans-serif;color:#94391D">Ajouter une exception</div></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="border:1px solid #E8E3D9;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:14px"><div style="flex:1;font:600 14px/1.3 'Figtree',sans-serif;color:#1B1916">Notoriété — Vidéo été</div><div style="white-space:nowrap;font:600 12px/1 'Space Grotesk',monospace;color:#2A3AA3;background:#EDEFFC;padding:5px 10px;border-radius:999px">Exclue de l'analyse ROAS</div><i class="ph ph-x" style="font-size:16px;color:#6E6862"></i></div>
+              <div style="border:1px solid #E8E3D9;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:14px"><div style="flex:1;font:600 14px/1.3 'Figtree',sans-serif;color:#1B1916">Promo Tabaski — Carrousel</div><div style="white-space:nowrap;font:600 12px/1 'Space Grotesk',monospace;color:#0E4E36;background:#E3F0EA;padding:5px 10px;border-radius:999px">CPA cible 8 000 FCFA</div><i class="ph ph-x" style="font-size:16px;color:#6E6862"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px">
+          <div><div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Sensibilité de l'agent</div><div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E;margin-top:4px">Chaque niveau est décrit par ses seuils réels, pas par son nom : c'est le seul moyen de choisir en connaissance de cause.</div></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 17px/1.2 'Figtree',sans-serif;color:#1B1916">Prudent</div></div>
+              <div style="display:flex;flex-direction:column;gap:7px;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">
+                <div>Dérive de CPA de <b style="font-weight:700">50 %</b> pendant <b style="font-weight:700">14 jours</b></div>
+                <div>Minimum <b style="font-weight:700">100 conversions</b> avant analyse</div>
+                <div>Variations de budget plafonnées à <b style="font-weight:700">20 %</b></div>
+                <div>Jamais de mise en pause proposée</div>
+              </div>
+              <div style="border-top:1px solid #F4F1EB;padding-top:10px;font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862">≈ 2 à 4 recommandations par semaine</div>
+            </div>
+            <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:999px;border:5px solid #B44A26;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 17px/1.2 'Figtree',sans-serif;color:#1B1916">Équilibré</div></div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#94391D;background:#F4CDBB;padding:5px 8px;border-radius:999px">Défaut</div></div>
+              <div style="display:flex;flex-direction:column;gap:7px;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">
+                <div>Dérive de CPA de <b style="font-weight:700">25 %</b> pendant <b style="font-weight:700">7 jours</b></div>
+                <div>Minimum <b style="font-weight:700">50 conversions</b> avant analyse</div>
+                <div>Variations de budget plafonnées à <b style="font-weight:700">50 %</b></div>
+                <div>Mise en pause proposée après 14 jours sans conversion</div>
+              </div>
+              <div style="border-top:1px solid #F4CDBB;padding-top:10px;font:500 11px/1.5 'Space Grotesk',monospace;color:#94391D">≈ 5 à 8 recommandations par semaine</div>
+            </div>
+            <div style="border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 17px/1.2 'Figtree',sans-serif;color:#1B1916">Agressif</div></div>
+              <div style="display:flex;flex-direction:column;gap:7px;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">
+                <div>Dérive de CPA de <b style="font-weight:700">10 %</b> pendant <b style="font-weight:700">3 jours</b></div>
+                <div>Minimum <b style="font-weight:700">25 conversions</b> avant analyse</div>
+                <div>Variations de budget <b style="font-weight:700">non plafonnées</b></div>
+                <div>Mise en pause proposée après 5 jours sans conversion</div>
+              </div>
+              <div style="border-top:1px solid #F4F1EB;padding-top:10px;font:500 11px/1.5 'Space Grotesk',monospace;color:#8E2317">≈ 15 à 25 recommandations par semaine · retours en apprentissage fréquents</div>
+            </div>
+          </div>
+          <div style="background:#F8EDD8;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:13px 15px;display:flex;gap:11px;align-items:flex-start"><i class="ph ph-warning" style="font-size:16px;color:#7A5208;margin-top:1px"></i><div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C4A25">Le mode agressif analyse sur 25 conversions : à ce volume, une variation de CPA peut relever du hasard. Réservez-le aux comptes qui dépensent plus de 1 M FCFA par semaine.</div></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px">
+            <div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Fréquence et périmètre</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Fréquence de scan</div>
+              <div style="display:flex;gap:6px"><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">6 h</div><div style="background:#2C2925;color:#FFFFFF;padding:10.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">1 / jour</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">2 / semaine</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Manuel</div></div>
+              <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Chaque scan automatique consomme 2 crédits. Au rythme quotidien : 60 crédits par mois.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Heure du scan quotidien</div>
+              <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font:500 15px/1 'Space Grotesk',monospace;color:#1B1916">06:00</span><span style="font:500 12px/1 'Space Grotesk',monospace;color:#6E6862">GMT · Dakar</span></div>
+              <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Les données Meta de la veille sont consolidées vers 04:00 : scanner plus tôt donne des chiffres incomplets.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;border-top:1px solid #E8E3D9;padding-top:14px">
+              <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Campagnes exclues de l'analyse</div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap"><div style="display:flex;align-items:center;gap:7px;background:#F4F1EB;border-radius:999px;padding:7px 12px"><span style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">Notoriété — Vidéo été</span><i class="ph ph-x" style="font-size:13px;color:#6E6862"></i></div><div style="display:flex;align-items:center;gap:7px;border:1.5px dashed #D6CFC2;border-radius:999px;padding:5.5px 12px"><i class="ph ph-plus" style="font-size:13px;color:#94391D"></i><span style="font:600 13px/1 'Figtree',sans-serif;color:#94391D">Exclure une campagne</span></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;border-top:1px solid #E8E3D9;padding-top:14px">
+              <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Types de recommandations</div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;align-items:center;gap:11px"><div style="width:44px;height:26px;background:#146B4A;border-radius:999px;position:relative;flex:0 0 auto"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:#FFFFFF;border-radius:999px"></div></div><span style="flex:1;font:500 14px/1.3 'Figtree',sans-serif;color:#423D37">Budget</span><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">3 en attente</span></div>
+                <div style="display:flex;align-items:center;gap:11px"><div style="width:44px;height:26px;background:#146B4A;border-radius:999px;position:relative;flex:0 0 auto"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:#FFFFFF;border-radius:999px"></div></div><span style="flex:1;font:500 14px/1.3 'Figtree',sans-serif;color:#423D37">Créative</span><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">2 en attente</span></div>
+                <div style="display:flex;align-items:center;gap:11px"><div style="width:44px;height:26px;background:#146B4A;border-radius:999px;position:relative;flex:0 0 auto"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:#FFFFFF;border-radius:999px"></div></div><span style="flex:1;font:500 14px/1.3 'Figtree',sans-serif;color:#423D37">Ciblage</span><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">1 en attente</span></div>
+                <div style="display:flex;align-items:center;gap:11px"><div style="width:44px;height:26px;background:#D6CFC2;border-radius:999px;position:relative;flex:0 0 auto"><div style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:#FFFFFF;border-radius:999px"></div></div><span style="flex:1;font:500 14px/1.3 'Figtree',sans-serif;color:#6E6862">Structure de campagne</span><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">désactivé</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px">
+            <div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Notifications</div>
+            <div style="display:flex;flex-direction:column;gap:1px;border:1px solid #E8E3D9;border-radius:12px;overflow:hidden">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px 56px 56px;gap:8px;padding:10px 14px;background:#FBF9F6;border-bottom:1px solid #E8E3D9;font:700 10px/1.3 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5C564E"><div>Événement</div><div style="text-align:center">App</div><div style="text-align:center">Mail</div><div style="text-align:center">SMS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px 56px 56px;gap:8px;padding:12px 14px;border-bottom:1px solid #F4F1EB;align-items:center"><div style="font:600 13px/1.35 'Figtree',sans-serif;color:#1B1916">Recommandation critique</div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px 56px 56px;gap:8px;padding:12px 14px;border-bottom:1px solid #F4F1EB;align-items:center"><div style="font:600 13px/1.35 'Figtree',sans-serif;color:#1B1916">Budget épuisé</div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-circle" style="font-size:20px;color:#D6CFC2"></i></div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px 56px 56px;gap:8px;padding:12px 14px;border-bottom:1px solid #F4F1EB;align-items:center"><div style="font:600 13px/1.35 'Figtree',sans-serif;color:#1B1916">Publicité rejetée par Meta</div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-circle" style="font-size:20px;color:#D6CFC2"></i></div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px 56px 56px;gap:8px;padding:12px 14px;border-bottom:1px solid #F4F1EB;align-items:center"><div style="font:600 13px/1.35 'Figtree',sans-serif;color:#1B1916">Scan terminé</div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-circle" style="font-size:20px;color:#D6CFC2"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-circle" style="font-size:20px;color:#D6CFC2"></i></div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px 56px 56px;gap:8px;padding:12px 14px;align-items:center"><div style="font:600 13px/1.35 'Figtree',sans-serif;color:#1B1916">Solde de crédits faible</div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i></div><div style="display:flex;justify-content:center"><i class="ph ph-circle" style="font-size:20px;color:#D6CFC2"></i></div></div>
+            </div>
+            <div style="background:#FBF9F6;border-radius:10px;padding:13px 15px;font:400 13px/1.55 'Figtree',sans-serif;color:#423D37">Le SMS est réservé aux événements qui coûtent de l'argent à chaque heure d'inaction — budget épuisé, publicité rejetée, recommandation critique. Tout activer reviendrait à ne rien signaler.</div>
+            <div style="border-top:1px solid #E8E3D9;padding-top:14px;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:11px"><div style="width:44px;height:26px;background:#D6CFC2;border-radius:999px;position:relative;flex:0 0 auto"><div style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:#FFFFFF;border-radius:999px"></div></div><div style="flex:1"><div style="font:600 14px/1.3 'Figtree',sans-serif;color:#1B1916">Application automatique</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Désactivée par défaut, sans exception. L'agent propose, vous validez.</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FBF9F6;border:1px solid #E8E3D9;border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px">
+          <i class="ph ph-arrow-counter-clockwise" style="font-size:20px;color:#5C564E"></i>
+          <div style="flex:1"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Revenir aux valeurs par défaut</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C564E">Sensibilité équilibrée, scan quotidien à 06:00, tous types actifs, cibles issues de la médiane de votre secteur. Vos exceptions par campagne sont conservées.</div></div>
+          <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:12.5px 16px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto">Réinitialiser</div>
+        </div>
+      </div>
+
+      <div style="width:375px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">375 — sensibilité</div>
+        <div style="width:375px;background:#FFFFFF;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="padding:12px 20px;border-bottom:1px solid #E8E3D9;background:#FBF9F6;display:flex;align-items:center;gap:12px">
+            <div style="width:40px;height:40px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;background:#FFFFFF;flex:0 0 auto"><i class="ph ph-arrow-left" style="font-size:16px;color:#423D37"></i></div>
+            <div style="flex:1;font:700 17px/1.2 'Figtree',sans-serif;color:#1B1916">Réglages de l'agent</div>
+          </div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;gap:6px;overflow:hidden"><div style="background:#2C2925;color:#FFFFFF;padding:8px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Sensibilité</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Objectifs</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Scan</div></div>
+            <div style="border:1px solid #E8E3D9;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 16px/1.2 'Figtree',sans-serif;color:#1B1916">Prudent</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37"><div>Dérive de CPA de <b style="font-weight:700">50 %</b> sur <b style="font-weight:700">14 j</b></div><div>Minimum <b style="font-weight:700">100 conversions</b></div><div>Jamais de mise en pause</div></div>
+              <div style="border-top:1px solid #F4F1EB;padding-top:9px;font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">≈ 2 à 4 par semaine</div>
+            </div>
+            <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:999px;border:5px solid #B44A26;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 16px/1.2 'Figtree',sans-serif;color:#1B1916">Équilibré</div></div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#94391D;background:#F4CDBB;padding:5px 8px;border-radius:999px">Défaut</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37"><div>Dérive de CPA de <b style="font-weight:700">25 %</b> sur <b style="font-weight:700">7 j</b></div><div>Minimum <b style="font-weight:700">50 conversions</b></div><div>Pause après 14 j sans conversion</div></div>
+              <div style="border-top:1px solid #F4CDBB;padding-top:9px;font:500 11px/1.4 'Space Grotesk',monospace;color:#94391D">≈ 5 à 8 par semaine</div>
+            </div>
+            <div style="border:1px solid #E8E3D9;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 16px/1.2 'Figtree',sans-serif;color:#1B1916">Agressif</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37"><div>Dérive de CPA de <b style="font-weight:700">10 %</b> sur <b style="font-weight:700">3 j</b></div><div>Minimum <b style="font-weight:700">25 conversions</b></div><div>Budget non plafonné</div></div>
+              <div style="border-top:1px solid #F4F1EB;padding-top:9px;font:500 11px/1.4 'Space Grotesk',monospace;color:#8E2317">≈ 15 à 25 par semaine</div>
+            </div>
+            <div style="background:#F8EDD8;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:12px 13px;font:400 13px/1.5 'Figtree',sans-serif;color:#5C4A25">Le mode agressif analyse sur 25 conversions : à ce volume, une variation peut relever du hasard.</div>
+            <div style="background:#B44A26;color:#FFFFFF;padding:16px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Enregistrer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</x-dc>
+</body>
+</html>

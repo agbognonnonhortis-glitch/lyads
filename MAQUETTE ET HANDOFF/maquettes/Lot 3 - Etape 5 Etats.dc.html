@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+  body { margin:0; background:#F4F1EB; font-family:'Figtree',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#B44A26; text-decoration:underline; text-underline-offset:2px; }
+  a:hover { color:#94391D; }
+  i.ph { line-height:1; display:inline-block; }
+</style>
+</helmet>
+
+<section style="padding:56px 48px 96px;display:flex;flex-direction:column;gap:40px">
+
+  <div style="max-width:1040px;display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">Lyads · Lot 3 · étape 5 — les états · desktop 1440</div>
+    <h1 style="margin:0;font:800 40px/1.12 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Les états du parcours</h1>
+    <p style="margin:0;max-width:840px;font:400 16px/1.65 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Construction de l'agent en cours, brouillon repris, publication en cours, échec partiel, refus de Meta, crédits insuffisants. L'échec partiel est celui qui compte : c'est le cas fréquent que personne ne traite correctement.</p>
+  </div>
+
+  <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;max-width:1180px;display:flex;flex-direction:column;gap:11px">
+    <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Un échec partiel n'est pas un échec</div>
+    <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">L'API Meta crée les objets un par un : une campagne peut exister avec 3 ensembles sur 4 et 6 publicités sur 11. Afficher « la publication a échoué » serait faux et pousserait l'utilisateur à tout recréer — donc à créer des doublons qui dépenseront en parallèle.</div>
+    <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">L'écran d'échec partiel montre donc <b style="font-weight:700">l'inventaire réel</b> — ce qui existe sur Meta, ce qui manque, et pourquoi — puis propose de <b style="font-weight:700">relancer uniquement ce qui manque</b>. Le bouton ne dit jamais « Réessayer » tout court.</div>
+  </div>
+
+  <!-- ============ ÉTAT 1 : CONSTRUCTION AGENT ============ -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">État 1 · Construction par l'agent en cours — après C4.2</div>
+
+    <div style="width:1440px;flex:0 0 auto;height:720px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:14px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+        <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+        <div style="margin-top:14px;position:relative"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+        <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:24px;height:1px;background:#E8E3D9;margin:6px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-megaphone" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+        <div style="flex:1"></div>
+        <div style="width:40px;height:40px;border-radius:11px;background:#FDF5F1;border:1px solid #F4CDBB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;margin:6px 0"><i class="ph ph-lightning" style="font-size:16px;color:#B44A26"></i><div style="font:700 9px/1 'Space Grotesk',monospace;color:#94391D">26</div></div>
+        <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:14px 32px;display:flex;align-items:center;gap:16px">
+          <div><div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Construction en cours</div><div style="display:flex;align-items:center;gap:7px;margin-top:4px"><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">Nouvelle campagne</span><i class="ph ph-caret-right" style="font-size:13px;color:#A9A196"></i><span style="font:700 11px/1 'Space Grotesk',monospace;color:#423D37">Cartables Rentrée</span></div></div>
+          <div style="flex:1"></div>
+          <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11px 16px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Annuler</div>
+        </div>
+        <div style="flex:1;padding:32px;display:flex;align-items:flex-start;justify-content:center;background:#F4F1EB">
+          <div style="width:720px;background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;align-items:center;gap:14px">
+              <i class="ph ph-circle-notch" style="font-size:30px;color:#3B4FD1"></i>
+              <div style="flex:1"><div style="font:700 24px/1.25 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">L'agent construit votre campagne</div><div style="font:500 12px/1.5 'Space Grotesk',monospace;color:#2A3AA3;margin-top:4px">Étape 3 sur 5 · ≈ 40 secondes restantes</div></div>
+              <div style="text-align:right"><div style="font:700 26px/1.1 'Space Grotesk',monospace;color:#2A3AA3">58 %</div></div>
+            </div>
+            <div style="height:8px;background:#C4CAF5;border-radius:999px;overflow:hidden"><div style="width:58%;height:100%;background:#3B4FD1;border-radius:999px"></div></div>
+            <div style="background:#FFFFFF;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i><div style="flex:1;font:600 15px/1.3 'Figtree',sans-serif;color:#423D37">Lecture du compte et du Business Brain</div><div style="font:500 12px/1 'Space Grotesk',monospace;color:#0E4E36">terminé</div></div>
+              <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i><div style="flex:1;font:600 15px/1.3 'Figtree',sans-serif;color:#423D37">Analyse de 90 jours d'historique · 31 campagnes</div><div style="font:500 12px/1 'Space Grotesk',monospace;color:#0E4E36">terminé</div></div>
+              <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-circle-notch" style="font-size:20px;color:#3B4FD1"></i><div style="flex:1;font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Construction des ensembles et des ciblages</div><div style="font:700 12px/1 'Space Grotesk',monospace;color:#2A3AA3">3 sur 4</div></div>
+              <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-circle-dashed" style="font-size:20px;color:#A9A196"></i><div style="flex:1;font:500 15px/1.3 'Figtree',sans-serif;color:#6E6862">Rédaction des textes · 3 variantes par publicité</div></div>
+              <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-circle-dashed" style="font-size:20px;color:#A9A196"></i><div style="flex:1;font:500 15px/1.3 'Figtree',sans-serif;color:#6E6862">Vérification des exclusions et des chevauchements</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px">
+              <div style="flex:1;font:400 14px/1.55 'Figtree',sans-serif;color:#3D4470">Vous pouvez quitter cet écran : la campagne sera enregistrée en brouillon et vous serez notifié. Les 12 crédits sont déjà débités.</div>
+              <div style="border:1.5px solid #C4CAF5;color:#2A3AA3;padding:12.5px 16px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Quitter et être notifié</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ÉTAT 2 : PUBLICATION EN COURS + BROUILLON ============ -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">État 2 · Publication en cours &amp; État 3 · Brouillon repris</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:640px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">Publication en cours — objet par objet</div>
+        <div style="background:#FFFFFF;border:1.5px solid #D6CFC2;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);overflow:hidden">
+          <div style="padding:20px 22px 16px;border-bottom:1px solid #E8E3D9;background:#FBF9F6;display:flex;align-items:center;gap:14px">
+            <i class="ph ph-circle-notch" style="font-size:24px;color:#B44A26"></i>
+            <div style="flex:1"><div style="font:700 21px/1.25 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Création sur Meta</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;margin-top:4px">9 objets sur 16 · ne fermez pas cette fenêtre</div></div>
+            <div style="font:700 24px/1.1 'Space Grotesk',monospace;color:#94391D">56 %</div>
+          </div>
+          <div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+            <div style="height:8px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:56%;height:100%;background:#B44A26;border-radius:999px"></div></div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i><div style="flex:1;font:600 14px/1.3 'Figtree',sans-serif;color:#423D37">Campagne créée</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">1 sur 1</div></div>
+              <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i><div style="flex:1;font:600 14px/1.3 'Figtree',sans-serif;color:#423D37">Ensembles de publicités</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">4 sur 4</div></div>
+              <div style="display:flex;align-items:center;gap:12px"><i class="ph ph-circle-notch" style="font-size:20px;color:#B44A26"></i><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Publicités</div><div style="font:700 11px/1 'Space Grotesk',monospace;color:#94391D">4 sur 11</div></div>
+            </div>
+            <div style="background:#FBF9F6;border-radius:10px;padding:12px 14px;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">L'API Meta crée les objets un par un. En cas d'interruption, ce qui est déjà créé reste sur votre compte — vous pourrez relancer uniquement ce qui manque.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:640px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">Brouillon repris — 6 jours après</div>
+        <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:16px;overflow:hidden">
+          <div style="padding:18px 22px;border-bottom:1px solid #E8E3D9;background:#F8EDD8;display:flex;align-items:flex-start;gap:13px">
+            <i class="ph ph-warning" style="font-size:20px;color:#8F5F08;margin-top:2px"></i>
+            <div style="flex:1"><div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Ce brouillon date du 28 juillet — 3 éléments ont changé depuis</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C4A25;margin-top:4px">Reprenez où vous en étiez, mais vérifiez ces points avant de publier.</div></div>
+          </div>
+          <div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div style="border:1px solid #E9CF9B;background:#FBF9F6;border-radius:11px;padding:13px 15px;display:flex;align-items:center;gap:12px"><i class="ph ph-warning" style="font-size:16px;color:#8F5F08"></i><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Date de début dépassée</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">Le 5 août est passé. Nouvelle date proposée : demain, 3 août.</div></div><div style="border:1.5px solid #8F5F08;color:#7A5208;padding:9px 13px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Décaler</div></div>
+              <div style="border:1px solid #E9CF9B;background:#FBF9F6;border-radius:11px;padding:13px 15px;display:flex;align-items:center;gap:12px"><i class="ph ph-warning" style="font-size:16px;color:#8F5F08"></i><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Une créative a été supprimée de votre bibliothèque</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">« Trio cartables 4:5 » était utilisée par la publicité « Angle solidité ».</div></div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Remplacer</div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:11px;padding:13px 15px;display:flex;align-items:center;gap:12px"><i class="ph ph-info" style="font-size:16px;color:#2A3AA3"></i><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Le budget engagé du compte a augmenté</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">510 000 → 552 000 FCFA / j. Cette campagne porterait le total à 597 000, sous le plafond de 600 000.</div></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;border-top:1px solid #E8E3D9;padding-top:14px">
+              <div style="flex:1"><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Progression conservée</div><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Étape 3 sur 5 · créatives et textes</div></div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 16px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Supprimer</div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Reprendre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ÉTAT 4 : ÉCHEC PARTIEL ============ -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">État 4 · Publication partiellement échouée — le cas central</div>
+
+    <div style="width:1440px;flex:0 0 auto;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:14px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+        <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+        <div style="margin-top:14px;position:relative"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+        <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:24px;height:1px;background:#E8E3D9;margin:6px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-megaphone" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+        <div style="flex:1"></div>
+        <div style="width:40px;height:40px;border-radius:11px;background:#FDF5F1;border:1px solid #F4CDBB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;margin:6px 0"><i class="ph ph-lightning" style="font-size:16px;color:#B44A26"></i><div style="font:700 9px/1 'Space Grotesk',monospace;color:#94391D">30</div></div>
+        <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+      </div>
+
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:14px 32px;display:flex;align-items:center;gap:16px">
+          <div><div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Publication incomplète</div><div style="display:flex;align-items:center;gap:7px;margin-top:4px"><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">Kola Distribution</span><i class="ph ph-caret-right" style="font-size:13px;color:#A9A196"></i><span style="font:700 11px/1 'Space Grotesk',monospace;color:#423D37">Cartables Rentrée — Août 2026</span></div></div>
+          <div style="flex:1"></div>
+          <div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;text-align:right">2 août, 09:41<br>ERR-META-1487390</div>
+        </div>
+
+        <div style="flex:1;padding:20px 32px 24px;display:flex;gap:20px;background:#F4F1EB;align-items:flex-start">
+
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
+            <div style="background:#F8EDD8;border:1px solid #E9CF9B;border-radius:14px;padding:20px 22px;display:flex;align-items:flex-start;gap:14px">
+              <i class="ph ph-warning" style="font-size:24px;color:#8F5F08;margin-top:2px"></i>
+              <div style="flex:1"><div style="font:700 20px/1.3 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">13 objets sur 16 ont été créés sur Meta</div><div style="font:400 15px/1.6 'Figtree',sans-serif;color:#5C4A25;margin-top:5px">Votre campagne existe et elle est en pause. Trois publicités n'ont pas pu être créées. <b style="font-weight:700">Ne relancez pas la publication entière</b> : vous créeriez des doublons qui dépenseraient en parallèle.</div></div>
+            </div>
+
+            <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:14px"><div style="flex:1;font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Inventaire réel sur Meta</div><div style="display:flex;gap:8px"><span style="white-space:nowrap;display:inline-block;background:#E3F0EA;color:#0E4E36;padding:6px 11px;border-radius:999px;font:700 12px/1.3 'Figtree',sans-serif">13 créés</span><span style="white-space:nowrap;display:inline-block;background:#C0311F;color:#FFFFFF;padding:6px 11px;border-radius:999px;font:700 12px/1.3 'Figtree',sans-serif">3 manquants</span></div></div>
+
+              <div style="padding:14px 20px;border-bottom:1px solid #E8E3D9;background:#FBF9F6;display:flex;align-items:center;gap:12px">
+                <i class="ph ph-check-circle" style="font-size:20px;color:#146B4A"></i><i class="ph ph-megaphone" style="font-size:20px;color:#B44A26"></i>
+                <div style="flex:1;min-width:0"><div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Cartables Rentrée — Août 2026</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#0E4E36">Créée en pause · ID 120211887340</div></div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:8px 12px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto">Ouvrir dans Meta</div>
+              </div>
+
+              <div style="padding:12px 20px 12px 44px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:12px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Froid — Large 25-45</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#0E4E36">Créé · 3 publicités sur 3</div></div></div>
+              <div style="padding:12px 20px 12px 44px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:12px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Froid — Centres d'intérêt rentrée</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#0E4E36">Créé · 3 publicités sur 3</div></div></div>
+
+              <div style="padding:12px 20px 12px 44px;border-bottom:1px solid #F4F1EB;background:#FBE9E6;border-left:3px solid #C0311F;display:flex;align-items:center;gap:12px"><i class="ph ph-warning" style="font-size:16px;color:#8E2317"></i><div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Similaire 1 % — acheteurs</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#8E2317">Créé · 1 publicité sur 3 — 2 manquantes</div></div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6B3129;flex:0 0 auto;text-align:right">Image indisponible<br>au moment de l'appel</div></div>
+              <div style="padding:12px 20px 12px 44px;background:#FBE9E6;border-left:3px solid #C0311F;display:flex;align-items:center;gap:12px"><i class="ph ph-warning" style="font-size:16px;color:#8E2317"></i><div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Chaud — Visiteurs 30 jours</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#8E2317">Créé · 1 publicité sur 2 — 1 manquante</div></div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6B3129;flex:0 0 auto;text-align:right">Limite de requêtes<br>Meta atteinte</div></div>
+            </div>
+
+            <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:14px"><div style="flex:1"><div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Les 3 publicités manquantes</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Motif exact renvoyé par Meta pour chacune</div></div><div style="display:flex;align-items:center;gap:11px"><div style="width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><span style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">Tout sélectionner</span></div></div>
+
+              <div style="padding:14px 20px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:14px">
+                <div style="width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div>
+                <div style="width:44px;height:44px;border-radius:9px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i></div>
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Angle prix — Similaire 1 %</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#8E2317">L'image « Cartable bleu 1:1 » était en cours de téléversement chez Meta au moment de la création.</div></div>
+                <span style="white-space:nowrap;display:inline-block;background:#FBE9E6;color:#8E2317;padding:5px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif;flex:0 0 auto">Relançable</span>
+              </div>
+              <div style="padding:14px 20px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:14px">
+                <div style="width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div>
+                <div style="width:44px;height:44px;border-radius:9px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i></div>
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Angle solidité — Similaire 1 %</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#8E2317">Même cause : image indisponible au moment de l'appel.</div></div>
+                <span style="white-space:nowrap;display:inline-block;background:#FBE9E6;color:#8E2317;padding:5px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif;flex:0 0 auto">Relançable</span>
+              </div>
+              <div style="padding:14px 20px;display:flex;align-items:center;gap:14px">
+                <div style="width:20px;height:20px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div>
+                <div style="width:44px;height:44px;border-radius:9px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-play-circle" style="font-size:20px;color:#A9A196"></i></div>
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Angle livraison — Visiteurs 30 j</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#8E2317">Limite de requêtes Meta atteinte pour ce compte. Réessayable dans quelques minutes.</div></div>
+                <span style="white-space:nowrap;display:inline-block;background:#FBE9E6;color:#8E2317;padding:5px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif;flex:0 0 auto">Relançable</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="width:380px;flex:0 0 380px;display:flex;flex-direction:column;gap:14px">
+            <div style="background:#FFFFFF;border:1.5px solid #D6CFC2;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+              <div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Terminer la publication</div>
+              <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#423D37">Seules les 3 publicités sélectionnées seront créées. La campagne et les 4 ensembles existants ne seront pas touchés.</div>
+              <div style="background:#FBF9F6;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:8px;font-variant-numeric:tabular-nums">
+                <div style="display:flex;justify-content:space-between"><span style="font:400 13px/1.4 'Figtree',sans-serif;color:#423D37">Publicités à créer</span><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">3</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="font:400 13px/1.4 'Figtree',sans-serif;color:#423D37">Coût</span><span style="font:700 13px/1 'Space Grotesk',monospace;color:#0E4E36">0 crédit</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="font:400 12px/1.4 'Figtree',sans-serif;color:#5C564E">Déjà débité pour cette publication</span><span style="font:500 12px/1 'Space Grotesk',monospace;color:#5C564E">6 crédits</span></div>
+              </div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:16px;border-radius:10px;font:700 16px/1 'Figtree',sans-serif;text-align:center">Créer les 3 manquantes</div>
+              <div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E;text-align:center">Une nouvelle tentative ne recrée jamais un objet existant</div>
+            </div>
+
+            <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px">
+              <div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Autres issues</div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Activer sans les 3 manquantes</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">La campagne diffusera avec 8 publicités sur 11.</div></div>
+                <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Laisser en pause et revenir plus tard</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">Aucune dépense. L'inventaire reste consultable dans le journal.</div></div>
+                <div style="border:1.5px solid #E9A79E;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#8E2317">Supprimer ce qui a été créé</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6B3129">Supprime les 13 objets sur Meta. Irréversible.</div></div>
+              </div>
+            </div>
+
+            <div style="background:#FBF9F6;border:1px solid #E8E3D9;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:8px">
+              <div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Consigné dans le journal</div>
+              <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Cet échec, son motif et l'inventaire des objets créés sont enregistrés dans le journal des modifications de la campagne, avec l'origine « Lyads — publication ».</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ÉTATS 5 ET 6 ============ -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">État 5 · Refus de Meta &amp; État 6 · Crédits insuffisants &amp; État 7 · Publication réussie</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:620px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">Refus de Meta</div>
+        <div style="background:#FFFFFF;border:1.5px solid #C0311F;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(45,35,25,.14)">
+          <div style="padding:18px 22px;border-bottom:1px solid #F2C3BC;background:#FBE9E6;display:flex;align-items:flex-start;gap:14px">
+            <i class="ph ph-warning" style="font-size:24px;color:#C0311F;margin-top:2px"></i>
+            <div style="flex:1"><div style="font:700 20px/1.3 'Figtree',sans-serif;color:#8E2317">Meta a refusé la création de la campagne</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6B3129;margin-top:4px">Aucun objet créé · aucun crédit débité · ERR-META-2446</div></div>
+          </div>
+          <div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+            <div style="border:1px solid #E8E3D9;border-radius:12px;padding:15px;display:flex;flex-direction:column;gap:8px">
+              <div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Motif renvoyé par Meta</div>
+              <div style="font:500 14px/1.55 'Space Grotesk',monospace;color:#1B1916">Ad account spending limit reached. The account has hit its lifetime spending cap of 12 000 000 XOF.</div>
+            </div>
+            <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Votre compte publicitaire a atteint son plafond de dépense à vie, fixé côté Meta. Aucune nouvelle campagne ne peut être créée tant qu'il n'est pas relevé — c'est un réglage de votre Business Manager, pas de Lyads.</div>
+            <div style="background:#FBF9F6;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:7px">
+              <div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Ce qu'il faut faire</div>
+              <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Ouvrez les paramètres de facturation de votre Business Manager, relevez ou supprimez le plafond de dépense à vie, puis relancez la publication ici. Votre campagne est conservée en brouillon.</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <div style="flex:0 0 auto;white-space:nowrap;background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Ouvrir les paramètres Meta</div>
+              <div style="flex:0 0 auto;white-space:nowrap;border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Relancer</div>
+              <div style="flex:1;min-width:0"></div>
+              <div style="flex:0 0 auto;font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E">Code copiable</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:540px;flex:0 0 auto;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">Crédits insuffisants</div>
+          <div style="background:#FFFFFF;border:1px solid #D6CFC2;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(45,35,25,.14)">
+            <div style="padding:18px 22px;border-bottom:1px solid #E8E3D9;display:flex;align-items:flex-start;gap:14px">
+              <div style="width:40px;height:40px;border-radius:11px;background:#FDF5F1;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-lightning-slash" style="font-size:20px;color:#B44A26"></i></div>
+              <div style="flex:1"><div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Il manque 2 crédits pour publier</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;margin-top:4px">Création de 16 objets · 6 crédits requis</div></div>
+            </div>
+            <div style="padding:18px 22px;display:flex;flex-direction:column;gap:13px">
+              <div style="background:#FDF5F1;border:1px solid #F4CDBB;border-radius:12px;padding:15px;display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;font-variant-numeric:tabular-nums"><div style="font:600 13px/1 'Figtree',sans-serif;color:#423D37">Solde disponible</div><div style="font:700 20px/1 'Space Grotesk',monospace;color:#94391D">4 / 6</div></div>
+                <div style="height:8px;background:#F4CDBB;border-radius:999px;overflow:hidden;position:relative"><div style="width:67%;height:100%;background:#B44A26;border-radius:999px"></div></div>
+                <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#94391D">Renouvellement automatique le 1 septembre.</div>
+              </div>
+              <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:11px">
+                <div style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#5C564E">Deux façons de continuer</div>
+                <div style="display:flex;align-items:center;gap:12px;padding-bottom:11px;border-bottom:1px solid #F4F1EB"><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Racheter 200 crédits</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#5C564E">Disponibles immédiatement</div></div><div style="background:#B44A26;color:#FFFFFF;padding:11px 15px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Racheter</div></div>
+                <div style="display:flex;align-items:center;gap:12px"><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Publier 2 ensembles maintenant</div><div style="font:400 13px/1.45 'Figtree',sans-serif;color:#5C564E">4 crédits — les 2 autres à la prochaine recharge</div></div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:10px 14px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Réduire</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center"><div style="flex:0 0 auto;white-space:nowrap;background:#E8E3D9;color:#A9A196;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Publier · 6 crédits</div><div style="flex:0 0 auto;white-space:nowrap;border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Enregistrer</div><div style="flex:1;min-width:0"></div><div style="flex:0 0 auto;font:500 11px/1 'Space Grotesk',monospace;color:#5C564E">Bloqué</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">Publication réussie</div>
+          <div style="background:#FFFFFF;border:1px solid #A9D3BF;border-radius:16px;overflow:hidden">
+            <div style="padding:18px 22px;border-bottom:1px solid #A9D3BF;background:#E3F0EA;display:flex;align-items:flex-start;gap:14px">
+              <i class="ph ph-check-circle" style="font-size:24px;color:#146B4A;margin-top:2px"></i>
+              <div style="flex:1"><div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Campagne créée — 16 objets sur 16</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#2F4A3F;margin-top:4px">En pause · aucune dépense engagée</div></div>
+            </div>
+            <div style="padding:18px 22px;display:flex;flex-direction:column;gap:13px">
+              <div style="display:flex;gap:14px;font-variant-numeric:tabular-nums">
+                <div style="flex:1"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Ensembles</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">4</div></div>
+                <div style="flex:1;border-left:1px solid #E8E3D9;padding-left:14px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Publicités</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">11</div></div>
+                <div style="flex:1;border-left:1px solid #E8E3D9;padding-left:14px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Budget / jour</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">45 000</div></div>
+              </div>
+              <div style="background:#F8EDD8;border-left:3px solid #8F5F08;border-radius:0 10px 10px 0;padding:12px 14px;font:400 13px/1.5 'Figtree',sans-serif;color:#5C4A25"><b style="font-weight:700">Elle ne diffuse pas encore.</b> Vérifiez la structure sur Meta, puis activez-la ici ou depuis le gestionnaire de publicités.</div>
+              <div style="display:flex;gap:10px;align-items:center"><div style="flex:0 0 auto;white-space:nowrap;background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Activer la campagne</div><div style="flex:0 0 auto;white-space:nowrap;border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Voir dans le gestionnaire</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>

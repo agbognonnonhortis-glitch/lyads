@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+  body { margin:0; background:#F4F1EB; font-family:'Figtree',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#B44A26; text-decoration:underline; text-underline-offset:2px; }
+  a:hover { color:#94391D; }
+  i.ph { line-height:1; display:inline-block; }
+</style>
+</helmet>
+
+<section style="padding:56px 48px 96px;display:flex;flex-direction:column;gap:40px">
+
+  <div style="max-width:1040px;display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">Lyads · Lot 3 · étape 6 — tablette 768 · les 9 écrans</div>
+    <h1 style="margin:0;font:800 40px/1.12 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Tablette 768</h1>
+    <p style="margin:0;max-width:840px;font:400 16px/1.65 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Une seule règle de transposition tient les neuf écrans : la colonne de contexte de droite ne disparaît jamais, elle change de position.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1180px">
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">La colonne de contexte devient un bandeau collé</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">En 1440, la conséquence de ce qu'on règle vit à droite. En 768, il n'y a plus la place — elle passe en <b style="font-weight:700">bandeau horizontal collé sous l'en-tête</b>, réduit à ses deux ou trois chiffres décisifs. Dépense projetée, taille d'audience, sortie d'apprentissage restent visibles en permanence.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Le reste de la colonne — détail du plafond, répartition, reste à faire — descend en bas de page. On garde le chiffre, on déplace l'explication.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">L'indicateur d'étapes perd ses libellés, pas ses états</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Cinq libellés ne tiennent pas dans 704 px avec le titre et les actions. Les pastilles restent, numérotées, avec la coche de validation ; <b style="font-weight:700">seule l'étape en cours porte son nom</b>.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Les grilles passent de 3 ou 6 colonnes à 2, sauf les chiffres clés du récapitulatif qui passent à 3 × 2 — un chiffre ne se coupe pas en deux lignes.</div>
+    </div>
+  </div>
+
+  <!-- ================= C4.1 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C4.1 · Choix du mode — 768</div>
+    <div style="width:768px;flex:0 0 auto;height:1180px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+        <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+        <div style="margin-top:14px;position:relative"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+        <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:24px;height:1px;background:#E8E3D9;margin:6px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-megaphone" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+        <div style="flex:1"></div>
+        <div style="width:40px;height:40px;border-radius:11px;background:#FDF5F1;border:1px solid #F4CDBB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;margin:6px 0"><i class="ph ph-lightning" style="font-size:16px;color:#B44A26"></i><div style="font:700 9px/1 'Space Grotesk',monospace;color:#94391D">38</div></div>
+        <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+          <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Nouvelle campagne</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Kola Distribution · par où commencer</div></div>
+          <div style="display:flex;align-items:center;gap:6px;border:1px solid #E8E3D9;background:#FBF9F6;border-radius:10px;padding:9px 12px;flex:0 0 auto"><i class="ph ph-lightning" style="font-size:16px;color:#B44A26"></i><span style="font:700 13px/1 'Space Grotesk',monospace;color:#94391D">38</span></div>
+          <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Quitter</div>
+        </div>
+        <div style="flex:1;padding:20px 24px;display:flex;flex-direction:column;gap:16px;background:#F4F1EB">
+          <div style="background:#F8EDD8;border:1px solid #E9CF9B;border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px">
+            <i class="ph ph-brain" style="font-size:20px;color:#7A5208"></i>
+            <div style="flex:1;min-width:0"><div style="font:700 14px/1.35 'Figtree',sans-serif;color:#5C4A25">Business Brain rempli à 60 %</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C4A25">Manquent : descriptions produits et arguments de vente.</div></div>
+            <div style="border:1.5px solid #8F5F08;color:#7A5208;padding:10px 14px;border-radius:10px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Compléter</div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #C4CAF5;border-radius:16px;overflow:hidden">
+            <div style="background:#EDEFFC;padding:18px 20px;display:flex;flex-direction:column;gap:11px;border-bottom:1px solid #C4CAF5">
+              <div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:11px;background:#3B4FD1;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-sparkle" style="font-size:22px;color:#FFFFFF"></i></div><div style="flex:1;min-width:0"><div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.015em;color:#1B1916">Laisser l'agent construire</div></div><div style="display:flex;gap:6px;flex:0 0 auto"><div style="white-space:nowrap;background:#FFFFFF;color:#2A3AA3;padding:6px 10px;border-radius:999px;font:700 12px/1 'Figtree',sans-serif">90 s</div><div style="white-space:nowrap;background:#FFFFFF;color:#2A3AA3;padding:6px 10px;border-radius:999px;font:700 12px/1 'Figtree',sans-serif">12 crédits</div></div></div>
+              <div style="font:400 14px/1.6 'Figtree',sans-serif;color:#423D37">Sept choix guidés, puis une campagne complète que vous relisez et ajustez avant publication.</div>
+            </div>
+            <div style="padding:18px 20px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+                <div style="display:flex;align-items:flex-start;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A;margin-top:2px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Structure — 3 à 8 ensembles</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A;margin-top:2px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Objectif et enchère traduits</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A;margin-top:2px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Ciblages et exclusions</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A;margin-top:2px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Répartition du budget</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A;margin-top:2px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Textes — 3 variantes</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><i class="ph ph-minus-circle" style="font-size:16px;color:#6E6862;margin-top:2px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C564E">Visuels — facturés à part</div></div>
+              </div>
+              <div style="background:#3B4FD1;color:#FFFFFF;padding:15px;border-radius:10px;font:700 16px/1 'Figtree',sans-serif;text-align:center">Décrire mon intention</div>
+              <div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E;text-align:center">12 crédits débités au lancement · 38 disponibles</div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #F4CDBB;border-radius:16px;overflow:hidden">
+            <div style="background:#FDF5F1;padding:18px 20px;display:flex;flex-direction:column;gap:11px;border-bottom:1px solid #F4CDBB">
+              <div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:11px;background:#B44A26;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-sliders-horizontal" style="font-size:22px;color:#FFFFFF"></i></div><div style="flex:1;min-width:0"><div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.015em;color:#1B1916">Construire moi-même</div></div><div style="display:flex;gap:6px;flex:0 0 auto"><div style="white-space:nowrap;background:#FFFFFF;color:#94391D;padding:6px 10px;border-radius:999px;font:700 12px/1 'Figtree',sans-serif">8 min</div><div style="white-space:nowrap;background:#FFFFFF;color:#94391D;padding:6px 10px;border-radius:999px;font:700 12px/1 'Figtree',sans-serif">0 crédit</div></div></div>
+              <div style="font:400 14px/1.6 'Figtree',sans-serif;color:#423D37">Le parcours Meta complet en quatre étapes, sans rien de masqué.</div>
+            </div>
+            <div style="padding:18px 20px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+                <div style="display:flex;align-items:flex-start;gap:9px"><div style="width:20px;height:20px;border-radius:999px;background:#F4CDBB;color:#74301C;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace;flex:0 0 auto;margin-top:1px">1</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Objectif et budget</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><div style="width:20px;height:20px;border-radius:999px;background:#F4CDBB;color:#74301C;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace;flex:0 0 auto;margin-top:1px">2</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Ciblage complet</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><div style="width:20px;height:20px;border-radius:999px;background:#F4CDBB;color:#74301C;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace;flex:0 0 auto;margin-top:1px">3</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Créatives</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><div style="width:20px;height:20px;border-radius:999px;background:#F4CDBB;color:#74301C;display:flex;align-items:center;justify-content:center;font:700 11px/1 'Space Grotesk',monospace;flex:0 0 auto;margin-top:1px">4</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Textes et UTM</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A;margin-top:2px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Contrôle total</div></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><i class="ph ph-sparkle" style="font-size:16px;color:#3B4FD1;margin-top:2px"></i><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Assistance à 2 crédits</div></div>
+              </div>
+              <div style="background:#B44A26;color:#FFFFFF;padding:15px;border-radius:10px;font:700 16px/1 'Figtree',sans-serif;text-align:center">Commencer par l'objectif</div>
+              <div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#5C564E;text-align:center">Aucun crédit pour la structure</div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px">
+            <i class="ph ph-arrows-left-right" style="font-size:20px;color:#5C564E"></i>
+            <div style="flex:1;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37"><b style="font-weight:700">Vous changerez d'avis quand vous voudrez.</b> La bascule entre les deux voies est présente à chaque étape, sans rien perdre.</div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Reprendre un brouillon</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">3 en cours</div></div>
+            <div style="border:1px solid #E8E3D9;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+              <div style="width:38px;height:38px;border-radius:10px;background:#EDEFFC;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-sparkle" style="font-size:20px;color:#3B4FD1"></i></div>
+              <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Rentrée scolaire — Cartables</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Voie agent · étape 3 / 5 · il y a 2 h</div></div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto">Reprendre</div>
+            </div>
+            <div style="border:1px solid #E8E3D9;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+              <div style="width:38px;height:38px;border-radius:10px;background:#FDF5F1;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-sliders-horizontal" style="font-size:20px;color:#B44A26"></i></div>
+              <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Soldes Août — Collection femme</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Manuel · étape 2 / 5 · 31 juil.</div></div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto">Reprendre</div>
+            </div>
+            <div style="border-top:1px solid #E8E3D9;padding-top:11px;display:flex;align-items:center;gap:10px"><i class="ph ph-copy" style="font-size:16px;color:#94391D"></i><div style="flex:1;font:600 14px/1.3 'Figtree',sans-serif;color:#94391D">Dupliquer une campagne existante</div><i class="ph ph-caret-right" style="font-size:16px;color:#A9A196"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Les deux voies passent l'une sous l'autre, à surface égale. La liste de ce que produit chaque voie passe en deux colonnes plutôt qu'une seule — la parité visuelle tient.</div>
+  </div>
+
+  <!-- ================= C4.2 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C4.2 · Brief — 768 · le résumé passe en bandeau collé</div>
+    <div style="width:768px;flex:0 0 auto;height:1240px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+        <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+        <div style="margin-top:14px;position:relative"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+        <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:24px;height:1px;background:#E8E3D9;margin:6px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-megaphone" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+        <div style="flex:1"></div>
+        <div style="width:40px;height:40px;border-radius:11px;background:#FDF5F1;border:1px solid #F4CDBB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;margin:6px 0"><i class="ph ph-lightning" style="font-size:16px;color:#B44A26"></i><div style="font:700 9px/1 'Space Grotesk',monospace;color:#94391D">38</div></div>
+        <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Décrire mon intention</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Brouillon enregistré il y a 12 s</div></div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Quitter</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:24px;border-radius:999px;background:#3B4FD1;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#FFFFFF">1</div><span style="font:700 13px/1 'Figtree',sans-serif;color:#1B1916;white-space:nowrap">Brief</span></div>
+            <div style="width:20px;height:2px;background:#D6CFC2"></div>
+            <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">2</div>
+            <div style="width:20px;height:2px;background:#D6CFC2"></div>
+            <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">3</div>
+            <div style="width:20px;height:2px;background:#D6CFC2"></div>
+            <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">4</div>
+            <div style="width:20px;height:2px;background:#D6CFC2"></div>
+            <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">5</div>
+            <div style="flex:1"></div>
+            <div style="display:flex;align-items:center;gap:7px;border:1.5px solid #F4CDBB;background:#FDF5F1;border-radius:10px;padding:9px 13px;flex:0 0 auto"><i class="ph ph-sliders-horizontal" style="font-size:16px;color:#B44A26"></i><span style="font:700 13px/1 'Figtree',sans-serif;color:#94391D;white-space:nowrap">Reprendre la main</span></div>
+          </div>
+        </div>
+
+        <div style="flex:0 0 auto;background:#EDEFFC;border-bottom:1px solid #C4CAF5;padding:14px 24px;display:flex;align-items:center;gap:16px">
+          <i class="ph ph-sparkle" style="font-size:20px;color:#3B4FD1;flex:0 0 auto"></i>
+          <div style="flex:1;min-width:0;font:400 14px/1.5 'Figtree',sans-serif;color:#1B1916"><b style="font-weight:700">Vendre les cartables Rentrée</b> au Sénégal, Côte d'Ivoire et Mali · 45 000 FCFA / j pendant 21 j · 4 audiences</div>
+          <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#1B1916">945 000</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#2A3AA3">FCFA au total</div></div>
+          <div style="flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums;border-left:1px solid #C4CAF5;padding-left:16px"><div style="font:700 17px/1.1 'Space Grotesk',monospace;color:#2A3AA3">12</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#2A3AA3">crédits</div></div>
+          <div style="background:#3B4FD1;color:#FFFFFF;padding:13px 17px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Lancer</div>
+        </div>
+
+        <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:baseline;gap:11px"><div style="width:24px;height:24px;border-radius:999px;background:#2C2925;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;flex:0 0 auto">1</div><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Objectif commercial</div></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">
+              <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;justify-content:space-between"><i class="ph ph-shopping-bag" style="font-size:20px;color:#B44A26"></i><i class="ph ph-check-circle" style="font-size:16px;color:#B44A26"></i></div><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Vendre un produit</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#94391D">Ventes · Achat</div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:6px"><i class="ph ph-user-plus" style="font-size:20px;color:#5C564E"></i><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Générer des prospects</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Prospects</div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:6px"><i class="ph ph-chat-circle-dots" style="font-size:20px;color:#5C564E"></i><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Obtenir des messages</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Engagement</div></div>
+            </div>
+            <div style="font:600 13px/1 'Figtree',sans-serif;color:#94391D">Voir les 4 autres objectifs ▾</div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:baseline;gap:11px"><div style="width:24px;height:24px;border-radius:999px;background:#2C2925;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;flex:0 0 auto">2</div><div style="flex:1"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Sur quoi mesurer les conversions ?</div></div><span style="white-space:nowrap;font:700 12px/1 'Figtree',sans-serif;color:#0E4E36;background:#E3F0EA;padding:6px 10px;border-radius:999px;flex:0 0 auto">Pixel actif</span></div>
+            <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:13px 15px;display:flex;align-items:center;gap:12px"><div style="width:20px;height:20px;border-radius:999px;border:5px solid #B44A26;background:#FFFFFF;flex:0 0 auto"></div><div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Kola Distribution — Pixel principal</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#94391D">412 887 003 · événement il y a 3 min</div></div></div>
+            <div style="border:1px solid #E8E3D9;border-radius:11px;overflow:hidden">
+              <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 96px 116px;gap:10px;align-items:center;padding:11px 13px;border-bottom:1px solid #F4F1EB;background:#FDF5F1;border-left:3px solid #B44A26"><div style="width:18px;height:18px;border-radius:999px;border:5px solid #B44A26;background:#FFFFFF"></div><div><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Achat</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#94391D">Purchase</div></div><div style="text-align:right;font:700 16px/1.1 'Space Grotesk',monospace;color:#1B1916">1 284</div><div><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▲ Suffisant</span></div></div>
+              <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 96px 116px;gap:10px;align-items:center;padding:11px 13px;border-bottom:1px solid #F4F1EB"><div style="width:18px;height:18px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF"></div><div><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Ajout au panier</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">AddToCart</div></div><div style="text-align:right;font:700 16px/1.1 'Space Grotesk',monospace;color:#1B1916">4 120</div><div><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▲ Suffisant</span></div></div>
+              <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 96px 116px;gap:10px;align-items:center;padding:11px 13px;opacity:.7"><div style="width:18px;height:18px;border-radius:999px;border:1.5px solid #D6CFC2;background:#F4F1EB"></div><div><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#5C564E">Contact</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#8E2317">sous 50 / semaine</div></div><div style="text-align:right;font:700 16px/1.1 'Space Grotesk',monospace;color:#5C564E">12</div><div><span style="white-space:nowrap;display:inline-block;background:#FBE9E6;color:#8E2317;padding:4px 9px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▼ Trop faible</span></div></div>
+            </div>
+            <div style="background:#EDEFFC;border-left:3px solid #3B4FD1;border-radius:0 10px 10px 0;padding:12px 14px;font:400 13px/1.5 'Figtree',sans-serif;color:#2A3AA3"><b style="font-weight:700">L'agent recommande « Achat ».</b> 183 achats par jour : chaque ensemble sortira d'apprentissage en 3 à 5 jours.</div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:baseline;gap:11px"><div style="width:24px;height:24px;border-radius:999px;background:#2C2925;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;flex:0 0 auto">4</div><div style="flex:1"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Qui voulez-vous toucher ?</div></div><span style="white-space:nowrap;font:700 12px/1 'Figtree',sans-serif;color:#2A3AA3;background:#EDEFFC;padding:6px 10px;border-radius:999px;flex:0 0 auto">4 → 4 ensembles</span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">
+              <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:7px"><div style="display:flex;align-items:center;justify-content:space-between"><i class="ph ph-users-three" style="font-size:20px;color:#B44A26"></i><div style="width:18px;height:18px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div></div><div style="font:700 13px/1.35 'Figtree',sans-serif;color:#1B1916">Nouvelles personnes</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#94391D">≈ 2,1 M</div></div>
+              <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:7px"><div style="display:flex;align-items:center;justify-content:space-between"><i class="ph ph-cursor-click" style="font-size:20px;color:#B44A26"></i><div style="width:18px;height:18px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div></div><div style="font:700 13px/1.35 'Figtree',sans-serif;color:#1B1916">Visiteurs du site</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#94391D">30 j · 18 400</div></div>
+              <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:7px"><div style="display:flex;align-items:center;justify-content:space-between"><i class="ph ph-users-four" style="font-size:20px;color:#B44A26"></i><div style="width:18px;height:18px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div></div><div style="font:700 13px/1.35 'Figtree',sans-serif;color:#1B1916">Similaire clients</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#94391D">1 % · ≈ 190 k</div></div>
+            </div>
+            <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:14px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:11px"><div style="width:18px;height:18px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div><i class="ph ph-tag" style="font-size:20px;color:#B44A26"></i><div style="flex:1;font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Centres d'intérêt précis</div><div style="font:700 15px/1.1 'Space Grotesk',monospace;color:#94391D;flex:0 0 auto">≈ 640 k</div></div>
+              <div style="display:flex;flex-wrap:wrap;gap:7px">
+                <div style="display:flex;align-items:center;gap:7px;background:#FFFFFF;border:1px solid #F4CDBB;border-radius:999px;padding:6px 11px"><span style="font:600 12px/1 'Figtree',sans-serif;color:#1B1916">Rentrée scolaire</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">312 k</span></div>
+                <div style="display:flex;align-items:center;gap:7px;background:#FFFFFF;border:1px solid #F4CDBB;border-radius:999px;padding:6px 11px"><span style="font:600 12px/1 'Figtree',sans-serif;color:#1B1916">Fournitures scolaires</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">198 k</span></div>
+                <div style="display:flex;align-items:center;gap:7px;background:#F4F1EB;border:1px dashed #A9A196;border-radius:999px;padding:5px 11px"><i class="ph ph-prohibit" style="font-size:13px;color:#5C564E"></i><span style="font:600 12px/1 'Figtree',sans-serif;color:#5C564E">Cartables</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Le résumé du brief quitte la colonne de droite et devient un bandeau collé sous l'en-tête, réduit à la phrase, aux deux chiffres et au bouton. Il reste lisible pendant tout le défilement — c'est sa fonction.</div>
+  </div>
+
+  <!-- ================= C4.3 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C4.3 · Proposition — 768 · arbre et raisonnement l'un sous l'autre</div>
+    <div style="width:768px;flex:0 0 auto;height:1320px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+      <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+        <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+        <div style="margin-top:14px;position:relative"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+        <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:24px;height:1px;background:#E8E3D9;margin:6px 0"></div>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-megaphone" style="font-size:22px;color:#5C564E"></i></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+        <div style="flex:1"></div>
+        <div style="width:40px;height:40px;border-radius:11px;background:#FDF5F1;border:1px solid #F4CDBB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;margin:6px 0"><i class="ph ph-lightning" style="font-size:16px;color:#B44A26"></i><div style="font:700 9px/1 'Space Grotesk',monospace;color:#94391D">26</div></div>
+        <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Proposition de l'agent</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Cartables Rentrée — Août 2026</div></div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Quitter</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:24px;height:24px;border-radius:999px;background:#146B4A;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div>
+            <div style="width:20px;height:2px;background:#146B4A"></div>
+            <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:24px;border-radius:999px;background:#3B4FD1;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#FFFFFF">2</div><span style="font:700 13px/1 'Figtree',sans-serif;color:#1B1916;white-space:nowrap">Proposition</span></div>
+            <div style="width:20px;height:2px;background:#D6CFC2"></div>
+            <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">3</div>
+            <div style="width:20px;height:2px;background:#D6CFC2"></div>
+            <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">4</div>
+            <div style="width:20px;height:2px;background:#D6CFC2"></div>
+            <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">5</div>
+            <div style="flex:1"></div>
+            <div style="display:flex;align-items:center;gap:7px;border:1.5px solid #F4CDBB;background:#FDF5F1;border-radius:10px;padding:9px 13px;flex:0 0 auto"><i class="ph ph-sliders-horizontal" style="font-size:16px;color:#B44A26"></i><span style="font:700 13px/1 'Figtree',sans-serif;color:#94391D;white-space:nowrap">Reprendre la main</span></div>
+          </div>
+        </div>
+
+        <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+          <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:center;gap:9px"><i class="ph ph-sparkle" style="font-size:20px;color:#3B4FD1"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#2A3AA3">La stratégie retenue</div></div>
+            <div style="font:400 16px/1.6 'Figtree',sans-serif;color:#1B1916;text-wrap:pretty">Test de <b style="font-weight:700">quatre angles en parallèle</b>, en <b style="font-weight:700">ABO</b> pour isoler la performance de chaque audience. Acheteurs et visiteurs récents exclus des ensembles froids. Budget volontairement déséquilibré : les audiences chaudes saturent vite.</div>
+            <div style="background:#FFFFFF;border-radius:12px;padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-variant-numeric:tabular-nums">
+              <div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">4</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">ensembles</div></div>
+              <div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">11</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">publicités</div></div>
+              <div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">945 k</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">FCFA / 21 j</div></div>
+              <div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">2,9 M</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">audience</div></div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;overflow:hidden">
+            <div style="padding:14px 18px;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:12px"><div style="flex:1;font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Structure proposée</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:8px 12px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;flex:0 0 auto">Tout déplier</div></div>
+            <div style="padding:13px 18px;border-bottom:1px solid #E8E3D9;background:#FBF9F6;display:flex;align-items:center;gap:11px">
+              <i class="ph ph-caret-down" style="font-size:16px;color:#5C564E"></i><i class="ph ph-megaphone" style="font-size:20px;color:#B44A26"></i>
+              <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Cartables Rentrée — Août 2026</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Ventes · ABO · 5 → 25 août</div></div>
+              <div style="text-align:right;flex:0 0 auto;font-variant-numeric:tabular-nums"><div style="font:700 15px/1.2 'Space Grotesk',monospace;color:#1B1916">45 000</div></div>
+            </div>
+            <div style="padding:11px 18px 11px 38px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:11px"><i class="ph ph-users-three" style="font-size:20px;color:#5C564E"></i><div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Froid — Large 25-45</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">2,1 M · 3 publicités</div></div><div style="flex:0 0 96px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">18 000</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">40 %</span></div><div style="height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:40%;height:100%;background:#B44A26;border-radius:999px"></div></div></div></div>
+            <div style="padding:11px 18px 11px 38px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:11px"><i class="ph ph-tag" style="font-size:20px;color:#5C564E"></i><div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Froid — Centres d'intérêt</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">640 k · 3 publicités</div></div><div style="flex:0 0 96px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">13 500</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">30 %</span></div><div style="height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:30%;height:100%;background:#B44A26;border-radius:999px"></div></div></div></div>
+            <div style="padding:11px 18px 11px 38px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:11px"><i class="ph ph-users-four" style="font-size:20px;color:#5C564E"></i><div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Similaire 1 % — acheteurs</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">190 k · 3 publicités</div></div><div style="flex:0 0 96px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">9 000</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">20 %</span></div><div style="height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:20%;height:100%;background:#B44A26;border-radius:999px"></div></div></div></div>
+            <div style="padding:11px 18px 11px 38px;display:flex;align-items:center;gap:11px"><i class="ph ph-cursor-click" style="font-size:20px;color:#5C564E"></i><div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Chaud — Visiteurs 30 j</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">18 400 · 2 publicités</div></div><div style="flex:0 0 96px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">4 500</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">10 %</span></div><div style="height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:10%;height:100%;background:#B44A26;border-radius:999px"></div></div></div></div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px"><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Type de budget</div><span style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#EDEFFC;padding:5px 9px;border-radius:999px">À sélectionner</span></div>
+              <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:13px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:10px"><div style="width:18px;height:18px;border-radius:999px;border:5px solid #B44A26;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">ABO</div></div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Quatre audiences dont trois jamais testées : chacune reçoit son budget et se juge seule.</div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:11px;padding:13px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:10px"><div style="width:18px;height:18px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">CBO</div></div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C564E">Meta concentrerait le budget sur une audience dès le 3ᵉ jour. Pertinent vers le 19 août.</div></div>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px"><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Emplacement</div><span style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#2A3AA3;background:#EDEFFC;padding:5px 9px;border-radius:999px">À sélectionner</span></div>
+              <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:13px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:10px"><div style="width:18px;height:18px;border-radius:999px;border:5px solid #B44A26;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Manuels</div></div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Sans Audience Network : 7 % du budget pour 1,2 % des achats sur 30 j.</div></div>
+              <div style="border:1px solid #E8E3D9;border-radius:11px;padding:13px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:10px"><div style="width:18px;height:18px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Automatiques</div></div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C564E">≈ 8 % de CPM en moins, mais Audience Network revient.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:0 0 auto;background:#FFFFFF;border-top:1px solid #E8E3D9;box-shadow:0 -2px 8px rgba(45,35,25,.10);padding:14px 24px;display:flex;align-items:center;gap:10px">
+          <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">4 ensembles · 11 publicités</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Rien n'est publié à cette étape</div></div>
+          <div style="flex:0 0 auto;white-space:nowrap;border:1.5px solid #D6CFC2;color:#423D37;padding:12.5px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Brouillon</div>
+          <div style="flex:0 0 auto;white-space:nowrap;border:1.5px solid #C4CAF5;color:#2A3AA3;padding:12.5px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Autre proposition</div>
+          <div style="flex:0 0 auto;white-space:nowrap;background:#3B4FD1;color:#FFFFFF;padding:14px 18px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Accepter</div>
+        </div>
+      </div>
+    </div>
+    <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Le raisonnement passe sous l'arbre, en deux colonnes. Les quatre décisions sans alternative sont repliées derrière un lien ; seules les deux à sélectionner restent dépliées — c'est le tri qui rend l'écran tenable en 704 px.</div>
+  </div>
+
+  <!-- ================= C4.4-C4.7 + C4.8-C4.9 ================= -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C4.4 à C4.9 · 768 — les six écrans restants</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C4.4 · Objectif et budget — le contexte en bandeau</div>
+        <div style="width:768px;height:880px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px;position:relative"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Objectif et budget</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Construction manuelle · Cartables Rentrée</div></div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Quitter</div></div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:24px;border-radius:999px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#FFFFFF">1</div><span style="font:700 13px/1 'Figtree',sans-serif;color:#1B1916;white-space:nowrap">Objectif et budget</span></div>
+                <div style="width:20px;height:2px;background:#D6CFC2"></div>
+                <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">2</div>
+                <div style="width:20px;height:2px;background:#D6CFC2"></div>
+                <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">3</div>
+                <div style="width:20px;height:2px;background:#D6CFC2"></div>
+                <div style="width:24px;height:24px;border-radius:999px;border:1.5px solid #A9A196;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">4</div>
+                <div style="flex:1"></div>
+                <div style="display:flex;align-items:center;gap:7px;border:1.5px solid #C4CAF5;background:#EDEFFC;border-radius:10px;padding:9px 13px;flex:0 0 auto"><i class="ph ph-sparkle" style="font-size:16px;color:#3B4FD1"></i><span style="font:700 13px/1 'Figtree',sans-serif;color:#2A3AA3;white-space:nowrap">Demander à l'agent</span></div>
+              </div>
+            </div>
+
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:18px">
+              <div style="flex:0 0 auto"><div style="font:500 10px/1.4 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5C564E">Dépense projetée</div><div style="display:flex;align-items:baseline;gap:5px"><div style="font:700 22px/1.1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#1B1916">945 000</div><div style="font:600 12px/1 'Figtree',sans-serif;color:#6E6862">FCFA</div></div></div>
+              <div style="width:1px;height:34px;background:#E8E3D9"></div>
+              <div style="flex:0 0 auto"><div style="font:500 10px/1.4 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5C564E">Apprentissage</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">3 à 5 j</div></div>
+              <div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">Plafond du compte</span><span style="font:700 10px/1 'Space Grotesk',monospace;color:#0E4E36">93 %</span></div><div style="height:7px;background:#E8E3D9;border-radius:999px;overflow:hidden;display:flex"><div style="width:85%;height:100%;background:#146B4A"></div><div style="width:8%;height:100%;background:#B44A26"></div></div></div>
+            </div>
+
+            <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Objectif de campagne</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+                  <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;justify-content:space-between"><i class="ph ph-shopping-bag" style="font-size:20px;color:#B44A26"></i><i class="ph ph-check-circle" style="font-size:16px;color:#B44A26"></i></div><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Vendre un produit</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#94391D">OUTCOME_SALES</div></div>
+                  <div style="border:1px solid #E8E3D9;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:6px"><i class="ph ph-user-plus" style="font-size:20px;color:#5C564E"></i><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Générer des prospects</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">OUTCOME_LEADS</div></div>
+                </div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Type de budget</div><div style="display:flex;align-items:center;gap:6px;border:1.5px solid #C4CAF5;border-radius:9px;padding:7px 11px;flex:0 0 auto"><i class="ph ph-sparkle" style="font-size:13px;color:#3B4FD1"></i><span style="font:600 12px/1 'Figtree',sans-serif;color:#2A3AA3;white-space:nowrap">Avis · 2 crédits</span></div></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+                  <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:13px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:10px"><div style="width:18px;height:18px;border-radius:999px;border:5px solid #B44A26;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">ABO</div></div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Un budget par ensemble, chacun se juge seul.</div></div>
+                  <div style="border:1px solid #E8E3D9;border-radius:11px;padding:13px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:10px"><div style="width:18px;height:18px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto"></div><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">CBO</div></div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C564E">Meta répartit entre les ensembles.</div></div>
+                </div>
+                <div style="background:#EDEFFC;border-left:3px solid #3B4FD1;border-radius:0 10px 10px 0;padding:13px 15px;display:flex;flex-direction:column;gap:9px">
+                  <div style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#2A3AA3">Avis de l'agent</div>
+                  <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#2A3AA3"><b style="font-weight:700">ABO recommandé.</b> En CBO, 70 % du budget partirait vers l'audience large dès le 3ᵉ jour.</div>
+                  <div style="display:flex;gap:8px"><div style="background:#3B4FD1;color:#FFFFFF;padding:10px 14px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif">Appliquer</div><div style="border:1.5px solid #C4CAF5;color:#2A3AA3;padding:8.5px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif">Ignorer</div></div>
+                </div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Montant et calendrier</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div style="display:flex;flex-direction:column;gap:7px"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Budget quotidien</div><div style="border:1.5px solid #B44A26;border-radius:10px;padding:11px 13px;display:flex;justify-content:space-between;align-items:baseline;box-shadow:0 0 0 3px #F4CDBB"><span style="font:700 16px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#1B1916">45 000</span><span style="font:500 12px/1 'Space Grotesk',monospace;color:#6E6862">FCFA</span></div></div>
+                  <div style="display:flex;flex-direction:column;gap:7px"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Période</div><div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center"><span style="font:600 14px/1 'Figtree',sans-serif;color:#1B1916">5 → 25 août</span><i class="ph ph-calendar-blank" style="font-size:16px;color:#5C564E"></i></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="flex:0 0 auto;background:#FFFFFF;border-top:1px solid #E8E3D9;box-shadow:0 -2px 8px rgba(45,35,25,.10);padding:14px 24px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1;min-width:0;font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Les manques sont vérifiés avant publication, pas ici</div>
+              <div style="flex:0 0 auto;white-space:nowrap;border:1.5px solid #D6CFC2;color:#423D37;padding:12.5px 16px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Enregistrer</div>
+              <div style="flex:0 0 auto;white-space:nowrap;background:#B44A26;color:#FFFFFF;padding:14px 18px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Passer au ciblage</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C4.5 · Ciblage — la taille d'audience monte dans le bandeau</div>
+        <div style="width:768px;height:820px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Ciblage</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Ensemble 1 sur 4 — Froid Large 25-45</div></div></div>
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="background:#2C2925;color:#FFFFFF;padding:8px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">1 · Froid large</div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">2 · Intérêts</div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">3 · Similaire</div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">4 · Visiteurs</div>
+                <div style="border:1.5px dashed #D6CFC2;color:#94391D;padding:6.5px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:5px"><i class="ph ph-plus" style="font-size:13px;color:#94391D"></i></div>
+              </div>
+            </div>
+
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:18px">
+              <div style="flex:0 0 auto"><div style="font:500 10px/1.4 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5C564E">Taille d'audience</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#1B1916">2 100 000</div></div>
+              <div style="flex:1;min-width:0">
+                <div style="position:relative;height:20px"><div style="position:absolute;left:0;right:0;top:6px;height:8px;background:#F4F1EB;border-radius:999px;overflow:hidden;display:flex"><div style="width:14%;height:100%;background:#F2C3BC"></div><div style="width:58%;height:100%;background:#A9D3BF"></div><div style="width:28%;height:100%;background:#F2C3BC"></div></div><div style="position:absolute;left:46%;top:2px;bottom:2px;width:3px;background:#1B1916;border-radius:2px"></div></div>
+                <div style="display:flex;justify-content:space-between;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:2px"><span>Trop étroite</span><span style="color:#0E4E36;font-weight:700">Bonne plage</span><span>Trop large</span></div>
+              </div>
+              <div style="flex:0 0 auto;border-left:1px solid #E8E3D9;padding-left:18px"><div style="font:500 10px/1.4 'Space Grotesk',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5C564E">Chevauchement max</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#7A5208">19 %</div></div>
+            </div>
+
+            <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Localisation</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">3 inclus · 1 exclu</div></div>
+                <div style="display:flex;flex-wrap:wrap;gap:7px">
+                  <div style="display:flex;align-items:center;gap:7px;background:#E3F0EA;border:1px solid #A9D3BF;border-radius:999px;padding:7px 12px"><i class="ph ph-plus-circle" style="font-size:13px;color:#0E4E36"></i><span style="font:600 13px/1 'Figtree',sans-serif;color:#0E4E36">Sénégal</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#2F4A3F">17,7 M</span></div>
+                  <div style="display:flex;align-items:center;gap:7px;background:#E3F0EA;border:1px solid #A9D3BF;border-radius:999px;padding:7px 12px"><i class="ph ph-plus-circle" style="font-size:13px;color:#0E4E36"></i><span style="font:600 13px/1 'Figtree',sans-serif;color:#0E4E36">Côte d'Ivoire</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#2F4A3F">28,2 M</span></div>
+                  <div style="display:flex;align-items:center;gap:7px;background:#E3F0EA;border:1px solid #A9D3BF;border-radius:999px;padding:7px 12px"><i class="ph ph-plus-circle" style="font-size:13px;color:#0E4E36"></i><span style="font:600 13px/1 'Figtree',sans-serif;color:#0E4E36">Mali</span><span style="font:500 10px/1 'Space Grotesk',monospace;color:#2F4A3F">22,6 M</span></div>
+                  <div style="display:flex;align-items:center;gap:7px;background:#FBE9E6;border:1px solid #E9A79E;border-radius:999px;padding:7px 12px"><i class="ph ph-minus-circle" style="font-size:13px;color:#8E2317"></i><span style="font:600 13px/1 'Figtree',sans-serif;color:#8E2317">Kaolack</span></div>
+                </div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Démographie</div>
+                <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:14px">
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Âge</div><div style="font:700 14px/1 'Space Grotesk',monospace;color:#1B1916">25 – 45 ans</div></div>
+                    <div style="position:relative;height:24px;display:flex;align-items:center"><div style="position:absolute;left:0;right:0;height:6px;background:#F4F1EB;border-radius:999px"></div><div style="position:absolute;left:18%;right:35%;height:6px;background:#B44A26;border-radius:999px"></div><div style="position:absolute;left:18%;width:20px;height:20px;border-radius:999px;background:#FFFFFF;border:2px solid #B44A26;transform:translateX(-50%)"></div><div style="position:absolute;left:65%;width:20px;height:20px;border-radius:999px;background:#FFFFFF;border:2px solid #B44A26;transform:translateX(-50%)"></div></div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:8px"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Sexe</div><div style="display:flex;border:1.5px solid #D6CFC2;border-radius:10px;overflow:hidden"><div style="flex:1;color:#423D37;padding:10px;font:600 13px/1 'Figtree',sans-serif;text-align:center">Tous</div><div style="flex:1;background:#2C2925;color:#FFFFFF;padding:10px;font:600 13px/1 'Figtree',sans-serif;text-align:center;border-left:1px solid #D6CFC2">Femmes</div></div></div>
+                </div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Exclusions</div>
+                <div style="border:1px solid #E8E3D9;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:12px"><div style="width:40px;height:24px;background:#146B4A;border-radius:999px;position:relative;flex:0 0 auto"><div style="position:absolute;top:3px;right:3px;width:18px;height:18px;background:#FFFFFF;border-radius:999px"></div></div><div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Acheteurs récents</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">3 280 personnes</div></div><div style="border:1.5px solid #D6CFC2;border-radius:9px;padding:8px 11px;font:600 13px/1 'Figtree',sans-serif;color:#1B1916;flex:0 0 auto;white-space:nowrap">180 j</div></div>
+                <div style="border:1px solid #E8E3D9;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:12px"><div style="width:40px;height:24px;background:#146B4A;border-radius:999px;position:relative;flex:0 0 auto"><div style="position:absolute;top:3px;right:3px;width:18px;height:18px;background:#FFFFFF;border-radius:999px"></div></div><div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Visiteurs de la page</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">9 140 personnes</div></div><div style="border:1.5px solid #D6CFC2;border-radius:9px;padding:8px 11px;font:600 13px/1 'Figtree',sans-serif;color:#1B1916;flex:0 0 auto;white-space:nowrap">14 j</div></div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Placements</div><div style="display:flex;border:1.5px solid #D6CFC2;border-radius:10px;overflow:hidden;flex:0 0 auto"><div style="color:#423D37;padding:8px 12px;font:600 12px/1 'Figtree',sans-serif">Auto</div><div style="background:#2C2925;color:#FFFFFF;padding:8px 12px;font:600 12px/1 'Figtree',sans-serif;border-left:1px solid #D6CFC2">Manuels</div></div></div>
+                <div style="display:flex;flex-wrap:wrap;gap:7px">
+                  <span style="white-space:nowrap;background:#FDF5F1;border:1px solid #F4CDBB;color:#94391D;padding:6px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Fil Facebook</span>
+                  <span style="white-space:nowrap;background:#FDF5F1;border:1px solid #F4CDBB;color:#94391D;padding:6px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Fil Instagram</span>
+                  <span style="white-space:nowrap;background:#FDF5F1;border:1px solid #F4CDBB;color:#94391D;padding:6px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Reels</span>
+                  <span style="white-space:nowrap;background:#FDF5F1;border:1px solid #F4CDBB;color:#94391D;padding:6px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Stories</span>
+                  <span style="white-space:nowrap;background:#FBE9E6;border:1px solid #E9A79E;color:#8E2317;padding:6px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Audience Network exclu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C4.6 + C4.7 · Créatives et textes — l'aperçu passe en onglet</div>
+        <div style="width:768px;height:900px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-sparkle" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Créatives et textes</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Froid — Large 25-45 · publicité 1 sur 3</div></div></div>
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="background:#2C2925;color:#FFFFFF;padding:8px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">1 · Angle prix</div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">2 · Solidité</div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 12px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">3 · Livraison</div>
+                <div style="flex:1"></div>
+                <div style="display:flex;border:1.5px solid #D6CFC2;border-radius:10px;overflow:hidden;flex:0 0 auto"><div style="background:#2C2925;color:#FFFFFF;padding:8px 13px;font:600 12px/1 'Figtree',sans-serif">Réglages</div><div style="color:#423D37;padding:8px 13px;font:600 12px/1 'Figtree',sans-serif;border-left:1px solid #D6CFC2">Aperçu</div></div>
+              </div>
+            </div>
+
+            <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Créative</div><div style="display:flex;gap:6px;flex:0 0 auto"><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:7px 11px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Bibliothèque</div><div style="border:1.5px solid #C4CAF5;color:#2A3AA3;padding:7px 11px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Studio</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:7px 11px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;white-space:nowrap">Téléverser</div></div></div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+                  <div style="border:1.5px solid #B44A26;border-radius:11px;overflow:hidden"><div style="height:92px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i><div style="position:absolute;top:7px;left:7px;width:18px;height:18px;border-radius:5px;background:#B44A26;display:flex;align-items:center;justify-content:center"><i class="ph ph-check" style="font-size:13px;color:#FFFFFF"></i></div></div><div style="padding:9px;display:flex;flex-direction:column;gap:4px"><div style="font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Cartable bleu</div><div style="font:700 10px/1 'Space Grotesk',monospace;color:#0E4E36">ROAS 4,12</div></div></div>
+                  <div style="border:1px solid #E8E3D9;border-radius:11px;overflow:hidden"><div style="height:92px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-image" style="font-size:24px;color:#A9A196"></i></div><div style="padding:9px;display:flex;flex-direction:column;gap:4px"><div style="font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Trio cartables</div><div style="font:700 10px/1 'Space Grotesk',monospace;color:#7A5208">ROAS 1,94</div></div></div>
+                  <div style="border:1px solid #E8E3D9;border-radius:11px;overflow:hidden"><div style="height:92px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-play-circle" style="font-size:24px;color:#A9A196"></i></div><div style="padding:9px;display:flex;flex-direction:column;gap:4px"><div style="font:600 12px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Déballage</div><div style="font:700 10px/1 'Space Grotesk',monospace;color:#6E6862">Jamais diffusée</div></div></div>
+                  <div style="border:1.5px dashed #D6CFC2;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px"><i class="ph ph-upload-simple" style="font-size:20px;color:#94391D"></i><div style="font:600 12px/1.3 'Figtree',sans-serif;color:#94391D;text-align:center">Déposer</div></div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px;border-top:1px solid #E8E3D9;padding-top:12px">
+                  <div style="border:1px solid #A9D3BF;background:#E3F0EA;border-radius:10px;padding:11px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;justify-content:space-between"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Fil 1:1</div><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i></div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2F4A3F">conforme</div></div>
+                  <div style="border:1px solid #E9CF9B;background:#F8EDD8;border-radius:10px;padding:11px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;justify-content:space-between"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Stories</div><i class="ph ph-warning" style="font-size:16px;color:#8F5F08"></i></div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#7A5208">recadrée</div></div>
+                  <div style="border:1px solid #E9CF9B;background:#F8EDD8;border-radius:10px;padding:11px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;justify-content:space-between"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Reels</div><i class="ph ph-warning" style="font-size:16px;color:#8F5F08"></i></div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#7A5208">texte masqué</div></div>
+                  <div style="border:1px solid #A9D3BF;background:#E3F0EA;border-radius:10px;padding:11px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;justify-content:space-between"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Fil IG 4:5</div><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i></div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#2F4A3F">conforme</div></div>
+                </div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:13px">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Textes</div><div style="display:flex;align-items:center;gap:6px;border:1.5px solid #C4CAF5;border-radius:9px;padding:7px 11px;flex:0 0 auto"><i class="ph ph-sparkle" style="font-size:13px;color:#3B4FD1"></i><span style="font:600 12px/1 'Figtree',sans-serif;color:#2A3AA3;white-space:nowrap">Proposer · 2 crédits</span></div></div>
+                <div style="border:1.5px solid #B44A26;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 0 0 3px #F4CDBB">
+                  <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#1B1916">Le cartable qui tient 3 rentrées — et pas seulement une. Testé par 2 000 écoliers, livré chez vous en 48 h.</div>
+                  <div style="display:flex;align-items:center;gap:11px"><div style="flex:1;height:5px;background:#F4F1EB;border-radius:999px;overflow:hidden"><div style="width:82%;height:100%;background:#146B4A;border-radius:999px"></div></div><span style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">103 / 125</span></div>
+                </div>
+                <div style="border:1px solid #C4CAF5;background:#F7F8FE;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:7px">
+                  <div style="display:flex;align-items:center;gap:6px"><i class="ph ph-sparkle" style="font-size:13px;color:#3B4FD1"></i><span style="font:700 10px/1 'Space Grotesk',monospace;letter-spacing:.08em;text-transform:uppercase;color:#2A3AA3">Écrit par Lyads</span></div>
+                  <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#1B1916">Un cartable solide, léger, garanti 3 ans. Vos enfants le porteront jusqu'au collège.</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px">
+                  <div style="display:flex;flex-direction:column;gap:7px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Titre</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">27 / 40</div></div><div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:11px 13px;font:500 14px/1 'Figtree',sans-serif;color:#1B1916">Solide, léger, garanti 3 ans</div></div>
+                  <div style="display:flex;flex-direction:column;gap:7px"><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Appel à l'action</div><div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center"><span style="font:600 14px/1 'Figtree',sans-serif;color:#1B1916">Acheter</span><i class="ph ph-caret-down" style="font-size:16px;color:#5C564E"></i></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C4.8 · Aperçu — 3 placements par ligne en comparaison</div>
+        <div style="width:768px;height:700px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Aperçu par placement</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Publicité 1 sur 11 — Angle prix</div></div>
+              <div style="display:flex;border:1.5px solid #D6CFC2;border-radius:10px;overflow:hidden;flex:0 0 auto"><div style="color:#423D37;padding:9px 13px;font:600 13px/1 'Figtree',sans-serif">Un par un</div><div style="background:#2C2925;color:#FFFFFF;padding:9px 13px;font:600 13px/1 'Figtree',sans-serif;border-left:1px solid #D6CFC2">Comparer</div></div>
+            </div>
+            <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px">
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">6 placements activés</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">Deux demandent une décision.</div></div>
+                <span style="white-space:nowrap;background:#E3F0EA;color:#0E4E36;padding:6px 10px;border-radius:999px;font:700 12px/1.3 'Figtree',sans-serif;flex:0 0 auto">4 conformes</span>
+                <span style="white-space:nowrap;background:#8F5F08;color:#FFFFFF;padding:6px 10px;border-radius:999px;font:700 12px/1.3 'Figtree',sans-serif;flex:0 0 auto">2 avertissements</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+                <div style="background:#FFFFFF;border:1px solid #A9D3BF;border-radius:12px;overflow:hidden"><div style="padding:10px 12px;background:#E3F0EA;border-bottom:1px solid #A9D3BF;display:flex;align-items:center;gap:7px"><i class="ph ph-facebook-logo" style="font-size:16px;color:#0E4E36"></i><div style="flex:1;min-width:0;font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Fil Facebook</div><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i></div><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i></div><div style="padding:10px 12px;font:500 10px/1.45 'Space Grotesk',monospace;color:#2F4A3F">1:1 natif · ≈ 48 %</div></div>
+                <div style="background:#FFFFFF;border:1px solid #A9D3BF;border-radius:12px;overflow:hidden"><div style="padding:10px 12px;background:#E3F0EA;border-bottom:1px solid #A9D3BF;display:flex;align-items:center;gap:7px"><i class="ph ph-instagram-logo" style="font-size:16px;color:#0E4E36"></i><div style="flex:1;min-width:0;font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Fil Instagram</div><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i></div><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i></div><div style="padding:10px 12px;font:500 10px/1.45 'Space Grotesk',monospace;color:#2F4A3F">4:5 recadré · ≈ 21 %</div></div>
+                <div style="background:#FFFFFF;border:1.5px solid #8F5F08;border-radius:12px;overflow:hidden"><div style="padding:10px 12px;background:#F8EDD8;border-bottom:1px solid #E9CF9B;display:flex;align-items:center;gap:7px"><i class="ph ph-instagram-logo" style="font-size:16px;color:#7A5208"></i><div style="flex:1;min-width:0;font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Stories IG</div><i class="ph ph-warning" style="font-size:16px;color:#8F5F08"></i></div><div style="height:132px;background:#F4F1EB;display:flex;align-items:center;justify-content:center;position:relative"><i class="ph ph-image" style="font-size:20px;color:#A9A196"></i><div style="position:absolute;left:0;right:0;top:0;height:26px;background:#0F0E0C;opacity:.35"></div><div style="position:absolute;left:0;right:0;bottom:0;height:36px;background:#0F0E0C;opacity:.45"></div></div><div style="padding:10px 12px;font:500 10px/1.45 'Space Grotesk',monospace;color:#7A5208">texte coupé · bandes</div></div>
+              </div>
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px">
+                <i class="ph ph-warning" style="font-size:20px;color:#8F5F08"></i>
+                <div style="flex:1;min-width:0;font:400 13px/1.5 'Figtree',sans-serif;color:#423D37">Les deux Stories ont la même cause. <b style="font-weight:700">Une créative 9:16 native corrigerait les deux</b> — 18 % de la dépense.</div>
+                <div style="border:1.5px solid #C4CAF5;color:#2A3AA3;padding:10px 14px;border-radius:10px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Générer en 9:16</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:768px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">C4.9 · Publication — chiffres clés en 3 × 2, options en pied collé</div>
+        <div style="width:768px;height:880px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="width:64px;flex:0 0 64px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:3px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div>
+            <div style="margin-top:14px"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;border:1px solid #D6CFC2;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div></div>
+            <div style="width:32px;height:1px;background:#E8E3D9;margin:12px 0"></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><i class="ph ph-squares-four" style="font-size:22px;color:#5C564E"></i></div>
+            <div style="width:44px;height:44px;border-radius:12px;background:#FAE8DF;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;left:0;top:11px;width:3px;height:22px;background:#B44A26;border-radius:0 3px 3px 0"></div><i class="ph ph-rocket-launch" style="font-size:22px;color:#94391D"></i></div>
+            <div style="flex:1"></div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#3B4FD1;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Figtree',sans-serif">AD</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="flex:0 0 auto;background:#FFFFFF;border-bottom:1px solid #E8E3D9;padding:13px 24px;display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0"><div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Récapitulatif et publication</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862;margin-top:3px">Cartables Rentrée — Août 2026</div></div>
+              <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Quitter</div>
+            </div>
+            <div style="flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:14px;background:#F4F1EB;overflow:hidden">
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-variant-numeric:tabular-nums">
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Budget quotidien</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">45 000</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">FCFA</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Durée</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">21</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">jours</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Dépense projetée</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">945 000</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">FCFA</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Ensembles</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">4</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">ABO</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Publicités</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">11</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">2 formats</div></div>
+                <div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#5C564E">Audience</div><div style="font:700 22px/1.1 'Space Grotesk',monospace;color:#1B1916">2,9 M</div><div style="font:500 10px/1.3 'Space Grotesk',monospace;color:#6E6862">personnes</div></div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;overflow:hidden">
+                <div style="padding:14px 18px;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:10px"><div style="flex:1;font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Vérifications</div><span style="white-space:nowrap;background:#E3F0EA;color:#0E4E36;padding:5px 10px;border-radius:999px;font:700 12px/1.3 'Figtree',sans-serif">5 conformes</span><span style="white-space:nowrap;background:#8F5F08;color:#FFFFFF;padding:5px 10px;border-radius:999px;font:700 12px/1.3 'Figtree',sans-serif">2 avert.</span><span style="white-space:nowrap;background:#F4F1EB;color:#423D37;padding:5px 10px;border-radius:999px;font:700 12px/1.3 'Figtree',sans-serif">0 erreur</span></div>
+                <div style="padding:11px 18px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:11px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><span style="flex:1;font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">Pixel connecté et actif</span></div>
+                <div style="padding:11px 18px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:11px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><span style="flex:1;font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">Événement présent sur 7 jours</span></div>
+                <div style="padding:11px 18px;border-bottom:1px solid #F4F1EB;display:flex;align-items:center;gap:11px"><i class="ph ph-check-circle" style="font-size:16px;color:#146B4A"></i><span style="flex:1;font:600 13px/1.3 'Figtree',sans-serif;color:#1B1916">URL accessible · exclusions appliquées · budget cohérent</span></div>
+                <div style="padding:13px 18px;border-bottom:1px solid #F4F1EB;background:#F8EDD8;border-left:3px solid #8F5F08;display:flex;align-items:flex-start;gap:11px"><i class="ph ph-warning" style="font-size:16px;color:#8F5F08;margin-top:1px"></i><div style="flex:1"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">2 créatives recadrées pour les stories</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C4A25">Texte tronqué à 42 caractères.</div></div><div style="border:1.5px solid #8F5F08;color:#7A5208;padding:8px 12px;border-radius:9px;font:700 12px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Revoir</div></div>
+                <div style="padding:13px 18px;background:#F8EDD8;border-left:3px solid #8F5F08;display:flex;align-items:flex-start;gap:11px"><i class="ph ph-warning" style="font-size:16px;color:#8F5F08;margin-top:1px"></i><div style="flex:1"><div style="font:700 13px/1.3 'Figtree',sans-serif;color:#1B1916">Chevauchement de 19 % entre deux ensembles</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C4A25">Acceptable, à surveiller au-delà de 25 %.</div></div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:8px 12px;border-radius:9px;font:600 12px/1 'Figtree',sans-serif;flex:0 0 auto;white-space:nowrap">Détail</div></div>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:11px">
+                <div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Comment publier</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div style="border:1.5px solid #B44A26;background:#FDF5F1;border-radius:11px;padding:13px;display:flex;align-items:flex-start;gap:11px"><div style="width:18px;height:18px;border-radius:999px;border:5px solid #B44A26;background:#FFFFFF;flex:0 0 auto;margin-top:2px"></div><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Publier en pause</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5D2A1B">Aucune dépense tant que vous n'activez pas.</div></div></div>
+                  <div style="border:1px solid #E8E3D9;border-radius:11px;padding:13px;display:flex;align-items:flex-start;gap:11px"><div style="width:18px;height:18px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto;margin-top:2px"></div><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Publier maintenant</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">La dépense commence immédiatement.</div></div></div>
+                  <div style="border:1px solid #E8E3D9;border-radius:11px;padding:13px;display:flex;align-items:flex-start;gap:11px"><div style="width:18px;height:18px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto;margin-top:2px"></div><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Programmer</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">Le 5 août à 00:00, heure de Dakar.</div></div></div>
+                  <div style="border:1px solid #E8E3D9;border-radius:11px;padding:13px;display:flex;align-items:flex-start;gap:11px"><div style="width:18px;height:18px;border-radius:999px;border:1.5px solid #A9A196;background:#FFFFFF;flex:0 0 auto;margin-top:2px"></div><div style="flex:1"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Enregistrer en brouillon</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#5C564E">Rien n'est créé sur Meta.</div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="flex:0 0 auto;background:#FFFFFF;border-top:1px solid #E8E3D9;box-shadow:0 -2px 8px rgba(45,35,25,.10);padding:14px 24px;display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">2 avertissements non résolus</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Consignés dans le journal · solde après : 30 / 200</div></div>
+              <div style="flex:0 0 auto;white-space:nowrap;background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Publier en pause · 6 crédits</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>

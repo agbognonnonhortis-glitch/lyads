@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#F4F1EB; font-family:'Figtree',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#B44A26; text-decoration:underline; text-underline-offset:2px; }
+  a:hover { color:#94391D; }
+</style>
+</helmet>
+
+<div style="max-width:1280px;margin:0 auto;padding:56px 40px 96px;display:flex;flex-direction:column;gap:56px">
+
+  <header style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #2C2925;padding-bottom:28px">
+    <div style="font:600 11px/1 'Space Grotesk',monospace;letter-spacing:.16em;text-transform:uppercase;color:#6E6862">Lyads · Design system v1.0 · direction retenue « Terrain — argile &amp; lumière »</div>
+    <h1 style="margin:0;font:800 44px/1.1 'Figtree',sans-serif;letter-spacing:-.025em;color:#1B1916">Le système</h1>
+    <p style="margin:0;max-width:760px;font:400 17px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Jetons, typographie, composants, états et règles d'usage. Tout ce qui suit est normatif : si un écran a besoin de quelque chose qui n'est pas ici, on l'ajoute ici d'abord.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px">
+      <a href="#jetons" style="text-decoration:none;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:999px;padding:8px 16px;font:600 13px/1 'Figtree',sans-serif;color:#423D37">Jetons</a>
+      <a href="#typo" style="text-decoration:none;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:999px;padding:8px 16px;font:600 13px/1 'Figtree',sans-serif;color:#423D37">Typographie</a>
+      <a href="#code" style="text-decoration:none;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:999px;padding:8px 16px;font:600 13px/1 'Figtree',sans-serif;color:#423D37">Variables &amp; Tailwind</a>
+      <a href="#composants" style="text-decoration:none;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:999px;padding:8px 16px;font:600 13px/1 'Figtree',sans-serif;color:#423D37">Composants</a>
+      <a href="#agent" style="text-decoration:none;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:999px;padding:8px 16px;font:600 13px/1 'Figtree',sans-serif;color:#423D37">Règles de l'agent</a>
+      <a href="#redaction" style="text-decoration:none;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:999px;padding:8px 16px;font:600 13px/1 'Figtree',sans-serif;color:#423D37">Rédaction</a>
+    </div>
+  </header>
+
+  <!-- ============ PRINCIPES ============ -->
+  <section style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px">
+      <div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Une décision par écran</div>
+      <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E">Chaque vue a une action principale et une seule. Le reste est secondaire ou différé.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px">
+      <div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Lisible au soleil</div>
+      <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E">Contraste minimum 4,5:1 partout, 3:1 sur les éléments non textuels. Jamais de gris clair sur blanc.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px">
+      <div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">L'agent propose, l'humain valide</div>
+      <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E">Rien n'est appliqué sur un compte publicitaire sans confirmation explicite. L'indigo signale toujours l'agent.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px">
+      <div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Le pouce d'abord</div>
+      <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E">48 px de cible minimum, actions en bas d'écran sur mobile, jamais de défilement horizontal.</div>
+    </div>
+  </section>
+
+  <!-- ============ JETONS COULEUR ============ -->
+  <section id="jetons" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font:800 30px/1.15 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Jetons de couleur</h2>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font:700 14px/1 'Figtree',sans-serif;color:#2C2925">Primaire « Argile » — <span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">--ly-primary-*</span></div>
+      <div style="display:grid;grid-template-columns:repeat(11,1fr);gap:3px">
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#FDF5F1;border:1px solid #E8E3D9;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">50<br>FDF5F1</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#FAE8DF;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">100<br>FAE8DF</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#F4CDBB;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">200<br>F4CDBB</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#EBAA8D;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">300<br>EBAA8D</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#DF815B;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">400<br>DF815B</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#CE5F35;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">500<br>CE5F35</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#B44A26;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">600 ★<br>B44A26</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#94391D;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">700<br>94391D</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#74301C;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">800<br>74301C</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#5D2A1B;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">900<br>5D2A1B</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#33150C;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">950<br>33150C</div></div>
+      </div>
+      <div style="font:500 11px/1.6 'Space Grotesk',monospace;color:#6E6862">★ 600 = couleur d'action par défaut (4,9:1 sur blanc). 500 réservé aux graphiques et survols, 300 aux fonds de données en mode sombre.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font:700 14px/1 'Figtree',sans-serif;color:#2C2925">Neutres « Sable » — <span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">--ly-neutral-*</span> · chauds, jamais gris pur</div>
+      <div style="display:grid;grid-template-columns:repeat(11,1fr);gap:3px">
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">0<br>FFFFFF</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#FBF9F6;border:1px solid #E8E3D9;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">50<br>FBF9F6</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#F4F1EB;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">100<br>F4F1EB</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#E8E3D9;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">200<br>E8E3D9</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#D6CFC2;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">300<br>D6CFC2</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#A9A196;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">400<br>A9A196</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#6E6862;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">500<br>6E6862</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#5C564E;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">600<br>5C564E</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#423D37;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">700<br>423D37</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#2C2925;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">800<br>2C2925</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="height:56px;background:#0F0E0C;border-radius:6px"></div><div style="font:500 9px/1.35 'Space Grotesk',monospace;color:#6E6862">950<br>0F0E0C</div></div>
+      </div>
+      <div style="font:500 11px/1.6 'Space Grotesk',monospace;color:#6E6862">Contraste : #6E6862 vaut 5,5:1 sur blanc et 4,9:1 sur neutral-100 — c’est le gris le plus clair admis pour du texte. Surfaces sombres : 950 fond de page · #1B1916 surface · #262320 surface haute · #35312B bordure.</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font:700 14px/1 'Figtree',sans-serif;color:#2C2925">Sémantique — valeur clair / valeur sombre</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:10px"><div style="width:24px;height:24px;background:#146B4A;border-radius:6px"></div><div style="flex:1;font:600 14px/1 'Figtree',sans-serif;color:#2C2925">Succès / secondaire</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;text-align:right">#146B4A · bg #E3F0EA<br>sombre #6FD3A6 · bg #12352A</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:10px"><div style="width:24px;height:24px;background:#8F5F08;border-radius:6px"></div><div style="flex:1;font:600 14px/1 'Figtree',sans-serif;color:#2C2925">Avertissement</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;text-align:right">#8F5F08 · bg #F8EDD8 (texte #7A5208)<br>sombre #E7B54B · bg #33260B</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:10px"><div style="width:24px;height:24px;background:#C0311F;border-radius:6px"></div><div style="flex:1;font:600 14px/1 'Figtree',sans-serif;color:#2C2925">Erreur / destructif</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;text-align:right">#C0311F · bg #FBE9E6<br>sombre #F07064 · bg #3A1512</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:10px"><div style="width:24px;height:24px;background:#3B4FD1;border-radius:6px"></div><div style="flex:1;font:600 14px/1 'Figtree',sans-serif;color:#2C2925">Information</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862;text-align:right">#3B4FD1 · bg #EDEFFC<br>sombre #8E9BF0 · bg #171A33</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font:700 14px/1 'Figtree',sans-serif;color:#2C2925">Agent — <span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">--ly-agent-*</span> · seule famille froide</div>
+        <div style="border:1px solid #E8E3D9;border-radius:12px;padding:16px;background:#FBF9F6;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:4px">
+            <div style="flex:1;height:48px;background:#EDEFFC;border-radius:6px"></div>
+            <div style="flex:1;height:48px;background:#C4CAF5;border-radius:6px"></div>
+            <div style="flex:1;height:48px;background:#8E9BF0;border-radius:6px"></div>
+            <div style="flex:1;height:48px;background:#3B4FD1;border-radius:6px"></div>
+            <div style="flex:1;height:48px;background:#2A3AA3;border-radius:6px"></div>
+            <div style="flex:1;height:48px;background:#1A2470;border-radius:6px"></div>
+          </div>
+          <div style="font:500 11px/1.6 'Space Grotesk',monospace;color:#6E6862">50 EDEFFC · 200 C4CAF5 · 300 8E9BF0 · 500 3B4FD1 ★ · 700 2A3AA3 · 900 1A2470</div>
+          <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#423D37">Interdit hors contexte agent : aucun bouton produit, aucun état de performance, aucune série de graphique en indigo. Tout bloc produit par l'agent est posé sur <span style="font:500 13px/1 'Space Grotesk',monospace">agent-50</span> avec liseré <span style="font:500 13px/1 'Space Grotesk',monospace">agent-200</span> (clair) ou fond <span style="font:500 13px/1 'Space Grotesk',monospace">#171A33</span> liseré <span style="font:500 13px/1 'Space Grotesk',monospace">#2E3675</span> (sombre).</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font:700 14px/1 'Figtree',sans-serif;color:#2C2925">Performance — <span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">--ly-perf-*</span> · couleur + glyphe + mot, toujours les trois</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px">
+        <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#FFFFFF"><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#146B4A;color:#FFFFFF;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">▲ Performe</div><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#12352A;color:#6FD3A6;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">▲ Performe</div><div style="font:500 10px/1.5 'Space Grotesk',monospace;color:#6E6862">perf-good<br>ROAS ≥ seuil</div></div>
+        <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#FFFFFF"><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#8F5F08;color:#FFFFFF;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">◆ À surveiller</div><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#33260B;color:#E7B54B;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">◆ À surveiller</div><div style="font:500 10px/1.5 'Space Grotesk',monospace;color:#6E6862">perf-watch<br>0,8×–1× seuil</div></div>
+        <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#FFFFFF"><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#C0311F;color:#FFFFFF;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">▼ Sous-performe</div><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#3A1512;color:#F07064;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">▼ Sous-performe</div><div style="font:500 10px/1.5 'Space Grotesk',monospace;color:#6E6862">perf-bad<br>&lt; 0,8× seuil</div></div>
+        <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#FFFFFF"><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#EDEFFC;color:#2A3AA3;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">◐ Apprentissage</div><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#171A33;color:#8E9BF0;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">◐ Apprentissage</div><div style="font:500 10px/1.5 'Space Grotesk',monospace;color:#6E6862">perf-learning<br>&lt; 50 conversions</div></div>
+        <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#FFFFFF"><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#E8E3D9;color:#423D37;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">■ Budget épuisé</div><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#35312B;color:#D6CFC2;padding:5px 10px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">■ Budget épuisé</div><div style="font:500 10px/1.5 'Space Grotesk',monospace;color:#6E6862">perf-depleted</div></div>
+        <div style="border:1px solid #E8E3D9;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#FFFFFF"><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#FFFFFF;border:1.5px dashed #A9A196;color:#5C564E;padding:4px 9px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">‖ En pause</div><div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#1B1916;border:1.5px dashed #5C564E;color:#A9A196;padding:4px 9px;border-radius:999px;font:700 11px/1.2 'Figtree',sans-serif">‖ En pause</div><div style="font:500 10px/1.5 'Space Grotesk',monospace;color:#6E6862">perf-paused</div></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <div style="grid-column:span 2;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1 'Figtree',sans-serif;color:#2C2925">Icônes</div><div style="font:500 11px/1.7 'Space Grotesk',monospace;color:#5C564E">Phosphor, style <b style="color:#2C2925">regular</b> — duotone et fill interdits.<br>Échelle à 6 pas : <b style="color:#2C2925">13</b> glyphe en ligne dans le texte et les pastilles · <b style="color:#2C2925">16</b> pictogramme de contrôle (caret, horloge, croix) · <b style="color:#2C2925">20</b> navigation déployée et actions d'en-tête · <b style="color:#2C2925">22</b> rail réduit et barre d'onglets · <b style="color:#2C2925">24</b> en-tête de bloc et alerte · <b style="color:#2C2925">30</b> état vide. Trait 2 px, jamais mis à l'échelle : on change de pas, pas de <span style="font-variant-numeric:tabular-nums">transform: scale</span>.<br>Une icône ne porte jamais seule un sens — toujours doublée d'un mot, sauf dans une barre d'action où l'étiquette est lue par le lecteur d'écran.</div></div>
+      <div style="grid-column:span 2;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1 'Figtree',sans-serif;color:#2C2925">Points de rupture</div><div style="font:500 11px/1.7 'Space Grotesk',monospace;color:#5C564E">sm 360 · md 768 · lg 1024 · xl 1280 · 2xl 1600<br>Le tableau dense n'apparaît qu'à partir de <b style="color:#2C2925">lg</b>. En dessous : une carte par ligne. Contenu centré, largeur maximale 1280, gouttière 20 sous md / 32 au-dessus.</div></div>
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1 'Figtree',sans-serif;color:#2C2925">Espacement</div><div style="font:500 11px/1.7 'Space Grotesk',monospace;color:#5C564E">4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80<br>Base 4. Gouttière de page 20 (mobile) / 32 (desktop). Écart intra-carte 12, inter-carte 16.</div></div>
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1 'Figtree',sans-serif;color:#2C2925">Rayons</div><div style="font:500 11px/1.7 'Space Grotesk',monospace;color:#5C564E">sm 6 (pastilles internes) · md 10 (boutons, champs) · lg 14 (cartes) · xl 20 (feuilles, modales) · pill 999<br>Jamais d'angle vif.</div></div>
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1 'Figtree',sans-serif;color:#2C2925">Élévation</div><div style="font:500 11px/1.7 'Space Grotesk',monospace;color:#5C564E">e0 aucune<br>e1 0 1px 2px rgba(45,35,25,.06)<br>e2 0 2px 8px rgba(45,35,25,.10)<br>e3 0 8px 24px rgba(45,35,25,.14)<br>Sombre : élévation par la surface, pas par l'ombre.</div></div>
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="font:700 13px/1 'Figtree',sans-serif;color:#2C2925">Mouvement &amp; focus</div><div style="font:500 11px/1.7 'Space Grotesk',monospace;color:#5C564E">fast 140 · base 200 · slow 320 ms<br>ease-out cubic-bezier(.16,1,.3,1)<br>Focus : anneau 3 px primary-200 + bordure primary-600. Respecte prefers-reduced-motion.</div></div>
+    </div>
+  </section>
+
+  <!-- ============ TYPO ============ -->
+  <section id="typo" style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font:800 30px/1.15 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Typographie</h2>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:start">
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px">
+        <div style="font:500 12px/1.55 'Space Grotesk',monospace;color:#5C564E">Figtree — interface et titres, graisses 400/500/600/700/800. Space&nbsp;Grotesk — toute valeur numérique et tout libellé technique, graisses 500/600/700, <span style="font-variant-numeric:tabular-nums">chiffres tabulaires</span>.</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:baseline;gap:16px"><div style="flex:0 0 132px;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">display / 34 · 800 · -2%</div><div style="font:800 34px/1.15 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Performance des campagnes</div></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><div style="flex:0 0 132px;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">title / 26 · 700</div><div style="font:700 26px/1.25 'Figtree',sans-serif;color:#1B1916">Recommandations prioritaires</div></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><div style="flex:0 0 132px;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">heading / 19 · 700</div><div style="font:700 19px/1.35 'Figtree',sans-serif;color:#2C2925">Dépense des 7 derniers jours</div></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><div style="flex:0 0 132px;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">body / 16 · 400 · 1.65</div><div style="font:400 16px/1.65 'Figtree',sans-serif;color:#423D37">62 % du budget est consommé par des ensembles sous le seuil de rentabilité.</div></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><div style="flex:0 0 132px;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">body-sm / 14 · 400 · 1.55</div><div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E">Texte secondaire, aides de saisie, légendes de carte.</div></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><div style="flex:0 0 132px;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">label / 13 · 600</div><div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Coût par achat</div></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><div style="flex:0 0 132px;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">caption / 12 · 400</div><div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Comparé au 17 – 23 juillet</div></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><div style="flex:0 0 132px;font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">mono-label / 11 · 500 · +14%</div><div style="font:500 11px/1.3 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">Section</div></div>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px">
+        <div style="font:600 12px/1 'Figtree',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#5C564E">Chiffres</div>
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font:700 38px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.03em;color:#1B1916">1 245 800</div>
+          <div style="font:600 15px/1 'Figtree',sans-serif;color:#6E6862">FCFA</div>
+        </div>
+        <div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#E3F0EA;color:#0E4E36;padding:5px 10px;border-radius:999px;font:700 13px/1.2 'Figtree',sans-serif">▲ 12,4 % cette semaine</div>
+        <div style="font:500 11px/1.6 'Space Grotesk',monospace;color:#5C564E">num-hero 38/700 · num-lg 30/700 · num-md 20/700 · num-sm 14/500, toujours <span style="font-variant-numeric:tabular-nums">tabular-nums</span> et alignés à droite en tableau.</div>
+        <div style="border-top:1px solid #E8E3D9;padding-top:12px;font:400 14px/1.7 'Figtree',sans-serif;color:#423D37">Format fr-FR : séparateur de milliers = espace insécable fine, décimale = virgule, devise en suffixe (<span style="font:500 13px/1 'Space Grotesk',monospace">1 245 800 FCFA</span>). Au-delà de 7 chiffres, abréger : <span style="font:500 13px/1 'Space Grotesk',monospace">1,25 M</span>. Ratios à 2 décimales, pourcentages à 1.</div>
+        <div style="background:#FBE9E6;border-radius:10px;padding:12px;font:400 13px/1.55 'Figtree',sans-serif;color:#8E2317"><b style="font-weight:700">Jamais :</b> une variation exprimée par la seule couleur du texte. Toujours pastille + glyphe + valeur. Le placeholder d’un champ est du texte utile : <span style="font-family:'Space Grotesk',monospace">neutral-500</span> minimum, jamais <span style="font-family:'Space Grotesk',monospace">neutral-400</span>.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CODE ============ -->
+  <section id="code" style="display:flex;flex-direction:column;gap:16px">
+    <h2 style="margin:0;font:800 30px/1.15 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Variables CSS &amp; configuration Tailwind</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+      <pre style="margin:0;background:#1B1916;color:#D6CFC2;border-radius:14px;padding:20px;overflow:auto;font:500 11.5px/1.75 'Space Grotesk',monospace">:root {
+  --ly-primary-50:#FDF5F1;  --ly-primary-100:#FAE8DF;
+  --ly-primary-200:#F4CDBB; --ly-primary-300:#EBAA8D;
+  --ly-primary-400:#DF815B; --ly-primary-500:#CE5F35;
+  --ly-primary-600:#B44A26; --ly-primary-700:#94391D;
+  --ly-primary-800:#74301C; --ly-primary-900:#5D2A1B;
+  --ly-primary-950:#33150C;
+
+  --ly-neutral-0:#FFFFFF;   --ly-neutral-50:#FBF9F6;
+  --ly-neutral-100:#F4F1EB; --ly-neutral-200:#E8E3D9;
+  --ly-neutral-300:#D6CFC2; --ly-neutral-400:#A9A196;
+  --ly-neutral-500:#6E6862; --ly-neutral-600:#5C564E;
+  --ly-neutral-700:#423D37; --ly-neutral-800:#2C2925;
+  --ly-neutral-900:#1B1916; --ly-neutral-950:#0F0E0C;
+
+  --ly-agent-50:#EDEFFC;  --ly-agent-200:#C4CAF5;
+  --ly-agent-300:#8E9BF0; --ly-agent-500:#3B4FD1;
+  --ly-agent-700:#2A3AA3; --ly-agent-900:#1A2470;
+
+  --ly-success:#146B4A; --ly-success-bg:#E3F0EA;
+  --ly-warning:#8F5F08; --ly-warning-bg:#F8EDD8;
+  --ly-warning-text:#7A5208; /* texte sur warning-bg */
+  --ly-error:#C0311F;   --ly-error-bg:#FBE9E6;
+  --ly-info:#3B4FD1;    --ly-info-bg:#EDEFFC;
+
+  /* rôles */
+  --ly-bg:var(--ly-neutral-100);
+  --ly-surface:var(--ly-neutral-0);
+  --ly-surface-sunken:var(--ly-neutral-50);
+  --ly-border:var(--ly-neutral-200);
+  --ly-border-strong:var(--ly-neutral-300);
+  --ly-text:#1B1916;
+  --ly-text-secondary:var(--ly-neutral-600);
+  --ly-text-muted:var(--ly-neutral-500);
+  --ly-action:var(--ly-primary-600);
+  --ly-action-hover:var(--ly-primary-700);
+
+  --ly-radius-sm:6px;  --ly-radius-md:10px;
+  --ly-radius-lg:14px; --ly-radius-xl:20px;
+  --ly-e1:0 1px 2px rgba(45,35,25,.06);
+  --ly-e2:0 2px 8px rgba(45,35,25,.10);
+  --ly-e3:0 8px 24px rgba(45,35,25,.14);
+  --ly-fast:140ms; --ly-base:200ms; --ly-slow:320ms;
+  --ly-ease:cubic-bezier(.16,1,.3,1);
+}
+
+[data-theme="dark"] {
+  --ly-bg:var(--ly-neutral-950);
+  --ly-surface:var(--ly-neutral-900);
+  --ly-surface-sunken:#262320;
+  --ly-border:#35312B;
+  --ly-border-strong:#4A443C;
+  --ly-text:#F4F1EB;
+  --ly-text-secondary:#C9C3B8;
+  --ly-text-muted:var(--ly-neutral-400);
+  --ly-action:var(--ly-primary-300);
+  --ly-action-hover:var(--ly-primary-200);
+  --ly-success:#6FD3A6; --ly-success-bg:#12352A;
+  --ly-warning:#E7B54B; --ly-warning-bg:#33260B;
+  --ly-error:#F07064;   --ly-error-bg:#3A1512;
+  --ly-info:#8E9BF0;    --ly-info-bg:#171A33;
+  --ly-e1:none; --ly-e2:none; --ly-e3:0 8px 24px rgba(0,0,0,.6);
+}</pre>
+      <pre style="margin:0;background:#1B1916;color:#D6CFC2;border-radius:14px;padding:20px;overflow:auto;font:500 11.5px/1.75 'Space Grotesk',monospace">// tailwind.config.js
+export default {
+  darkMode: ['selector', '[data-theme="dark"]'],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50:'#FDF5F1',100:'#FAE8DF',200:'#F4CDBB',
+          300:'#EBAA8D',400:'#DF815B',500:'#CE5F35',
+          600:'#B44A26',700:'#94391D',800:'#74301C',
+          900:'#5D2A1B',950:'#33150C',
+        },
+        sand: {
+          50:'#FBF9F6',100:'#F4F1EB',200:'#E8E3D9',
+          300:'#D6CFC2',400:'#A9A196',500:'#6E6862',
+          600:'#5C564E',700:'#423D37',800:'#2C2925',
+          900:'#1B1916',950:'#0F0E0C',
+        },
+        agent: {
+          50:'#EDEFFC',200:'#C4CAF5',300:'#8E9BF0',
+          500:'#3B4FD1',700:'#2A3AA3',900:'#1A2470',
+        },
+        success:'#146B4A', warning:'#8F5F08',
+        error:'#C0311F',   info:'#3B4FD1',
+        // rôles pilotés par les variables CSS
+        surface:'var(--ly-surface)',
+        border:'var(--ly-border)',
+        ink:'var(--ly-text)',
+      },
+      fontFamily: {
+        sans: ['Figtree', 'system-ui', 'sans-serif'],
+        mono: ['"Space Grotesk"', 'ui-monospace', 'monospace'],
+      },
+      fontSize: {
+        caption:  ['12px', { lineHeight:'1.45' }],
+        label:    ['13px', { lineHeight:'1.3', fontWeight:'600' }],
+        'body-sm':['14px', { lineHeight:'1.55' }],
+        body:     ['16px', { lineHeight:'1.65' }],
+        heading:  ['19px', { lineHeight:'1.35', fontWeight:'700' }],
+        title:    ['26px', { lineHeight:'1.25', fontWeight:'700' }],
+        display:  ['34px', { lineHeight:'1.15', letterSpacing:'-.02em', fontWeight:'800' }],
+      },
+      borderRadius: { sm:'6px', md:'10px', lg:'14px', xl:'20px' },
+      boxShadow: {
+        e1:'0 1px 2px rgba(45,35,25,.06)',
+        e2:'0 2px 8px rgba(45,35,25,.10)',
+        e3:'0 8px 24px rgba(45,35,25,.14)',
+      },
+      transitionTimingFunction: { ly:'cubic-bezier(.16,1,.3,1)' },
+      transitionDuration: { fast:'140ms', base:'200ms', slow:'320ms' },
+      screens: { sm:'360px', md:'768px', lg:'1024px', xl:'1280px', '2xl':'1600px' },
+      minHeight: { touch:'48px' },
+    },
+  },
+}</pre>
+    </div>
+  </section>
+
+  <!-- ============ COMPOSANTS ============ -->
+  <section id="composants" style="display:flex;flex-direction:column;gap:28px">
+    <h2 style="margin:0;font:800 30px/1.15 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Composants</h2>
+
+    <!-- boutons -->
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:700 19px/1.35 'Figtree',sans-serif;color:#1B1916">Boutons</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862">hauteur 48 (md) · 40 (sm) · 56 (lg, pleine largeur mobile) · rayon 10</div></div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">
+        <div></div><div>Repos</div><div>Survol</div><div>Pressé / actif</div><div>Désactivé</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:center">
+        <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#2C2925">Principal<br><span style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">primary-600</span></div>
+        <div style="background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Valider</div>
+        <div style="background:#94391D;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Valider</div>
+        <div style="background:#74301C;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center;transform:scale(.98)">Valider</div>
+        <div style="background:#E8E3D9;color:#A9A196;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Valider</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:center">
+        <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#2C2925">Secondaire<br><span style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">contour 1,5 px</span></div>
+        <div style="background:#FFFFFF;border:1.5px solid #D6CFC2;color:#2C2925;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Reporter</div>
+        <div style="background:#FBF9F6;border:1.5px solid #A9A196;color:#1B1916;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Reporter</div>
+        <div style="background:#F4F1EB;border:1.5px solid #6E6862;color:#1B1916;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center;transform:scale(.98)">Reporter</div>
+        <div style="background:#FFFFFF;border:1.5px solid #E8E3D9;color:#C0BBB2;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Reporter</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:center">
+        <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#2C2925">Agent<br><span style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">agent-500 — uniquement pour agir sur une proposition</span></div>
+        <div style="background:#3B4FD1;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Examiner et valider</div>
+        <div style="background:#2A3AA3;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Examiner et valider</div>
+        <div style="background:#1A2470;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center;transform:scale(.98)">Examiner et valider</div>
+        <div style="background:#EDEFFC;color:#8E9BF0;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Examiner et valider</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:center">
+        <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#2C2925">Discret<br><span style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">sans fond au repos</span></div>
+        <div style="color:#5C564E;padding:15px 12px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Ignorer</div>
+        <div style="background:#F4F1EB;color:#2C2925;padding:15px 12px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Ignorer</div>
+        <div style="background:#E8E3D9;color:#1B1916;padding:15px 12px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center;transform:scale(.98)">Ignorer</div>
+        <div style="color:#C0BBB2;padding:15px 12px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Ignorer</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:center">
+        <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#2C2925">Destructif<br><span style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">contour au repos, plein sur l'écran de confirmation</span></div>
+        <div style="background:#FFFFFF;border:1.5px solid #C0311F;color:#C0311F;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Supprimer</div>
+        <div style="background:#FBE9E6;border:1.5px solid #A0281A;color:#8E2317;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Supprimer</div>
+        <div style="background:#C0311F;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center;transform:scale(.98)">Supprimer</div>
+        <div style="background:#FFFFFF;border:1.5px solid #E8E3D9;color:#C0BBB2;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Supprimer</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;border-top:1px solid #E8E3D9;padding-top:16px">
+        <div style="background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;box-shadow:0 0 0 3px #F4CDBB">Focus clavier</div>
+        <div style="background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;display:flex;gap:10px;align-items:center;opacity:.85"><span style="width:14px;height:14px;border:2px solid #FFFFFF;border-top-color:transparent;border-radius:999px;display:inline-block"></span>Chargement…</div>
+        <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E;max-width:420px">Un bouton en chargement conserve sa largeur et reste désactivé ; le libellé passe au participe présent. Un seul bouton principal par écran.</div>
+      </div>
+    </div>
+
+    <!-- champs -->
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:700 19px/1.35 'Figtree',sans-serif;color:#1B1916">Saisie</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862">hauteur 48 · rayon 10 · bordure 1,5 px · libellé au-dessus, jamais en placeholder</div></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Budget quotidien</div>
+          <div style="border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;background:#FFFFFF"><span style="font:400 15px/1 'Figtree',sans-serif;color:#6E6862">25 000</span><span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">FCFA</span></div>
+          <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Repos — placeholder en neutral-500 (4,9:1 minimum)</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Budget quotidien</div>
+          <div style="border:1.5px solid #B44A26;border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;background:#FFFFFF;box-shadow:0 0 0 3px #F4CDBB"><span style="font:500 15px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#1B1916">45 000</span><span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">FCFA</span></div>
+          <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Focus — anneau 3 px primary-200</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Budget quotidien</div>
+          <div style="border:1.5px solid #C0311F;border-radius:10px;padding:13px 14px;display:flex;justify-content:space-between;background:#FFFFFF"><span style="font:500 15px/1 'Space Grotesk',monospace;color:#1B1916">450</span><span style="font:500 13px/1 'Space Grotesk',monospace;color:#6E6862">FCFA</span></div>
+          <div style="font:600 12px/1.45 'Figtree',sans-serif;color:#8E2317">Minimum 1 000 FCFA par jour sur Meta.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#A9A196">Compte publicitaire</div>
+          <div style="border:1.5px solid #E8E3D9;border-radius:10px;padding:13px 14px;background:#FBF9F6"><span style="font:400 15px/1 'Figtree',sans-serif;color:#C0BBB2">Connectez Meta d'abord</span></div>
+          <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Désactivé — la raison est toujours écrite.</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;border-top:1px solid #E8E3D9;padding-top:16px">
+        <div style="display:flex;gap:8px">
+          <div style="background:#2C2925;color:#FFFFFF;padding:10px 16px;border-radius:999px;font:600 14px/1 'Figtree',sans-serif">7 jours</div>
+          <div style="background:#FFFFFF;border:1.5px solid #D6CFC2;color:#423D37;padding:8.5px 16px;border-radius:999px;font:600 14px/1 'Figtree',sans-serif">30 jours</div>
+          <div style="background:#FFFFFF;border:1.5px solid #D6CFC2;color:#423D37;padding:8.5px 16px;border-radius:999px;font:600 14px/1 'Figtree',sans-serif">90 jours</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:26px;background:#146B4A;border-radius:999px;position:relative"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:#FFFFFF;border-radius:999px"></div></div><span style="font:500 14px/1 'Figtree',sans-serif;color:#423D37">Alertes activées</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:26px;background:#D6CFC2;border-radius:999px;position:relative"><div style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:#FFFFFF;border-radius:999px"></div></div><span style="font:500 14px/1 'Figtree',sans-serif;color:#6E6862">Application automatique</span></div>
+        <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E;max-width:340px">Segments de période : un seul actif, fond neutral-800. L'interrupteur « application automatique » reste désactivé par défaut, sans exception.</div>
+      </div>
+    </div>
+
+    <!-- carte metrique + agent -->
+    <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:16px;align-items:start">
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="font:700 19px/1.35 'Figtree',sans-serif;color:#1B1916">Carte de métrique</div>
+        <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(45,35,25,.06)">
+          <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Dépensé cette semaine</div>
+          <div style="display:flex;align-items:baseline;gap:6px"><div style="font:700 32px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.03em;color:#1B1916">1 245 800</div><div style="font:600 15px/1 'Figtree',sans-serif;color:#6E6862">FCFA</div></div>
+          <div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#E3F0EA;color:#0E4E36;padding:5px 10px;border-radius:999px;font:700 13px/1.2 'Figtree',sans-serif">▲ 12,4 %</div>
+          <div style="font:400 12px/1.4 'Figtree',sans-serif;color:#6E6862">Comparé au 17 – 23 juillet</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;height:32px">
+            <div style="flex:1;height:40%;background:#F4CDBB;border-radius:3px"></div><div style="flex:1;height:55%;background:#F4CDBB;border-radius:3px"></div><div style="flex:1;height:35%;background:#F4CDBB;border-radius:3px"></div><div style="flex:1;height:70%;background:#EBAA8D;border-radius:3px"></div><div style="flex:1;height:60%;background:#EBAA8D;border-radius:3px"></div><div style="flex:1;height:85%;background:#CE5F35;border-radius:3px"></div><div style="flex:1;height:100%;background:#B44A26;border-radius:3px"></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="border:1px solid #E8E3D9;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="height:12px;width:65%;background:#E8E3D9;border-radius:4px"></div>
+            <div style="height:24px;width:85%;background:#E8E3D9;border-radius:6px"></div>
+            <div style="height:10px;width:45%;background:#F4F1EB;border-radius:4px"></div>
+            <div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">Chargement</div>
+          </div>
+          <div style="border:1px solid #E8E3D9;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px">
+            <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Dépensé</div>
+            <div style="font:700 24px/1 'Space Grotesk',monospace;color:#6E6862">—</div>
+            <div style="font:400 12px/1.45 'Figtree',sans-serif;color:#6E6862">Aucune diffusion sur la période.</div>
+          </div>
+        </div>
+        <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Une carte = une métrique + une comparaison + une micro-tendance. Jamais deux chiffres de même taille dans la même carte.</div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:700 19px/1.35 'Figtree',sans-serif;color:#1B1916">Carte de recommandation — les 4 états</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862">proposée → en cours → appliquée → écartée</div></div>
+
+        <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:16px">
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <div style="white-space:nowrap;font:700 11px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#3B4FD1;padding:6px 10px;border-radius:999px">Lyads propose</div>
+              <div style="white-space:nowrap;font:700 11px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#FFFFFF;background:#C0311F;padding:6px 10px;border-radius:999px">À faire en priorité</div>
+            </div>
+            <div style="text-align:right"><div style="font:500 10px/1 'Space Grotesk',monospace;color:#5C564E">Fiabilité</div><div style="font:700 14px/1.4 'Figtree',sans-serif;color:#0E4E36">Élevée · 87 %</div></div>
+          </div>
+          <div style="font:700 21px/1.35 'Figtree',sans-serif;color:#1B1916;text-wrap:pretty">Réallouer 180 000 FCFA vers l’ensemble « Retargeting 30 j »</div>
+          <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Trois ensembles d’acquisition consomment 62 % du budget pour un ROAS de 0,84, sous votre seuil de 1,60. L’ensemble de retargeting est plafonné depuis 6 jours.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div style="background:#FFFFFF;border-radius:10px;padding:12px"><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">ROAS actuel</div><div style="font:700 20px/1.3 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#C0311F">0,84</div></div>
+            <div style="background:#FFFFFF;border-radius:10px;padding:12px"><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">ROAS projeté</div><div style="font:700 20px/1.3 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#0E4E36">1,72</div></div>
+            <div style="background:#FFFFFF;border-radius:10px;padding:12px"><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">Gain estimé 30 j</div><div style="font:700 20px/1.3 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#1B1916">+1,04 M</div></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+            <div style="background:#3B4FD1;color:#FFFFFF;padding:15px 22px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Examiner et valider</div>
+            <div style="background:#FFFFFF;border:1.5px solid #C4CAF5;color:#2A3AA3;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Reporter</div>
+            <div style="color:#5C564E;padding:15px 8px;font:600 15px/1 'Figtree',sans-serif">Ignorer</div>
+          </div>
+          <div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#5C564E;border-top:1px solid #C4CAF5;padding-top:10px">Aucune modification ne sera appliquée sans votre confirmation · analyse : 2 crédits</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <div style="background:#EDEFFC;border:1px solid #C4CAF5;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#2A3AA3">Application en cours</div>
+            <div style="font:700 15px/1.35 'Figtree',sans-serif;color:#1B1916">Réallocation de 180 000 FCFA</div>
+            <div style="height:6px;background:#C4CAF5;border-radius:999px;overflow:hidden"><div style="width:45%;height:100%;background:#3B4FD1;border-radius:999px"></div></div>
+            <div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#5C564E">2 ensembles sur 4 · annulable</div>
+          </div>
+          <div style="background:#E3F0EA;border:1px solid #A9D3BF;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#0E4E36">Appliquée le 28 juillet</div>
+            <div style="font:700 15px/1.35 'Figtree',sans-serif;color:#1B1916">Réallocation de 180 000 FCFA</div>
+            <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#3A4A42">ROAS passé de 0,84 à 1,58 en 5 jours.</div>
+            <div style="align-self:flex-start;font:600 13px/1 'Figtree',sans-serif;color:#0E4E36;text-decoration:underline;text-underline-offset:3px">Annuler ce changement</div>
+          </div>
+          <div style="background:#FBF9F6;border:1px solid #E8E3D9;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;opacity:.85">
+            <div style="font:500 10px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#6E6862">Écartée</div>
+            <div style="font:700 15px/1.35 'Figtree',sans-serif;color:#5C564E;text-decoration:line-through">Réallocation de 180 000 FCFA</div>
+            <div style="font:400 13px/1.5 'Figtree',sans-serif;color:#6E6862">Cette recommandation ne sera pas reproposée avant 14 jours.</div>
+            <div style="align-self:flex-start;font:600 13px/1 'Figtree',sans-serif;color:#94391D;text-decoration:underline;text-underline-offset:3px">Rétablir</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tableau + mobile -->
+    <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start">
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:700 19px/1.35 'Figtree',sans-serif;color:#1B1916">Tableau de campagnes — desktop ≥ lg</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#6E6862">rangée 52 px · chiffres à droite · état en dernière colonne</div></div>
+        <div style="border:1px solid #E8E3D9;border-radius:14px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:2.2fr 1fr .9fr 1fr 1.5fr;background:#FBF9F6;border-bottom:1px solid #E8E3D9;font:600 12px/1 'Figtree',sans-serif;color:#5C564E">
+            <div style="padding:12px 16px">Campagne</div><div style="padding:12px 16px;text-align:right">Dépense ↓</div><div style="padding:12px 16px;text-align:right">ROAS</div><div style="padding:12px 16px;text-align:right">CPA</div><div style="padding:12px 16px">État</div>
+          </div>
+          <div style="display:grid;grid-template-columns:2.2fr 1fr .9fr 1fr 1.5fr;border-bottom:1px solid #F4F1EB;font-variant-numeric:tabular-nums;align-items:center">
+            <div style="padding:13px 16px;font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Acquisition — Large 25-45</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#423D37">482 300</div><div style="padding:13px 16px;text-align:right;font:700 14px/1.3 'Space Grotesk',monospace;color:#C0311F">0,84</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#423D37">18 550</div><div style="padding:10px 16px"><span style="white-space:nowrap;display:inline-block;background:#C0311F;color:#FFFFFF;padding:4px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▼ Sous-performe</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:2.2fr 1fr .9fr 1fr 1.5fr;border-bottom:1px solid #F4F1EB;font-variant-numeric:tabular-nums;align-items:center;background:#FBF9F6">
+            <div style="padding:13px 16px;font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Retargeting — Visiteurs 30 j</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#423D37">96 100</div><div style="padding:13px 16px;text-align:right;font:700 14px/1.3 'Space Grotesk',monospace;color:#0E4E36">3,42</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#423D37">6 240</div><div style="padding:10px 16px"><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▲ Performe</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:2.2fr 1fr .9fr 1fr 1.5fr;border-bottom:1px solid #F4F1EB;font-variant-numeric:tabular-nums;align-items:center">
+            <div style="padding:13px 16px;font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Notoriété — Vidéo été</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#423D37">61 400</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#6E6862">—</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#6E6862">—</div><div style="padding:10px 16px"><span style="white-space:nowrap;display:inline-block;background:#EDEFFC;color:#2A3AA3;padding:4px 10px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">◐ Apprentissage</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:2.2fr 1fr .9fr 1fr 1.5fr;font-variant-numeric:tabular-nums;align-items:center;opacity:.7">
+            <div style="padding:13px 16px;font:700 14px/1.3 'Figtree',sans-serif;color:#5C564E">Promo Tabaski — Carrousel</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#5C564E">210 000</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#5C564E">2,10</div><div style="padding:13px 16px;text-align:right;font:500 14px/1.3 'Space Grotesk',monospace;color:#5C564E">9 100</div><div style="padding:10px 16px"><span style="white-space:nowrap;display:inline-block;background:#FFFFFF;border:1.5px dashed #A9A196;color:#5C564E;padding:3px 9px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">‖ En pause</span></div>
+          </div>
+        </div>
+        <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Tri par défaut : dépense décroissante — les postes de dépense les plus élevés en premier. Lignes alternées en neutral-50, survol en primary-50, sélection par bordure gauche 3 px primary-600. Aucune donnée manquante n'est affichée « 0 » : toujours un tiret cadratin.</div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="font:700 19px/1.35 'Figtree',sans-serif;color:#1B1916">Le même tableau &lt; lg</div>
+        <div style="border:1px solid #E8E3D9;border-radius:14px;overflow:hidden">
+          <div style="padding:14px 16px;border-bottom:1px solid #F4F1EB;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Acquisition — Large 25-45</div><span style="white-space:nowrap;display:inline-block;background:#C0311F;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▼ Sous-performe</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:16px;font:500 13px/1.4 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#5C564E"><span>482 300 FCFA</span><span>ROAS <b style="color:#C0311F">0,84</b></span><span>CPA 18 550</span></div>
+          </div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Retargeting — Visiteurs 30 j</div><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.4 'Figtree',sans-serif">▲ Performe</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:16px;font:500 13px/1.4 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#5C564E"><span>96 100 FCFA</span><span>ROAS <b style="color:#0E4E36">3,42</b></span><span>CPA 6 240</span></div>
+          </div>
+        </div>
+        <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Une carte par ligne, jamais de défilement horizontal. Trois métriques maximum, la quatrième au dépliage.</div>
+        <div style="border-top:1px solid #E8E3D9;padding-top:14px;display:flex;flex-direction:column;gap:10px">
+          <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#5C564E">Barre d'action mobile (collée en bas)</div>
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:12px;box-shadow:0 -2px 8px rgba(45,35,25,.10);display:flex;gap:10px">
+            <div style="flex:1;background:#3B4FD1;color:#FFFFFF;padding:17px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Examiner et valider</div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:15.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">⋯</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- feedback -->
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px">
+      <div style="font:700 19px/1.35 'Figtree',sans-serif;color:#1B1916">Messages système, vides et erreurs</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="background:#E3F0EA;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#0E4E36">▲ Changement appliqué</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#2F4A3F">Vos budgets sont à jour sur Meta.</div></div>
+        <div style="background:#F8EDD8;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#7A5208">◆ Données en retard</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#5C4A25">Meta peut prendre jusqu’à 3 h pour publier les données.</div></div>
+        <div style="background:#FBE9E6;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#8E2317">▼ Connexion perdue</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#6B3129">Reconnectez votre compte pour reprendre la synchronisation.</div></div>
+        <div style="background:#EDEFFC;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#2A3AA3">◐ Analyse en cours</div><div style="font:400 13px/1.5 'Figtree',sans-serif;color:#3D4470">Vous pouvez quitter cet écran, vous serez notifié.</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="border:1.5px dashed #D6CFC2;border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;background:#FBF9F6">
+          <div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Pas encore de campagne</div>
+          <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#5C564E;max-width:380px">Connectez votre compte Meta : Lyads analysera les 90 derniers jours en moins de deux minutes.</div>
+          <div style="background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Connecter mon compte Meta</div>
+        </div>
+        <div style="border:1px solid #E8E3D9;border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;background:#FFFFFF">
+          <div style="font:700 19px/1.3 'Figtree',sans-serif;color:#1B1916">Une erreur est survenue</div>
+          <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#5C564E;max-width:380px">Impossible de récupérer les performances. Aucun budget n’a été modifié.</div>
+          <div style="display:flex;gap:10px"><div style="background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Réessayer</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:13.5px 18px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Contacter le support</div></div>
+          <div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#5C564E">Code d'erreur affiché en petit, copiable : ERR-META-429</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- sombre -->
+    <div style="background:#0F0E0C;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:700 19px/1.35 'Figtree',sans-serif;color:#F4F1EB">Équivalents en mode sombre</div><div style="font:500 11px/1.5 'Space Grotesk',monospace;color:#A9A196">l'action passe en primary-300 sur texte 950 — jamais de terracotta 600 sur fond sombre</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:16px;align-items:start">
+        <div style="background:#1B1916;border:1px solid #35312B;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px">
+          <div style="font:600 13px/1.3 'Figtree',sans-serif;color:#A9A196">Dépensé cette semaine</div>
+          <div style="display:flex;align-items:baseline;gap:6px"><div style="font:700 32px/1 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.03em;color:#F4F1EB">1 245 800</div><div style="font:600 15px/1 'Figtree',sans-serif;color:#A9A196">FCFA</div></div>
+          <div style="white-space:nowrap;display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:#12352A;color:#6FD3A6;padding:5px 10px;border-radius:999px;font:700 13px/1.2 'Figtree',sans-serif">▲ 12,4 %</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;height:32px">
+            <div style="flex:1;height:40%;background:#5D2A1B;border-radius:3px"></div><div style="flex:1;height:55%;background:#5D2A1B;border-radius:3px"></div><div style="flex:1;height:35%;background:#5D2A1B;border-radius:3px"></div><div style="flex:1;height:70%;background:#94391D;border-radius:3px"></div><div style="flex:1;height:60%;background:#94391D;border-radius:3px"></div><div style="flex:1;height:85%;background:#DF815B;border-radius:3px"></div><div style="flex:1;height:100%;background:#EBAA8D;border-radius:3px"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:#EBAA8D;color:#33150C;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Principal</div>
+          <div style="border:1.5px solid #6A6357;color:#D6CFC2;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif;text-align:center">Secondaire</div>
+          <div style="background:#8E9BF0;color:#0F0E0C;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Agent</div>
+          <div style="background:#35312B;color:#6E6862;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Désactivé</div>
+        </div>
+        <div style="background:#171A33;border:1px solid #2E3675;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:16px">
+            <div style="white-space:nowrap;font:700 11px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#0F0E0C;background:#8E9BF0;padding:6px 10px;border-radius:999px">Lyads propose</div>
+            <div style="text-align:right"><div style="font:500 10px/1 'Space Grotesk',monospace;color:#A9A196">Fiabilité</div><div style="font:700 14px/1.4 'Figtree',sans-serif;color:#6FD3A6">Élevée · 87 %</div></div>
+          </div>
+          <div style="font:700 21px/1.35 'Figtree',sans-serif;color:#F4F1EB;text-wrap:pretty">Réallouer 180 000 FCFA vers l’ensemble « Retargeting 30 j »</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div style="background:#0F0E0C;border-radius:10px;padding:12px"><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#A9A196">ROAS actuel</div><div style="font:700 20px/1.3 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#F07064">0,84</div></div>
+            <div style="background:#0F0E0C;border-radius:10px;padding:12px"><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#A9A196">ROAS projeté</div><div style="font:700 20px/1.3 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#6FD3A6">1,72</div></div>
+            <div style="background:#0F0E0C;border-radius:10px;padding:12px"><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#A9A196">Gain estimé 30 j</div><div style="font:700 20px/1.3 'Space Grotesk',monospace;font-variant-numeric:tabular-nums;color:#F4F1EB">+1,04 M</div></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px"><div style="background:#8E9BF0;color:#0F0E0C;padding:15px 22px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Examiner et valider</div><div style="border:1.5px solid #2E3675;color:#C4CAF5;padding:13.5px 20px;border-radius:10px;font:600 15px/1 'Figtree',sans-serif">Reporter</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AGENT ============ -->
+  <section id="agent" style="display:flex;flex-direction:column;gap:16px">
+    <h2 style="margin:0;font:800 30px/1.15 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Règles d'usage de l'agent</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Toujours attribuable</div>
+        <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E">Tout contenu généré porte l'étiquette « Lyads propose » ou « Écrit par Lyads », sur fond agent-50. Aucun texte d'agent ne se fond dans l'interface produit.</div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Fiabilité en clair</div>
+        <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E">Trois niveaux seulement : <b style="color:#0E4E36">Élevée</b> (≥ 80 %), <b style="color:#7A5208">Moyenne</b> (50–79 %), <b style="color:#8E2317">Faible</b> (&lt; 50 %). Sous 50 %, l'agent affiche une observation, jamais une action à valider.</div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 16px/1.3 'Figtree',sans-serif;color:#1B1916">Réversible et chiffré</div>
+        <div style="font:400 14px/1.55 'Figtree',sans-serif;color:#5C564E">Chaque action indique son coût en crédits, le nombre d’actifs impactés, et reste annulable pendant 7 jours. L'écran de confirmation liste toujours l'avant / après.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REDACTION ============ -->
+  <section id="redaction" style="display:flex;flex-direction:column;gap:16px">
+    <h2 style="margin:0;font:800 30px/1.15 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Rédaction</h2>
+    <p style="margin:0;max-width:820px;font:400 16px/1.65 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Lyads est un SaaS international : chaque chaîne est écrite pour être traduite. Registre professionnel et neutre, vocabulaire métier standard, phrases courtes sans idiome ni familiarité locale. La pédagogie passe par les infobulles et l'aide, pas par la reformulation des libellés.</p>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;background:#FBF9F6;border-bottom:1px solid #E8E3D9;font:600 12px/1 'Figtree',sans-serif;color:#5C564E">
+        <div style="padding:12px 18px">On dit</div><div style="padding:12px 18px">On ne dit pas</div><div style="padding:12px 18px">Pourquoi</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;border-bottom:1px solid #F4F1EB"><div style="padding:13px 18px;font:600 14px/1.5 'Figtree',sans-serif;color:#1B1916">ROAS sous le seuil de rentabilité</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#6E6862">Ça coûte plus que ça ne rapporte</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#5C564E">Le vocabulaire métier est le même partout : ROAS, CPA, CTR, ensemble de publicités. Un utilisateur de Lagos, Paris ou São Paulo doit retrouver les termes de son gestionnaire de publicités. La vulgarisation vit dans l'infobulle, pas dans le libellé.</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;border-bottom:1px solid #F4F1EB"><div style="padding:13px 18px;font:600 14px/1.5 'Figtree',sans-serif;color:#1B1916">Réallouer 180 000 FCFA vers « Retargeting 30 j »</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#6E6862">Déplacez l'argent vers vos anciens visiteurs</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#5C564E">Infinitif, montant exact, nom d'entité entre guillemets. La formulation directe traduit mal : « déplacez l'argent » devient familier en anglais et condescendant en allemand.</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;border-bottom:1px solid #F4F1EB"><div style="padding:13px 18px;font:600 14px/1.5 'Figtree',sans-serif;color:#1B1916">Impossible de récupérer les performances. Aucun budget n'a été modifié.</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#6E6862">Oups ! Quelque chose s'est mal passé 😅</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#5C564E">On parle d'argent : ni humour ni émoji. On dit ce qui a échoué, puis ce qui n'a pas bougé — dans cet ordre, sur deux phrases courtes qui se traduisent sans perte.</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;border-bottom:1px solid #F4F1EB"><div style="padding:13px 18px;font:600 14px/1.5 'Figtree',sans-serif;color:#1B1916">Aucune modification ne sera appliquée sans votre confirmation</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#6E6862">Lyads s'occupe de tout</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#5C564E">La confiance se gagne en énonçant la limite du pouvoir de l'agent. Le vouvoiement est la seule forme utilisée en français, quelle que soit la locale.</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr"><div style="padding:13px 18px;font:600 14px/1.5 'Figtree',sans-serif;color:#1B1916">1 245 800 FCFA · $12,458.00 · 12 458,00 €</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#6E6862">Un format unique pour toutes les langues</div><div style="padding:13px 18px;font:400 14px/1.5 'Figtree',sans-serif;color:#5C564E">Nombres, dates et devises suivent la locale de l'utilisateur, jamais celle du compte publicitaire. Prévoir +35 % de longueur en allemand : aucun libellé de bouton figé en largeur.</div></div>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280}}"></script>
+</body>
+</html>

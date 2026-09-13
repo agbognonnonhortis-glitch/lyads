@@ -1,0 +1,574 @@
+{
+  "_meta": {
+    "description": "Jeu de données de démonstration Lyads. Identifiants stables : un objet cité dans une recommandation existe dans le gestionnaire avec les mêmes chiffres.",
+    "devise_par_defaut": "XOF",
+    "periode": "7 derniers jours au 2 août 2026",
+    "avertissement": "Données fictives plausibles, destinées à la démonstration. Aucune n'est une promesse de résultat."
+  },
+  "business_managers": [
+    {
+      "id": "bm_kola",
+      "nom": "Kola Distribution",
+      "role": "Administrateur",
+      "comptes": [
+        "act_2841",
+        "act_3190",
+        "act_4402"
+      ]
+    },
+    {
+      "id": "bm_sanou",
+      "nom": "Sanou Retail Group",
+      "role": "Analyste",
+      "lecture_seule": true,
+      "comptes": [
+        "act_7715"
+      ]
+    },
+    {
+      "id": "bm_export",
+      "nom": "Kola Export Europe",
+      "role": "Administrateur",
+      "comptes": [
+        "act_5508"
+      ]
+    }
+  ],
+  "comptes": [
+    {
+      "id": "act_2841",
+      "bm": "bm_kola",
+      "nom": "Kola Beauté",
+      "devise": "XOF",
+      "fuseau": "Africa/Dakar",
+      "page": "page_kola",
+      "pixel": "px_1",
+      "plan": "pro",
+      "credits_utilises": 1012,
+      "credits_plan": 1500
+    },
+    {
+      "id": "act_3190",
+      "bm": "bm_kola",
+      "nom": "Kola Pro — grossistes",
+      "devise": "XOF",
+      "fuseau": "Africa/Dakar",
+      "page": "page_pro",
+      "pixel": "px_1",
+      "instagram": null
+    },
+    {
+      "id": "act_4402",
+      "bm": "bm_kola",
+      "nom": "Kola Beauté — test",
+      "devise": "XOF",
+      "fuseau": "Africa/Dakar",
+      "sans_historique": true
+    },
+    {
+      "id": "act_7715",
+      "bm": "bm_sanou",
+      "nom": "Sanou Retail",
+      "devise": "XOF",
+      "lecture_seule": true
+    },
+    {
+      "id": "act_5508",
+      "bm": "bm_export",
+      "nom": "Kola Export Europe",
+      "devise": "EUR",
+      "fuseau": "Europe/Paris",
+      "note": "jamais converti en FCFA"
+    }
+  ],
+  "pages": [
+    {
+      "id": "page_kola",
+      "nom": "Kola Beauté",
+      "categorie": "Produits de beauté",
+      "abonnes": 48200,
+      "instagram": "@kolabeaute"
+    },
+    {
+      "id": "page_pro",
+      "nom": "Kola Pro — grossistes",
+      "categorie": "Vente en gros",
+      "abonnes": 3100,
+      "instagram": null
+    }
+  ],
+  "pixels": [
+    {
+      "id": "px_1",
+      "nom": "Pixel Kola Beauté",
+      "actif": true,
+      "evenements": [
+        {
+          "nom": "Achat",
+          "volume_7j": 268,
+          "statut": "ok"
+        },
+        {
+          "nom": "AddToCart",
+          "volume_7j": 1420,
+          "statut": "ok"
+        },
+        {
+          "nom": "InitiateCheckout",
+          "volume_7j": 412,
+          "statut": "ok"
+        },
+        {
+          "nom": "Prospect",
+          "volume_7j": 38,
+          "statut": "volume_faible",
+          "note": "moins de 50 conversions hebdomadaires"
+        }
+      ]
+    },
+    {
+      "id": "px_2",
+      "nom": "Pixel ancien site",
+      "actif": false,
+      "note": "aucun événement depuis 47 jours"
+    }
+  ],
+  "business_brain": {
+    "compte": "act_2841",
+    "entreprise": "Kola Beauté",
+    "secteur": "Cosmétique",
+    "marches": [
+      "Sénégal",
+      "Côte d'Ivoire"
+    ],
+    "offre": "Crèmes et huiles au karité, fabriquées à Thiès. Gamme visage et corps, entre 4 500 et 18 000 FCFA.",
+    "audience": "Femmes de 25 à 45 ans, urbaines, attentives à la composition des produits.",
+    "objectif": "Ventes en ligne",
+    "cpa_cible": 12000,
+    "budget_mensuel": 450000,
+    "completude": {
+      "total": 24,
+      "deduites_du_site": 9,
+      "manquantes": 4
+    }
+  },
+  "kpi_compte": {
+    "compte": "act_2841",
+    "roas": 2.84,
+    "roas_delta_7j": -0.22,
+    "depense": 2642400,
+    "depense_abregee": "2,64 M",
+    "cpa": 11340,
+    "cpa_cible": 12000,
+    "cpc": 172
+  },
+  "campagnes": [
+    {
+      "id": "c1",
+      "compte": "act_2841",
+      "nom": "Acquisition — Large 25-45",
+      "objectif": "Conversions",
+      "budget_mode": "CBO",
+      "budget_jour": 240000,
+      "consomme_pct": 86,
+      "depense": 482300,
+      "achats": 26,
+      "roas": 0.84,
+      "cpa": 18550,
+      "statut": "apprentissage_limite",
+      "actif": true,
+      "provenance": "utilisateur",
+      "ensembles": 12
+    },
+    {
+      "id": "c2",
+      "compte": "act_2841",
+      "nom": "Promo Tabaski — Carrousel",
+      "objectif": "Conversions",
+      "budget_mode": "ABO",
+      "budget_jour": 80000,
+      "consomme_pct": 100,
+      "depense": 312800,
+      "achats": 60,
+      "roas": 4.12,
+      "cpa": 5210,
+      "statut": "budget_epuise",
+      "actif": true,
+      "provenance": "utilisateur",
+      "ensembles": 6,
+      "note": "ne diffuse plus depuis 14 h"
+    },
+    {
+      "id": "c3",
+      "compte": "act_2841",
+      "nom": "Retargeting — Visiteurs 30 j",
+      "objectif": "Conversions",
+      "budget_jour": 270000,
+      "consomme_pct": 92,
+      "depense": 248100,
+      "achats": 40,
+      "roas": 3.42,
+      "cpa": 6240,
+      "statut": "active",
+      "actif": true,
+      "provenance": "agent",
+      "provenance_date": "2026-07-28",
+      "ensembles": 8
+    },
+    {
+      "id": "c4",
+      "compte": "act_2841",
+      "nom": "Notoriété — Vidéo été",
+      "objectif": "Notoriété",
+      "budget_mode": "CBO",
+      "budget_jour": 60000,
+      "consomme_pct": 44,
+      "depense": 186400,
+      "achats": 0,
+      "roas": null,
+      "cpa": null,
+      "statut": "en_apprentissage",
+      "actif": true,
+      "provenance": "utilisateur",
+      "ensembles": 4
+    },
+    {
+      "id": "c5",
+      "compte": "act_2841",
+      "nom": "Rentrée scolaire — Vidéo 15 s",
+      "budget_jour": 45000,
+      "consomme_pct": 0,
+      "depense": 0,
+      "achats": 0,
+      "roas": null,
+      "cpa": null,
+      "statut": "rejetee",
+      "actif": false,
+      "provenance": "meta",
+      "motif": "Allégation de santé non autorisée",
+      "ensembles": 3
+    },
+    {
+      "id": "c6",
+      "compte": "act_2841",
+      "nom": "Soldes Août — Collection",
+      "budget_jour": 120000,
+      "consomme_pct": 0,
+      "depense": 0,
+      "achats": 0,
+      "roas": null,
+      "cpa": null,
+      "statut": "programmee",
+      "actif": true,
+      "provenance": "utilisateur",
+      "demarre_le": "2026-08-05T00:00",
+      "ensembles": 5
+    },
+    {
+      "id": "c7",
+      "compte": "act_2841",
+      "nom": "Fidélité — Clients 90 j",
+      "budget_jour": 30000,
+      "consomme_pct": 0,
+      "depense": 42900,
+      "achats": 7,
+      "roas": 2.91,
+      "cpa": 6128,
+      "statut": "en_pause",
+      "actif": false,
+      "provenance": "regle",
+      "provenance_nom": "CPA > cible",
+      "provenance_date": "2026-07-30",
+      "ensembles": 4
+    },
+    {
+      "id": "c8",
+      "compte": "act_2841",
+      "nom": "Karité — Vidéo 15 s",
+      "budget_jour": null,
+      "consomme_pct": 0,
+      "depense": 0,
+      "achats": 0,
+      "roas": null,
+      "cpa": null,
+      "statut": "en_revision",
+      "actif": true,
+      "provenance": "utilisateur",
+      "soumise_le": "2026-08-01",
+      "ensembles": 2
+    }
+  ],
+  "totaux_campagnes": {
+    "nombre": 8,
+    "actives": 4,
+    "budget_jour": 845000,
+    "depense": 1272500,
+    "achats": 133,
+    "roas": 2.84,
+    "cpa": 9568
+  },
+  "ensembles": [
+    {
+      "id": "s1",
+      "campagne": "c1",
+      "nom": "Large 25-45 — Sénégal",
+      "audience": "Ciblage large · 25-45 · F",
+      "placements": [
+        "Fil",
+        "Reels",
+        "Stories"
+      ],
+      "apprentissage": {
+        "etat": "limite",
+        "evenements": 18,
+        "seuil": 50,
+        "pronostic": "bloqué depuis 9 j · sortie improbable"
+      },
+      "depense": 218400,
+      "roas": 0.71,
+      "cpa": 21300
+    },
+    {
+      "id": "s2",
+      "campagne": "c3",
+      "nom": "Visiteurs 30 j — Similaire 1 %",
+      "audience": "Personnalisée + Similaire 1 %",
+      "placements": [
+        "Fil",
+        "Reels"
+      ],
+      "apprentissage": {
+        "etat": "termine",
+        "evenements": 50,
+        "seuil": 50,
+        "pronostic": "sorti le 21 juil. · performances stables"
+      },
+      "depense": 148900,
+      "roas": 3.88,
+      "cpa": 5720
+    },
+    {
+      "id": "s3",
+      "campagne": "c4",
+      "nom": "Intérêts mode — Dakar",
+      "audience": "Intérêts · 18-34 · Dakar",
+      "placements": [
+        "Reels"
+      ],
+      "apprentissage": {
+        "etat": "en_cours",
+        "evenements": 31,
+        "seuil": 50,
+        "pronostic": "j 4 sur 7 · sortie estimée le 5 août"
+      },
+      "depense": 96200,
+      "roas": null,
+      "cpa": null
+    }
+  ],
+  "publicites": [
+    {
+      "id": "a1",
+      "ensemble": "s2",
+      "nom": "Tabaski — Carrousel 5 produits",
+      "texte": "Jusqu'à −40 % sur toute la collection Tabaski, livraison…",
+      "format": "Carrousel",
+      "spec": "1080×1080 · Acheter",
+      "depense": 186200,
+      "roas": 4.08,
+      "frequence": 2.1,
+      "retention": null,
+      "actif": true,
+      "statut": null
+    },
+    {
+      "id": "a2",
+      "ensemble": "s2",
+      "nom": "Témoignage cliente — Vidéo 22 s",
+      "texte": "J'ai reçu ma commande en 48 h à Thiès, la qualité est…",
+      "format": "Vidéo 9:16",
+      "spec": "22 s · En savoir plus",
+      "depense": 126600,
+      "roas": 3.44,
+      "frequence": 1.8,
+      "retention": {
+        "pct": 48,
+        "moyenne_s": 9.2
+      },
+      "actif": true,
+      "statut": null
+    },
+    {
+      "id": "a3",
+      "ensemble": "s1",
+      "nom": "Offre livraison gratuite",
+      "texte": "Livraison offerte dès 25 000 FCFA, partout au Sénégal",
+      "format": "Image unique",
+      "spec": "1080×1350 · Acheter",
+      "depense": 98400,
+      "roas": 1.72,
+      "frequence": 5.2,
+      "retention": null,
+      "actif": true,
+      "statut": "fatigue"
+    },
+    {
+      "id": "a4",
+      "ensemble": "s3",
+      "nom": "Rentrée scolaire — 15 s",
+      "texte": "Préparez la rentrée sans vous ruiner, jusqu'à −30 %",
+      "format": "Vidéo 4:5",
+      "spec": "15 s · Acheter",
+      "depense": 0,
+      "roas": null,
+      "frequence": null,
+      "retention": null,
+      "actif": false,
+      "statut": "rejetee"
+    }
+  ],
+  "recommandations": [
+    {
+      "id": "r1",
+      "cible": "c2",
+      "gravite": "critique",
+      "fiabilite": 94,
+      "titre": "Budget épuisé — « Promo Tabaski — Carrousel »",
+      "calcul": {
+        "manque_a_gagner": 214000,
+        "roas_campagne": 3.12,
+        "recharge_proposee": 150000
+      },
+      "base_de_mesure": "Revenu horaire moyen des 7 derniers jours de cette campagne, appliqué aux 14 heures d'arrêt.",
+      "actions": [
+        "Ajouter 150 000 FCFA au budget quotidien",
+        "Reprendre la diffusion sans toucher au ciblage"
+      ],
+      "inchange": "Budget quotidien du compte inchangé",
+      "resultat": "Budget rechargé · diffusion reprise"
+    },
+    {
+      "id": "r2",
+      "cible": "c1",
+      "gravite": "elevee",
+      "fiabilite": 87,
+      "titre": "CPA à 18 550 FCFA sur « Acquisition Large 25-45 »",
+      "calcul": {
+        "roas_actuel": 0.84,
+        "roas_projete": 1.92,
+        "gain_30j": 1040000
+      },
+      "base_de_mesure": "CPA 18 550 FCFA contre 12 000 de cible, sur 12 jours et 482 300 FCFA dépensés. Projection au ROAS observé de l'ensemble receveur, minorée de 20 %.",
+      "actions": [
+        "Réduire le budget de 180 000 FCFA",
+        "Reporter sur « Retargeting 30 j »"
+      ],
+      "resultat": "180 000 FCFA réalloués"
+    },
+    {
+      "id": "r3",
+      "cible": "a3",
+      "gravite": "moyenne",
+      "fiabilite": 74,
+      "titre": "Fatigue créative sur « Karité — Vidéo 15 s »",
+      "calcul": {
+        "frequence": 4.2,
+        "seuil_recommande": 2.5,
+        "variantes_pretes": 2
+      },
+      "base_de_mesure": "Fréquence moyenne sur 9 jours, mesurée sur l'audience atteinte du Sénégal et de Côte d'Ivoire.",
+      "actions": [
+        "Mettre en pause la créative actuelle",
+        "Activer les deux variantes à budget identique"
+      ],
+      "resultat": "Créative remplacée par 2 variantes"
+    },
+    {
+      "id": "r4",
+      "cible": "s1",
+      "gravite": "faible",
+      "fiabilite": 61,
+      "titre": "Audience « Intérêts beauté » saturée à 68 %",
+      "calcul": {
+        "saturation_pct": 68,
+        "apres_elargissement_pct": 41,
+        "personnes_ajoutees": 310000
+      },
+      "base_de_mesure": "Taille d'audience estimée par Meta pour le Sénégal et la Côte d'Ivoire, rapportée à la portée cumulée des 30 derniers jours.",
+      "actions": [
+        "Ajouter « soins naturels », « beurre de karité », « cosmétique bio »",
+        "Conserver les exclusions et la tranche d'âge"
+      ],
+      "resultat": "Ciblage élargi de 3 intérêts"
+    }
+  ],
+  "couts_credits": {
+    "analyse_complete": 8,
+    "scan": 2,
+    "texte": 1,
+    "image": 8,
+    "video_courte": 45,
+    "analyse_marche_120": 48,
+    "publication_campagne": 2,
+    "rapport": 3
+  },
+  "plans": [
+    {
+      "id": "gratuit",
+      "credits": 60,
+      "prix": {
+        "XOF": 0,
+        "EUR": 0,
+        "USD": 0
+      },
+      "comptes": 1,
+      "utilisateurs": 1
+    },
+    {
+      "id": "essentiel",
+      "credits": 500,
+      "prix": {
+        "XOF": 9900,
+        "EUR": 15,
+        "USD": 16
+      },
+      "comptes": 2,
+      "utilisateurs": 1
+    },
+    {
+      "id": "pro",
+      "credits": 1500,
+      "prix": {
+        "XOF": 24900,
+        "EUR": 38,
+        "USD": 41
+      },
+      "comptes": 5,
+      "utilisateurs": 2,
+      "recommande": true
+    },
+    {
+      "id": "agence",
+      "credits": 5000,
+      "prix": {
+        "XOF": 59900,
+        "EUR": 91,
+        "USD": 99
+      },
+      "comptes": null,
+      "utilisateurs": 5
+    }
+  ],
+  "moyens_paiement": [
+    "Wave",
+    "Orange Money",
+    "MTN MoMo",
+    "Carte bancaire"
+  ],
+  "utilisateur": {
+    "nom": "Aminata Diallo",
+    "email": "aminata@kola.sn",
+    "initiales": "AD",
+    "role": "Administrateur"
+  }
+}

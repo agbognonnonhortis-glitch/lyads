@@ -1,0 +1,63 @@
+
+  body { margin:0; background:#E7E2D8; font-family:'Figtree',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#B44A26; text-decoration:underline; text-underline-offset:2px; }
+  a:hover { color:#94391D; }
+  i.ph { line-height:1; display:inline-block; }
+  [data-on="0"] { display:none !important; }
+  [data-vp="mobile"] [data-only="desktop"] { display:none !important; }
+  [data-vp="desktop"] [data-only="mobile"] { display:none !important; }
+  [data-vp="desktop"] [data-frame] { width:1440px; }
+  [data-vp="mobile"] [data-frame] { width:375px; }
+  [data-vp="mobile"] [data-pad] { padding:14px 20px 20px !important; }
+  [data-vp="mobile"] [data-kpi] { grid-template-columns:1fr 1fr !important; }
+  [data-vp="mobile"] [data-kpi6] { grid-template-columns:1fr !important; }
+  [data-vp="mobile"] [data-two] { grid-template-columns:1fr !important; }
+  [data-vp="mobile"] [data-h1] { font-size:26px !important; }
+  [data-vp="mobile"] [data-h2] { font-size:20px !important; }
+  [data-vp="mobile"] [data-row] { flex-direction:column !important; align-items:stretch !important; }
+  [data-vp="mobile"] [data-side] { width:auto !important; }
+  [data-vp="mobile"] [data-hidem] { display:none !important; }
+  [data-tool]:hover { background:#3A3630; }
+  [data-tool][data-sel="1"] { background:#B44A26 !important; color:#FFFFFF !important; }
+  [data-nav]:hover { background:#F4F1EB; }
+  [data-nav][data-sel="1"] { background:#FAE8DF !important; border-left:3px solid #B44A26 !important; border-radius:0 10px 10px 0 !important; padding-left:9px !important; }
+  [data-nav][data-sel="1"] [data-navlabel] { color:#94391D !important; font-weight:700 !important; }
+  [data-nav][data-sel="1"] i.ph { color:#94391D !important; }
+  [data-mtab][data-sel="1"] { background:#FAE8DF !important; }
+  [data-mtab][data-sel="1"] i.ph { color:#94391D !important; }
+  [data-mtab][data-sel="1"] [data-mlabel] { color:#94391D !important; font-weight:700 !important; }
+  [data-mtab][data-sel="1"] [data-mbar] { display:block !important; }
+  [data-btn]:hover { filter:brightness(1.06); }
+  [data-card]:hover { border-color:#C9C1B3; }
+  [data-pick]:hover { background:#F4F1EB; }
+  [data-pick][data-sel="1"] { background:#FDF5F1 !important; color:#94391D !important; font-weight:700; }
+  @keyframes lyRot { 0%{opacity:0;transform:translateY(7px)} 3%{opacity:1;transform:none} 30%{opacity:1;transform:none} 34%{opacity:0;transform:translateY(-7px)} 100%{opacity:0;transform:translateY(-7px)} }
+  @keyframes lyGlow { 0%,100%{box-shadow:0 0 0 0 rgba(180,74,38,.36),0 6px 18px rgba(180,74,38,.26)} 50%{box-shadow:0 0 0 10px rgba(180,74,38,0),0 10px 26px rgba(180,74,38,.36)} }
+  @keyframes lyCardIn { 0%{opacity:0;transform:translateY(10px)} 9%{opacity:1;transform:none} 90%{opacity:1;transform:none} 100%{opacity:0;transform:translateY(10px)} }
+  @keyframes lyTileIn { 0%{opacity:0;transform:scale(.93)} 10%{opacity:1;transform:none} 90%{opacity:1;transform:none} 100%{opacity:0;transform:scale(.93)} }
+  @keyframes lyDraw { 0%{stroke-dashoffset:460} 42%,88%{stroke-dashoffset:0} 100%{stroke-dashoffset:460} }
+  @keyframes lyBar { 0%{transform:scaleX(0)} 30%,90%{transform:scaleX(1)} 100%{transform:scaleX(0)} }
+  [data-lvl][data-sel="1"] { color:#1B1916 !important; border-bottom-color:#B44A26 !important; }
+  [data-lvl]:hover { color:#1B1916; }
+  [data-chip][data-sel="1"] { background:#2C2925 !important; border-color:#2C2925 !important; color:#FFFFFF !important; }
+  [data-chip]:hover { background:#F4F1EB; }
+  [data-tr]:hover { background:#FBF9F6 !important; }
+  [data-tab][data-sel="1"] { background:#2C2925 !important; border-color:#2C2925 !important; color:#FFFFFF !important; }
+  [data-curbtn][data-sel="1"] { background:#2C2925 !important; border-color:#2C2925 !important; color:#FFFFFF !important; }
+  [data-glow="survol"] [data-cta] { animation:none; }
+  [data-glow="survol"] [data-cta]:hover { box-shadow:0 0 0 8px rgba(180,74,38,.14), 0 12px 30px rgba(180,74,38,.42); transform:translateY(-1px); }
+  [data-cap]:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(45,35,25,.15); }
+  [data-rotoff="1"] [data-rot] { animation:none !important; opacity:0 !important; }
+  [data-rotoff="1"] [data-rot="1"] { opacity:1 !important; }
+  @keyframes lyIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+  @keyframes lyUp { from{transform:translateY(100%)} to{transform:none} }
+  @keyframes lyToast { 0%{opacity:0;transform:translate(-50%,10px)} 8%{opacity:1;transform:translate(-50%,0)} 88%{opacity:1;transform:translate(-50%,0)} 100%{opacity:0;transform:translate(-50%,-6px)} }
+  @keyframes lySpin { to{transform:rotate(360deg)} }
+  [data-screen] { animation:lyIn .22s ease both; }
+  [data-sheet] { animation:lyUp .26s cubic-bezier(.22,.8,.3,1) both; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-screen],[data-toast],[data-sheet] { animation:none !important; }
+    [data-anim] { animation:none !important; opacity:1 !important; transform:none !important; stroke-dashoffset:0 !important; }
+    [data-rot] { opacity:0 !important; }
+    [data-rot="1"] { opacity:1 !important; }
+  }

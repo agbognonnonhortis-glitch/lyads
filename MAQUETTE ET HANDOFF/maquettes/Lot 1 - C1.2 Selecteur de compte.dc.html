@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+  body { margin:0; background:#F4F1EB; font-family:'Figtree',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#B44A26; text-decoration:underline; text-underline-offset:2px; }
+  a:hover { color:#94391D; }
+  i.ph { line-height:1; display:inline-block; }
+</style>
+</helmet>
+
+<section style="padding:56px 48px 96px;display:flex;flex-direction:column;gap:44px">
+
+  <div style="max-width:1040px;display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">Lyads · Lot 1 · Partie 2 — C1.2 Sélecteur de compte publicitaire</div>
+    <h1 style="margin:0;font:800 40px/1.12 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Sélecteur de compte</h1>
+    <p style="margin:0;max-width:840px;font:400 16px/1.65 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Neuf comptes de démonstration répartis sur trois Business Managers, dont deux nécessitant une action. La mise en page doit tenir à vingt comptes sans changer de structure.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1180px">
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Panneau, pas page</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Changer de compte est un geste de navigation, pas une destination : une page entière ferait perdre le contexte de l'écran en cours. Panneau de 560 px ancré sous le sélecteur, voile derrière, <span style="font:500 14px/1 'Space Grotesk',monospace">Échap</span> pour fermer.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Ouverture au clavier par <span style="font:500 14px/1 'Space Grotesk',monospace">⌘K</span>, la recherche est focalisée d'emblée : à vingt comptes, on tape trois lettres plutôt qu'on ne fait défiler.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Les comptes à problème remontent</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Un compte déconnecté ou restreint ne collecte plus rien : c'est l'information la plus urgente de la liste. Une section <b style="font-weight:700">Action requise</b> est épinglée en tête, hors du regroupement par Business Manager, avec le motif écrit.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Ordre : Action requise → Favoris → Business Managers, chacun trié par dépense décroissante.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:11px">
+      <div style="font:700 18px/1.3 'Figtree',sans-serif;color:#1B1916">Une seule métrique de santé</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">Chaque ligne porte la dépense sur la période et le ROAS avec sa pastille d'état — pas six colonnes. Le sélecteur sert à choisir, pas à comparer : la comparaison multi-comptes est le rôle des Rapports.</div>
+      <div style="font:400 15px/1.6 'Figtree',sans-serif;color:#423D37;text-wrap:pretty">La devise est affichée sur chaque ligne : une même liste peut mélanger FCFA, EUR et USD, et les montants ne sont donc jamais additionnables entre eux.</div>
+    </div>
+  </div>
+
+  <!-- ============ DESKTOP ============ -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C1.2 · desktop 1440 — panneau ouvert en contexte</div>
+
+    <div style="width:1440px;flex:0 0 auto;height:900px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:14px;overflow:hidden;display:flex;position:relative;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+
+      <div style="width:240px;flex:0 0 240px;background:#FFFFFF;border-right:1px solid #E8E3D9;display:flex;flex-direction:column">
+        <div style="padding:20px 16px 14px;display:flex;align-items:center;gap:9px"><div style="width:28px;height:28px;border-radius:8px;background:#B44A26;display:flex;align-items:center;justify-content:center;font:800 15px/1 'Figtree',sans-serif;color:#FFFFFF">L</div><div style="font:800 19px/1 'Figtree',sans-serif;letter-spacing:-.02em;color:#1B1916">Lyads</div></div>
+        <div style="padding:0 12px 14px">
+          <div style="border:1.5px solid #B44A26;border-radius:12px;padding:9px 11px;display:flex;align-items:center;gap:10px;background:#FFFFFF;box-shadow:0 0 0 3px #F4CDBB">
+            <div style="position:relative;flex:0 0 auto"><div style="width:32px;height:32px;border-radius:9px;background:#E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><div style="font:700 13px/1.2 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kola Distribution</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">FCFA · Actif</div></div>
+            <i class="ph ph-caret-up-down" style="font-size:16px;color:#B44A26"></i>
+          </div>
+        </div>
+        <div style="flex:1;padding:0 12px;display:flex;flex-direction:column;gap:2px;opacity:.45">
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px 11px 9px;border-left:3px solid #B44A26;border-radius:0 10px 10px 0;background:#FAE8DF"><i class="ph ph-squares-four" style="font-size:20px;color:#94391D"></i><div style="flex:1;font:700 14px/1.2 'Figtree',sans-serif;color:#94391D">Tableau de bord</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px"><i class="ph ph-sparkle" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Agent d'optimisation</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px"><i class="ph ph-megaphone" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Gestionnaire de publicités</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px"><i class="ph ph-rocket-launch" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Constructeur de campagne</div></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px"><i class="ph ph-palette" style="font-size:20px;color:#5C564E"></i><div style="flex:1;font:600 14px/1.2 'Figtree',sans-serif;color:#423D37">Studio créatif</div></div>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;opacity:.45">
+        <div style="height:68px;flex:0 0 68px;background:#FFFFFF;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:16px;padding:0 32px">
+          <div style="font:700 22px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Tableau de bord</div>
+        </div>
+        <div style="flex:1;padding:20px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-content:start">
+          <div style="height:132px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px"></div>
+          <div style="height:132px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px"></div>
+          <div style="height:132px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px"></div>
+        </div>
+      </div>
+
+      <div style="position:absolute;inset:0;background:rgba(15,14,12,.45)"></div>
+
+      <!-- PANNEAU -->
+      <div style="position:absolute;left:252px;top:104px;width:560px;background:#FFFFFF;border:1px solid #D6CFC2;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);display:flex;flex-direction:column;overflow:hidden;max-height:760px">
+        <div style="padding:14px 16px;border-bottom:1px solid #E8E3D9;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="flex:1;display:flex;align-items:center;gap:10px;border:1.5px solid #B44A26;border-radius:10px;padding:12px 14px;box-shadow:0 0 0 3px #F4CDBB">
+              <i class="ph ph-magnifying-glass" style="font-size:16px;color:#5C564E"></i>
+              <div style="flex:1;font:400 15px/1 'Figtree',sans-serif;color:#6E6862">Rechercher un compte ou un identifiant</div>
+              <div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862;border:1px solid #E8E3D9;border-radius:5px;padding:3px 6px">⌘K</div>
+            </div>
+            <div style="width:44px;height:44px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-x" style="font-size:16px;color:#423D37"></i></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">9 comptes · dépense affichée sur 7 derniers jours</div>
+            <div style="display:flex;gap:6px"><div style="background:#2C2925;color:#FFFFFF;padding:6px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Tous</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:4.5px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Actifs</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:4.5px 11px;border-radius:999px;font:600 12px/1 'Figtree',sans-serif">Favoris</div></div>
+          </div>
+        </div>
+
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+
+          <div style="background:#FBE9E6;padding:9px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #F2C3BC">
+            <i class="ph ph-warning" style="font-size:13px;color:#8E2317"></i>
+            <div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#8E2317">Action requise · 2</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #F4F1EB">
+            <div style="position:relative;flex:0 0 auto"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">SM</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#C0311F;border:2px solid #FFFFFF"></div></div>
+            <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Sahel Mode</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#8E2317">Déconnecté depuis le 1 août · jeton expiré</div></div>
+            <div style="background:#C0311F;color:#FFFFFF;padding:9px 13px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto">Reconnecter</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #E8E3D9">
+            <div style="position:relative;flex:0 0 auto"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">KT</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#8F5F08;border:2px solid #FFFFFF"></div></div>
+            <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Kola Test</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#7A5208">Restreint par Meta · vérification d'identité en attente</div></div>
+            <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:8px 12px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto">Voir</div>
+          </div>
+
+          <div style="background:#FBF9F6;padding:9px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #E8E3D9">
+            <i class="ph ph-star" style="font-size:13px;color:#94391D"></i>
+            <div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Favoris</div>
+          </div>
+          <div style="display:grid;grid-template-columns:36px minmax(0,1fr) 116px 96px 20px;gap:12px;align-items:center;padding:13px 16px;border-bottom:1px solid #F4F1EB;background:#FAE8DF">
+            <div style="position:relative"><div style="width:36px;height:36px;border-radius:10px;background:#E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FAE8DF"></div></div>
+            <div style="min-width:0"><div style="display:flex;align-items:center;gap:7px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kola Distribution</div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#94391D;background:#F4CDBB;padding:4px 7px;border-radius:999px;flex:0 0 auto">Actif</div></div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_402881 · FCFA</div></div>
+            <div style="text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 14px/1.2 'Space Grotesk',monospace;color:#1B1916">2,64 M</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">FCFA dépensés</div></div>
+            <div style="display:flex;justify-content:flex-end"><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">▲ 2,84</span></div>
+            <i class="ph ph-check" style="font-size:16px;color:#94391D"></i>
+          </div>
+          <div style="display:grid;grid-template-columns:36px minmax(0,1fr) 116px 96px 20px;gap:12px;align-items:center;padding:13px 16px;border-bottom:1px solid #E8E3D9">
+            <div style="position:relative"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">BA</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+            <div style="min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Boutique Aïcha</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_551200 · FCFA</div></div>
+            <div style="text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 14px/1.2 'Space Grotesk',monospace;color:#1B1916">1,12 M</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">FCFA dépensés</div></div>
+            <div style="display:flex;justify-content:flex-end"><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">▲ 3,41</span></div>
+            <i class="ph ph-star" style="font-size:16px;color:#B44A26"></i>
+          </div>
+
+          <div style="background:#FBF9F6;padding:9px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #E8E3D9">
+            <div style="display:flex;align-items:center;gap:8px"><i class="ph ph-buildings" style="font-size:13px;color:#5C564E"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Kola Group</div></div>
+            <div style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">BM 118 442 · 4 comptes</div>
+          </div>
+          <div style="display:grid;grid-template-columns:36px minmax(0,1fr) 116px 96px 20px;gap:12px;align-items:center;padding:13px 16px;border-bottom:1px solid #F4F1EB">
+            <div style="position:relative"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">KB</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+            <div style="min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kola Beauty</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_402882 · FCFA</div></div>
+            <div style="text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 14px/1.2 'Space Grotesk',monospace;color:#1B1916">892 400</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">FCFA dépensés</div></div>
+            <div style="display:flex;justify-content:flex-end"><span style="white-space:nowrap;display:inline-block;background:#8F5F08;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">◆ 1,92</span></div>
+            <i class="ph ph-star" style="font-size:16px;color:#D6CFC2"></i>
+          </div>
+          <div style="display:grid;grid-template-columns:36px minmax(0,1fr) 116px 96px 20px;gap:12px;align-items:center;padding:13px 16px;border-bottom:1px solid #E8E3D9">
+            <div style="position:relative"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">KW</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#A9A196;border:2px solid #FFFFFF"></div></div>
+            <div style="min-width:0"><div style="display:flex;align-items:center;gap:7px"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#5C564E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kola Wholesale</div><div style="white-space:nowrap;font:700 10px/1 'Figtree',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#5C564E;background:#E8E3D9;padding:4px 7px;border-radius:999px;flex:0 0 auto">En pause</div></div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_402884 · FCFA</div></div>
+            <div style="text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 14px/1.2 'Space Grotesk',monospace;color:#6E6862">—</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">aucune diffusion</div></div>
+            <div style="display:flex;justify-content:flex-end"><span style="white-space:nowrap;display:inline-block;border:1.5px dashed #A9A196;color:#5C564E;padding:2.5px 8px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">‖ —</span></div>
+            <i class="ph ph-star" style="font-size:16px;color:#D6CFC2"></i>
+          </div>
+
+          <div style="background:#FBF9F6;padding:9px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #E8E3D9">
+            <div style="display:flex;align-items:center;gap:8px"><i class="ph ph-buildings" style="font-size:13px;color:#5C564E"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Agence Sahel</div></div>
+            <div style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">BM 204 118 · 3 comptes</div>
+          </div>
+          <div style="display:grid;grid-template-columns:36px minmax(0,1fr) 116px 96px 20px;gap:12px;align-items:center;padding:13px 16px;border-bottom:1px solid #E8E3D9">
+            <div style="position:relative"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">ÉC</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+            <div style="min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Éclat Cosmétiques</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_551204 · EUR</div></div>
+            <div style="text-align:right;font-variant-numeric:tabular-nums"><div style="font:700 14px/1.2 'Space Grotesk',monospace;color:#1B1916">4 820</div><div style="font:500 10px/1.4 'Space Grotesk',monospace;color:#6E6862">EUR dépensés</div></div>
+            <div style="display:flex;justify-content:flex-end"><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">▲ 2,10</span></div>
+            <i class="ph ph-star" style="font-size:16px;color:#D6CFC2"></i>
+          </div>
+          <div style="padding:11px 16px;display:flex;align-items:center;justify-content:center;gap:7px;border-bottom:1px solid #E8E3D9;background:#FBF9F6"><i class="ph ph-caret-down" style="font-size:13px;color:#94391D"></i><div style="font:600 13px/1 'Figtree',sans-serif;color:#94391D">3 comptes de plus — Clients directs</div></div>
+        </div>
+
+        <div style="padding:12px 16px;border-top:1px solid #E8E3D9;display:flex;align-items:center;gap:10px;background:#FBF9F6">
+          <div style="flex:1;display:flex;align-items:center;gap:9px"><i class="ph ph-plus" style="font-size:16px;color:#B44A26"></i><div style="font:700 14px/1 'Figtree',sans-serif;color:#94391D">Connecter un compte publicitaire</div></div>
+          <div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">↑↓ naviguer · ↵ ouvrir · Échap fermer</div>
+        </div>
+      </div>
+    </div>
+    <div style="width:1180px;font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Le compte actif porte le fond <span style="font:500 12px/1 'Space Grotesk',monospace">primary-100</span> et une coche — jamais la couleur seule. L'étoile de favori est toujours présente, en <span style="font:500 12px/1 'Space Grotesk',monospace">neutral-300</span> quand elle est vide : sa position ne bouge pas d'une ligne à l'autre.</div>
+  </div>
+
+  <!-- ============ 768 + 375 ============ -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C1.2 · tablette 768 &amp; mobile 375</div>
+    <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">768 — panneau centré, 2 lignes par compte</div>
+        <div style="width:768px;flex:0 0 auto;height:820px;background:#F4F1EB;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="position:absolute;inset:0;display:flex"><div style="width:64px;background:#FFFFFF;border-right:1px solid #E8E3D9"></div><div style="flex:1;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-content:start"><div style="height:120px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px"></div><div style="height:120px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px"></div></div></div>
+          <div style="position:absolute;inset:0;background:rgba(15,14,12,.45)"></div>
+          <div style="position:absolute;left:104px;right:40px;top:40px;bottom:40px;background:#FFFFFF;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);display:flex;flex-direction:column;overflow:hidden">
+            <div style="padding:14px 16px;border-bottom:1px solid #E8E3D9;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="flex:1;display:flex;align-items:center;gap:10px;border:1.5px solid #D6CFC2;border-radius:10px;padding:12px 14px"><i class="ph ph-magnifying-glass" style="font-size:16px;color:#5C564E"></i><div style="flex:1;font:400 15px/1 'Figtree',sans-serif;color:#6E6862">Rechercher un compte</div></div>
+                <div style="width:44px;height:44px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-x" style="font-size:16px;color:#423D37"></i></div>
+              </div>
+              <div style="display:flex;gap:6px"><div style="background:#2C2925;color:#FFFFFF;padding:7px 12px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Tous · 9</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:5.5px 12px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Actifs · 5</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:5.5px 12px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Favoris · 2</div></div>
+            </div>
+            <div style="flex:1;overflow:hidden">
+              <div style="background:#FBE9E6;padding:9px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #F2C3BC"><i class="ph ph-warning" style="font-size:13px;color:#8E2317"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#8E2317">Action requise · 2</div></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #F4F1EB">
+                <div style="position:relative;flex:0 0 auto"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">SM</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#C0311F;border:2px solid #FFFFFF"></div></div>
+                <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Sahel Mode</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#8E2317">Déconnecté · jeton expiré le 1 août</div></div>
+                <div style="background:#C0311F;color:#FFFFFF;padding:10px 14px;border-radius:9px;font:700 13px/1 'Figtree',sans-serif;flex:0 0 auto">Reconnecter</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #E8E3D9">
+                <div style="position:relative;flex:0 0 auto"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">KT</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#8F5F08;border:2px solid #FFFFFF"></div></div>
+                <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Kola Test</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#7A5208">Restreint par Meta</div></div>
+                <div style="border:1.5px solid #D6CFC2;color:#423D37;padding:9px 13px;border-radius:9px;font:600 13px/1 'Figtree',sans-serif;flex:0 0 auto">Voir</div>
+              </div>
+              <div style="background:#FBF9F6;padding:9px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #E8E3D9"><i class="ph ph-star" style="font-size:13px;color:#94391D"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Favoris</div></div>
+              <div style="padding:13px 16px;border-bottom:1px solid #F4F1EB;background:#FAE8DF;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="position:relative;flex:0 0 auto"><div style="width:36px;height:36px;border-radius:10px;background:#E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FAE8DF"></div></div>
+                  <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Kola Distribution</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_402881 · FCFA · Actif</div></div>
+                  <i class="ph ph-check" style="font-size:16px;color:#94391D;flex:0 0 auto"></i>
+                </div>
+                <div style="display:flex;gap:14px;align-items:center;padding-left:48px;font-variant-numeric:tabular-nums"><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">2,64 M FCFA</span><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:3px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">▲ ROAS 2,84</span></div>
+              </div>
+              <div style="padding:13px 16px;border-bottom:1px solid #E8E3D9;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="position:relative;flex:0 0 auto"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">BA</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+                  <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Boutique Aïcha</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_551200 · FCFA · Actif</div></div>
+                  <i class="ph ph-star" style="font-size:16px;color:#B44A26;flex:0 0 auto"></i>
+                </div>
+                <div style="display:flex;gap:14px;align-items:center;padding-left:48px;font-variant-numeric:tabular-nums"><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">1,12 M FCFA</span><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:3px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">▲ ROAS 3,41</span></div>
+              </div>
+              <div style="background:#FBF9F6;padding:9px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #E8E3D9"><div style="display:flex;align-items:center;gap:8px"><i class="ph ph-buildings" style="font-size:13px;color:#5C564E"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Kola Group</div></div><div style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">4 comptes</div></div>
+              <div style="padding:13px 16px;border-bottom:1px solid #E8E3D9;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="position:relative;flex:0 0 auto"><div style="width:36px;height:36px;border-radius:10px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#6E6862">KB</div><div style="position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+                  <div style="flex:1;min-width:0"><div style="font:700 14px/1.3 'Figtree',sans-serif;color:#1B1916">Kola Beauty</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_402882 · FCFA · Actif</div></div>
+                  <i class="ph ph-star" style="font-size:16px;color:#D6CFC2;flex:0 0 auto"></i>
+                </div>
+                <div style="display:flex;gap:14px;align-items:center;padding-left:48px;font-variant-numeric:tabular-nums"><span style="font:700 13px/1 'Space Grotesk',monospace;color:#1B1916">892 400 FCFA</span><span style="white-space:nowrap;display:inline-block;background:#8F5F08;color:#FFFFFF;padding:3px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">◆ ROAS 1,92</span></div>
+              </div>
+              <div style="padding:12px 16px;text-align:center;font:600 13px/1 'Figtree',sans-serif;color:#94391D">5 comptes de plus ▾</div>
+            </div>
+            <div style="padding:12px 16px;border-top:1px solid #E8E3D9;display:flex;align-items:center;gap:9px;background:#FBF9F6"><i class="ph ph-plus" style="font-size:16px;color:#B44A26"></i><div style="font:700 14px/1 'Figtree',sans-serif;color:#94391D">Connecter un compte publicitaire</div></div>
+          </div>
+        </div>
+        <div style="width:768px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Sous 1024 px, la ligne passe sur deux niveaux : identité au-dessus, chiffres en dessous alignés sur l'avatar. Aucune colonne n'est supprimée.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">375 — feuille plein écran</div>
+        <div style="width:375px;flex:0 0 auto;height:812px;background:#FFFFFF;border:1px solid #D6CFC2;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(45,35,25,.10)">
+          <div style="padding:14px 20px 12px;border-bottom:1px solid #E8E3D9;display:flex;flex-direction:column;gap:12px;flex:0 0 auto">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="font:700 20px/1.2 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916;flex:1">Changer de compte</div>
+              <div style="width:44px;height:44px;border-radius:10px;border:1.5px solid #D6CFC2;display:flex;align-items:center;justify-content:center;flex:0 0 auto"><i class="ph ph-x" style="font-size:16px;color:#423D37"></i></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;border:1.5px solid #D6CFC2;border-radius:10px;padding:13px 14px"><i class="ph ph-magnifying-glass" style="font-size:16px;color:#5C564E"></i><div style="flex:1;font:400 15px/1 'Figtree',sans-serif;color:#6E6862">Rechercher un compte</div></div>
+            <div style="display:flex;gap:6px"><div style="background:#2C2925;color:#FFFFFF;padding:8px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Tous · 9</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Actifs · 5</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:6.5px 13px;border-radius:999px;font:600 13px/1 'Figtree',sans-serif">Favoris</div></div>
+          </div>
+          <div style="flex:1;overflow:hidden">
+            <div style="background:#FBE9E6;padding:10px 20px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #F2C3BC"><i class="ph ph-warning" style="font-size:13px;color:#8E2317"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#8E2317">Action requise · 2</div></div>
+            <div style="padding:14px 20px;border-bottom:1px solid #F4F1EB;display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="position:relative;flex:0 0 auto"><div style="width:40px;height:40px;border-radius:11px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#6E6862">SM</div><div style="position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:999px;background:#C0311F;border:2px solid #FFFFFF"></div></div>
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Sahel Mode</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#8E2317">Déconnecté · jeton expiré</div></div>
+              </div>
+              <div style="background:#C0311F;color:#FFFFFF;padding:14px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Reconnecter ce compte</div>
+            </div>
+            <div style="padding:14px 20px;border-bottom:1px solid #E8E3D9;display:flex;align-items:center;gap:12px">
+              <div style="position:relative;flex:0 0 auto"><div style="width:40px;height:40px;border-radius:11px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#6E6862">KT</div><div style="position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:999px;background:#8F5F08;border:2px solid #FFFFFF"></div></div>
+              <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Kola Test</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#7A5208">Restreint par Meta</div></div>
+              <i class="ph ph-caret-right" style="font-size:16px;color:#A9A196"></i>
+            </div>
+
+            <div style="background:#FBF9F6;padding:10px 20px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #E8E3D9"><i class="ph ph-star" style="font-size:13px;color:#94391D"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Favoris</div></div>
+            <div style="padding:14px 20px;border-bottom:1px solid #F4F1EB;background:#FAE8DF;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="position:relative;flex:0 0 auto"><div style="width:40px;height:40px;border-radius:11px;background:#E8E3D9;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:999px;background:#146B4A;border:2px solid #FAE8DF"></div></div>
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Kola Distribution</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_402881 · FCFA · Actif</div></div>
+                <i class="ph ph-check-circle" style="font-size:20px;color:#94391D;flex:0 0 auto"></i>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;font-variant-numeric:tabular-nums"><span style="font:700 14px/1 'Space Grotesk',monospace;color:#1B1916">2,64 M FCFA</span><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">▲ ROAS 2,84</span></div>
+            </div>
+            <div style="padding:14px 20px;border-bottom:1px solid #E8E3D9;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="position:relative;flex:0 0 auto"><div style="width:40px;height:40px;border-radius:11px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#6E6862">BA</div><div style="position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Boutique Aïcha</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_551200 · FCFA · Actif</div></div>
+                <i class="ph ph-star" style="font-size:20px;color:#B44A26;flex:0 0 auto"></i>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;font-variant-numeric:tabular-nums"><span style="font:700 14px/1 'Space Grotesk',monospace;color:#1B1916">1,12 M FCFA</span><span style="white-space:nowrap;display:inline-block;background:#146B4A;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">▲ ROAS 3,41</span></div>
+            </div>
+            <div style="background:#FBF9F6;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #E8E3D9"><div style="display:flex;align-items:center;gap:8px"><i class="ph ph-buildings" style="font-size:13px;color:#5C564E"></i><div style="font:700 11px/1 'Space Grotesk',monospace;letter-spacing:.1em;text-transform:uppercase;color:#5C564E">Kola Group</div></div><div style="font:500 10px/1 'Space Grotesk',monospace;color:#6E6862">4</div></div>
+            <div style="padding:14px 20px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="position:relative;flex:0 0 auto"><div style="width:40px;height:40px;border-radius:11px;background:#F4F1EB;border:1px solid #E8E3D9;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Space Grotesk',monospace;color:#6E6862">KB</div><div style="position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+                <div style="flex:1;min-width:0"><div style="font:700 15px/1.3 'Figtree',sans-serif;color:#1B1916">Kola Beauty</div><div style="font:500 11px/1.4 'Space Grotesk',monospace;color:#6E6862">act_402882 · FCFA · Actif</div></div>
+                <i class="ph ph-star" style="font-size:20px;color:#D6CFC2;flex:0 0 auto"></i>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;font-variant-numeric:tabular-nums"><span style="font:700 14px/1 'Space Grotesk',monospace;color:#1B1916">892 400 FCFA</span><span style="white-space:nowrap;display:inline-block;background:#8F5F08;color:#FFFFFF;padding:4px 9px;border-radius:999px;font:700 11px/1.3 'Figtree',sans-serif">◆ ROAS 1,92</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 20px 16px;border-top:1px solid #E8E3D9;background:#FBF9F6;flex:0 0 auto"><div style="background:#B44A26;color:#FFFFFF;padding:15px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif;text-align:center">Connecter un compte</div></div>
+        </div>
+        <div style="width:375px;font:400 12px/1.5 'Figtree',sans-serif;color:#5C564E">Feuille plein écran depuis la pastille de compte de l'en-tête. Chaque ligne fait 74 px de haut minimum, l'action de reconnexion est un bouton pleine largeur.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ÉTATS ============ -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 11px/1 'Space Grotesk',monospace;letter-spacing:.14em;text-transform:uppercase;color:#6E6862">C1.2 · les trois états</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">1 — Un seul compte connecté</div>
+        <div style="background:#F4F1EB;border:1px solid #D6CFC2;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;gap:20px;align-items:flex-start">
+            <div style="width:240px;flex:0 0 240px;background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:12px">
+              <div style="padding:8px 10px;display:flex;align-items:center;gap:10px">
+                <div style="position:relative;flex:0 0 auto"><div style="width:32px;height:32px;border-radius:9px;background:#E8E3D9;display:flex;align-items:center;justify-content:center;font:700 12px/1 'Space Grotesk',monospace;color:#423D37">KD</div><div style="position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;border-radius:999px;background:#146B4A;border:2px solid #FFFFFF"></div></div>
+                <div style="flex:1;min-width:0"><div style="font:700 13px/1.2 'Figtree',sans-serif;color:#1B1916;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kola Distribution</div><div style="font:500 11px/1 'Space Grotesk',monospace;color:#6E6862">FCFA · Actif</div></div>
+              </div>
+            </div>
+            <div style="flex:1;font:400 14px/1.6 'Figtree',sans-serif;color:#423D37">Le sélecteur devient un simple bandeau d'identité : ni chevron, ni fond au survol, ni cible cliquable. Rien ne suggère une action qui n'existe pas.</div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <i class="ph ph-plus" style="font-size:16px;color:#B44A26"></i>
+            <div style="flex:1;font:400 14px/1.5 'Figtree',sans-serif;color:#423D37">L'ajout d'un compte reste accessible, mais depuis les réglages du profil — pas depuis un sélecteur inexistant.</div>
+          </div>
+          <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Bascule automatique dès le deuxième compte connecté : le chevron, la pastille de dénombrement et le raccourci <span style="font:500 12px/1 'Space Grotesk',monospace">⌘K</span> apparaissent alors.</div>
+        </div>
+      </div>
+
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">2 — Aucun compte connecté</div>
+        <div style="background:#F4F1EB;border:1px solid #D6CFC2;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div style="background:#FFFFFF;border:1px solid #E8E3D9;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+            <div style="width:52px;height:52px;border-radius:14px;background:#FAE8DF;display:flex;align-items:center;justify-content:center"><i class="ph ph-plugs" style="font-size:24px;color:#B44A26"></i></div>
+            <div style="font:700 24px/1.25 'Figtree',sans-serif;letter-spacing:-.01em;color:#1B1916">Connectez votre compte publicitaire Meta</div>
+            <div style="font:400 16px/1.65 'Figtree',sans-serif;color:#423D37;max-width:420px">Lyads a besoin d'un accès en lecture pour analyser vos 90 derniers jours. L'accès en écriture n'est demandé qu'au moment d'appliquer votre première recommandation.</div>
+            <div style="background:#B44A26;color:#FFFFFF;padding:15px 20px;border-radius:10px;font:700 15px/1 'Figtree',sans-serif">Connecter avec Meta</div>
+            <div style="border-top:1px solid #E8E3D9;padding-top:14px;width:100%;font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Vous gérez plusieurs comptes ? Connectez votre Business Manager : tous les comptes rattachés apparaîtront d'un coup.</div>
+          </div>
+          <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">C'est le seul état où le sélecteur disparaît complètement de la barre latérale — un sélecteur vide n'apprend rien. Le reste de l'application est en lecture seule jusqu'à la connexion.</div>
+        </div>
+      </div>
+
+      <div style="width:560px;flex:0 0 auto;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1 'Figtree',sans-serif;color:#1B1916">3 — Recherche sans résultat</div>
+        <div style="background:#F4F1EB;border:1px solid #D6CFC2;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div style="background:#FFFFFF;border:1px solid #D6CFC2;border-radius:16px;box-shadow:0 8px 24px rgba(45,35,25,.14);overflow:hidden">
+            <div style="padding:14px 16px;border-bottom:1px solid #E8E3D9">
+              <div style="display:flex;align-items:center;gap:10px;border:1.5px solid #B44A26;border-radius:10px;padding:12px 14px;box-shadow:0 0 0 3px #F4CDBB">
+                <i class="ph ph-magnifying-glass" style="font-size:16px;color:#5C564E"></i>
+                <div style="flex:1;font:500 15px/1 'Figtree',sans-serif;color:#1B1916">bijouterie</div>
+                <i class="ph ph-x-circle" style="font-size:16px;color:#6E6862"></i>
+              </div>
+            </div>
+            <div style="padding:32px 24px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center">
+              <i class="ph ph-magnifying-glass" style="font-size:30px;color:#A9A196"></i>
+              <div style="font:700 17px/1.3 'Figtree',sans-serif;color:#1B1916">Aucun compte ne correspond à « bijouterie »</div>
+              <div style="font:400 14px/1.6 'Figtree',sans-serif;color:#5C564E;max-width:340px">La recherche porte sur le nom et l'identifiant des 9 comptes connectés. Le compte que vous cherchez n'est peut-être pas encore rattaché.</div>
+              <div style="display:flex;gap:10px;margin-top:4px"><div style="background:#B44A26;color:#FFFFFF;padding:13px 17px;border-radius:10px;font:700 14px/1 'Figtree',sans-serif">Connecter un compte</div><div style="border:1.5px solid #D6CFC2;color:#423D37;padding:11.5px 15px;border-radius:10px;font:600 14px/1 'Figtree',sans-serif">Effacer la recherche</div></div>
+            </div>
+          </div>
+          <div style="font:400 13px/1.55 'Figtree',sans-serif;color:#5C564E">Le champ conserve la saisie et reste focalisé : l'utilisateur corrige sans re-cliquer. Le périmètre de recherche est explicité — c'est ce qui évite de croire à un bug.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>
