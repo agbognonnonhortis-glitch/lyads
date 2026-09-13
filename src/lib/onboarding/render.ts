@@ -605,6 +605,11 @@ export function renderOnboarding(
       );
     }
     if (ref === "B6") {
+      const pixelNotice = leaf(
+        frame,
+        "Aucun pixel sur votre compte ? Ce cas est prévu",
+      );
+      if (pixelNotice) parents(pixelNotice, 2).remove();
       const title = frame.querySelector("h1").parentElement;
       const main = title.parentElement;
       // Reuse the original pixel and event cards inside the original content column.
