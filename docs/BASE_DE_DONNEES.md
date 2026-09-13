@@ -48,7 +48,7 @@ npm run typecheck
 npm run build
 ```
 
-Le workflow GitHub vérifie le projet à chaque push et pull request. Il ne déploie pas la base. Une intégration Supabase configurée dans son tableau de bord est distincte de ce workflow ; son comportement sur la branche cible doit être vérifié.
+Le workflow GitHub vérifie le projet à chaque push et pull request. Il ne déploie pas la base. L’intégration Supabase est confirmée sur ce dépôt : le premier push a produit un contrôle « Supabase Preview », ignoré car `main` n’est associée à aucune branche Supabase. Le workflow de tests, lui, a réussi. La prévisualisation par pull request et le déploiement de la branche principale restent deux validations distinctes.
 
 Avant application distante, exécuter `supabase/inspection.sql` sur le projet cible, examiner les éventuelles tables existantes et l’historique des migrations, puis adapter la migration si nécessaire. Elle ne supprime aucun objet existant et échoue si un nom de table est déjà utilisé, au lieu d’écraser l’existant.
 
