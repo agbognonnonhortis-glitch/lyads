@@ -1,6 +1,6 @@
 import { parseHTML } from "linkedom";
 import { renderSource, catalog } from "../source/render";
-import { sections, stepPaths, type Section } from "./model";
+import { profileFields, stepPaths } from "./model";
 import type { OnboardingData } from "./data";
 type El = any;
 const norm = (s: string) => s.replace(/\s+/g, " ").trim();
@@ -156,15 +156,15 @@ function setFooter(frame: El, step: number) {
             : "Continuer",
       );
 }
-function navigation(frame: El, ref: string, completed: boolean) {
-  if (ref === "B2") return;
+function navigation(frame: El, ref: string, completed: boolean, step: number) {
+  if (ref === "B2" || ref === "B8") return;
   const doc = frame.ownerDocument;
   const title = frame.querySelector("h1")?.parentElement;
   const main = title?.parentElement;
   if (!main) return;
   const primaryAction =
-    ref === "B8"
-      ? "recap"
+    ref === "B7" && step === 5
+      ? "analyze-website"
       : ref === "B10"
         ? "free"
         : ref === "B11"
@@ -256,11 +256,16 @@ function navigation(frame: El, ref: string, completed: boolean) {
 }
 export function onboardingStep(ref: string, section?: string) {
   if (ref === "B7")
-    return section === "market" || section === "audience"
-      ? 6
-      : section === "funnel" || section === "history"
-        ? 7
-        : 5;
+    return [
+      "review",
+      "market",
+      "audience",
+      "funnel",
+      "history",
+      "offer",
+    ].includes(section || "")
+      ? 7
+      : 5;
   return (
     (
       {
@@ -270,7 +275,7 @@ export function onboardingStep(ref: string, section?: string) {
         B4: 2,
         B5: 3,
         B6: 4,
-        B8: 7,
+        B8: 6,
         B9: 8,
         B10: 9,
         B11: 10,
@@ -303,9 +308,9 @@ export function renderOnboarding(
     "Business Manager et comptes",
     "Pages Facebook",
     "Pixels et événements",
-    "Activité et offre",
-    "Marché et audience",
-    "Tunnel et historique",
+    "Votre site web",
+    "Analyse de votre activité",
+    "Votre entreprise",
     "Récapitulatif",
     "Choix du plan",
     "Configuration enregistrée",
@@ -390,9 +395,9 @@ export function renderOnboarding(
             "Business Manager",
             "Pages",
             "Pixel",
-            "Activité",
-            "Marché",
-            "Tunnel",
+            "Site web",
+            "Analyse",
+            "Entreprise",
             "Récapitulatif",
             "Plan",
             "Fin",
@@ -710,300 +715,241 @@ export function renderOnboarding(
         "Les pixels ci-dessous appartiennent aux comptes sélectionnés. Les volumes disponibles viennent de Meta ; aucune estimation ne remplace une donnée absente.",
       );
     }
-    if (ref === "B7") {
-      const main = frame.querySelector("h1").parentElement.parentElement;
-      const list = parents(leaf(frame, "Argument principal"), 7);
-      const first = list.firstElementChild;
-      const ct = first.cloneNode(true);
-      const labelTemplate = leaf(frame, "Argument principal")?.cloneNode(true);
-      // The original field shell, rather than maquette placeholder values, supplies styling.
-      const originalField = labelTemplate
-        ? parents(leaf(frame, "Argument principal"), 2)
-        : null;
-      const fieldStyle =
-        originalField?.lastElementChild?.getAttribute("style") || styles.input;
-      list.replaceChildren();
-      for (const [key, definition] of Object.entries(sections)) {
-        const c = ct.cloneNode(true);
-        const head = c.firstElementChild;
-        const heading = all(head).find(
-          (e) => !e.children.length && norm(e.textContent) === "Mon activité",
-        );
-        if (heading) {
-          heading.textContent = definition.title;
-          const subtitle = heading.nextElementSibling;
-          if (subtitle) subtitle.textContent = "Informations saisies par vous";
-        }
-        for (const e of all(head))
-          if (!e.children.length && e.textContent === "Complète")
-            e.textContent = "";
-        c.setAttribute("data-section", key);
-        const form = node(doc, "div", styles.stack + ";padding:16px 18px");
-        const values = state.brain[key] || {};
-        const field = (
-          name: string,
-          label: string,
-          value: unknown,
-          index?: number,
-        ) => {
-          const wrap = node(doc, "label", styles.stack + ";gap:6px");
-          wrap.append(
-            node(doc, "span", styles.title + ";font-size:13px", label),
-          );
-          const input = node(
-            doc,
-            name === "argument" || name === "objections" ? "textarea" : "input",
-            fieldStyle + ";width:100%;box-sizing:border-box;outline-offset:3px",
-          );
-          input.setAttribute("data-field", name);
-          input.setAttribute("data-section", key);
-          if (index !== undefined)
-            input.setAttribute("data-product", String(index));
-          input.setAttribute(
-            "aria-label",
-            label + (index !== undefined ? " " + (index + 1) : ""),
-          );
-          input.setAttribute("maxlength", "4000");
-          input.setAttribute("placeholder", label);
-          if (input.tagName === "TEXTAREA")
-            input.textContent = typeof value === "string" ? value : "";
-          else
-            input.setAttribute("value", typeof value === "string" ? value : "");
-          wrap.append(input);
-          return wrap;
-        };
-        if (key === "offer") {
-          const products = Array.isArray(values.products)
-            ? values.products
-            : [];
-          for (const [i, product] of products.entries()) {
-            const productCard = card(
-              doc,
-              product.name || `Produit ou service ${i + 1}`,
-            );
-            for (const [name, label] of Object.entries(definition.fields))
-              productCard.append(field(name, label, product[name], i));
-            const remove = button(doc, "Retirer ce produit", "remove-product");
-            remove.setAttribute("data-product", String(i));
-            productCard.append(remove);
-            form.append(productCard);
-          }
-          form.append(
-            button(doc, "Ajouter un produit ou un service", "add-product"),
-          );
-        } else
-          for (const [name, label] of Object.entries(definition.fields))
-            form.append(field(name, label, values[name]));
-        form.hidden = key !== section;
-        action(head, "toggle-section");
-        head.setAttribute("aria-expanded", String(key === section));
-        for (const i of all(head, "i.ph-check")) i.style.visibility = "hidden";
-        c.append(form);
-        list.append(c);
-      }
-      intro(
+    if (["B7", "B8", "B9"].includes(ref)) {
+      leaf(frame, "Enregistré · 62 % rempli")?.parentElement?.remove();
+      leaf(
         frame,
-        "Ce que l’agent doit savoir de votre activité",
-        "Renseignez vos informations réelles. Les champs laissés vides restent manquants ; chaque modification est enregistrée dans votre espace.",
-      );
-      for (const e of all(frame))
-        if (!e.children.length) {
-          const t = norm(e.textContent);
-          if (
-            t ===
-            "Sauvegarde continue : une connexion perdue ne fait rien perdre."
-          )
-            e.textContent =
-              "Les modifications sont conservées après confirmation de leur enregistrement.";
-          if (t === "62") e.textContent = String(data.completeness.percent);
-          if (
-            /62 %|À 62 %|deux déjà remplies|2 produits enregistrés|4 secondes|2 champs sur 5|3 champs/.test(
-              t,
-            )
-          )
-            e.textContent = t.startsWith("À")
-              ? "La complétude dépend uniquement des champs renseignés."
-              : t.includes("Enregistré")
-                ? "Enregistré dans votre espace"
-                : `${data.completeness.percent} % rempli`;
-          if (t.startsWith("Enregistré ·"))
-            e.textContent = `Enregistré · ${data.completeness.percent} % rempli`;
-        }
-      for (const e of all(frame))
-        if (
-          norm(e.textContent).startsWith("Section suivante") &&
-          !e.querySelector("[data-field]")
-        )
-          action(e, "next", "Continuer");
-      for (const [key, definition] of Object.entries(sections))
-        for (const e of all(frame))
-          if (
-            !e.children.length &&
-            norm(e.textContent) === definition.title &&
-            !e.closest("[data-section]")
-          ) {
-            action(e, "open-section");
-            e.setAttribute("data-target", key);
-            const circle = e.parentElement.firstElementChild;
-            if (
-              circle !== e &&
-              circle.getAttribute("style")?.includes("width:20px")
-            ) {
-              circle.replaceChildren(
-                node(
-                  doc,
-                  "div",
-                  styles.small + ";font-size:9px",
-                  String(Object.keys(sections).indexOf(key) + 1),
-                ),
-              );
-              circle.style.background = key === section ? "#FDF5F1" : "#FFFFFF";
-              circle.style.borderColor =
-                key === section ? "#B44A26" : "#D6CFC2";
-              e.style.color = key === section ? "#B44A26" : "#423D37";
-              e.style.fontWeight = key === section ? "700" : "500";
-            }
-          }
-      if (!main.querySelector('[data-onboarding-action="next"]'))
-        main.append(button(doc, "Continuer", "next"));
-    }
-    if (ref === "B8") {
-      const title = frame.querySelector("h1").parentElement;
+        "78 % rempli · 4 informations manquantes",
+      )?.parentElement?.remove();
+      const h = frame.querySelector("h1");
+      const title = h.parentElement;
       const main = title.parentElement;
+      const stepLabel = h.previousElementSibling?.cloneNode(true);
+      title.replaceChildren(
+        ...(stepLabel ? [stepLabel] : []),
+        h,
+        node(doc, "p", styles.text),
+      );
       for (const child of [...main.children])
         if (child !== title) child.remove();
-      intro(
-        frame,
-        "Analyse de votre site",
-        "Aucune analyse automatique n’a été exécutée. Vos informations métier restent celles que vous avez saisies.",
+      if (ref !== "B8")
+        for (const child of [...main.parentElement.children])
+          if (child !== main) child.remove();
+      // Remove the maquette's duplicate sticky footer; navigation is rendered once.
+      for (const el of all(frame, "[data-onboarding-action]"))
+        if (
+          !main.contains(el) &&
+          ["next", "recap", "brain", "previous"].includes(
+            el.getAttribute("data-onboarding-action"),
+          )
+        )
+          el.remove();
+      const values = state.brain.activity || {};
+      const analysis = data.jobs.find(
+        (j: any) => j.id === state.analysis_job_id,
       );
-      main.append(
-        card(
+      const textAction = (label: string, act: string) =>
+        action(
+          node(
+            doc,
+            "button",
+            styles.text +
+              ";border:0;background:transparent;padding:4px 0;cursor:pointer;align-self:flex-start",
+            label,
+          ),
+          act,
+        );
+      if (ref === "B7" && step === 5) {
+        intro(
+          frame,
+          "Faisons connaissance avec votre entreprise",
+          "Ajoutez le lien de votre site web ou de votre page de vente. Nous analyserons son contenu pour préremplir les informations que vous pourrez ensuite modifier.",
+        );
+        const box = card(doc, "Votre site web ou page de vente");
+        const input = node(doc, "input", styles.input + ";margin-top:14px");
+        input.setAttribute("type", "url");
+        input.setAttribute(
+          "aria-label",
+          "Lien du site web ou de la page de vente",
+        );
+        input.setAttribute("placeholder", "https://votre-site.com");
+        input.setAttribute("data-website-url", "");
+        input.setAttribute("maxlength", "2048");
+        input.setAttribute("value", values.website || "");
+        box.append(
+          input,
+          node(doc, "p", styles.small, "Analyse incluse · 0 crédit"),
+        );
+        main.append(box);
+      } else if (ref === "B8") {
+        intro(
+          frame,
+          "Nous essayons de comprendre votre activité.",
+          "Nous lisons votre site et préparons vos informations. Vous pourrez les vérifier et les modifier à l’étape suivante.",
+        );
+        const wait = card(doc, "Analyse de votre site");
+        wait.setAttribute("data-analysis-panel", "");
+        const message = node(
           doc,
-          "Site renseigné",
-          state.brain.activity?.website || "Aucun site renseigné.",
-        ),
-        card(
+          "p",
+          styles.text,
+          analysis?.status === "succeeded"
+            ? "Analyse terminée. Ouverture de vos informations…"
+            : "Lecture et compréhension du contenu en cours…",
+        );
+        message.setAttribute("data-analysis-message", "");
+        message.setAttribute("role", "status");
+        message.setAttribute("aria-live", "polite");
+        const progress = node(
           doc,
-          "Saisie manuelle disponible",
-          "Le moteur d’analyse automatique du site n’est pas encore raccordé. Aucune offre, aucun prix et aucune audience ne sont inventés.",
-        ),
-        button(doc, "Continuer avec mes informations", "recap"),
-        button(doc, "Compléter le formulaire", "brain"),
-      );
-    }
-    if (ref === "B9") {
-      const n = leaf(frame, "Nom de l’entreprise");
-      const row = n.parentElement;
-      const rowTpl = row.cloneNode(true);
-      const group = parents(leaf(frame, "Mon activité"), 3);
-      const list = group.parentElement;
-      const groupTpl = group.cloneNode(true);
-      list.replaceChildren();
-      for (const [key, definition] of Object.entries(sections)) {
-        const g = groupTpl.cloneNode(true);
-        const heading = leaf(g, "Mon activité");
-        heading.textContent = definition.title;
-        const badge = leaf(g, "Complète");
-        if (badge) badge.textContent = "Saisi par vous";
-        const nr = leaf(g, "Nom de l’entreprise");
-        const rows = nr.parentElement.parentElement;
-        rows.replaceChildren();
-        const records =
-          key === "offer"
-            ? state.brain.offer?.products || []
-            : [state.brain[key] || {}];
-        for (const record of records.length ? records : [{}])
-          for (const [name, label] of Object.entries(definition.fields)) {
-            const r = rowTpl.cloneNode(true);
-            leaf(r, "Nom de l’entreprise").textContent = label;
-            leaf(r, "Kola Distribution").textContent =
-              record[name] || "Non renseigné";
-            const source = named(r, "Saisi par vous");
-            if (source)
-              source.textContent = record[name] ? "Saisi par vous" : "Manquant";
-            rows.append(r);
+          "progress",
+          "width:100%;accent-color:#B44A26",
+        );
+        progress.setAttribute("aria-label", "Analyse du site en cours");
+        wait.append(
+          node(
+            doc,
+            "div",
+            styles.small,
+            values.website || "Aucun lien enregistré",
+          ),
+          progress,
+          message,
+        );
+        main.append(wait);
+        const recovery = node(doc, "div", styles.stack);
+        recovery.setAttribute("data-analysis-recovery", "");
+        recovery.hidden = true;
+        recovery.append(
+          button(doc, "Suivant", "retry-analysis"),
+          textAction("Modifier le lien", "website"),
+          textAction("Compléter manuellement", "manual-profile"),
+        );
+        main.append(recovery);
+      } else {
+        const review = ref === "B9";
+        intro(
+          frame,
+          review
+            ? "Vérifiez les informations de votre entreprise"
+            : "Voici ce que nous avons compris de votre activité",
+          review
+            ? "Vérifiez vos informations avant de confirmer et de choisir votre plan."
+            : "Vous pouvez modifier chaque champ directement. Les informations absentes du site restent à compléter.",
+        );
+        const form = node(
+          doc,
+          "div",
+          styles.card + ";" + styles.stack + ";gap:20px",
+        );
+        for (const [key, label] of Object.entries(profileFields)) {
+          const wrap = node(doc, "label", styles.stack + ";gap:7px");
+          wrap.append(
+            node(doc, "span", styles.title + ";font-size:14px", label),
+          );
+          if (key === "price")
+            wrap.append(
+              node(
+                doc,
+                "span",
+                styles.text + ";font-size:12px",
+                "Laisser vide si vous vendez plusieurs produits",
+              ),
+            );
+          const input = node(
+            doc,
+            [
+              "description",
+              "benefits",
+              "problem",
+              "products",
+              "audience",
+            ].includes(key)
+              ? "textarea"
+              : "input",
+            styles.input,
+          );
+          input.setAttribute("data-section", "activity");
+          input.setAttribute("data-field", key);
+          input.setAttribute("aria-label", label);
+          input.setAttribute("maxlength", key === "name" ? "200" : "4000");
+          if (key === "name") input.setAttribute("required", "");
+          if (input.tagName === "TEXTAREA") {
+            input.setAttribute("rows", "3");
+            input.textContent = values[key] || "";
+          } else input.setAttribute("value", values[key] || "");
+          if (key === "price")
+            input.setAttribute("placeholder", "Montant et devise");
+          wrap.append(input);
+          const source = state.provenance?.activity_fields?.[key];
+          const sourceLabel = node(
+            doc,
+            "span",
+            styles.small,
+            source?.source === "inferred"
+              ? "Déduit du site · à vérifier"
+              : source?.source === "site"
+                ? "Extrait du site · à vérifier"
+                : source?.source === "user" || values[key]
+                  ? "Saisi par vous"
+                  : key === "price"
+                    ? "Facultatif · à remplir par vous"
+                    : "Non trouvé · à compléter",
+          );
+          sourceLabel.setAttribute("data-field-source", key);
+          wrap.append(sourceLabel);
+          if (source?.url && /^https?:\/\//.test(source.url)) {
+            const link = node(doc, "a", styles.small, "Voir la source");
+            link.setAttribute("href", source.url);
+            link.setAttribute("target", "_blank");
+            link.setAttribute("rel", "noopener noreferrer");
+            wrap.append(link);
           }
-        list.append(g);
-      }
-      // Replace sample deductions with the actual selected assets, preserving the card shell.
-      const deductions = all(frame).find(
-        (e) =>
-          !e.children.length &&
-          norm(e.textContent) === "Les déductions sont des propositions",
-      );
-      if (deductions) {
-        const box = parents(deductions, 2);
-        box.replaceChildren(
-          node(doc, "div", styles.title, "Ressources sélectionnées"),
-          node(
-            doc,
-            "div",
-            styles.text,
-            resource("business", state.business_meta_id)?.source_data.name ||
-              "Business Manager non sélectionné",
-          ),
-          ...selectedAccounts.map((a: any) =>
-            node(doc, "div", styles.text, a.name + " · " + a.currency),
-          ),
-          ...state.page_ids.map((id: string) =>
-            node(
-              doc,
-              "div",
-              styles.text,
-              "Page : " +
-                (resource("page", id)?.source_data.name || "Indisponible"),
-            ),
-          ),
-          ...state.pixels.map((p: any) =>
-            node(
-              doc,
-              "div",
-              styles.text,
-              "Pixel : " +
-                (resource("pixel", p.pixel_id)?.source_data.name ||
-                  "Indisponible") +
-                (p.event ? " · " + p.event : ""),
-            ),
-          ),
-        );
-      }
-      intro(
-        frame,
-        "Vérifiez les informations de votre activité",
-        "Ce récapitulatif reprend vos sélections Meta et les réponses enregistrées. Revenez au formulaire pour les corriger avant de confirmer.",
-      );
-      for (const e of all(frame))
-        if (!e.children.length) {
-          const t = norm(e.textContent);
-          if (/78 %/.test(t))
-            e.textContent = `${data.completeness.percent} % rempli · ${data.completeness.missing.length} champs manquants`;
+          form.append(wrap);
         }
-      const counts = leaf(frame, "24 informations · 9 déduites · 4 manquantes");
-      if (counts)
-        counts.textContent = `${data.completeness.filled} champs renseignés · ${data.completeness.missing.length} champs manquants`;
-      const missing = leaf(frame, "Ce qui manque, et ce que ça limite");
-      if (missing) {
-        const block = parents(missing, 2);
-        block.replaceChildren(
-          node(doc, "div", styles.title, "Informations manquantes"),
-          ...data.completeness.missing.map((m) =>
-            node(doc, "div", styles.text, `${m.label} — ${m.affects}`),
-          ),
+        main.append(
+          form,
+          textAction("Modifier le lien et relancer l’analyse", "website"),
         );
-      }
-      const percent = leaf(frame, "Complétude du Business Brain");
-      if (percent) {
-        const block = parents(percent, 3);
-        block.replaceChildren(
-          node(doc, "div", styles.title, "Complétude du Business Brain"),
-          node(
-            doc,
-            "div",
-            styles.text,
-            `${data.completeness.percent} % · ${data.completeness.filled} champs renseignés sur ${data.completeness.total}. Ce score ne mesure pas la fiabilité des performances publicitaires.`,
-          ),
-        );
+        if (review) {
+          const assets = card(doc, "Ressources sélectionnées");
+          assets.append(
+            node(
+              doc,
+              "div",
+              styles.text,
+              resource("business", state.business_meta_id)?.source_data.name ||
+                "Business Manager non sélectionné",
+            ),
+            ...selectedAccounts.map((a: any) =>
+              node(doc, "div", styles.text, a.name),
+            ),
+            ...state.page_ids.map((id: string) =>
+              node(
+                doc,
+                "div",
+                styles.text,
+                "Page : " +
+                  (resource("page", id)?.source_data.name || "Indisponible"),
+              ),
+            ),
+            node(
+              doc,
+              "div",
+              styles.text,
+              state.pixels_skipped
+                ? "Sans pixel sélectionné"
+                : state.pixels
+                    .map(
+                      (p: any) =>
+                        resource("pixel", p.pixel_id)?.source_data.name ||
+                        "Pixel indisponible",
+                    )
+                    .join(", "),
+            ),
+          );
+          main.append(assets);
+        }
       }
     }
     if (ref === "B10") {
@@ -1149,7 +1095,7 @@ export function renderOnboarding(
         ),
       );
     }
-    navigation(frame, ref, !!state.completed_at);
+    navigation(frame, ref, !!state.completed_at, step);
   }
   const visibility = doc.createElement("style");
   visibility.textContent = "[hidden]{display:none!important}";

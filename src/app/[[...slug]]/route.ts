@@ -1,3 +1,4 @@
+import { renderOrganization } from "@/lib/onboarding/organization";
 import { NextRequest, NextResponse } from "next/server";
 import { onboardingData, onboardingDestination } from "@/lib/onboarding/data";
 import { renderOnboarding, onboardingStep } from "@/lib/onboarding/render";
@@ -63,8 +64,7 @@ export async function GET(request: NextRequest) {
         if (
           !data.state.completed_at &&
           step > data.state.current_step &&
-          !(ref === "B3" && data.connection) &&
-          ref !== "B8"
+          !(ref === "B3" && data.connection)
         )
           return client.redirect(
             stepPaths[Math.min(8, data.state.current_step - 1)],
@@ -80,8 +80,32 @@ export async function GET(request: NextRequest) {
         );
       }
       if (url.pathname.startsWith("/app/")) {
-        const next = await onboardingDestination(client.supabase, user.id);
-        if (!next.startsWith("/app/")) return client.redirect(next);
+        const data = await onboardingData(
+          client.supabase,
+          user.id,
+          request.cookies.get("lyads-organization")?.value,
+        );
+        if (!data.state.completed_at)
+          return client.redirect(
+            stepPaths[Math.min(8, Math.max(0, data.state.current_step - 1))],
+          );
+        return client.apply(
+          new NextResponse(
+            renderOrganization(
+              renderSource(ref, url.searchParams.get("view") ?? undefined)!,
+              ref,
+              data.organization,
+              data.organizations || [],
+            ),
+            {
+              headers: {
+                "Content-Type": "text/html; charset=utf-8",
+                "Cache-Control": "private, no-store",
+                "Referrer-Policy": "same-origin",
+              },
+            },
+          ),
+        );
       }
       return client.apply(html());
     } catch {

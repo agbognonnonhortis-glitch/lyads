@@ -113,10 +113,13 @@ test("Business form starts blank, preserves values and rejects invented fields/p
     true,
   );
   const f = fixture({
-    activity: { name: "Entreprise réelle" },
-    offer: { products: [{ name: "Un produit", price: "25.50" }] },
+    activity: {
+      name: "Entreprise réelle",
+      product_name: "Un produit",
+      price: "25.50",
+    },
   });
-  const doc = parseHTML(renderOnboarding("B7", f)).document;
+  const doc = parseHTML(renderOnboarding("B7", f, "review")).document;
   assert.equal(
     doc
       .querySelector('input[data-field="name"][data-section="activity"]')
@@ -202,7 +205,7 @@ test("Populated resources render without maquette values at all three widths", (
 });
 
 test("Onboarding has one Suivant per viewport, top refresh and only optional pixel", () => {
-  for (const ref of ["B3", "B5", "B6", "B7", "B8", "B9", "B10", "B11"]) {
+  for (const ref of ["B3", "B5", "B6", "B7", "B9", "B10", "B11"]) {
     const doc = parseHTML(renderOnboarding(ref, fixture())).document;
     for (const frame of doc.querySelectorAll("[data-source-width]")) {
       const primary = frame.querySelectorAll("[data-onboarding-primary]");
@@ -239,4 +242,49 @@ test("Onboarding has one Suivant per viewport, top refresh and only optional pix
       }
     }
   }
+});
+
+test("URL entry, waiting and editable extraction replace legacy business sections", () => {
+  const f = fixture({
+    activity: { name: "Nom extrait", benefits: "Gain de temps", price: "" },
+  });
+  f.state.provenance = {
+    activity_fields: {
+      benefits: {
+        source: "inferred",
+        url: "https://vendor.fr/",
+        evidence: "Gain de temps",
+      },
+    },
+  };
+  const entry = parseHTML(renderOnboarding("B7", f)).document;
+  for (const frame of entry.querySelectorAll("[data-source-width]")) {
+    assert.equal(frame.querySelectorAll("[data-website-url]").length, 1);
+    assert.equal(frame.querySelectorAll("[data-field]").length, 0);
+  }
+  for (const ref of ["B7", "B9"]) {
+    const d = parseHTML(renderOnboarding(ref, f, "review")).document;
+    for (const frame of d.querySelectorAll("[data-source-width]")) {
+      assert.equal(frame.querySelectorAll("[data-field]").length, 9);
+      assert.equal(
+        frame.querySelector("[data-field]")!.getAttribute("data-field"),
+        "name",
+      );
+      assert.match(
+        frame.textContent,
+        /Laisser vide si vous vendez plusieurs produits/,
+      );
+      assert.match(frame.textContent, /Déduit du site · à vérifier/);
+      assert.doesNotMatch(
+        frame.textContent,
+        /Mon offre|Mon tunnel|Mon historique|Mon activité|Mon marché/,
+      );
+    }
+  }
+  const wait = parseHTML(renderOnboarding("B8", f)).document;
+  assert.match(
+    wait.body.textContent,
+    /Nous essayons de comprendre votre activité/,
+  );
+  assert.equal(wait.querySelectorAll("[data-analysis-panel]").length, 3);
 });

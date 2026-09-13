@@ -17,8 +17,8 @@
     "/configuration/pages",
     "/configuration/pixel",
     "/configuration/entreprise?section=activity",
-    "/configuration/entreprise?section=market",
-    "/configuration/entreprise?section=funnel",
+    "/configuration/analyse-site",
+    "/configuration/entreprise?section=review",
     "/configuration/recapitulatif",
     "/configuration/plan",
     "/configuration/terminee",
@@ -318,24 +318,34 @@
       go(paths[4]);
       return;
     }
-    if (action === "add-product" || action === "remove-product") {
-      const products = structuredClone(state.brain.offer?.products || []);
-      if (action === "add-product") {
-        if (products.length >= 20)
-          throw new Error(
-            "Vous pouvez enregistrer jusqu’à 20 produits dans ce formulaire.",
-          );
-        products.push({
-          name: "",
-          argument: "",
-          objections: "",
-          price: "",
-          currency: "",
-          url: "",
-        });
-      } else products.splice(Number(el.dataset.product), 1);
-      await save({ brain: { offer: { products } } });
-      go("/configuration/entreprise?section=offer");
+    if (action === "analyze-website" || action === "retry-analysis") {
+      const frame = el.closest("[data-source-width]");
+      const raw =
+        action === "retry-analysis"
+          ? state.brain.activity?.website
+          : frame.querySelector("[data-website-url]")?.value?.trim();
+      if (!raw)
+        throw new Error(
+          "Indiquez le lien de votre site ou de votre page de vente.",
+        );
+      const url = /^https?:\/\//i.test(raw) ? raw : "https://" + raw;
+      await api("/api/onboarding", {
+        action: "analyze-website",
+        workspaceId: data.organization.id,
+        revision: state.revision,
+        url,
+      });
+      go(paths[5]);
+      return;
+    }
+    if (action === "website") {
+      await save({ current_step: 5 });
+      go(paths[4]);
+      return;
+    }
+    if (action === "manual-profile") {
+      await save({ current_step: 7 });
+      go(paths[6]);
       return;
     }
     if (action === "next") {
@@ -354,9 +364,9 @@
         throw new Error(
           "Sélectionnez un pixel ou choisissez explicitement « Continuer sans pixel ».",
         );
-      if (step === 8 && !state.brain.activity?.name?.trim())
+      if ([7, 8].includes(step) && !state.brain.activity?.name?.trim())
         throw new Error(
-          "Renseignez le nom de votre activité avant de confirmer le récapitulatif.",
+          "Renseignez le nom de votre entreprise avant de continuer.",
         );
       await save({
         current_step: Math.min(9, step + 1),
@@ -389,8 +399,8 @@
       return;
     }
     if (action === "brain") {
-      await save({ current_step: 5 });
-      go(paths[4]);
+      await save({ current_step: 7 });
+      go(paths[6]);
       return;
     }
     if (action === "recap") {
@@ -427,7 +437,17 @@
       frame.querySelector("[data-resource-results]").textContent =
         count + " résultat(s)";
     }
-    if (e.target.matches("[data-field]")) draftField(e.target);
+    if (e.target.matches("[data-field]")) {
+      document.querySelectorAll("[data-field-source]").forEach((label) => {
+        if (label.dataset.fieldSource === e.target.dataset.field)
+          label.textContent = "Saisi par vous";
+      });
+      draftField(e.target);
+    }
+    if (e.target.matches("[data-website-url]"))
+      document.querySelectorAll("[data-website-url]").forEach((input) => {
+        if (input !== e.target) input.value = e.target.value;
+      });
   });
   document.addEventListener("click", (e) => {
     const el = e.target.closest("[data-onboarding-action]");
@@ -454,6 +474,74 @@
       e.preventDefault();
     }
   });
+  if (ref === "B8") {
+    const messages = {
+      WEBSITE_INVALID_URL:
+        "Indiquez le lien public de votre site ou de votre page de vente.",
+      WEBSITE_UNAVAILABLE:
+        "Le site ne répond pas. Vérifiez le lien ou complétez les informations manuellement.",
+      WEBSITE_BLOCKED:
+        "Ce site ne permet pas la lecture automatique. Vous pouvez compléter vos informations manuellement.",
+      WEBSITE_EMPTY:
+        "Aucun contenu exploitable trouvé. Essayez une autre page ou complétez les informations manuellement.",
+      WEBSITE_NOT_CONFIGURED:
+        "L’analyse automatique n’est pas encore disponible. Vous pouvez compléter vos informations manuellement.",
+      WEBSITE_PROVIDER_UNAVAILABLE:
+        "L’analyse est momentanément indisponible. Réessayez ou complétez les informations manuellement.",
+      WEBSITE_INVALID_RESULT:
+        "Le résultat n’a pas pu être vérifié. Réessayez ou complétez les informations manuellement.",
+      WEBSITE_TOO_LARGE:
+        "Cette page est trop volumineuse. Essayez le lien direct de votre page de vente.",
+    };
+    const recover = (message) => {
+      document
+        .querySelectorAll("[data-analysis-message]")
+        .forEach((e) => (e.textContent = message));
+      document
+        .querySelectorAll("[data-analysis-recovery]")
+        .forEach((e) => (e.hidden = false));
+      document
+        .querySelectorAll("[data-analysis-panel] progress")
+        .forEach((e) => (e.hidden = true));
+    };
+    const pollAnalysis = async () => {
+      if (navigating) return;
+      if (!state.analysis_job_id) {
+        recover(
+          "Ajoutez le lien de votre site pour lancer l’analyse, ou complétez les informations manuellement.",
+        );
+        return;
+      }
+      try {
+        const { job } = await api("/api/jobs/" + state.analysis_job_id);
+        if (job.status === "succeeded") {
+          go(paths[6]);
+          return;
+        }
+        if (["failed", "cancelled"].includes(job.status)) {
+          recover(
+            messages[job.error_code] ||
+              "L’analyse n’a pas abouti. Réessayez ou complétez les informations manuellement.",
+          );
+          return;
+        }
+        document
+          .querySelectorAll("[data-analysis-message]")
+          .forEach(
+            (e) =>
+              (e.textContent = job.progress_done
+                ? `${job.progress_done} page(s) consultée(s). Nous préparons vos informations…`
+                : "Nous essayons de comprendre votre activité."),
+          );
+        setTimeout(pollAnalysis, 2000);
+      } catch {
+        recover(
+          "La connexion a été interrompue. Rechargez la page pour reprendre le suivi de votre analyse.",
+        );
+      }
+    };
+    void pollAnalysis();
+  }
   if (ref === "B11") {
     const error = sessionStorage.getItem("lyads-onboarding-sync-error");
     if (error) {

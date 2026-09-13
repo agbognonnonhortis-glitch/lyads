@@ -1093,6 +1093,187 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Website jobs isolate tenants, validate evidence and preserve concurrent manual edits",
+      async () => {
+        await admin();
+        const ws = (
+          await db.query<any>(
+            "select workspace_id from public.lyads_onboarding where brain#>>'{activity,name}'='Client business'",
+          )
+        ).rows[0].workspace_id;
+        await asUser(alice);
+        const getState = async () =>
+          (
+            await db.query<any>(
+              "select * from public.lyads_onboarding where workspace_id=$1",
+              [ws],
+            )
+          ).rows[0];
+        let state = await getState();
+        const request =
+          "select public.lyads_request_website_analysis($1,$2,$3) id";
+        const args = [ws, state.revision, "https://vendor.fr/"];
+        await asUser(bob);
+        await sqlError(request, args, "42501");
+        await asUser(alice);
+        const job = (await db.query<any>(request, args)).rows[0].id;
+        state = await getState();
+        assert.equal(state.current_step, 6);
+        assert.equal(state.analysis_job_id, job);
+        assert.equal(
+          (
+            await db.query<any>(request, [
+              ws,
+              state.revision,
+              "https://vendor.fr/",
+            ])
+          ).rows[0].id,
+          job,
+        );
+        await sqlError(
+          request,
+          [ws, state.revision, "https://another.fr/"],
+          "P0001",
+        );
+        const save = "select * from public.lyads_save_onboarding($1,$2,$3)";
+        state = (
+          await db.query<any>(save, [
+            ws,
+            state.revision,
+            JSON.stringify({
+              brain: {
+                activity: {
+                  benefits: "Correction utilisateur",
+                  price: "25 EUR",
+                },
+              },
+            }),
+          ])
+        ).rows[0];
+        await asUser(bob);
+        assert.equal(
+          (
+            await db.query("select id from public.lyads_jobs where id=$1", [
+              job,
+            ])
+          ).rows.length,
+          0,
+        );
+        await admin();
+        const lease = "99999999-9999-4999-8999-999999999999";
+        const text =
+          "Maison Test propose un outil pour les artisans. Il réduit le temps de préparation des devis.";
+        await db.query(
+          "update public.lyads_jobs set status='running',lease_token=$2,lease_until=now()+interval '1 minute',payload=payload||jsonb_build_object('pages',jsonb_build_array(jsonb_build_object('url','https://vendor.fr/','text',$3::text))) where id=$1",
+          [job, lease, text],
+        );
+        const fields: any = Object.fromEntries(
+          [
+            "name",
+            "product_name",
+            "description",
+            "benefits",
+            "problem",
+            "products",
+            "niche",
+            "audience",
+          ].map((k) => [
+            k,
+            { value: null, evidence: null, source_url: null, kind: "missing" },
+          ]),
+        );
+        fields.name = {
+          value: "Maison Test",
+          evidence: "Maison Test",
+          source_url: "https://vendor.fr/",
+          kind: "extracted",
+        };
+        fields.description = {
+          value: "Outil pour les artisans",
+          evidence: "un outil pour les artisans",
+          source_url: "https://vendor.fr/",
+          kind: "extracted",
+        };
+        fields.benefits = {
+          value: "Gain de temps",
+          evidence: "Il réduit le temps de préparation des devis.",
+          source_url: "https://vendor.fr/",
+          kind: "inferred",
+        };
+        const complete =
+          "select public.lyads_complete_website_analysis($1,$2,$3) ok";
+        assert.equal(
+          (
+            await db.query<any>(complete, [
+              job,
+              "88888888-8888-4888-8888-888888888888",
+              JSON.stringify(fields),
+            ])
+          ).rows[0].ok,
+          false,
+        );
+        await sqlError(
+          complete,
+          [
+            job,
+            lease,
+            JSON.stringify({
+              ...fields,
+              description: {
+                ...fields.description,
+                evidence: "Source inventée",
+              },
+            }),
+          ],
+          "22023",
+        );
+        assert.equal(
+          (await db.query<any>(complete, [job, lease, JSON.stringify(fields)]))
+            .rows[0].ok,
+          true,
+        );
+        assert.equal(
+          (await db.query<any>(complete, [job, lease, JSON.stringify(fields)]))
+            .rows[0].ok,
+          false,
+        );
+        await asUser(alice);
+        state = await getState();
+        assert.equal(state.current_step, 7);
+        assert.equal(
+          state.brain.activity.description,
+          "Outil pour les artisans",
+        );
+        assert.equal(state.brain.activity.benefits, "Correction utilisateur");
+        assert.equal(state.brain.activity.price, "25 EUR");
+        assert.equal(state.brain.activity.name, "Client business");
+        assert.equal(
+          state.provenance.activity_fields.description.source,
+          "site",
+        );
+        assert.equal(state.provenance.activity_fields.benefits.source, "user");
+        state = (
+          await db.query<any>(save, [
+            ws,
+            state.revision,
+            JSON.stringify({
+              brain: { activity: { name: "Entreprise validée" } },
+              current_step: 8,
+            }),
+          ])
+        ).rows[0];
+        assert.equal(
+          (
+            await db.query<any>(
+              "select name from public.lyads_workspaces where id=$1",
+              [ws],
+            )
+          ).rows[0].name,
+          "Entreprise validée",
+        );
+      },
+    );
+    await t.test(
       "Worker can append but cannot alter or delete audit events",
       async () => {
         await admin();

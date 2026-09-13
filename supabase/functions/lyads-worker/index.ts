@@ -1,8 +1,15 @@
+import {
+  extractBusiness,
+  readPage,
+  type SourcePage,
+  WEBSITE_MESSAGES,
+  WebsiteFailure,
+} from "../_shared/website.ts";
 import { inventory } from "../_shared/inventory.ts";
 import { createClient } from "@supabase/supabase-js";
 import {
-  MetaFailure,
   META_MESSAGES,
+  MetaFailure,
   openToken,
   permissions,
   readMeta,
@@ -10,8 +17,8 @@ import {
 } from "../_shared/meta.ts";
 import {
   accountDate,
-  dateWindows,
   datasets,
+  dateWindows,
   insightFields,
   structures,
 } from "../_shared/sync.ts";
@@ -20,7 +27,7 @@ const db = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   { auth: { persistSession: false, autoRefreshToken: false } },
 );
-import { graphVersion, encryptionKey } from "../_shared/runtime.ts";
+import { encryptionKey, graphVersion } from "../_shared/runtime.ts";
 type Job = {
   id: string;
   workspace_id: string;
@@ -51,7 +58,7 @@ async function finish(job: Job, result: unknown, error?: MetaFailure) {
   });
   if (dbError || !finished) throw new Error("JOB_STATE_UNAVAILABLE");
   if (!error || !error.retryable || job.attempts >= job.max_attempts) {
-    if (error && job.ad_account_id)
+    if (error && job.ad_account_id) {
       await db
         .from("lyads_sync_runs")
         .update({
@@ -61,7 +68,8 @@ async function finish(job: Job, result: unknown, error?: MetaFailure) {
         })
         .eq("request_key", job.id)
         .eq("workspace_id", job.workspace_id);
-    if (job.requested_by)
+    }
+    if (job.requested_by) {
       await db.from("lyads_notifications").upsert(
         {
           workspace_id: job.workspace_id,
@@ -76,6 +84,7 @@ async function finish(job: Job, result: unknown, error?: MetaFailure) {
         },
         { onConflict: "user_id,event_key", ignoreDuplicates: true },
       );
+    }
   }
 }
 async function checkpoint(
@@ -91,7 +100,67 @@ async function checkpoint(
   });
   if (error || !data) throw new MetaFailure("META_JOB_LEASE_EXPIRED", true, 10);
 }
+async function processWebsite(job: Job) {
+  try {
+    const { data: org, error: orgError } = await db.from("lyads_workspaces")
+      .select("owner_id").eq("id", job.workspace_id).single();
+    if (orgError || !job.requested_by || org?.owner_id !== job.requested_by) {
+      throw new WebsiteFailure("WEBSITE_ACCESS_REVOKED");
+    }
+    const pages = (job.payload.pages || []) as SourcePage[];
+    const pending = (job.payload.pending || []) as string[];
+    if (pending.length && pages.length < 5) {
+      const [url, ...rest] = pending;
+      let page: SourcePage | null = null;
+      try {
+        page = await readPage(url);
+      } catch (error) {
+        if (!pages.length) throw error;
+      }
+      if (page) pages.push(page);
+      const remaining = pages.length === 1 && page
+        ? [...new Set([...rest, ...page.links])].filter((u) => u !== page.url)
+          .slice(0, 4)
+        : rest;
+      await checkpoint(job, { ...job.payload, pages, pending: remaining }, 1);
+      return;
+    }
+    const extracted = await extractBusiness(
+      pages,
+      Deno.env.get("OPENAI_API_KEY") || "",
+      Deno.env.get("OPENAI_EXTRACTION_MODEL") || undefined,
+    );
+    const { data: done, error } = await db.rpc(
+      "lyads_complete_website_analysis",
+      { target_job: job.id, worker_lease: job.lease_token, extracted },
+    );
+    if (error || !done) throw new WebsiteFailure("WEBSITE_INVALID_RESULT");
+  } catch (error) {
+    const code = error instanceof WebsiteFailure
+      ? error.code
+      : "WEBSITE_UNAVAILABLE";
+    console.error("[website]", code);
+    const { data: finished } = await db.rpc("lyads_finish_job", {
+      target_job: job.id,
+      worker_lease: job.lease_token,
+      success: false,
+      failure_code: code,
+      job_result: null,
+      retry_seconds: null,
+    });
+    if (finished && job.requested_by) {
+      await db.from("lyads_notifications").upsert({
+        workspace_id: job.workspace_id,
+        user_id: job.requested_by,
+        event_key: "job:" + job.id,
+        kind: "website.failed",
+        message: WEBSITE_MESSAGES[code],
+      }, { onConflict: "user_id,event_key", ignoreDuplicates: true });
+    }
+  }
+}
 async function process(job: Job) {
+  if (job.kind === "website.analyze") return processWebsite(job);
   try {
     const version = graphVersion();
     const { data: org } = await db
@@ -122,8 +191,9 @@ async function process(job: Job) {
         Date.parse(connection.expires_at) <= Date.now()) ||
       (connection.data_access_expires_at &&
         Date.parse(connection.data_access_expires_at) <= Date.now())
-    )
+    ) {
       throw new MetaFailure("META_RECONNECT");
+    }
     const { data: secret } = await db
       .from("lyads_meta_credentials")
       .select("ciphertext,key_version")
@@ -140,18 +210,20 @@ async function process(job: Job) {
       const { data, error } = await db.rpc("lyads_take_meta_slot", {
         bucket_key: bucket,
       });
-      if (error)
+      if (error) {
         throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
-      if (data > 0)
+      }
+      if (data > 0) {
         throw new MetaFailure(
           "META_RATE_LIMIT",
           true,
           Math.max(1, Math.ceil(data / 1000)),
         );
+      }
     };
     const after = async (headers: Headers) => {
-      const raw =
-        headers.get("x-business-use-case-usage") || headers.get("x-app-usage");
+      const raw = headers.get("x-business-use-case-usage") ||
+        headers.get("x-app-usage");
       if (!raw) return;
       let usage;
       try {
@@ -162,25 +234,25 @@ async function process(job: Job) {
       const ratios: number[] = [];
       const inspect = (v: unknown) => {
         if (Array.isArray(v)) v.forEach(inspect);
-        else if (v && typeof v === "object")
+        else if (v && typeof v === "object") {
           for (const [key, value] of Object.entries(v)) {
             if (
               ["call_count", "total_cputime", "total_time"].includes(key) &&
               typeof value === "number"
-            )
+            ) {
               ratios.push(value);
-            else if (typeof value === "object") inspect(value);
+            } else if (typeof value === "object") inspect(value);
           }
+        }
       };
       inspect(usage);
       await db
         .from("lyads_meta_quota")
         .update({
           consumption: usage,
-          blocked_until:
-            Math.max(0, ...ratios) >= 80
-              ? new Date(Date.now() + 60000).toISOString()
-              : null,
+          blocked_until: Math.max(0, ...ratios) >= 80
+            ? new Date(Date.now() + 60000).toISOString()
+            : null,
           updated_at: new Date().toISOString(),
         })
         .eq("bucket", bucket);
@@ -203,18 +275,21 @@ async function process(job: Job) {
           connection_status: actual.canReadAds ? "connected" : "partial",
         })
         .eq("id", connection.id);
-      if (error)
+      if (error) {
         throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
+      }
       await finish(job, { permissions: actual.statuses });
       return;
     }
     if (
       !connection.granted_scopes.includes("ads_read") &&
       !connection.granted_scopes.includes("ads_management")
-    )
+    ) {
       throw new MetaFailure("META_PERMISSION_REQUIRED");
-    const cursor =
-      typeof job.payload.after === "string" ? job.payload.after : undefined;
+    }
+    const cursor = typeof job.payload.after === "string"
+      ? job.payload.after
+      : undefined;
     if (job.kind === "meta.discover") {
       const page = await get("me/adaccounts", {
         fields:
@@ -222,16 +297,18 @@ async function process(job: Job) {
         limit: "100",
         ...(cursor ? { after: cursor } : {}),
       });
-      if (!Array.isArray(page.data))
+      if (!Array.isArray(page.data)) {
         throw new MetaFailure("META_INVALID_RESPONSE");
+      }
       for (const account of page.data) {
         if (
           !/^act_\d+$/.test(account.id) ||
           typeof account.name !== "string" ||
           !/^[A-Z]{3}$/.test(account.currency) ||
           typeof account.timezone_name !== "string"
-        )
+        ) {
           throw new MetaFailure("META_INVALID_RESPONSE");
+        }
         const { error } = await db.from("lyads_ad_accounts").upsert(
           {
             workspace_id: job.workspace_id,
@@ -245,8 +322,9 @@ async function process(job: Job) {
           },
           { onConflict: "workspace_id,meta_account_id" },
         );
-        if (error)
+        if (error) {
           throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
+        }
       }
       for (const account of page.data) {
         if (
@@ -267,21 +345,23 @@ async function process(job: Job) {
             },
             { onConflict: "workspace_id,connection_id,kind,meta_id" },
           );
-          if (error)
+          if (error) {
             throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
+          }
         }
       }
       const next = page.paging?.next ? page.paging?.cursors?.after : undefined;
-      if (next)
+      if (next) {
         await checkpoint(
           job,
           { ...job.payload, after: next },
           page.data.length,
         );
-      else
+      } else {
         await finish(job, {
           accounts_discovered: job.progress_done + page.data.length,
         });
+      }
       return;
     }
     const { data: account } = await db
@@ -299,8 +379,9 @@ async function process(job: Job) {
         limit: "100",
         ...(cursor ? { after: cursor } : {}),
       });
-      if (!Array.isArray(page.data))
+      if (!Array.isArray(page.data)) {
         throw new MetaFailure("META_INVALID_RESPONSE");
+      }
       const { error } = await db.rpc("lyads_ingest_structure", {
         target_workspace: job.workspace_id,
         target_account: account.id,
@@ -324,11 +405,11 @@ async function process(job: Job) {
     const dates = Array.isArray(job.payload.windows)
       ? (job.payload.windows as { since: string; until: string }[])
       : dateWindows(
-          accountDate(account.timezone_name),
-          account.synchronized_at
-            ? Number(job.payload.revision_days || 7)
-            : Number(job.payload.history_days || 90),
-        );
+        accountDate(account.timezone_name),
+        account.synchronized_at
+          ? Number(job.payload.revision_days || 7)
+          : Number(job.payload.history_days || 90),
+      );
     const datasetIndex = Number(job.payload.dataset || 0);
     const windowIndex = Number(job.payload.window || 0);
     if (datasetIndex >= datasets.length) {
@@ -338,9 +419,10 @@ async function process(job: Job) {
         period_start: dates.at(-1)?.since,
         period_end: dates[0]?.until,
       });
-      if (error || !data)
+      if (error || !data) {
         throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
-      if (job.requested_by)
+      }
+      if (job.requested_by) {
         await db.from("lyads_notifications").upsert(
           {
             workspace_id: job.workspace_id,
@@ -352,6 +434,7 @@ async function process(job: Job) {
           },
           { onConflict: "user_id,event_key", ignoreDuplicates: true },
         );
+      }
       return;
     }
     const spec = datasets[datasetIndex];
@@ -377,8 +460,9 @@ async function process(job: Job) {
       .eq("ad_account_id", account.id)
       .eq("request_key", job.id)
       .single();
-    if (createError || runError || !run)
+    if (createError || runError || !run) {
       throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
+    }
     const context = {
       api_version: version,
       level: spec.level,
@@ -398,24 +482,24 @@ async function process(job: Job) {
       ...(spec.breakdowns ? { breakdowns: spec.breakdowns } : {}),
       ...(cursor ? { after: cursor } : {}),
     });
-    if (!Array.isArray(page.data))
+    if (!Array.isArray(page.data)) {
       throw new MetaFailure("META_INVALID_RESPONSE");
-    const mapping =
-      spec.level === "account"
-        ? null
-        : spec.level === "campaign"
-          ? {
-              table: "lyads_campaigns",
-              external: "meta_campaign_id",
-              field: "campaign_id",
-            }
-          : spec.level === "adset"
-            ? {
-                table: "lyads_ad_sets",
-                external: "meta_ad_set_id",
-                field: "adset_id",
-              }
-            : { table: "lyads_ads", external: "meta_ad_id", field: "ad_id" };
+    }
+    const mapping = spec.level === "account"
+      ? null
+      : spec.level === "campaign"
+      ? {
+        table: "lyads_campaigns",
+        external: "meta_campaign_id",
+        field: "campaign_id",
+      }
+      : spec.level === "adset"
+      ? {
+        table: "lyads_ad_sets",
+        external: "meta_ad_set_id",
+        field: "adset_id",
+      }
+      : { table: "lyads_ads", external: "meta_ad_id", field: "ad_id" };
     const entities: Record<string, string> = {};
     if (mapping && page.data.length) {
       const { data, error } = await db
@@ -427,8 +511,9 @@ async function process(job: Job) {
           mapping.external,
           page.data.map((row: Record<string, string>) => row[mapping.field]),
         );
-      if (error)
+      if (error) {
         throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
+      }
       for (const row of data || []) {
         const item = row as unknown as Record<string, string>;
         entities[item[mapping.external]] = item.id;
@@ -442,8 +527,9 @@ async function process(job: Job) {
         row.date_start < period.since ||
         row.date_stop > period.until ||
         "act_" + row.account_id !== account.meta_account_id
-      )
+      ) {
         throw new MetaFailure("META_INVALID_RESPONSE");
+      }
       const entityId = mapping ? entities[row[mapping.field]] : null;
       if (mapping && !entityId) {
         const retries = Number(job.payload.structure_restarts || 0);
@@ -462,23 +548,26 @@ async function process(job: Job) {
         return;
       }
       const metrics: Record<string, unknown> = {};
-      for (const field of [
-        "spend",
-        "impressions",
-        "clicks",
-        "reach",
-        "frequency",
-      ]) {
+      for (
+        const field of [
+          "spend",
+          "impressions",
+          "clicks",
+          "reach",
+          "frequency",
+        ]
+      ) {
         if (row[field] !== undefined) {
           if (
             typeof row[field] !== "string" ||
             !/^\d+(?:\.\d+)?$/.test(row[field])
-          )
+          ) {
             throw new MetaFailure("META_INVALID_RESPONSE");
+          }
           metrics[field] = row[field];
         }
       }
-      for (const field of ["actions", "action_values"])
+      for (const field of ["actions", "action_values"]) {
         if (row[field] !== undefined) {
           if (
             !Array.isArray(row[field]) ||
@@ -488,14 +577,17 @@ async function process(job: Job) {
                 typeof a.value === "string" &&
                 /^\d+(?:\.\d+)?$/.test(a.value),
             )
-          )
+          ) {
             throw new MetaFailure("META_INVALID_RESPONSE");
+          }
           metrics[field] = row[field];
         }
+      }
       const breakdowns: Record<string, string> = {};
       for (const field of spec.breakdowns.split(",").filter(Boolean)) {
-        if (typeof row[field] !== "string")
+        if (typeof row[field] !== "string") {
           throw new MetaFailure("META_INVALID_RESPONSE");
+        }
         breakdowns[field] = row[field];
       }
       const key = await sha256(
@@ -525,8 +617,9 @@ async function process(job: Job) {
     }
     const next = page.paging?.next ? page.paging?.cursors?.after : undefined;
     const nextWindow = next ? windowIndex : (windowIndex + 1) % dates.length;
-    const nextDataset =
-      !next && nextWindow === 0 ? datasetIndex + 1 : datasetIndex;
+    const nextDataset = !next && nextWindow === 0
+      ? datasetIndex + 1
+      : datasetIndex;
     const { data: staged, error: stageError } = await db.rpc(
       "lyads_stage_insights",
       {
@@ -544,19 +637,20 @@ async function process(job: Job) {
         done: job.progress_done + rows.length,
       },
     );
-    if (stageError || !staged)
+    if (stageError || !staged) {
       throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
+    }
   } catch (error) {
-    const failure =
-      error instanceof MetaFailure
-        ? error
-        : new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
-    if (failure.code === "META_RECONNECT" && job.payload.connection_id)
+    const failure = error instanceof MetaFailure
+      ? error
+      : new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
+    if (failure.code === "META_RECONNECT" && job.payload.connection_id) {
       await db
         .from("lyads_meta_connections")
         .update({ connection_status: "expired" })
         .eq("id", job.payload.connection_id)
         .eq("workspace_id", job.workspace_id);
+    }
     console.error("[worker]", failure.code);
     await finish(job, null, failure);
   }
@@ -567,8 +661,9 @@ Deno.serve(async (request: Request) => {
     const text = await request.text();
     if (text.length > 1024) return new Response(null, { status: 413 });
     const body = JSON.parse(text);
-    if (typeof body.jobId !== "string" || typeof body.leaseToken !== "string")
+    if (typeof body.jobId !== "string" || typeof body.leaseToken !== "string") {
       return new Response(null, { status: 401 });
+    }
     // A short-lived, single-use lease is generated in PostgreSQL. Only the service
     // role can claim jobs/read leases. No long-lived worker secret in cron or UI.
     const { data, error } = await db.rpc("lyads_start_leased_job", {

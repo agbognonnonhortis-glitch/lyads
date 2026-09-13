@@ -55,7 +55,12 @@ export async function onboardingData(
       .from("lyads_jobs")
       .select("id,kind,status,error_code,result,progress_done,created_at")
       .eq("workspace_id", org.id)
-      .in("kind", ["meta.inventory", "meta.discover", "meta.sync"])
+      .in("kind", [
+        "meta.inventory",
+        "meta.discover",
+        "meta.sync",
+        "website.analyze",
+      ])
       .order("created_at", { ascending: false })
       .limit(30),
     db

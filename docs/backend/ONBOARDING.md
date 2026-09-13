@@ -39,3 +39,19 @@ Les six sections du formulaire B7 restent accessibles ensemble, avec progression
 Le Business Manager, au moins un compte publicitaire et au moins une page Facebook sont obligatoires. Seul le pixel peut être ignoré explicitement. Cette obligation est vérifiée dans le contrôleur et dans la RPC de sauvegarde ; la base refuse `pages_skipped=true`. Les anciens parcours ayant ignoré la page reprennent à l’étape des pages sans perdre les réponses ni les crédits déjà attribués.
 
 Chaque écran après la connexion présente un seul bouton principal « Suivant ». L’actualisation des ressources est un bouton texte avec icône en haut ; « Continuer sans pixel » est un lien discret à côté de « Suivant ». Le premier écran conserve « Connecter mon Business Manager ».
+
+## Analyse du site et nouveau profil d’entreprise
+
+Étapes 5–7 : URL (`/configuration/entreprise`) → attente (`/configuration/analyse-site`) → formulaire (`/configuration/entreprise?section=review`). Les anciennes URL de sections ouvrent le nouveau formulaire. Les étapes 8–10 restent récapitulatif, plan, fin. Le formulaire expose uniquement : nom de l’entreprise, produit/service, description, bénéfices, problème résolu, prix facultatif saisi par l’utilisateur, liste des produits, niche, audience. Les anciens champs restent conservés en base mais ne sont plus présentés.
+
+`website.analyze` passe par la file durable et le worker existants : lecture de la page publique puis jusqu’à quatre liens du même domaine (produits/services/à propos), un point de reprise par page, extraction structurée, validation des citations, sauvegarde atomique et notification. Coût utilisateur : 0 crédit, inclus dans l’onboarding ; maximum cinq lancements par jour et une minute entre deux lancements. Un lancement actif identique est réutilisé.
+
+Secrets Supabase : `OPENAI_API_KEY` requis, `OPENAI_EXTRACTION_MODEL` facultatif (défaut `gpt-4.1-mini-2025-04-14`). L’appel utilise Responses, `store:false`, un schéma JSON strict sans prix, puis une validation locale des huit champs et de leurs citations exactes. Documents publics envoyés au fournisseur, aucun jeton Meta. Source et déduction restent distinguées par champ ; aucune valeur absente n’est inventée. Le nom validé à la suite du formulaire/récapitulatif devient le nom de l’espace dans le dashboard et le sélecteur d’entreprises.
+
+Protection de lecture : HTTP(S) public uniquement, pas d’identifiants dans l’URL, DNS IPv4 validé et épinglé à la connexion, refus des plages privées/réservées, redirections bornées et restreintes au domaine canonique, limite de taille et durée, robots.txt respecté, aucun JavaScript exécuté, aucune authentification/captcha contourné. Les sites rendus uniquement en JavaScript, protégés ou refusant le robot offrent un parcours de correction/saisie manuelle.
+
+Une nouvelle analyse conserve les valeurs manuelles (y compris les effacements) et les corrections concurrentes. Les résultats d’un ancien job ou d’un bail expiré ne sont pas appliqués. Le prix n’est jamais prérempli par le fournisseur. La récupération des résultats reprend au rechargement grâce à `analysis_job_id` enregistré.
+
+Validation : tests d’extraction, de blocage des réseaux internes, des robots et preuves source ; tests PostgreSQL des permissions, limites, reprise et corrections concurrentes ; contrôleur URL/attente/formulaire ; parcours visuel isolé ordinateur/mobile ; lecture HTTP réelle d’une page publique. L’essai réel avec la clé du projet et une URL commerciale choisie par le propriétaire est distinct des réponses fournisseur simulées utilisées en tests.
+
+Références d’implémentation : [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs), [secrets Edge Functions](https://supabase.com/docs/guides/functions/secrets).

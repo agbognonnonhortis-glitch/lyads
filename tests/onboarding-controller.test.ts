@@ -9,14 +9,20 @@ const controller = readFileSync(
   new URL("../public/source/onboarding.js", import.meta.url),
   "utf8",
 );
-function harness(ref = "B7", initial = {}) {
+function harness(
+  ref = "B7",
+  initial = {},
+  section = "review",
+  jobStatus = "succeeded",
+) {
   let state: any = {
     ...blankOnboarding("workspace"),
-    current_step: 5,
+    current_step: 7,
     ...initial,
   };
   const writes: any[] = [];
   const scopes: string[] = [];
+  const analyses: any[] = [];
   const destinations: string[] = [];
   const errors: string[] = [];
   const data: any = {
@@ -32,7 +38,7 @@ function harness(ref = "B7", initial = {}) {
     completeness: completeness({}),
     editable: true,
   };
-  const { document, window } = parseHTML(renderOnboarding(ref, data));
+  const { document, window } = parseHTML(renderOnboarding(ref, data, section));
   runInNewContext(controller, {
     document,
     window: {
@@ -58,10 +64,18 @@ function harness(ref = "B7", initial = {}) {
         return {
           ok: true,
           json: async () => ({
-            job: { status: "succeeded", updated_at: "2020-01-01T00:00:00Z" },
+            job: {
+              status: jobStatus,
+              error_code: "WEBSITE_BLOCKED",
+              updated_at: "2020-01-01T00:00:00Z",
+            },
           }),
         };
       const body = JSON.parse(options.body);
+      if (body.action === "analyze-website") {
+        analyses.push(body);
+        return { ok: true, json: async () => ({ jobId: "analysis" }) };
+      }
       if (body.action === "inventory") {
         scopes.push(body.scope);
         return { ok: true, json: async () => ({ jobId: "test-job" }) };
@@ -87,6 +101,7 @@ function harness(ref = "B7", initial = {}) {
     window,
     writes,
     scopes,
+    analyses,
     destinations,
     errors,
     get state() {
@@ -109,26 +124,46 @@ test("Business answers mirror responsive variants and flush before navigation", 
     );
   await new Promise((resolve) => setTimeout(resolve, 20));
   assert.equal(h.state.brain.activity.name, "Entreprise saisie");
-  assert.equal(h.state.current_step, 6);
-  assert.equal(h.destinations[0], "/configuration/entreprise?section=market");
+  assert.equal(h.state.current_step, 8);
+  assert.equal(h.destinations[0], "/configuration/recapitulatif");
   assert.deepEqual(h.errors, []);
 });
-test("Adding an offer saves an empty product then opens its editable section", async () => {
-  const h = harness();
+test("Website submit queues analysis; reload resumes success or offers manual recovery", async () => {
+  const h = harness("B7", { current_step: 5 }, "activity");
+  const input =
+    h.document.querySelector<HTMLInputElement>("[data-website-url]")!;
+  input.value = "https://vendor.fr/vente";
   h.document
-    .querySelector('[data-onboarding-action="add-product"]')!
-    .dispatchEvent(
-      new h.window.Event("click", { bubbles: true, cancelable: true }),
-    );
+    .querySelector('[data-onboarding-action="analyze-website"]')!
+    .dispatchEvent(new h.window.Event("click", { bubbles: true }));
   await new Promise((resolve) => setTimeout(resolve, 20));
-  assert.equal(h.state.brain.offer.products.length, 1);
-  assert.ok(
-    Object.values(h.state.brain.offer.products[0]).every(
-      (value) => value === "",
-    ),
+  assert.equal(h.analyses[0].url, "https://vendor.fr/vente");
+  assert.equal(h.destinations[0], "/configuration/analyse-site");
+  const done = harness("B8", { current_step: 6, analysis_job_id: "job" });
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(
+    done.destinations[0],
+    "/configuration/entreprise?section=review",
   );
-  assert.equal(h.destinations[0], "/configuration/entreprise?section=offer");
-  assert.deepEqual(h.errors, []);
+  const failed = harness(
+    "B8",
+    { current_step: 6, analysis_job_id: "job" },
+    "activity",
+    "failed",
+  );
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(
+    failed.document.querySelector<HTMLElement>("[data-analysis-recovery]")!.hidden,
+    false,
+  );
+  failed.document
+    .querySelector('[data-onboarding-action="manual-profile"]')!
+    .dispatchEvent(new failed.window.Event("click", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(
+    failed.destinations[0],
+    "/configuration/entreprise?section=review",
+  );
 });
 
 test("Required resources block navigation; only pixel has an explicit skip", async () => {

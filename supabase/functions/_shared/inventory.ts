@@ -184,10 +184,11 @@ export async function inventory(
     const previous = (job.payload.event_counts || {}) as Record<string, number>;
     const counts = { ...previous };
     try {
-      for (const [name, count] of Object.entries(eventCounts(response.data)))
+      for (const [name, count] of Object.entries(eventCounts(response.data))) {
         counts[name] = (counts[name] || 0) + count;
-      if (!Number.isSafeInteger(counts[name]))
-        throw new MetaFailure("META_INVALID_RESPONSE");
+        if (!Number.isSafeInteger(counts[name]))
+          throw new MetaFailure("META_INVALID_RESPONSE");
+      }
     } catch {
       issues.push({
         kind: "events",

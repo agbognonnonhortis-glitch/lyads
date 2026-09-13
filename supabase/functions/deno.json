@@ -1,1 +1,8 @@
-{"imports":{"@supabase/supabase-js":"npm:@supabase/supabase-js@2.116.0"},"compilerOptions":{"strict":true},"nodeModulesDir":"none"}
+{
+  "imports": { "@supabase/supabase-js": "npm:@supabase/supabase-js@2.116.0" },
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.window", "dom", "dom.iterable"]
+  },
+  "nodeModulesDir": "none"
+}

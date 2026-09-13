@@ -32,6 +32,64 @@ export async function POST(request: NextRequest) {
         400,
         "Sélectionnez votre organisation.",
       );
+    if (body.action === "analyze-website") {
+      let target: URL;
+      try {
+        target = new URL(typeof body.url === "string" ? body.url.trim() : "");
+        if (
+          !["https:", "http:"].includes(target.protocol) ||
+          target.username ||
+          target.password ||
+          target.port ||
+          target.href.length > 2048 ||
+          !target.hostname.includes(".")
+        )
+          throw new Error();
+      } catch {
+        throw new ApiError(
+          "INVALID_WEBSITE",
+          400,
+          "Indiquez un lien public valide commençant par https://.",
+        );
+      }
+      if (!Number.isInteger(body.revision))
+        throw new ApiError(
+          "INVALID_REQUEST",
+          400,
+          "Rechargez votre formulaire.",
+        );
+      target.hash = "";
+      const { data: jobId, error } = await c.supabase.rpc(
+        "lyads_request_website_analysis",
+        {
+          target_workspace: body.workspaceId,
+          expected_revision: body.revision,
+          website_url: target.href,
+        },
+      );
+      if (error) {
+        if (error.code === "P0001")
+          throw new ApiError(
+            "ANALYSIS_RATE_LIMIT",
+            429,
+            "Patientez une minute entre deux analyses. Vous pouvez lancer jusqu’à cinq analyses par jour.",
+          );
+        if (error.code === "40001")
+          throw new ApiError(
+            "REVISION_CONFLICT",
+            409,
+            "Vos informations ont changé. Rechargez la page puis relancez l’analyse.",
+          );
+        if (error.code === "22023")
+          throw new ApiError(
+            "INVALID_SELECTION",
+            400,
+            "Vérifiez le lien et les ressources Meta sélectionnées avant de lancer l’analyse.",
+          );
+        throw error;
+      }
+      return c.json({ jobId, costCredits: 0 }, 202);
+    }
     if (body.action === "inventory") {
       if (!["root", "business", "pixels"].includes(String(body.scope)))
         throw new ApiError(

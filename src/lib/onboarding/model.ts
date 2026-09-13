@@ -71,8 +71,8 @@ export const stepPaths = [
   "/configuration/pages",
   "/configuration/pixel",
   "/configuration/entreprise?section=activity",
-  "/configuration/entreprise?section=market",
-  "/configuration/entreprise?section=funnel",
+  "/configuration/analyse-site",
+  "/configuration/entreprise?section=review",
   "/configuration/recapitulatif",
   "/configuration/plan",
   "/configuration/terminee",
@@ -108,7 +108,10 @@ export function brainPatch(value: unknown): value is Brain {
           return false;
       } else if (
         key === "offer" ||
-        !(field in sections[key as Section].fields) ||
+        !(
+          field in sections[key as Section].fields ||
+          (key === "activity" && field in profileFields)
+        ) ||
         typeof content !== "string" ||
         content.length > 4000
       )
@@ -117,47 +120,35 @@ export function brainPatch(value: unknown): value is Brain {
   }
   return true;
 }
+export const profileFields = {
+  name: "Nom de l’entreprise",
+  product_name: "Nom du produit ou service",
+  description: "Description",
+  benefits: "Bénéfices du produit ou service",
+  problem: "Problème résolu par le produit ou service",
+  price: "Prix de vente",
+  products: "Liste des produits",
+  niche: "Niche",
+  audience: "Audience",
+} as const;
 export function completeness(brain: Brain) {
-  const missing: {
-    section: string;
-    field: string;
-    label: string;
-    affects: string;
-  }[] = [];
-  let total = 0,
-    filled = 0;
-  const affects = {
-    activity: "Personnalisation de l’agent",
-    offer: "Textes et créatives",
-    market: "Marché et langues",
-    audience: "Ciblages et angles publicitaires",
-    funnel: "Rentabilité et CPA cible",
-    history: "Objectifs et recommandations",
-  };
-  for (const [key, section] of Object.entries(sections)) {
-    const values =
-      key === "offer"
-        ? Array.isArray(brain.offer?.products)
-          ? (brain.offer!.products as Record<string, unknown>[])
-          : []
-        : [brain[key as Section] || {}];
-    for (const record of values.length ? values : [{}])
-      for (const [field, label] of Object.entries(section.fields)) {
-        total++;
-        if (
-          typeof record[field] === "string" &&
-          (record[field] as string).trim()
-        )
-          filled++;
-        else
-          missing.push({
-            section: key,
-            field,
-            label,
-            affects: affects[key as Section],
-          });
-      }
-  }
+  const values = brain.activity || {};
+  const required = Object.entries(profileFields).filter(
+    ([key]) => key !== "price",
+  );
+  const missing = required
+    .filter(
+      ([key]) =>
+        typeof values[key] !== "string" || !(values[key] as string).trim(),
+    )
+    .map(([field, label]) => ({
+      section: "activity",
+      field,
+      label,
+      affects: "Personnalisation de l’agent",
+    }));
+  const total = required.length,
+    filled = total - missing.length;
   return {
     percent: Math.round((filled / total) * 100),
     filled,
@@ -168,6 +159,7 @@ export function completeness(brain: Brain) {
 export const blankOnboarding = (workspaceId: string) => ({
   workspace_id: workspaceId,
   revision: 0,
+  analysis_job_id: null,
   current_step: 1,
   business_meta_id: null,
   connection_id: null,
