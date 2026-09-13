@@ -107,3 +107,82 @@ test("Account validation rejects malformed values and applies the supplied passw
   for (const path of ["/", "/connexion", "/inscription"])
     assert.equal(privatePath(path), false);
 });
+
+import { initializeAccount } from "../src/lib/auth/account";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
+
+const testIdentity = {
+  id: "local-test-user",
+  email: "test@example.invalid",
+  user_metadata: { full_name: "Test User" },
+  app_metadata: {},
+  aud: "authenticated",
+  created_at: "2026-09-13T00:00:00Z",
+} as User;
+
+test("An initialization gateway timeout retries the same atomic RPC and recovers", async () => {
+  const calls: unknown[] = [];
+  const client = {
+    rpc: async (...args: unknown[]) => {
+      calls.push(args);
+      return calls.length < 3
+        ? {
+            data: null,
+            error: { code: "", message: "Gateway timeout" },
+            status: 504,
+          }
+        : { data: "existing-workspace-id", error: null, status: 200 };
+    },
+  } as unknown as SupabaseClient;
+  assert.equal(
+    await initializeAccount(client, testIdentity),
+    "existing-workspace-id",
+  );
+  assert.equal(calls.length, 3);
+  assert.deepEqual(calls[0], [
+    "lyads_initialize_account",
+    { display_name: "Test User" },
+  ]);
+  assert.deepEqual(calls[1], calls[0]);
+  assert.deepEqual(calls[2], calls[0]);
+});
+
+test("Permanent authorization failures are not retried, and logs exclude private response contents", async (t) => {
+  let calls = 0;
+  const logger = t.mock.method(console, "error", () => {});
+  const client = {
+    rpc: async () => {
+      calls++;
+      return {
+        data: null,
+        error: { code: "42501", message: "private response body" },
+        status: 403,
+      };
+    },
+  } as unknown as SupabaseClient;
+  await assert.rejects(
+    initializeAccount(client, testIdentity),
+    /ACCOUNT_INITIALIZATION_FAILED/,
+  );
+  assert.equal(calls, 1);
+  assert.deepEqual(logger.mock.calls[0].arguments, [
+    "[auth] account_initialization_failed",
+    { status: 403, code: "42501", attempts: 1 },
+  ]);
+});
+
+test("Repeated temporary failures stop after three attempts", async (t) => {
+  t.mock.method(console, "error", () => {});
+  let calls = 0;
+  const client = {
+    rpc: async () => {
+      calls++;
+      return { data: null, error: { code: "" }, status: 503 };
+    },
+  } as unknown as SupabaseClient;
+  await assert.rejects(
+    initializeAccount(client, testIdentity),
+    /ACCOUNT_INITIALIZATION_FAILED/,
+  );
+  assert.equal(calls, 3);
+});

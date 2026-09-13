@@ -15,7 +15,8 @@
     SESSION_REQUIRED: "Lien expiré",
     LINK_ERROR: "Lien expiré",
     INVALID_PASSWORD: "12 caractères minimum · Une majuscule · Un chiffre",
-    SERVICE_UNAVAILABLE: "Erreur",
+    SERVICE_UNAVAILABLE:
+      "Connexion temporairement indisponible. Réessayez dans quelques instants.",
     PROVIDER_UNAVAILABLE: "Erreur",
     INVALID_REQUEST: "Erreur",
   };
@@ -545,7 +546,7 @@
             ? "Mot de passe réinitialisé"
             : status === "link_error"
               ? "Lien expiré"
-              : "Erreur",
+              : "Impossible de terminer la connexion. Réessayez dans quelques instants.",
         ),
       0,
     );
