@@ -1394,6 +1394,70 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Notification reads and read receipts respect recipients, organisations and account access",
+      async () => {
+        await admin();
+        await db.exec("begin");
+        try {
+          const insert =
+            "insert into public.lyads_notifications(workspace_id,ad_account_id,user_id,event_key,kind,message) values($1,$2,$3,$4,'sync.complete','Test')";
+          const own = await uuid(insert, [wa, a.account, alice, "notice-a"]);
+          const other = await uuid(insert, [wb, b.account, bob, "notice-b"]);
+          const hidden = await uuid(insert, [
+            wa,
+            a.account,
+            bob,
+            "notice-hidden",
+          ]);
+          const general = await uuid(insert, [wa, null, bob, "notice-general"]);
+          await asUser(alice);
+          await db.query(
+            "select public.lyads_set_member($1,$2,'editor','[]')",
+            [wa, bob],
+          );
+          await asUser(bob);
+          const rows = (
+            await db.query<{ id: string }>(
+              "select id from public.lyads_notifications where id=any($1::uuid[])",
+              [[own, other, hidden, general]],
+            )
+          ).rows;
+          assert.deepEqual(
+            rows.map((r) => r.id).sort(),
+            [other, general].sort(),
+          );
+          const denied = await db.query(
+            "update public.lyads_notifications set read_at=now() where id=any($1::uuid[]) returning id",
+            [[own, hidden]],
+          );
+          assert.equal(denied.rows.length, 0);
+          const updated = await db.query(
+            "update public.lyads_notifications set read_at=now() where id=$1 and read_at is null returning id",
+            [other],
+          );
+          assert.equal(updated.rows.length, 1);
+          assert.equal(
+            (
+              await db.query(
+                "update public.lyads_notifications set read_at=now() where id=$1 and read_at is null returning id",
+                [other],
+              )
+            ).rows.length,
+            0,
+          );
+          await db.exec("savepoint content");
+          await sqlError(
+            "update public.lyads_notifications set message='forged' where id=$1",
+            [other],
+            "42501",
+          );
+          await db.exec("rollback to savepoint content");
+        } finally {
+          await db.exec("rollback");
+        }
+      },
+    );
+    await t.test(
       "Worker can append but cannot alter or delete audit events",
       async () => {
         await admin();

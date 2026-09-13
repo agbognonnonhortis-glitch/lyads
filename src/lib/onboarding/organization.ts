@@ -97,6 +97,24 @@ export function renderOrganization(
         script.remove();
     }
   }
+  for (const icon of doc.querySelectorAll("i.ph-bell")) {
+    const bell = icon.parentElement!;
+    bell.removeAttribute("data-dashboard-action");
+    bell.setAttribute("data-notification-bell", "");
+    bell.setAttribute("role", "button");
+    bell.setAttribute("tabindex", "0");
+    bell.setAttribute("aria-label", "Notifications");
+    bell.setAttribute("aria-haspopup", "dialog");
+    for (const child of [...bell.children]) if (child !== icon) child.remove();
+  }
+  const notificationStyle = doc.createElement("link");
+  notificationStyle.rel = "stylesheet";
+  notificationStyle.href = "/source/notifications.css";
+  doc.head.append(notificationStyle);
+  const notificationScript = doc.createElement("script");
+  notificationScript.src = "/source/notifications.js";
+  notificationScript.defer = true;
+  doc.body.append(notificationScript);
   const context = doc.createElement("script");
   context.type = "application/json";
   context.id = "company-context";
