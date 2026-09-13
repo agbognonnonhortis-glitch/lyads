@@ -1274,6 +1274,83 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Dashboard aggregates decimal metrics without mixing levels, breakdowns or unauthorized accounts",
+      async () => {
+        await admin();
+        await db.exec("begin");
+        try {
+          await db.query(
+            "delete from public.lyads_insight_snapshots where ad_account_id=$1",
+            [a.account],
+          );
+          const add = async (
+            key: string,
+            metrics: object,
+            level = "account",
+            context: object = { breakdowns: "" },
+          ) =>
+            db.query(
+              "insert into public.lyads_insight_snapshots(workspace_id,ad_account_id,sync_run_id,level,campaign_id,date_start,date_stop,query_context,deduplication_key,currency,metrics,fetched_at) values($1,$2,$3,$4,$5,'2026-09-01','2026-09-01',$6,$7,'EUR',$8,now())",
+              [
+                wa,
+                a.account,
+                a.sync,
+                level,
+                level === "campaign" ? a.campaign : null,
+                JSON.stringify(context),
+                key,
+                JSON.stringify(metrics),
+              ],
+            );
+          await add("dashboard-base", {
+            spend: "0.30",
+            impressions: "100",
+            clicks: "3",
+            actions: [
+              { action_type: "purchase", value: "2" },
+              { action_type: "omni_purchase", value: "2" },
+            ],
+            action_values: [{ action_type: "purchase", value: "1.20" }],
+          });
+          await add("dashboard-placement", { spend: "900" }, "account", {
+            breakdowns: "publisher_platform,platform_position",
+            breakdown_values: {
+              publisher_platform: "facebook",
+              platform_position: "feed",
+            },
+          });
+          await add("dashboard-campaign", { spend: "50" }, "campaign");
+          await asUser(alice);
+          const query =
+            "select public.lyads_dashboard_metrics($1,$2,'2026-09-01','2026-09-07',$3) result";
+          const rows = (await db.query<any>(query, [wa, [a.account], "kpis"]))
+            .rows[0].result;
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].spend, 0.3);
+          assert.equal(rows[0].cpc, 0.1);
+          assert.equal(rows[0].purchases, 2);
+          assert.equal(rows[0].roas, 4);
+          const campaigns = (
+            await db.query<any>(query, [wa, [a.account], "campaigns"])
+          ).rows[0].result;
+          assert.equal(campaigns[0].spend, 50);
+          assert.equal(campaigns[0].roas, null);
+          await db.exec("savepoint denied");
+          await sqlError(query, [wa, [a.account, b.account], "kpis"], "42501");
+          await db.exec("rollback to savepoint denied");
+          const empty = (
+            await db.query<any>(
+              "select public.lyads_dashboard_metrics($1,$2,'2025-01-01','2025-01-07','kpis') result",
+              [wa, [a.account]],
+            )
+          ).rows[0].result;
+          assert.deepEqual(empty, []);
+        } finally {
+          await db.exec("rollback");
+        }
+      },
+    );
+    await t.test(
       "Worker can append but cannot alter or delete audit events",
       async () => {
         await admin();

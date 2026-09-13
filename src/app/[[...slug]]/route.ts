@@ -1,3 +1,4 @@
+import { renderDashboard } from "@/lib/dashboard/render";
 import { renderOrganization } from "@/lib/onboarding/organization";
 import { NextRequest, NextResponse } from "next/server";
 import { onboardingData, onboardingDestination } from "@/lib/onboarding/data";
@@ -92,7 +93,15 @@ export async function GET(request: NextRequest) {
         return client.apply(
           new NextResponse(
             renderOrganization(
-              renderSource(ref, url.searchParams.get("view") ?? undefined)!,
+              ref === "C1.1"
+                ? renderDashboard(
+                    renderSource(
+                      ref,
+                      url.searchParams.get("view") ?? undefined,
+                    )!,
+                    data,
+                  )
+                : renderSource(ref, url.searchParams.get("view") ?? undefined)!,
               ref,
               data.organization,
               data.organizations || [],

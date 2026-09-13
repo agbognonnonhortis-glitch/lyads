@@ -280,7 +280,13 @@
         }
       }
     for (const el of root.querySelectorAll("div,a,button,span")) {
-      if (wired.has(el) || el.closest("svg,[data-auth-managed]")) continue;
+      if (
+        wired.has(el) ||
+        el.closest(
+          "svg,[data-auth-managed],[data-zone],[data-kpi],[data-dashboard-action]",
+        )
+      )
+        continue;
       const text = norm(el.textContent);
       if (!text || text.length > 160) continue;
       const childText = [...el.children].some(
