@@ -306,6 +306,13 @@ export function renderOnboarding(
     }
     setFooter(frame, step);
     if (ref === "B2") {
+      for (const permission of [
+        "ads_read",
+        "ads_management",
+        "pages_show_list",
+        "business_management",
+      ])
+        leaf(frame, permission)?.remove();
       const validationNotice = leaf(
         frame,
         "Ce que Lyads ne fera jamais sans votre validation explicite",
