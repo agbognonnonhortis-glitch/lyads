@@ -9,9 +9,14 @@ const controller = readFileSync(
   new URL("../public/source/onboarding.js", import.meta.url),
   "utf8",
 );
-function harness() {
-  let state: any = { ...blankOnboarding("workspace"), current_step: 5 };
+function harness(ref = "B7", initial = {}) {
+  let state: any = {
+    ...blankOnboarding("workspace"),
+    current_step: 5,
+    ...initial,
+  };
   const writes: any[] = [];
+  const scopes: string[] = [];
   const destinations: string[] = [];
   const errors: string[] = [];
   const data: any = {
@@ -27,7 +32,7 @@ function harness() {
     completeness: completeness({}),
     editable: true,
   };
-  const { document, window } = parseHTML(renderOnboarding("B7", data));
+  const { document, window } = parseHTML(renderOnboarding(ref, data));
   runInNewContext(controller, {
     document,
     window: {
@@ -49,7 +54,18 @@ function harness() {
       removeItem() {},
     },
     fetch: async (_: string, options: any) => {
+      if (_.startsWith("/api/jobs/"))
+        return {
+          ok: true,
+          json: async () => ({
+            job: { status: "succeeded", updated_at: "2020-01-01T00:00:00Z" },
+          }),
+        };
       const body = JSON.parse(options.body);
+      if (body.action === "inventory") {
+        scopes.push(body.scope);
+        return { ok: true, json: async () => ({ jobId: "test-job" }) };
+      }
       assert.equal(body.revision, state.revision);
       writes.push(body.changes);
       state = {
@@ -70,6 +86,7 @@ function harness() {
     document,
     window,
     writes,
+    scopes,
     destinations,
     errors,
     get state() {
@@ -112,4 +129,49 @@ test("Adding an offer saves an empty product then opens its editable section", a
   );
   assert.equal(h.destinations[0], "/configuration/entreprise?section=offer");
   assert.deepEqual(h.errors, []);
+});
+
+test("Required resources block navigation; only pixel has an explicit skip", async () => {
+  for (const [ref, initial] of [
+    ["B3", { current_step: 2 }],
+    ["B3", { current_step: 2, ad_account_ids: ["account"] }],
+    [
+      "B5",
+      { current_step: 3, business_meta_id: "bm", ad_account_ids: ["account"] },
+    ],
+  ] as const) {
+    const h = harness(ref, initial);
+    h.document
+      .querySelector('[data-onboarding-action="next"]')!
+      .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    assert.equal(h.destinations.length, 0);
+    assert.equal(h.writes.length, 0);
+    assert.equal(h.errors.length, 1);
+  }
+  const h = harness("B6", {
+    current_step: 4,
+    business_meta_id: "bm",
+    ad_account_ids: ["account"],
+    page_ids: ["page"],
+  });
+  h.document
+    .querySelector('[data-onboarding-action="skip-pixels"]')!
+    .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(h.state.pixels_skipped, true);
+  assert.equal(h.state.current_step, 5);
+  assert.deepEqual(h.errors, []);
+  assert.equal(h.destinations[0], "/configuration/entreprise?section=activity");
+});
+
+test("Refreshing business resources fetches both business list and selected business accounts", async () => {
+  const h = harness("B3", { current_step: 2, business_meta_id: "bm" });
+  h.document
+    .querySelector('[data-onboarding-action="refresh"]')!
+    .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.deepEqual(h.scopes, ["root", "business"]);
+  assert.deepEqual(h.errors, []);
+  assert.deepEqual(h.writes, []);
 });

@@ -912,6 +912,33 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
           ],
           "42501",
         );
+        // A connection alone, or a business without accounts, cannot advance.
+        for (const changes of [
+          { current_step: 3 },
+          { business_meta_id: "901", current_step: 3 },
+          {
+            business_meta_id: "901",
+            ad_account_ids: [account],
+            current_step: 4,
+          },
+          {
+            business_meta_id: "901",
+            ad_account_ids: [account],
+            pages_skipped: true,
+            current_step: 4,
+          },
+          {
+            business_meta_id: "901",
+            ad_account_ids: [account],
+            pixels_skipped: true,
+            pages_skipped: true,
+            current_step: 8,
+            review: true,
+            plan_key: "free",
+            complete: true,
+          },
+        ])
+          await sqlError(rpc, [ws, 0, JSON.stringify(changes)], "22023");
         let saved: any = (
           await db.query(rpc, [
             ws,
@@ -1008,7 +1035,7 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
             JSON.stringify({
               business_meta_id: "901",
               ad_account_ids: [account],
-              pages_skipped: true,
+              page_ids: ["903"],
               pixels_skipped: true,
               current_step: 8,
               review: true,
@@ -1024,6 +1051,10 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
         ).rows[0];
         assert.equal(saved.current_step, 10);
         assert.ok(saved.completed_at);
+        assert.deepEqual(saved.page_ids, ["903"]);
+        assert.deepEqual(saved.pixels, []);
+        assert.equal(saved.pixels_skipped, true);
+        assert.equal(saved.pages_skipped, false);
         await db.query(rpc, [
           ws,
           5,

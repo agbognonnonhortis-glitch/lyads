@@ -143,7 +143,7 @@
     navigating = true;
     location.assign(target);
   }
-  async function inventory(scope, reload = true) {
+  async function inventory(scope, reload = true, wait = false) {
     const { jobId } = await api("/api/onboarding", {
       action: "inventory",
       workspaceId: data.organization.id,
@@ -154,10 +154,11 @@
       try {
         const { job } = await api("/api/jobs/" + jobId);
         if (["failed", "cancelled"].includes(job.status)) {
-          status(
+          const message =
             errors[job.error_code] ||
-              "La récupération Meta a échoué. Actualisez les ressources pour réessayer.",
-          );
+            "La récupération Meta a échoué. Actualisez les ressources pour réessayer.";
+          if (wait) throw new Error(message);
+          status(message);
           return;
         }
         if (job.status === "succeeded") {
@@ -186,12 +187,15 @@
         status(
           `Recherche des ressources Meta en cours — ${job.progress_done} élément(s) reçus. Vos choix enregistrés sont conservés.`,
         );
-        setTimeout(poll, 3000);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        return poll();
       } catch (e) {
+        if (wait) throw e;
         status(e.message);
       }
     };
-    void poll();
+    if (wait) await poll();
+    else void poll();
   }
   function scope() {
     return ref === "B3"
@@ -304,12 +308,9 @@
       return;
     }
     if (action === "refresh") {
+      if (ref === "B3" && state.business_meta_id)
+        await inventory("root", false, true);
       await inventory(scope());
-      return;
-    }
-    if (action === "skip-pages") {
-      await save({ page_ids: [], pages_skipped: true, current_step: 4 });
-      go(paths[3]);
       return;
     }
     if (action === "skip-pixels") {
@@ -338,13 +339,16 @@
       return;
     }
     if (action === "next") {
-      if (step === 2 && !state.ad_account_ids.length)
+      if (
+        step === 2 &&
+        (!state.business_meta_id || !state.ad_account_ids.length)
+      )
         throw new Error(
           "Choisissez un Business Manager et au moins un compte publicitaire.",
         );
       if (step === 3 && !state.page_ids.length)
         throw new Error(
-          "Sélectionnez une page ou choisissez explicitement « Continuer sans page ».",
+          "Sélectionnez au moins une page Facebook pour continuer.",
         );
       if (step === 4 && !state.pixels.length)
         throw new Error(

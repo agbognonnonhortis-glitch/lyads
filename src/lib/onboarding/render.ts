@@ -156,6 +156,104 @@ function setFooter(frame: El, step: number) {
             : "Continuer",
       );
 }
+function navigation(frame: El, ref: string, completed: boolean) {
+  if (ref === "B2") return;
+  const doc = frame.ownerDocument;
+  const title = frame.querySelector("h1")?.parentElement;
+  const main = title?.parentElement;
+  if (!main) return;
+  const primaryAction =
+    ref === "B8"
+      ? "recap"
+      : ref === "B10"
+        ? "free"
+        : ref === "B11"
+          ? completed
+            ? "dashboard"
+            : "resume"
+          : "next";
+  for (const el of all(frame, "[data-onboarding-action]")) {
+    const act = el.getAttribute("data-onboarding-action");
+    if (
+      [
+        "next",
+        "free",
+        "dashboard",
+        "resume",
+        "refresh",
+        "skip-pages",
+        "skip-pixels",
+      ].includes(act) ||
+      act === primaryAction
+    ) {
+      el.remove();
+    } else if (
+      [
+        "previous",
+        "leave",
+        "brain",
+        "recap",
+        "add-product",
+        "remove-product",
+        "paid",
+      ].includes(act)
+    ) {
+      el.setAttribute(
+        "style",
+        styles.text +
+          ";cursor:pointer;display:inline-flex;align-items:center;gap:6px",
+      );
+    }
+  }
+  if (["B3", "B5", "B6"].includes(ref)) {
+    const label =
+      ref === "B3"
+        ? "Actualiser les Business Managers et comptes"
+        : ref === "B5"
+          ? "Actualiser les pages"
+          : "Actualiser les pixels et événements";
+    const refresh = action(
+      node(
+        doc,
+        "button",
+        styles.text +
+          ";border:0;background:transparent;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;align-self:flex-start",
+        label,
+      ),
+      "refresh",
+    );
+    refresh.setAttribute("type", "button");
+    const icon = node(doc, "i", "font-size:16px");
+    icon.className = "ph ph-arrow-clockwise";
+    icon.setAttribute("aria-hidden", "true");
+    refresh.prepend(icon);
+    title.after(refresh);
+  }
+  const row = node(
+    doc,
+    "div",
+    "display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px",
+  );
+  row.setAttribute("data-onboarding-navigation", "");
+  const next = button(doc, "Suivant", primaryAction);
+  next.setAttribute("data-onboarding-primary", "");
+  row.append(next);
+  if (ref === "B6") {
+    const skip = action(
+      node(
+        doc,
+        "button",
+        styles.text +
+          ";font-size:12px;border:0;background:transparent;padding:4px 0;cursor:pointer",
+        "Continuer sans pixel",
+      ),
+      "skip-pixels",
+    );
+    skip.setAttribute("type", "button");
+    row.append(skip);
+  }
+  main.append(row);
+}
 export function onboardingStep(ref: string, section?: string) {
   if (ref === "B7")
     return section === "market" || section === "audience"
@@ -488,7 +586,7 @@ export function renderOnboarding(
         list.append(
           placeholder(
             doc,
-            "Aucune page accessible chargée pour ce Business Manager. Actualisez la recherche ou continuez explicitement sans page.",
+            "Aucune page accessible chargée pour ce Business Manager. Actualisez la recherche ou vérifiez les accès à vos pages dans Meta. Une page est obligatoire pour continuer.",
           ),
         );
       const note = list.nextElementSibling;
@@ -499,10 +597,7 @@ export function renderOnboarding(
             "Choisissez les pages que vous utilisez pour vos publicités. Les informations Instagram indisponibles ne sont pas déduites.",
           ),
         );
-      list.after(
-        button(doc, "Actualiser les pages", "refresh"),
-        button(doc, "Continuer sans page", "skip-pages"),
-      );
+      list.after(button(doc, "Actualiser les pages", "refresh"));
       intro(
         frame,
         "Quelles pages utilisez-vous pour vos publicités ?",
@@ -1049,6 +1144,7 @@ export function renderOnboarding(
         ),
       );
     }
+    navigation(frame, ref, !!state.completed_at);
   }
   const visibility = doc.createElement("style");
   visibility.textContent = "[hidden]{display:none!important}";

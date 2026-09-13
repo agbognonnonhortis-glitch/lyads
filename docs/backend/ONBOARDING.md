@@ -33,3 +33,9 @@ Les six sections du formulaire B7 restent accessibles ensemble, avec progression
 - Aucun choix de Business Manager ou compte, aucune réponse métier, aucune activation de plan n’a été enregistré pour le propriétaire pendant cette vérification.
 - Le contrôle d’approbation a refusé le test réel supplémentaire des pages/pixels sur une ressource choisie automatiquement. Ces appels seront vérifiés avec les sélections faites par l’utilisateur dans son parcours ; les variantes remplies et vides ainsi que les erreurs fournisseur sont couvertes par les tests isolés.
 - L’analyse automatique de site et les paiements sont signalés comme indisponibles. Le plan gratuit conserve la limite d’un compte prévue dans la maquette. Les autres fonctionnalités produit restent hors de cette étape de travail.
+
+## Navigation et ressources obligatoires
+
+Le Business Manager, au moins un compte publicitaire et au moins une page Facebook sont obligatoires. Seul le pixel peut être ignoré explicitement. Cette obligation est vérifiée dans le contrôleur et dans la RPC de sauvegarde ; la base refuse `pages_skipped=true`. Les anciens parcours ayant ignoré la page reprennent à l’étape des pages sans perdre les réponses ni les crédits déjà attribués.
+
+Chaque écran après la connexion présente un seul bouton principal « Suivant ». L’actualisation des ressources est un bouton texte avec icône en haut ; « Continuer sans pixel » est un lien discret à côté de « Suivant ». Le premier écran conserve « Connecter mon Business Manager ».

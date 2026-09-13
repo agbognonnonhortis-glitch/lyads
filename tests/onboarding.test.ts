@@ -200,3 +200,43 @@ test("Populated resources render without maquette values at all three widths", (
     }
   }
 });
+
+test("Onboarding has one Suivant per viewport, top refresh and only optional pixel", () => {
+  for (const ref of ["B3", "B5", "B6", "B7", "B8", "B9", "B10", "B11"]) {
+    const doc = parseHTML(renderOnboarding(ref, fixture())).document;
+    for (const frame of doc.querySelectorAll("[data-source-width]")) {
+      const primary = frame.querySelectorAll("[data-onboarding-primary]");
+      assert.equal(primary.length, 1, ref);
+      assert.equal(primary[0].textContent, "Suivant", ref);
+      assert.equal(
+        frame.querySelectorAll(
+          '[data-onboarding-action="skip-pages"], [data-onboarding-action="skip-accounts"]',
+        ).length,
+        0,
+      );
+      const skips = frame.querySelectorAll(
+        '[data-onboarding-action="skip-pixels"]',
+      );
+      assert.equal(skips.length, ref === "B6" ? 1 : 0);
+      if (skips.length) {
+        assert.equal(skips[0].parentElement, primary[0].parentElement);
+        assert.match(skips[0].getAttribute("style")!, /font-size:12px/);
+      }
+      if (["B3", "B5", "B6"].includes(ref)) {
+        const refresh = frame.querySelectorAll(
+          '[data-onboarding-action="refresh"]',
+        );
+        assert.equal(refresh.length, 1);
+        assert.equal(
+          frame.querySelector("h1")!.parentElement!.nextElementSibling,
+          refresh[0],
+        );
+        assert.ok(refresh[0].querySelector("i.ph-arrow-clockwise"));
+        assert.match(
+          refresh[0].getAttribute("style")!,
+          /background:transparent/,
+        );
+      }
+    }
+  }
+});

@@ -84,7 +84,9 @@ export async function POST(request: NextRequest) {
           400,
           error.message === "Free plan supports one account"
             ? "Le plan gratuit permet un compte publicitaire. Revenez à la sélection pour en conserver un."
-            : "Complétez les sélections de cette étape. Le nom de votre activité et la confirmation du récapitulatif sont requis pour terminer.",
+            : error.message === "Select a Facebook page"
+              ? "Sélectionnez au moins une page Facebook pour continuer."
+              : "Complétez les sélections de cette étape. Le nom de votre activité et la confirmation du récapitulatif sont requis pour terminer.",
         );
       throw error;
     }
