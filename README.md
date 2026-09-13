@@ -25,7 +25,7 @@ npm run supabase:check
 
 Ce contrôle vérifie l’accessibilité d’Auth et de l’API de données avec la clé publique. Pour PostgREST, il demande une relation de diagnostic absente avec `limit=0` : la réponse précise `PGRST205` confirme l’accès au cache de schéma, sans retourner de lignes. Un autre type de 404 reste un échec. Ce contrôle ne prouve pas une lecture de table ni la validité des règles d’accès. Le diagnostic `/api/supabase/status` est disponible en développement uniquement.
 
-État du raccordement : la clé publiable fournie par le propriétaire est configurée dans `.env.local`. Le diagnostic réel réussit pour Auth et PostgREST ; une clé invalide utilisée comme contrôle est bien rejetée par PostgREST. L’autorisation OAuth du connecteur Codex est confirmée, mais ses outils restent indisponibles dans cette session : le schéma distant et les règles d’accès n’ont pas encore été inspectés. Les écrans restent ceux des maquettes, sans authentification fonctionnelle ni données Meta réelles à ce stade.
+État du raccordement : la clé publiable fournie par le propriétaire est configurée dans `.env.local`. Le diagnostic réel réussit pour Auth et PostgREST. Après la liaison de `main` et le push de relance `f43c2c4`, les 12 tables répondent sur le projet principal et refusent l’accès anonyme (HTTP 401, code PostgreSQL `42501`). La recette avec deux véritables sessions Auth reste à réaliser. Les écrans restent ceux des maquettes, sans authentification fonctionnelle ni données Meta réelles à ce stade.
 
 ## Vérifier
 
@@ -39,7 +39,7 @@ npm run build
 
 Les tests de fidélité comparent chaque bloc intégré à sa tranche exacte dans le fichier fourni et vérifient les styles, scripts et fichiers de polices/icônes. Le catalogue contient 231 cadres uniques, incluant les variantes et états fournis. Voir [l’inventaire des routes et variantes](docs/fidelity/ROUTES.md).
 
-Le [socle Supabase](docs/BASE_DE_DONNEES.md) comporte une migration de 12 tables et des tests PostgreSQL locaux pour les droits d’accès, les liens entre comptes, les doublons et le journal. Son application distante reste à vérifier. Le handoff est une référence frontend uniquement ; le backend suit le cadrage fonctionnel validé.
+Le [socle Supabase](docs/BASE_DE_DONNEES.md) comporte 12 tables désormais présentes dans le projet principal et des tests PostgreSQL locaux pour les droits d’accès, les liens entre comptes, les doublons et le journal. Le handoff est une référence frontend uniquement ; le backend suit le cadrage fonctionnel validé.
 
 ## Fonctionnement de cette étape
 

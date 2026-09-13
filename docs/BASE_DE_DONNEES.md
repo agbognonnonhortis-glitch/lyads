@@ -7,7 +7,9 @@ Le handoff est une référence frontend uniquement. Ce modèle technique découl
 - Le client local communique avec Auth et l’API de données du projet `beplqbktgbizhfcoixoi`.
 - La migration du socle est préparée et testée localement avec PostgreSQL via PGlite, dépendance réservée aux tests. Supabase reste l’unique base de l’application.
 - Les tests simulent uniquement la frontière d’identité Supabase (`auth.users`, `auth.uid()`, rôles) et exécutent réellement le SQL, les contraintes, privilèges et politiques RLS.
-- Aucune application distante de cette migration n’est encore confirmée. Le CLI actuellement connecté refuse l’accès à la référence Lyads ; les outils MCP ne sont pas exposés à la session.
+- Le propriétaire a relié la branche GitHub. Le push de relance `f43c2c4` sur `main` a déclenché le contrôle Supabase. La table des espaces est passée d’une réponse `PGRST205` (absente du cache de schéma) à `42501` (présente, accès refusé au visiteur non connecté).
+- Les 12 tables du socle répondent désormais sur le projet principal `beplqbktgbizhfcoixoi` et refusent toutes l’accès anonyme. Les vérifications ont utilisé `limit=0` et n’ont lu ni écrit de données métier.
+- Le commit de fusion `9ec4a76` a obtenu les deux contrôles réussis : « Supabase Preview » et « verify ». La présence des tables est confirmée indépendamment ; la recette avec deux véritables sessions Auth et la lecture de l’historique distant des migrations restent à réaliser.
 
 ## Tables du premier pilote
 
@@ -48,9 +50,9 @@ npm run typecheck
 npm run build
 ```
 
-Le workflow GitHub vérifie le projet à chaque push et pull request. Il ne déploie pas la base. L’intégration Supabase est confirmée sur ce dépôt : le premier push a produit un contrôle « Supabase Preview », ignoré car `main` n’est associée à aucune branche Supabase. Le workflow de tests, lui, a réussi. La pull request de validation a ensuite confirmé que la création automatique des prévisualisations est désactivée dans l’intégration Supabase. Ces réglages doivent être corrigés avant de pouvoir vérifier le déploiement via GitHub. La prévisualisation et le déploiement de la branche principale restent deux validations distinctes.
+Le workflow GitHub vérifie le projet à chaque push et pull request. L’intégration Supabase réalise séparément le déploiement. Le premier push avait été ignoré car la branche n’était pas associée ; après correction par le propriétaire, un nouveau push sur `main` a déclenché Supabase et les 12 tables sont devenues présentes dans la base principale.
 
-Avant application distante, exécuter `supabase/inspection.sql` sur le projet cible, examiner les éventuelles tables existantes et l’historique des migrations, puis adapter la migration si nécessaire. Elle ne supprime aucun objet existant et échoue si un nom de table est déjà utilisé, au lieu d’écraser l’existant.
+Avant les prochaines évolutions, examiner le schéma et l’historique distant avec `supabase/inspection.sql` et les outils disponibles. La migration initiale ne supprime aucun objet existant et échoue si un nom de table est déjà utilisé, au lieu d’écraser l’existant.
 
 Après application, vérifier les tables et migrations distantes, les conseillers de sécurité et deux véritables sessions Supabase. La validation locale ne remplace pas cette recette distante. Aucun déploiement distant ne doit être annoncé sur la seule base d’un push GitHub réussi.
 
