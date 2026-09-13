@@ -1330,6 +1330,49 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
           assert.equal(rows[0].cpc, 0.1);
           assert.equal(rows[0].purchases, 2);
           assert.equal(rows[0].roas, 4);
+          await admin();
+          // A second accessible account must never contaminate a one-account request.
+          const other = await uuid(
+            "insert into public.lyads_ad_accounts(workspace_id,connection_id,meta_account_id,name,currency,timezone_name) values ($1,$2,'other-test','Other','USD','UTC')",
+            [wa, a.connection],
+          );
+          const otherSync = await uuid(
+            "insert into public.lyads_sync_runs(workspace_id,ad_account_id,request_key) values($1,$2,'other-dashboard')",
+            [wa, other],
+          );
+          await db.query(
+            "insert into public.lyads_insight_snapshots(workspace_id,ad_account_id,sync_run_id,level,date_start,date_stop,query_context,deduplication_key,currency,metrics,fetched_at) values($1,$2,$3,'account','2026-09-01','2026-09-01','{}','other','USD','{\"spend\":\"999\"}',now())",
+            [wa, other, otherSync],
+          );
+          for (const [date, spend] of [
+            ["2026-08-25", "10"],
+            ["2026-08-24", "9999"],
+            ["2026-09-08", "8888"],
+          ]) {
+            await db.query(
+              "insert into public.lyads_insight_snapshots(workspace_id,ad_account_id,sync_run_id,level,date_start,date_stop,query_context,deduplication_key,currency,metrics,fetched_at) values($1,$2,$3,'account',$4::date,$4::date,'{}',$4::text,'EUR',$5,now())",
+              [wa, a.account, a.sync, date, JSON.stringify({ spend })],
+            );
+          }
+          await asUser(alice);
+          const scoped = (await db.query<any>(query, [wa, [a.account], "kpis"]))
+            .rows[0].result;
+          assert.equal(
+            scoped.find((r: any) => r.bucket === "current").spend,
+            0.3,
+          );
+          assert.equal(
+            scoped.find((r: any) => r.bucket === "previous").spend,
+            10,
+          );
+          assert.ok(scoped.every((r: any) => r.currency === "EUR"));
+          const series = (
+            await db.query<any>(query, [wa, [a.account], "series"])
+          ).rows[0].result;
+          assert.deepEqual(
+            series.map((r: any) => r.bucket),
+            ["2026-08-25", "2026-09-01"],
+          );
           const campaigns = (
             await db.query<any>(query, [wa, [a.account], "campaigns"])
           ).rows[0].result;

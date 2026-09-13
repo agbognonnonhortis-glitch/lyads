@@ -28,6 +28,19 @@
     cpa: "CPA (achats)",
     roas: "ROAS",
   };
+  function accountToday() {
+    const timezone =
+      state.accounts.find((a) => state.ids?.includes(a.id))?.timezone_name ||
+      "UTC";
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: timezone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).formatToParts(new Date());
+    const part = (type) => parts.find((p) => p.type === type).value;
+    return `${part("year")}-${part("month")}-${part("day")}`;
+  }
   const shift = (date, n) =>
     new Date(Date.parse(date) + n * 86400000).toISOString().slice(0, 10);
   const esc = (v) =>
@@ -48,11 +61,17 @@
       : new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(
           Number(v),
         );
-  const fmt = (value, key, currency) =>
-    number(value) +
-    (value != null && ["spend", "cpa", "cpc"].includes(key)
-      ? " " + currency
-      : "");
+  const monetary = (key) => ["spend", "cpa", "cpc"].includes(key);
+  const fmt = (value, key, currency) => {
+    if (value == null) return "—";
+    if (!monetary(key)) return number(value);
+    if (!/^[A-Z]{3}$/.test(currency || "")) return "—";
+    return new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency,
+      currencyDisplay: "code",
+    }).format(Number(value));
+  };
   function message(value) {
     text("[data-dashboard-status]", value);
   }
@@ -148,16 +167,7 @@
       .map((id) => c.jobs.find((j) => j.ad_account_id === id))
       .filter(Boolean);
     if (!state.since) {
-      const parts = new Intl.DateTimeFormat("en-CA", {
-        timeZone:
-          c.accounts.find((a) => state.ids.includes(a.id))?.timezone_name ||
-          "UTC",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).formatToParts(new Date());
-      const p = (t) => parts.find((p) => p.type === t).value;
-      state.until = `${p("year")}-${p("month")}-${p("day")}`;
+      state.until = accountToday();
       state.since = shift(state.until, -6);
     }
     all("[data-dashboard-accounts]").forEach((select) => {
@@ -248,7 +258,7 @@
         })
         .join(" ");
     };
-    return `<p class="dashboard-note">${esc(period.since)} – ${esc(period.until)} · comparaison ${esc(period.previousSince)} – ${esc(period.previousUntil)}</p><svg class="dashboard-graph" viewBox="0 0 730 255" role="img" aria-label="${esc(labels[key])} : période sélectionnée et période précédente"><text x="4" y="28" fill="#6e6862" font-size="11">${esc(number(maximum))}</text><text x="20" y="230" fill="#6e6862" font-size="11">0</text><path d="M45 30V225H710" fill="none" stroke="#e8e3d9"/><path d="${path("previous")}" fill="none" stroke="#a9a196" stroke-width="2" stroke-dasharray="6 5"/><path d="${path("current")}" fill="none" stroke="#b44a26" stroke-width="3"/>${pairs.map((p, i) => (p.current === null ? "" : `<circle cx="${x(i)}" cy="${y(p.current)}" r="4" fill="#b44a26"><title>${esc(p.date + " : " + fmt(p.current, key, data.currency) + " ; précédente : " + fmt(p.previous, key, data.currency))}</title></circle>`)).join("")}</svg><p class="dashboard-note">Orange : période sélectionnée · pointillés : période précédente. Les jours sans données restent vides.</p><details><summary>Voir les valeurs par jour</summary><div class="dashboard-table-wrap"><table><thead><tr><th>Date</th><th>${esc(labels[key])}</th><th>Période précédente</th></tr></thead><tbody>${pairs.map((p) => `<tr><td>${p.date}</td><td>${esc(fmt(p.current, key, data.currency))}</td><td>${esc(fmt(p.previous, key, data.currency))}</td></tr>`).join("")}</tbody></table></div></details>`;
+    return `<p class="dashboard-note">${esc(period.since)} – ${esc(period.until)} · comparaison ${esc(period.previousSince)} – ${esc(period.previousUntil)}</p><svg class="dashboard-graph" viewBox="0 0 730 255" role="img" aria-label="${esc(labels[key])} : période sélectionnée et période précédente"><text x="4" y="28" fill="#6e6862" font-size="11">${esc(fmt(maximum, key, data.currency))}</text><text x="20" y="230" fill="#6e6862" font-size="11">0</text><path d="M45 30V225H710" fill="none" stroke="#e8e3d9"/><path d="${path("previous")}" fill="none" stroke="#a9a196" stroke-width="2" stroke-dasharray="6 5"/><path d="${path("current")}" fill="none" stroke="#b44a26" stroke-width="3"/>${pairs.map((p, i) => (p.current === null ? "" : `<circle cx="${x(i)}" cy="${y(p.current)}" r="4" fill="#b44a26"><title>${esc(p.date + " : " + fmt(p.current, key, data.currency) + " ; précédente : " + fmt(p.previous, key, data.currency))}</title></circle>`)).join("")}</svg><p class="dashboard-note">Orange : période sélectionnée · pointillés : période précédente. Les jours sans données restent vides.</p><details><summary>Voir les valeurs par jour</summary><div class="dashboard-table-wrap"><table><thead><tr><th>Date</th><th>${esc(labels[key])}</th><th>Période précédente</th></tr></thead><tbody>${pairs.map((p) => `<tr><td>${p.date}</td><td>${esc(fmt(p.current, key, data.currency))}</td><td>${esc(fmt(p.previous, key, data.currency))}</td></tr>`).join("")}</tbody></table></div></details>`;
   }
   function renderZone(zone, data) {
     if (zone === "kpis") {
@@ -462,25 +472,36 @@
   }
   function periodDialog() {
     const d = dialog(
-      `<form><strong>Choisir la période</strong><label>Raccourci<select name="preset"><option value="">Personnalisée</option><option value="7">7 derniers jours</option><option value="30">30 derniers jours</option><option value="90">90 derniers jours</option></select></label><label>Du<input type="date" name="since" value="${state.since}" required></label><label>Au<input type="date" name="until" value="${state.until}" required></label><p class="dashboard-note" role="alert"></p><button type="submit">Appliquer</button><button type="button" data-close>Annuler</button></form>`,
+      `<form><strong>Choisir la période</strong><label>Raccourci<select name="preset"><option value="">Personnalisée</option><option value="today">Aujourd’hui</option><option value="yesterday">Hier</option><option value="7">7 derniers jours</option><option value="30">30 derniers jours</option><option value="90">90 derniers jours</option></select></label><label>Du<input type="date" name="since" value="${state.since}" max="${accountToday()}" required></label><label>Au<input type="date" name="until" value="${state.until}" max="${accountToday()}" required></label><p class="dashboard-note" role="alert"></p><button type="submit">Appliquer</button><button type="button" data-close>Annuler</button></form>`,
     );
     const f = d.querySelector("form");
-    f.preset.addEventListener("change", () => {
-      if (f.preset.value)
-        f.since.value = shift(f.until.value, 1 - Number(f.preset.value));
+    f.elements.namedItem("preset").addEventListener("change", () => {
+      const preset = f.elements.namedItem("preset").value;
+      if (!preset) return;
+      const today = accountToday();
+      f.elements.namedItem("until").value =
+        preset === "yesterday" ? shift(today, -1) : today;
+      f.elements.namedItem("since").value = ["today", "yesterday"].includes(
+        preset,
+      )
+        ? f.elements.namedItem("until").value
+        : shift(today, 1 - Number(preset));
     });
     d.querySelector("[data-close]").onclick = () => d.close();
     f.onsubmit = (e) => {
       e.preventDefault();
       const days =
-        (Date.parse(f.until.value) - Date.parse(f.since.value)) / 86400000 + 1;
-      if (days < 1 || days > 90) {
+        (Date.parse(f.elements.namedItem("until").value) -
+          Date.parse(f.elements.namedItem("since").value)) /
+          86400000 +
+        1;
+      if (!Number.isFinite(days) || days < 1 || days > 90) {
         d.querySelector("[role=alert]").textContent =
           "Choisissez une période de 1 à 90 jours.";
         return;
       }
-      state.since = f.since.value;
-      state.until = f.until.value;
+      state.since = f.elements.namedItem("since").value;
+      state.until = f.elements.namedItem("until").value;
       d.close();
       refresh();
     };

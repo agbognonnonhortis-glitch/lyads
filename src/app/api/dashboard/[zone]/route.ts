@@ -47,11 +47,19 @@ export async function GET(
     const available = (accountsResult.data || []).filter((a) =>
       connected.includes(a.id),
     );
+    const defaultAccount = connected.find((id) =>
+      available.some((a) => a.id === id),
+    );
+    const requestedAccounts = q.get("accounts");
+    if (requestedAccounts !== null && !requestedAccounts.trim())
+      throw new ApiError(
+        "INVALID_ACCOUNT",
+        400,
+        "Sélectionnez un compte publicitaire.",
+      );
     const ids = [
       ...new Set(
-        (q.get("accounts") || available.map((a) => a.id).join(","))
-          .split(",")
-          .filter(Boolean),
+        (requestedAccounts ?? defaultAccount ?? "").split(",").filter(Boolean),
       ),
     ];
     if (
@@ -67,6 +75,11 @@ export async function GET(
     const fresh = freshness(accounts);
     const common = {
       freshness: fresh,
+      selected: ids,
+      currency:
+        new Set(accounts.map((a) => a.currency)).size === 1
+          ? accounts[0].currency
+          : null,
       sufficientData: false,
       sufficiencyReason:
         "Les seuils de jugement de performance ne sont pas encore configurés.",
@@ -197,10 +210,19 @@ export async function GET(
       zone,
     });
     if (result.error) throw result.error;
+    if (
+      (result.data || []).some(
+        (row: { currency: string }) => row.currency !== accounts[0].currency,
+      )
+    )
+      throw new ApiError(
+        "CURRENCY_MISMATCH",
+        409,
+        "La devise des données importées ne correspond pas à celle du compte. Relancez la synchronisation.",
+      );
     return client.json({
       ...common,
       period,
-      currency: accounts[0]?.currency,
       rows: result.data || [],
       message:
         "Une valeur absente reste indisponible. CPA et ROAS utilisent exclusivement les achats « purchase » retournés par Meta.",

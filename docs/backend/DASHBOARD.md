@@ -4,13 +4,13 @@ La page C1.1 utilise les cadres et polices de la maquette, avec un rendu serveur
 
 ## Lecture
 
-`GET /api/dashboard/{context|kpis|series|campaigns|placements|creatives|alerts|recommendations}` accepte `organization`, `accounts` (UUID séparés par des virgules), `since`, `until`. La période est limitée à 90 jours ; la comparaison porte sur les jours immédiatement précédents, de même durée. Les dates correspondent aux jours publicitaires Meta ; le raccourci initial utilise le fuseau du premier compte sélectionné.
+`GET /api/dashboard/{context|kpis|series|campaigns|placements|creatives|alerts|recommendations}` accepte `organization`, `accounts` (UUID séparés par des virgules), `since`, `until`. La période est limitée à 90 jours ; la comparaison porte sur les jours immédiatement précédents, de même durée. Les dates correspondent aux jours publicitaires Meta. Aujourd’hui, hier et les 7/30/90 derniers jours sont recalculés à partir de la date du compte sélectionné, dans son fuseau ; ils ne reprennent pas la fin d’une ancienne période personnalisée. Sans sélection explicite, seul le premier compte connecté lors de l’onboarding est affiché.
 
 Chaque zone est indépendante et chaque réponse inclut la dernière synchronisation réussie par compte. La date commune est la plus ancienne des comptes sélectionnés. Si l’un des comptes n’a jamais été synchronisé, la date commune est absente. Les autorisations de l’organisation, les comptes retenus pendant l’onboarding et la RLS limitent les résultats.
 
 La fonction SQL `lyads_dashboard_metrics`, exécutée avec les droits de l’appelant, agrège les décimales en PostgreSQL. KPI/courbes utilisent le niveau compte sans répartition ; campagnes, publicités et placements utilisent chacun leur jeu de données propre. Les répartitions ne sont jamais additionnées aux totaux.
 
-CPC = dépense / clics. CPA = dépense / achats ; ROAS = valeur des achats / dépense. Les achats utilisent exactement l’action Meta `purchase`, sans additionner ses alias ou d’autres conversions. Une valeur absente ou un dénominateur nul produit `null`. Les montants de devises différentes ne sont pas additionnés. Les KPI indiquent lorsque seuls certains comptes sélectionnés ont des lignes disponibles. Une période sans lignes reste « aucune donnée », pas zéro inventé.
+CPC = dépense / clics. CPA = dépense / achats ; ROAS = valeur des achats / dépense. Les achats utilisent exactement l’action Meta `purchase`, sans additionner ses alias ou d’autres conversions. Une valeur absente ou un dénominateur nul produit `null`. Les montants de devises différentes ne sont pas additionnés. Toutes les valeurs monétaires, y compris les axes et les infobulles, utilisent le code et la précision de la devise du compte (USD, EUR, XOF, JPY, etc.). Une incohérence entre la devise des lignes importées et celle du compte bloque l’affichage et demande une resynchronisation. Les KPI indiquent lorsque seuls certains comptes sélectionnés ont des lignes disponibles. Une période sans lignes reste « aucune donnée », pas zéro inventé.
 
 ## Action Synchronisé
 

@@ -11,7 +11,7 @@ const controller = readFileSync(
   "utf8",
 );
 const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
-function harness(fail = false) {
+function harness(fail = false, currency = "EUR", href = "http://localhost/") {
   const { document, window } = parseHTML(
     renderDashboard(renderSource("C1.1")!, {
       organization: { id: "org" },
@@ -24,6 +24,7 @@ function harness(fail = false) {
     job = "none",
     timestamp = "2026-09-01T12:00:00Z";
   const reads: string[] = [];
+  const requests: URL[] = [];
   const fetch = async (url: string, options: any) => {
     if (options.method === "POST") {
       posts++;
@@ -33,13 +34,14 @@ function harness(fail = false) {
     const u = new URL(url, "http://localhost"),
       zone = u.pathname.split("/").at(-1)!;
     reads.push(zone);
+    requests.push(u);
     const common = {
       freshness: {
         complete: true,
         lastSynchronizedAt: timestamp,
         accounts: [{ id: "account", lastSynchronizedAt: timestamp }],
       },
-      currency: "EUR",
+      currency,
     };
     if (zone === "context")
       return {
@@ -50,7 +52,7 @@ function harness(fail = false) {
             {
               id: "account",
               name: "Test",
-              currency: "EUR",
+              currency,
               timezone_name: "UTC",
             },
           ],
@@ -87,7 +89,7 @@ function harness(fail = false) {
     Date,
     fetch,
     crypto: { randomUUID: () => String(posts) },
-    location: { href: "http://localhost/", assign() {} },
+    location: { href, assign() {} },
     history: { replaceState() {} },
     setInterval() {},
     setTimeout: (cb: () => void) => {
@@ -104,6 +106,7 @@ function harness(fail = false) {
     document,
     click,
     reads,
+    requests,
     get posts() {
       return posts;
     },
@@ -164,5 +167,41 @@ test("A failed sync does not advance the date and explains recovery in French", 
   assert.match(
     h.document.querySelector("[data-dashboard-status]")!.textContent,
     /échoué.*conservées/,
+  );
+});
+
+test("Every metric request carries the selected account and exact custom period", async () => {
+  const h = harness(
+    false,
+    "USD",
+    "http://localhost/?accounts=account&since=2026-08-01&until=2026-08-11",
+  );
+  await wait();
+  for (const req of h.requests.filter(
+    (r) => !r.pathname.endsWith("/context"),
+  )) {
+    assert.equal(req.searchParams.get("accounts"), "account");
+    assert.equal(req.searchParams.get("since"), "2026-08-01");
+    assert.equal(req.searchParams.get("until"), "2026-08-11");
+  }
+  for (const el of h.document.querySelectorAll('[data-metric="spend"]')) {
+    assert.match(el.textContent, /100,00.*USD/);
+    assert.doesNotMatch(el.textContent, /FCFA|EUR/);
+  }
+  assert.doesNotMatch(
+    h.document.querySelector("#dc-root")!.textContent,
+    /FCFA/,
+  );
+});
+test("Monetary figures use the account currency's precision, including zero-decimal JPY", async () => {
+  const h = harness(false, "JPY");
+  await wait();
+  assert.match(
+    h.document.querySelector('[data-metric="spend"]')!.textContent,
+    /100.*JPY/,
+  );
+  assert.doesNotMatch(
+    h.document.querySelector('[data-metric="spend"]')!.textContent,
+    /,00/,
   );
 });
