@@ -406,3 +406,15 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 # declarative_schema_path = "./database"
 # JSON string passed through to pg-delta SQL formatting.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":80,\"commaStyle\":\"trailing\"}"
+
+# These handlers implement their own authentication: verified Supabase Auth on
+# OAuth start, hashed single-use state on callback, expiring lease on the worker.
+[functions.lyads-meta]
+verify_jwt = false
+import_map = "./functions/deno.json"
+entrypoint = "./functions/lyads-meta/index.ts"
+
+[functions.lyads-worker]
+verify_jwt = false
+import_map = "./functions/deno.json"
+entrypoint = "./functions/lyads-worker/index.ts"
