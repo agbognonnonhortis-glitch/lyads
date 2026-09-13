@@ -99,6 +99,16 @@
       field = input.dataset.field,
       index = input.dataset.product;
     const value = input.value;
+    document.querySelectorAll("[data-field]").forEach((other) => {
+      if (
+        other !== input &&
+        other.dataset.section === section &&
+        other.dataset.field === field &&
+        other.dataset.product === index
+      )
+        other.value = value;
+    });
+
     const key = section + ":" + field + ":" + (index || "");
     if (timers.has(key)) clearTimeout(timers.get(key).timer);
     const run = () => {
@@ -324,7 +334,7 @@
         });
       } else products.splice(Number(el.dataset.product), 1);
       await save({ brain: { offer: { products } } });
-      go(location.href);
+      go("/configuration/entreprise?section=offer");
       return;
     }
     if (action === "next") {
