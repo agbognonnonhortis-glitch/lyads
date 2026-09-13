@@ -140,7 +140,7 @@ test("Advertising authorization buttons survive footer wiring in every viewport"
           (connected ? "connected" : "connect") +
           '"]',
       ).length,
-      4,
+      3,
     );
     assert.equal(
       doc.querySelectorAll('[data-onboarding-action="next"]').length,

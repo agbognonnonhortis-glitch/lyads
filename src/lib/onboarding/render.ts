@@ -330,20 +330,25 @@ export function renderOnboarding(
           action(
             e,
             data.connection ? "connected" : "connect",
-            data.connection
-              ? "Choisir mon Business Manager"
-              : "Connecter mon compte publicitaire",
+            "Connecter mon Business Manager",
           );
-      if (data.connection) {
-        const target = frame.querySelector(
-          '[data-onboarding-action="connected"]',
-        );
-        if (target) {
-          const reconnect = target.cloneNode(true);
-          action(reconnect, "connect", "Actualiser les autorisations Meta");
-          target.after(reconnect);
-        }
+      const connectButtons = all(
+        frame,
+        '[data-onboarding-action="connect"], [data-onboarding-action="connected"]',
+      );
+      const primaryConnect = connectButtons[0];
+      if (primaryConnect) {
+        while (primaryConnect.nextElementSibling)
+          primaryConnect.nextElementSibling.remove();
       }
+      // The mobile maquette repeats the connection action in a bottom bar.
+      for (const duplicate of connectButtons.slice(1))
+        duplicate.parentElement.remove();
+      const skipNotice = leaf(
+        frame,
+        "Vous pouvez visiter le produit sans compte connecté. Sans Meta, aucune donnée réelle : ni performances, ni recommandations, ni publication.",
+      );
+      if (skipNotice) parents(skipNotice, 2).remove();
     }
     if (ref === "B3") {
       const search = leaf(frame, "Chercher par nom ou identifiant");
