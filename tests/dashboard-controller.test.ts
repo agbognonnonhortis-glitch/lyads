@@ -21,6 +21,7 @@ function harness(
     alerts?: any[];
     recommendations?: any[];
     media?: boolean;
+    paginatedAds?: boolean;
   } = { blocked: false, empty: false },
 ) {
   const { document, window } = parseHTML(
@@ -124,6 +125,12 @@ function harness(
       json: async () => ({
         ...common,
         period,
+        nextOffset:
+          scenario.paginatedAds &&
+          zone === "creatives" &&
+          !u.searchParams.has("offset")
+            ? 10
+            : null,
         rows:
           zone === "kpis" && !scenario.empty
             ? [{ bucket: "current", spend: 100, accounts_count: 1 }]
@@ -131,21 +138,33 @@ function harness(
               ? scenario.alerts || []
               : zone === "recommendations"
                 ? scenario.recommendations || []
-                : zone === "creatives" && scenario.media
-                  ? [
-                      {
-                        bucket: "ad",
-                        name: "Video test",
-                        spend: 10,
-                        currency,
+                : zone === "creatives" && scenario.paginatedAds
+                  ? Array.from(
+                      { length: u.searchParams.has("offset") ? 1 : 10 },
+                      (_, i) => ({
+                        bucket: `ad-${i + Number(u.searchParams.get("offset") || 0)}`,
+                        name: `Annonce ${i + Number(u.searchParams.get("offset") || 0)}`,
                         result_event: "purchase",
-                        rank: 1,
-                        results: 20,
-                        cost_per_result: 0.5,
-                        roas: 4,
-                      },
-                    ]
-                  : [],
+                        rank: i + 1 + Number(u.searchParams.get("offset") || 0),
+                        bar_ratio: 0.5,
+                        sufficient_data: true,
+                      }),
+                    )
+                  : zone === "creatives" && scenario.media
+                    ? [
+                        {
+                          bucket: "ad",
+                          name: "Video test",
+                          spend: 10,
+                          currency,
+                          result_event: "purchase",
+                          rank: 1,
+                          results: 20,
+                          cost_per_result: 0.5,
+                          roas: 4,
+                        },
+                      ]
+                    : [],
         message: "Aucune donnée",
       }),
     };
@@ -454,6 +473,12 @@ test("Real media renders a player, hover previews muted, click keeps playback af
     media: true,
   });
   await wait();
+  assert.equal(h.document.querySelector(".dashboard-video"), null);
+  const details = h.document.querySelector("[data-best-ad]")! as any;
+  assert.equal(details.hasAttribute("open"), false);
+  details.open = true;
+  details.dispatchEvent(new h.window.Event("toggle"));
+  await wait();
   const box = h.document.querySelector(".dashboard-video")!;
   const video = box.querySelector("video")! as any;
   assert.equal(
@@ -483,4 +508,34 @@ test("Real media renders a player, hover previews muted, click keeps playback af
   assert.equal(video.muted, false);
   box.dispatchEvent(new h.window.Event("mouseleave"));
   assert.equal(pauses, 1);
+  details.open = false;
+  details.dispatchEvent(new h.window.Event("toggle"));
+  assert.equal(pauses, 2);
+});
+
+test("Ads load ten at a time and stay collapsed until the user opens one", async () => {
+  const h = harness(
+    false,
+    "EUR",
+    "http://localhost/?since=2026-09-01&until=2026-09-07",
+    { blocked: false, empty: false, paginatedAds: true },
+  );
+  await wait();
+  const zone = h.document.querySelector('[data-zone="creatives"]')!;
+  assert.equal(zone.querySelectorAll("[data-best-ad]").length, 10);
+  assert.equal(zone.querySelectorAll("[data-best-ad][open]").length, 0);
+  assert.equal(zone.querySelectorAll("video").length, 0);
+  assert.equal(zone.querySelectorAll(".dashboard-best-bar").length, 10);
+  zone
+    .querySelector('[data-dashboard-action="more-ads"]')!
+    .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+  await wait();
+  assert.equal(zone.querySelectorAll("[data-best-ad]").length, 11);
+  assert.equal(zone.querySelector('[data-dashboard-action="more-ads"]'), null);
+  const request = h.requests.find(
+    (u: URL) => u.searchParams.get("offset") === "10",
+  )!;
+  assert.equal(request.searchParams.get("accounts"), "account");
+  assert.equal(request.searchParams.get("since"), "2026-09-01");
+  assert.equal(request.searchParams.get("until"), "2026-09-07");
 });

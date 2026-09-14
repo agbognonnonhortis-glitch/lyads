@@ -269,11 +269,20 @@ export async function GET(
         message: "Aucune recommandation disponible pour le moment.",
       });
     if (zone === "creatives") {
-      const ranking = await client.supabase.rpc("lyads_ranked_ads", {
+      const offset = Number(q.get("offset") || 0);
+      if (!Number.isSafeInteger(offset) || offset < 0 || offset > 1000000)
+        throw new ApiError(
+          "INVALID_PAGE",
+          400,
+          "Rechargez la liste des publicités.",
+        );
+      const ranking = await client.supabase.rpc("lyads_account_ads", {
         target_workspace: organization,
         target_accounts: ids,
         since_date: period.since,
         until_date: period.until,
+        page_offset: offset,
+        page_size: 10,
       });
       if (ranking.error) throw ranking.error;
       if (
@@ -290,8 +299,8 @@ export async function GET(
         ...common,
         ...ranking.data,
         period,
-        sufficientData: Boolean(ranking.data?.rows?.length),
-        sufficiencyReason: ranking.data?.rows?.length
+        sufficientData: Boolean(ranking.data?.rankedAds),
+        sufficiencyReason: ranking.data?.rankedAds
           ? null
           : "Données insuffisantes ou événement de conversion indisponible pour établir un classement.",
         conversionMetric: "configured_event",

@@ -493,7 +493,8 @@
       const start = async () => {
         try {
           await video.play();
-          if (!hovering && !chosen) video.pause();
+          if ((!hovering && !chosen) || !box.closest("details")?.open)
+            video.pause();
         } catch {
           play.hidden = false;
         }
@@ -576,7 +577,8 @@
     all("[data-ad-media]")
       .filter((el) => el.dataset.adMedia === row.bucket)
       .forEach((el) => {
-        if (el.dataset.mediaReady === "true") return;
+        if (el.dataset.mediaReady === "true" || !el.closest("details")?.open)
+          return;
         el.innerHTML = html;
         el.dataset.mediaReady = "true";
         bindMedia(el);
@@ -594,16 +596,30 @@
       post_engagement: "Interactions",
       like: "Mentions J’aime",
     };
-    const groups = [...new Set(data.rows.map((r) => r.result_event))];
+    const groups = [
+      ...new Set(
+        data.rows.map(
+          (r) =>
+            `${r.rank == null ? "unranked" : "ranked"}:${r.result_event || ""}`,
+        ),
+      ),
+    ];
     let html = groups
-      .map((event) => {
+      .map((group) => {
+        const [kind, event] = group.split(":");
         const label =
           eventNames[event] ||
-          "Conversion personnalisée " +
-            event.replace("offsite_conversion.custom.", "");
-        const rows = data.rows.filter((r) => r.result_event === event);
+          (event
+            ? "Conversion personnalisée " +
+              event.replace("offsite_conversion.custom.", "")
+            : "Résultats");
+        const rows = data.rows.filter(
+          (r) =>
+            (r.result_event || "") === event &&
+            (r.rank == null ? "unranked" : "ranked") === kind,
+        );
         return (
-          `<h3 class="dashboard-best-event">${esc(label)}</h3>` +
+          `<h3 class="dashboard-best-event">${kind === "unranked" ? `${esc(label)} · non classées` : esc(label)}</h3>` +
           rows
             .map((r) => {
               const costLabel =
@@ -619,21 +635,60 @@
                 [costLabel, fmt(r.cost_per_result, "cpa", r.currency)],
                 [label, number(r.results)],
               ];
-              return `<article class="dashboard-best-ad"><header class="dashboard-best-heading"><span class="dashboard-best-rank" aria-label="Rang ${esc(r.rank)}">${esc(r.rank)}</span><h4>${esc(r.name)}</h4></header><div class="dashboard-best-layout"><div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div><div class="dashboard-best-stats"><dl class="dashboard-best-primary">${primary.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl><dl class="dashboard-best-secondary"><dt>Dépense</dt><dd>${fmt(r.spend, "spend", r.currency)}</dd><dt>Impressions</dt><dd>${number(r.impressions)}</dd><dt>Clics</dt><dd>${number(r.clicks)}</dd><dt>CPC</dt><dd>${fmt(r.cpc, "cpc", r.currency)}</dd></dl></div></div></article>`;
+              return `<details class="dashboard-best-ad" data-best-ad="${esc(r.bucket)}"><summary class="dashboard-best-heading"><span class="dashboard-best-caret" aria-hidden="true">▶</span>${r.rank == null ? "" : `<span class="dashboard-best-rank" aria-label="Rang ${esc(r.rank)}">${esc(r.rank)}</span>`}<span class="dashboard-best-name">${esc(r.name)}</span></summary><div class="dashboard-best-layout"><div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div><div class="dashboard-best-stats"><dl class="dashboard-best-primary">${primary.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl><dl class="dashboard-best-secondary"><dt>Dépense</dt><dd>${fmt(r.spend, "spend", r.currency)}</dd><dt>Impressions</dt><dd>${number(r.impressions)}</dd><dt>Clics</dt><dd>${number(r.clicks)}</dd><dt>CPC</dt><dd>${fmt(r.cpc, "cpc", r.currency)}</dd></dl>${r.rank == null ? `<p class="dashboard-note">${!r.result_event ? "Événement de conversion indisponible." : !r.sufficient_data ? "Données insuffisantes pour un classement." : "ROAS indisponible pour ce classement."}</p>` : ""}</div></div></details><div class="dashboard-bar dashboard-best-bar" aria-hidden="true"><span style="width:${r.rank == null ? 0 : Math.max(0, Math.min(100, Number(r.bar_ratio || 0) * 100))}%"></span></div>`;
             })
             .join("") +
-          `<p class="dashboard-best-order">${event === "purchase" ? "Tri : ROAS, puis coût par achat, puis nombre d’achats." : "Tri : coût par résultat, puis nombre de résultats."}</p>`
+          (kind === "ranked"
+            ? `<p class="dashboard-best-order">${event === "purchase" ? "Tri : ROAS, puis coût par achat, puis nombre d’achats." : "Tri : coût par résultat, puis nombre de résultats."}</p>`
+            : "")
         );
       })
       .join("");
-    if (!html)
-      html =
-        "<p>Aucune publicité ne dispose encore des données nécessaires pour ce classement sur la période sélectionnée.</p>";
-    if (data.unknownObjectiveAds)
-      html += `<p class="dashboard-note">${number(data.unknownObjectiveAds)} publicité(s) : événement de conversion indisponible. Actualisez la synchronisation.</p>`;
-    if (data.missingRoasAds)
-      html += `<p class="dashboard-note">${number(data.missingRoasAds)} publicité(s) d’achat : ROAS indisponible.</p>`;
+    if (!html) html = "<p>Aucune publicité importée pour ce compte.</p>";
+    if (data.nextOffset != null)
+      html +=
+        '<button type="button" class="dashboard-more-ads" data-dashboard-action="more-ads">Afficher plus de publicités</button><p class="dashboard-note" data-more-ads-status role="status"></p>';
     return html;
+  }
+  function bindAdRows() {
+    all("[data-best-ad]").forEach((details) => {
+      details.addEventListener("toggle", () => {
+        if (details.open) {
+          const row = state.data.creatives?.rows.find(
+            (r) => r.bucket === details.dataset.bestAd,
+          );
+          if (row) loadMedia(row);
+        } else
+          details.querySelectorAll("video").forEach((video) => video.pause());
+      });
+    });
+  }
+  async function moreAds(button) {
+    const epoch = state.epoch,
+      previous = state.data.creatives;
+    if (previous?.nextOffset == null || state.adsLoading) return;
+    state.adsLoading = true;
+    button.disabled = true;
+    try {
+      const page = await api(
+        `${endpoint("creatives")}&offset=${previous.nextOffset}`,
+      );
+      if (epoch !== state.epoch || state.data.creatives !== previous) return;
+      const known = new Set(previous.rows.map((r) => r.bucket));
+      state.data.creatives = {
+        ...page,
+        rows: [
+          ...previous.rows,
+          ...page.rows.filter((r) => !known.has(r.bucket)),
+        ],
+      };
+      renderZone("creatives", state.data.creatives);
+    } catch (err) {
+      if (epoch === state.epoch) text("[data-more-ads-status]", err.message);
+    } finally {
+      state.adsLoading = false;
+      button.disabled = false;
+    }
   }
   function renderZone(zone, data) {
     if (zone === "kpis") {
@@ -673,11 +728,22 @@
       if (data.rows.length)
         html += `<p class="dashboard-note">${zone === "creatives" ? "Publicités classées par dépense." : zone === "campaigns" ? "Campagnes classées par dépense (50 maximum)." : "Répartition des dépenses remontées par Meta."}</p>`;
     }
+    const expanded =
+      zone === "creatives"
+        ? new Set(all("[data-best-ad][open]").map((el) => el.dataset.bestAd))
+        : new Set();
     all(`[data-zone="${zone}"]`).forEach((el) => {
       el.innerHTML = html;
       el.setAttribute("aria-busy", "false");
     });
-    if (zone === "creatives") data.rows.forEach(loadMedia);
+    if (zone === "creatives") {
+      bindAdRows();
+      all("[data-best-ad]")
+        .filter((el) => expanded.has(el.dataset.bestAd))
+        .forEach((el) => {
+          el.open = true;
+        });
+    }
   }
   async function loadZone(zone, epoch = state.epoch) {
     try {
@@ -1115,7 +1181,8 @@
       } else if (button.dataset.retryZone) {
         if (!state.context) refresh();
         else loadZone(button.dataset.retryZone);
-      } else action(button.dataset.dashboardAction, button);
+      } else if (button.dataset.dashboardAction === "more-ads") moreAds(button);
+      else action(button.dataset.dashboardAction, button);
     },
     true,
   );

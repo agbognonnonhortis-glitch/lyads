@@ -1695,7 +1695,66 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
             )
           ).rows[0].result;
           assert.equal(short.rows.length, 0);
+          await admin();
+          for (let i = 0; i < 7; i++)
+            await create(`Additional ${i}`, "PURCHASE", 10, 5, 50);
+          const noData = await create(
+            "Active without metrics",
+            "PURCHASE",
+            0,
+            0,
+            null,
+            0,
+          );
+          await db.query(
+            "update public.lyads_ads set effective_status='ACTIVE' where id=$1",
+            [noData],
+          );
+          await asUser(alice);
+          const browse =
+            "select public.lyads_account_ads($1,$2,'2026-09-01','2026-09-07',$3,10) result";
+          const first = (await db.query<any>(browse, [wa, [a.account], 0]))
+            .rows[0].result;
+          assert.equal(first.rows.length, 10);
+          assert.equal(first.nextOffset, 10);
+          assert.ok(first.rankedAds > 5);
+          const second = (
+            await db.query<any>(browse, [wa, [a.account], first.nextOffset])
+          ).rows[0].result;
+          const all = [...first.rows, ...second.rows];
+          assert.equal(all.length, first.totalAds);
+          assert.equal(new Set(all.map((r: any) => r.bucket)).size, all.length);
+          assert.equal(second.nextOffset, null);
+          const active = all.find((r: any) => r.bucket === noData);
+          assert.ok(active, "Active ads without insights are still listed");
+          assert.equal(active.spend, null);
+          assert.equal(active.rank, null);
+          assert.equal(active.bar_ratio, null);
+          assert.equal(active.sufficient_data, false);
+          const tiny = all.find((r: any) => r.name === "Tiny sample");
+          assert.equal(tiny.results, 3);
+          assert.equal(tiny.rank, null);
+          assert.equal(tiny.bar_ratio, null);
+          assert.equal(
+            all.find((r: any) => r.name === "Unknown objective").rank,
+            null,
+          );
+          assert.equal(
+            all.find((r: any) => r.name === "Missing revenue").rank,
+            null,
+          );
+          assert.equal(all.find((r: any) => r.bucket === volumeWinner).rank, 1);
+          assert.equal(
+            all.find((r: any) => r.bucket === volumeWinner).bar_ratio,
+            1,
+          );
+          await db.exec("savepoint invalid_page");
+          await sqlError(browse, [wa, [a.account], -1], "22023");
+          await db.exec("rollback to savepoint invalid_page");
           await asUser(bob);
+          await db.exec("savepoint browse_denied");
+          await sqlError(browse, [wa, [a.account], 0], "42501");
+          await db.exec("rollback to savepoint browse_denied");
           await db.exec("savepoint denied");
           await sqlError(query, [wa, [a.account]], "42501");
           await db.exec("rollback to savepoint denied");
