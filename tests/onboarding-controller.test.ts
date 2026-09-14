@@ -173,7 +173,7 @@ test("Website submit queues analysis; reload resumes success or offers manual re
   );
 });
 
-test("Required resources block navigation; only pixel has an explicit skip", async () => {
+test("Business/account remain required; pages and pixels can be explicitly skipped", async () => {
   for (const [ref, initial] of [
     ["B3", { current_step: 2 }],
     ["B3", { current_step: 2, ad_account_ids: ["account"] }],
@@ -205,6 +205,16 @@ test("Required resources block navigation; only pixel has an explicit skip", asy
   assert.equal(h.state.current_step, 5);
   assert.deepEqual(h.errors, []);
   assert.equal(h.destinations[0], "/configuration/entreprise?section=activity");
+  const pages = harness("B5", { current_step: 3 });
+  pages.document
+    .querySelector('[data-onboarding-action="skip-pages"]')!
+    .dispatchEvent(new pages.window.Event("click", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.deepEqual(pages.state.page_ids, []);
+  assert.equal(pages.state.pages_skipped, true);
+  assert.equal(pages.state.current_step, 4);
+  assert.deepEqual(pages.destinations, ["/configuration/pixel"]);
+  assert.deepEqual(pages.errors, []);
 });
 
 test("Refreshing business resources fetches both business list and selected business accounts", async () => {
@@ -216,6 +226,23 @@ test("Refreshing business resources fetches both business list and selected busi
   assert.deepEqual(h.scopes, ["root", "business"]);
   assert.deepEqual(h.errors, []);
   assert.deepEqual(h.writes, []);
+});
+
+test("Optional resource setup returns completed users to settings", async () => {
+  for (const action of ["skip-pixels", "next"]) {
+    const h = harness("B6", {
+      current_step: 10,
+      completed_at: "2026-09-14T00:00:00Z",
+      pixels: [{ account_id: "account", pixel_id: "pixel", event: null }],
+    });
+    h.document
+      .querySelector(`[data-onboarding-action="${action}"]`)!
+      .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    assert.deepEqual(h.destinations, ["/app/parametres/meta"]);
+    assert.deepEqual(h.errors, []);
+    assert.deepEqual(h.analyses, []);
+  }
 });
 
 test("Back works on every onboarding viewport without validating forward selections", async () => {

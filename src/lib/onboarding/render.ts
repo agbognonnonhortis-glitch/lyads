@@ -259,16 +259,16 @@ function navigation(frame: El, ref: string, completed: boolean, step: number) {
     next.setAttribute("data-onboarding-primary", "");
     row.append(next);
   }
-  if (ref === "B6") {
+  if (ref === "B5" || ref === "B6") {
     const skip = action(
       node(
         doc,
         "button",
         styles.text +
           ";font-size:12px;border:0;background:transparent;padding:4px 0;cursor:pointer",
-        "Continuer sans pixel",
+        ref === "B5" ? "Continuer sans page" : "Continuer sans pixel",
       ),
-      "skip-pixels",
+      ref === "B5" ? "skip-pages" : "skip-pixels",
     );
     skip.setAttribute("type", "button");
     row.append(skip);
@@ -615,7 +615,7 @@ export function renderOnboarding(
         list.append(
           placeholder(
             doc,
-            "Aucune page accessible chargée pour ce Business Manager. Actualisez la recherche ou vérifiez les accès à vos pages dans Meta. Une page est obligatoire pour continuer.",
+            "Aucune page accessible chargée pour ce Business Manager. Vous pouvez continuer sans page et la connecter plus tard dans les paramètres.",
           ),
         );
       const note = list.nextElementSibling;
@@ -630,7 +630,7 @@ export function renderOnboarding(
       intro(
         frame,
         "Quelles pages utilisez-vous pour vos publicités ?",
-        `${pages.length} page(s) accessible(s) pour le Business Manager sélectionné. Vous pouvez en choisir plusieurs.`,
+        `${pages.length} page(s) accessible(s) pour le Business Manager sélectionné. Vous pouvez en choisir plusieurs ou les connecter plus tard.`,
       );
     }
     if (ref === "B6") {
@@ -948,6 +948,16 @@ export function renderOnboarding(
             ...selectedAccounts.map((a: any) =>
               node(doc, "div", styles.text, a.name),
             ),
+            ...(state.pages_skipped
+              ? [
+                  node(
+                    doc,
+                    "div",
+                    styles.text,
+                    "Page Facebook : à connecter plus tard",
+                  ),
+                ]
+              : []),
             ...state.page_ids.map((id: string) =>
               node(
                 doc,
@@ -1065,6 +1075,19 @@ export function renderOnboarding(
             "Compte : " + a.name + " · " + a.currency,
           ),
         ),
+        ...(state.pages_skipped
+          ? [
+              node(
+                doc,
+                "div",
+                styles.text,
+                "Page Facebook : à connecter plus tard",
+              ),
+            ]
+          : []),
+        ...(state.pixels_skipped
+          ? [node(doc, "div", styles.text, "Pixel : à connecter plus tard")]
+          : []),
         ...state.page_ids.map((id: string) =>
           node(
             doc,

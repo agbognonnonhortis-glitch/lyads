@@ -924,12 +924,6 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
           {
             business_meta_id: "901",
             ad_account_ids: [account],
-            pages_skipped: true,
-            current_step: 4,
-          },
-          {
-            business_meta_id: "901",
-            ad_account_ids: [account],
             pixels_skipped: true,
             pages_skipped: true,
             current_step: 8,
@@ -1035,7 +1029,8 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
             JSON.stringify({
               business_meta_id: "901",
               ad_account_ids: [account],
-              page_ids: ["903"],
+              page_ids: [],
+              pages_skipped: true,
               pixels_skipped: true,
               current_step: 8,
               review: true,
@@ -1051,15 +1046,45 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
         ).rows[0];
         assert.equal(saved.current_step, 10);
         assert.ok(saved.completed_at);
-        assert.deepEqual(saved.page_ids, ["903"]);
+        assert.deepEqual(saved.page_ids, []);
         assert.deepEqual(saved.pixels, []);
         assert.equal(saved.pixels_skipped, true);
-        assert.equal(saved.pages_skipped, false);
+        assert.equal(saved.pages_skipped, true);
         await db.query(rpc, [
           ws,
           5,
           JSON.stringify({ plan_key: "free", complete: true }),
         ]);
+        const completedAt = saved.completed_at;
+        saved = (
+          await db.query(rpc, [
+            ws,
+            6,
+            JSON.stringify({
+              page_ids: ["903"],
+              pages_skipped: false,
+              current_step: 3,
+            }),
+          ])
+        ).rows[0];
+        assert.deepEqual(saved.page_ids, ["903"]);
+        assert.equal(saved.pages_skipped, false);
+        assert.deepEqual(saved.completed_at, completedAt);
+        assert.equal(saved.current_step, 10);
+        saved = (
+          await db.query(rpc, [
+            ws,
+            7,
+            JSON.stringify({
+              pixels: [{ account_id: account, pixel_id: "904", event: null }],
+              pixels_skipped: false,
+              current_step: 4,
+            }),
+          ])
+        ).rows[0];
+        assert.equal(saved.pixels.length, 1);
+        assert.deepEqual(saved.completed_at, completedAt);
+        assert.equal(saved.current_step, 10);
         await sqlError(
           "update public.lyads_onboarding set brain='{}' where workspace_id=$1",
           [ws],

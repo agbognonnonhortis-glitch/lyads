@@ -379,9 +379,14 @@
       await inventory(scope());
       return;
     }
+    if (action === "skip-pages") {
+      await save({ page_ids: [], pages_skipped: true, current_step: 4 });
+      go(paths[3]);
+      return;
+    }
     if (action === "skip-pixels") {
       await save({ pixels: [], pixels_skipped: true, current_step: 5 });
-      go(paths[4]);
+      go(state.completed_at ? "/app/parametres/meta" : paths[4]);
       return;
     }
     if (action === "analyze-website" || action === "retry-analysis") {
@@ -425,7 +430,7 @@
         );
       if (step === 3 && !state.page_ids.length)
         throw new Error(
-          "Sélectionnez au moins une page Facebook pour continuer.",
+          "Sélectionnez une page ou choisissez « Continuer sans page ».",
         );
       if (step === 4 && !state.pixels.length)
         throw new Error(
@@ -441,7 +446,11 @@
         ...(step === 8 ? { review: true } : {}),
       });
       if (step === 3) await inventory("pixels", false);
-      go(paths[Math.min(9, step)]);
+      go(
+        step === 4 && state.completed_at
+          ? "/app/parametres/meta"
+          : paths[Math.min(9, step)],
+      );
       return;
     }
     if (action === "free") {

@@ -36,7 +36,7 @@ Les six sections du formulaire B7 restent accessibles ensemble, avec progression
 
 ## Navigation et ressources obligatoires
 
-Le Business Manager, au moins un compte publicitaire et au moins une page Facebook sont obligatoires. Seul le pixel peut être ignoré explicitement. Cette obligation est vérifiée dans le contrôleur et dans la RPC de sauvegarde ; la base refuse `pages_skipped=true`. Les anciens parcours ayant ignoré la page reprennent à l’étape des pages sans perdre les réponses ni les crédits déjà attribués.
+Le Business Manager et au moins un compte publicitaire sont obligatoires. Les pages Facebook et les pixels peuvent être ignorés explicitement via « Continuer sans page » et « Continuer sans pixel ». La RPC et les contraintes en base acceptent ces choix, y compris pour l’analyse du site et la finalisation. Les ressources choisies restent vérifiées contre les accès Meta de l’utilisateur. Après inscription, Paramètres → Comptes Meta propose les liens de configuration des pages et pixels ; leur ajout conserve la finalisation, le profil et les crédits et ramène aux paramètres.
 
 Chaque écran après la connexion présente un seul bouton principal « Suivant ». L’actualisation des ressources est un bouton texte avec icône en haut ; « Continuer sans pixel » est un lien discret à côté de « Suivant ». Le premier écran conserve « Connecter mon Business Manager ».
 

@@ -13,6 +13,32 @@ export function renderOrganization(
   const canSwitch = canSwitchOrganization(organizations);
   const norm = (v: string) => v.replace(/\s+/g, " ").trim();
   for (const frame of doc.querySelectorAll("[data-source-width]")) {
+    if (ref === "C11.2") {
+      const heading = [...frame.querySelectorAll("div,span")].find(
+        (e) =>
+          !e.children.length &&
+          ["Comptes Meta connectés", "Paramètres · Comptes Meta"].includes(
+            norm(e.textContent),
+          ),
+      );
+      const links = doc.createElement("div");
+      links.setAttribute("data-optional-meta-resources", "");
+      links.setAttribute(
+        "style",
+        "display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font:500 13px/1.5 'Figtree',sans-serif",
+      );
+      for (const [label, href] of [
+        ["Configurer les pages Facebook", "/configuration/pages"],
+        ["Configurer les pixels", "/configuration/pixel"],
+      ]) {
+        const link = doc.createElement("a");
+        link.textContent = label;
+        link.setAttribute("href", href);
+        link.setAttribute("style", "color:#B44A26;text-decoration:underline");
+        links.append(link);
+      }
+      heading?.parentElement?.append(links);
+    }
     for (const label of frame.querySelectorAll("div,span"))
       if (
         !label.children.length &&

@@ -211,7 +211,7 @@ test("Populated resources render without maquette values at all three widths", (
   }
 });
 
-test("Onboarding has one Suivant per viewport, top refresh and only optional pixel", () => {
+test("Onboarding has one Suivant per viewport, top refresh and optional page/pixel", () => {
   for (const ref of ["B3", "B5", "B6", "B7", "B9", "B10", "B11"]) {
     const doc = parseHTML(renderOnboarding(ref, fixture())).document;
     for (const frame of doc.querySelectorAll("[data-source-width]")) {
@@ -219,15 +219,14 @@ test("Onboarding has one Suivant per viewport, top refresh and only optional pix
       assert.equal(primary.length, 1, ref);
       assert.equal(primary[0].textContent, "Suivant", ref);
       assert.equal(
-        frame.querySelectorAll(
-          '[data-onboarding-action="skip-pages"], [data-onboarding-action="skip-accounts"]',
-        ).length,
+        frame.querySelectorAll('[data-onboarding-action="skip-accounts"]')
+          .length,
         0,
       );
       const skips = frame.querySelectorAll(
-        '[data-onboarding-action="skip-pixels"]',
+        '[data-onboarding-action="skip-pixels"], [data-onboarding-action="skip-pages"]',
       );
-      assert.equal(skips.length, ref === "B6" ? 1 : 0);
+      assert.equal(skips.length, ["B5", "B6"].includes(ref) ? 1 : 0);
       if (skips.length) {
         assert.equal(skips[0].parentElement, primary[0].parentElement);
         assert.match(skips[0].getAttribute("style")!, /font-size:12px/);
