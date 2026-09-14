@@ -132,7 +132,19 @@ function harness(
               : zone === "recommendations"
                 ? scenario.recommendations || []
                 : zone === "creatives" && scenario.media
-                  ? [{ bucket: "ad", name: "Video test", spend: 10, currency }]
+                  ? [
+                      {
+                        bucket: "ad",
+                        name: "Video test",
+                        spend: 10,
+                        currency,
+                        result_event: "purchase",
+                        rank: 1,
+                        results: 20,
+                        cost_per_result: 0.5,
+                        roas: 4,
+                      },
+                    ]
                   : [],
         message: "Aucune donnée",
       }),

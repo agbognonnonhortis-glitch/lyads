@@ -62,7 +62,7 @@ export const structures = [
     level: "adset",
     edge: "adsets",
     fields:
-      "id,name,effective_status,campaign_id,daily_budget,lifetime_budget,start_time,end_time,optimization_goal,attribution_spec",
+      "id,name,effective_status,campaign_id,daily_budget,lifetime_budget,start_time,end_time,optimization_goal,promoted_object,attribution_spec",
   },
   {
     level: "ad",

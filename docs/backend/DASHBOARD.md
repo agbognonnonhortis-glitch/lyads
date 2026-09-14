@@ -49,8 +49,19 @@ Validation en production : migration `20260914093844` et worker déployés. L’
 
 ## Médias publicitaires (14 septembre 2026)
 
-Le top 5 reste trié par dépense décroissante sur le compte et la période sélectionnés ; il ne constitue pas un classement de rentabilité. Les médias sont résolus à la demande par `POST /api/ads/{id}/media`, avec contrôle des droits par compte, déduplication et cache de quinze minutes dans les jobs `meta.media`. Aucun jeton Meta n’est envoyé au navigateur.
+Le titre « Meilleures publicités » est conservé. Le classement utilise désormais les critères par événement décrits ci-dessous. Les médias sont résolus à la demande par `POST /api/ads/{id}/media`, avec contrôle des droits par compte, déduplication et cache de quinze minutes dans les jobs `meta.media`. Aucun jeton Meta n’est envoyé au navigateur.
 
 Le worker lit la créative puis le fichier vidéo. Pour les vidéos appartenant à une page, il utilise son jeton uniquement en mémoire côté serveur, puis, si nécessaire, parcourt la bibliothèque vidéo autorisée du compte. Les requêtes sont paginées et soumises au quota commun. Les résultats ne contiennent que les URLs HTTPS de médias, jamais le HTML du fournisseur ni un jeton d’accès. L’absence de fichier lisible est explicitée, sans transformer une vidéo en image.
 
 Le lecteur possède Play, les contrôles natifs et une prélecture muette au survol ; quitter la zone arrête cette prélecture, tandis qu’une lecture lancée par clic continue. Les images et éléments de carrousel sont visibles sans ouvrir chaque ligne. Tests : droits et cache dans PostgreSQL, URLs sans credentials, identification des formats, survol muet et maintien après clic. Vérification réelle : le fichier de la publicité test est résolu avec le jeton de sa page, alors que la lecture avec le jeton utilisateur ne retournait pas de source.
+
+
+## Classement par événement de conversion
+
+`lyads_ranked_ads` agrège et trie en PostgreSQL, avec RLS, sur les comptes et dates demandés. Campagnes actives et arrêtées sont incluses. L’événement vient de `adset.promoted_object.custom_event_type` ou `custom_conversion_id`, puis des objectifs d’optimisation explicitement reconnus (leads, clics, vues de destination, interactions, mentions J’aime). Un objectif « ventes » seul ne prouve pas un événement achat. Les objectifs non identifiés ne sont pas devinés et restent exclus, avec un compteur visible.
+
+Top 5 **par événement** : achats par ROAS décroissant, coût par achat croissant, achats décroissants ; autres événements par coût par résultat croissant, résultats décroissants. Identifiant stable en dernier départage. Aucun score IA ni mélange entre lead et achat. Les valeurs ne sont jamais additionnées entre alias Meta (`purchase` et `omni_purchase`, par exemple). ROAS absent exclut une annonce achat ; aucun repli sur la dépense.
+
+Les seuils existants du compte sont réutilisés : `min_days` (3 par défaut), `min_purchases` utilisé ici comme minimum de résultats de l’événement (10), `min_impressions` (1000), `min_clicks` (30), `min_spend` (0 avec dépense strictement positive obligatoire). Ils constituent un garde-fou de volume, pas une preuve statistique ni une garantie de rentabilité. Chaque jour importé doit comporter les métriques nécessaires ; métrique manquante reste inconnue, elle ne devient pas zéro. Le RPC retourne les seuils, le volume, l’indicateur de suffisance pour chaque annonce classée et les compteurs d’exclusion. Les snapshots non quotidiens ou dupliqués sont exclus.
+
+La synchronisation importe désormais `promoted_object`. Les structures importées avant cette évolution nécessitent une actualisation pour identifier les achats. Les vidéos conservent leur lecteur et leur prélecture au survol.

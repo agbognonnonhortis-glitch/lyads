@@ -269,6 +269,35 @@ export async function GET(
         rows: [],
         message: "Aucune recommandation disponible pour le moment.",
       });
+    if (zone === "creatives") {
+      const ranking = await client.supabase.rpc("lyads_ranked_ads", {
+        target_workspace: organization,
+        target_accounts: ids,
+        since_date: period.since,
+        until_date: period.until,
+      });
+      if (ranking.error) throw ranking.error;
+      if (
+        (ranking.data?.rows || []).some(
+          (row: { currency: string }) => row.currency !== accounts[0].currency,
+        )
+      )
+        throw new ApiError(
+          "CURRENCY_MISMATCH",
+          409,
+          "Relancez la synchronisation pour actualiser la devise du compte.",
+        );
+      return client.json({
+        ...common,
+        ...ranking.data,
+        period,
+        sufficientData: Boolean(ranking.data?.rows?.length),
+        sufficiencyReason: ranking.data?.rows?.length
+          ? null
+          : "Données insuffisantes ou événement de conversion indisponible pour établir un classement.",
+        conversionMetric: "configured_event",
+      });
+    }
     const result = await client.supabase.rpc("lyads_dashboard_metrics", {
       target_workspace: organization,
       target_accounts: ids,

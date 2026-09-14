@@ -1582,6 +1582,130 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Best ads rank by configured event, ROAS, cost and volume with sufficiency and tenant isolation",
+      async () => {
+        await admin();
+        await db.exec("begin");
+        try {
+          await db.query(
+            "delete from public.lyads_insight_snapshots where ad_account_id=$1",
+            [a.account],
+          );
+          const create = async (
+            name: string,
+            event: string,
+            spend: number,
+            results: number,
+            revenue: number | null,
+            days = 3,
+          ) => {
+            const adset = await uuid(
+              "insert into public.lyads_ad_sets(workspace_id,ad_account_id,campaign_id,meta_ad_set_id,name,source_data,synchronized_at) values($1,$2,$3,$4,$4,$5,now())",
+              [
+                wa,
+                a.account,
+                a.campaign,
+                name,
+                JSON.stringify({
+                  promoted_object: { custom_event_type: event },
+                }),
+              ],
+            );
+            const ad = await uuid(
+              "insert into public.lyads_ads(workspace_id,ad_account_id,ad_set_id,meta_ad_id,name,effective_status,source_data,synchronized_at) values($1,$2,$3,$4,$4,'PAUSED','{}',now())",
+              [wa, a.account, adset, name],
+            );
+            for (let day = 1; day <= days; day++)
+              await db.query(
+                "insert into public.lyads_insight_snapshots(workspace_id,ad_account_id,sync_run_id,level,ad_id,date_start,date_stop,query_context,deduplication_key,currency,metrics,fetched_at) values($1,$2,$3,'ad',$4,$5,$5,'{}',$6,'EUR',$7,now())",
+                [
+                  wa,
+                  a.account,
+                  a.sync,
+                  ad,
+                  `2026-09-0${day}`,
+                  name + day,
+                  JSON.stringify({
+                    spend: String(spend),
+                    impressions: "1000",
+                    clicks: "50",
+                    actions: [
+                      {
+                        action_type: event === "LEAD" ? "lead" : "purchase",
+                        value: String(results),
+                      },
+                      { action_type: "omni_purchase", value: "9999" },
+                    ],
+                    action_values:
+                      revenue === null
+                        ? []
+                        : [{ action_type: "purchase", value: String(revenue) }],
+                  }),
+                ],
+              );
+            return ad;
+          };
+          await create("Spend winner", "PURCHASE", 100, 5, 200);
+          const winner = await create("ROAS winner", "PURCHASE", 10, 5, 100);
+          const costWinner = await create(
+            "Cost tiebreaker",
+            "PURCHASE",
+            20,
+            20,
+            200,
+          );
+          const volumeWinner = await create(
+            "Volume tiebreaker",
+            "PURCHASE",
+            30,
+            30,
+            300,
+          );
+          await create("Tiny sample", "PURCHASE", 1, 1, 1000);
+          await create("Too recent", "PURCHASE", 10, 50, 1000, 1);
+          await create("Missing revenue", "PURCHASE", 10, 5, null);
+          await create("Unknown objective", "OTHER", 10, 5, 1000);
+          const lead = await create("Lead winner", "LEAD", 1, 20, null);
+          await asUser(alice);
+          const query =
+            "select public.lyads_ranked_ads($1,$2,'2026-09-01','2026-09-07') result";
+          const result = (await db.query<any>(query, [wa, [a.account]])).rows[0]
+            .result;
+          const purchases = result.rows.filter(
+            (r: any) => r.result_event === "purchase",
+          );
+          assert.deepEqual(
+            purchases.map((r: any) => r.bucket),
+            [volumeWinner, costWinner, winner, purchases[3].bucket],
+          );
+          assert.equal(purchases[3].name, "Spend winner");
+          assert.equal(purchases[0].results, 90);
+          assert.equal(purchases[0].roas, 10);
+          assert.equal(
+            result.rows.find((r: any) => r.result_event === "lead").bucket,
+            lead,
+          );
+          assert.equal(result.insufficientDataAds, 2);
+          assert.equal(result.missingRoasAds, 1);
+          assert.equal(result.unknownObjectiveAds, 1);
+          const short = (
+            await db.query<any>(
+              "select public.lyads_ranked_ads($1,$2,'2026-09-02','2026-09-03') result",
+              [wa, [a.account]],
+            )
+          ).rows[0].result;
+          assert.equal(short.rows.length, 0);
+          await asUser(bob);
+          await db.exec("savepoint denied");
+          await sqlError(query, [wa, [a.account]], "42501");
+          await db.exec("rollback to savepoint denied");
+        } finally {
+          await admin();
+          await db.exec("rollback");
+        }
+      },
+    );
+    await t.test(
       "Dashboard aggregates decimal metrics without mixing levels, breakdowns or unauthorized accounts",
       async () => {
         await admin();

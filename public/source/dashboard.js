@@ -582,13 +582,58 @@
         bindMedia(el);
       });
   }
+  function rankedAdsHtml(data) {
+    const eventNames = {
+      purchase: "Achats",
+      lead: "Leads",
+      complete_registration: "Inscriptions",
+      add_to_cart: "Ajouts au panier",
+      initiate_checkout: "Paiements initiés",
+      link_click: "Clics sur un lien",
+      landing_page_view: "Vues de page de destination",
+      post_engagement: "Interactions",
+      like: "Mentions J’aime",
+    };
+    const groups = [...new Set(data.rows.map((r) => r.result_event))];
+    let html = groups
+      .map((event) => {
+        const label =
+          eventNames[event] ||
+          "Conversion personnalisée " +
+            event.replace("offsite_conversion.custom.", "");
+        const rows = data.rows.filter((r) => r.result_event === event);
+        return (
+          `<h3>${esc(label)}</h3><p class="dashboard-note">${event === "purchase" ? "ROAS décroissant, puis coût par achat croissant, puis nombre d’achats décroissant." : "Coût par résultat croissant, puis nombre de résultats décroissant."}</p>` +
+          rows
+            .map(
+              (r) =>
+                `<details class="dashboard-row" open><summary>${esc(r.rank)}. ${esc(r.name)}</summary><div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div><dl><dt>${esc(label)}</dt><dd>${number(r.results)}</dd><dt>${event === "purchase" ? "Coût par achat" : "Coût par résultat"}</dt><dd>${fmt(r.cost_per_result, "cpa", r.currency)}</dd>${event === "purchase" ? `<dt>ROAS</dt><dd>${number(r.roas)}</dd>` : ""}<dt>Dépense</dt><dd>${fmt(r.spend, "spend", r.currency)}</dd><dt>Impressions</dt><dd>${number(r.impressions)}</dd><dt>Clics</dt><dd>${number(r.clicks)}</dd></dl></details>`,
+            )
+            .join("")
+        );
+      })
+      .join("");
+    if (!html)
+      html =
+        "<p>Aucune publicité ne dispose encore des données nécessaires pour ce classement sur la période sélectionnée.</p>";
+    html +=
+      '<p class="dashboard-note">Jusqu’à 5 publicités par événement de conversion · campagnes actives et arrêtées · seuils de volume du compte appliqués.</p>';
+    if (data.unknownObjectiveAds)
+      html += `<p class="dashboard-note">${number(data.unknownObjectiveAds)} publicité(s) : événement de conversion indisponible. Actualisez la synchronisation.</p>`;
+    if (data.insufficientDataAds)
+      html += `<p class="dashboard-note">${number(data.insufficientDataAds)} publicité(s) : données insuffisantes pour être classées.</p>`;
+    if (data.missingRoasAds)
+      html += `<p class="dashboard-note">${number(data.missingRoasAds)} publicité(s) d’achat : ROAS indisponible.</p>`;
+    return html;
+  }
   function renderZone(zone, data) {
     if (zone === "kpis") {
       kpis(data);
       return;
     }
     let html = "";
-    if (zone === "series") html = seriesHtml(data);
+    if (zone === "creatives") html = rankedAdsHtml(data);
+    else if (zone === "series") html = seriesHtml(data);
     else if (zone === "alerts" || zone === "recommendations") {
       renderAlerts();
       if (zone === "alerts") return;
