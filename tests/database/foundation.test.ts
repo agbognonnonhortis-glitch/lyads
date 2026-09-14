@@ -1617,6 +1617,169 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Performance alerts use significant data, real targets, comparable peers and account isolation",
+      async () => {
+        await admin();
+        await db.exec("begin");
+        try {
+          await db.query(
+            "update public.lyads_campaigns set effective_status='ACTIVE' where id=$1",
+            [a.campaign],
+          );
+          await db.query(
+            "update public.lyads_ads set effective_status='ACTIVE' where id=$1",
+            [a.ad],
+          );
+          await db.query(
+            `update public.lyads_ad_sets set effective_status='ACTIVE',source_data='{"optimization_goal":"OFFSITE_CONVERSIONS","attribution_spec":[{"event_type":"CLICK_THROUGH","window_days":7}]}' where id=$1`,
+            [a.adset],
+          );
+          const peer = await uuid(
+            `insert into public.lyads_ad_sets(workspace_id,ad_account_id,campaign_id,meta_ad_set_id,name,effective_status,source_data,synchronized_at) select workspace_id,ad_account_id,campaign_id,'peer','Peer','ACTIVE',source_data,now() from public.lyads_ad_sets where id=$1`,
+            [a.adset],
+          );
+          await db.query(
+            `insert into public.lyads_alert_settings(workspace_id,ad_account_id,target_cpa,target_roas) values($1,$2,10,1)`,
+            [wa, a.account],
+          );
+          for (const [level, column, entity] of [
+            ["campaign", "campaign_id", a.campaign],
+            ["ad", "ad_id", a.ad],
+            ["ad_set", "ad_set_id", a.adset],
+            ["ad_set", "ad_set_id", peer],
+          ]) {
+            await db.query(
+              `insert into public.lyads_insight_snapshots(workspace_id,ad_account_id,sync_run_id,level,${column},date_start,date_stop,query_context,deduplication_key,currency,metrics,fetched_at)
+            select $1,$2,$3,$4,$5::uuid,d::date,d::date,'{}',$5::uuid::text||':'||d::date,'EUR',jsonb_build_object('spend',case when $5::uuid=$6::uuid then '20' when $4='ad_set' then '200' when d<'2026-08-08' then '20' else '40' end,'impressions','2000','clicks',case when d<'2026-08-08' then '100' else '40' end,'frequency','4','actions',jsonb_build_array(jsonb_build_object('action_type','purchase','value','2')),'action_values',jsonb_build_array(jsonb_build_object('action_type','purchase','value','10'))),now()
+            from generate_series('2026-08-01'::date,'2026-08-14'::date,interval '1 day') d`,
+              [wa, a.account, a.sync, level, entity, peer],
+            );
+          }
+          const compute = async () =>
+            (
+              await db.query<{ result: any }>(
+                "select public.lyads_compute_alerts($1,'2026-08-08','2026-08-14') result",
+                [a.account],
+              )
+            ).rows[0].result;
+          const result = await compute();
+          assert.deepEqual(result.rows.map((r: any) => r.detector).sort(), [
+            "budget_imbalance",
+            "cpa_high",
+            "creative_fatigue",
+            "roas_low",
+          ]);
+          assert.equal(
+            result.rows.find((r: any) => r.detector === "cpa_high").evidence
+              .observed,
+            20,
+          );
+          assert.equal(
+            result.rows.find((r: any) => r.detector === "creative_fatigue")
+              .evidence.previous_cpa,
+            10,
+          );
+          assert.equal(result.sufficient_entities, 4);
+          assert.ok(
+            result.rows.every(
+              (r: any) =>
+                r.sufficientData &&
+                r.currency === "EUR" &&
+                r.account_id === a.account,
+            ),
+          );
+          // Missing purchases are unknown, never fabricated zero conversions.
+          await db.exec("savepoint thin");
+          await db.query(
+            "update public.lyads_insight_snapshots set metrics=metrics-'actions' where ad_account_id=$1",
+            [a.account],
+          );
+          assert.equal((await compute()).rows.length, 0);
+          assert.equal((await compute()).sufficient_entities, 0);
+          await db.exec("rollback to savepoint thin");
+          await db.query(
+            "update public.lyads_alert_settings set min_purchases=1000 where ad_account_id=$1",
+            [a.account],
+          );
+          assert.equal((await compute()).rows.length, 0);
+          await db.exec("rollback to savepoint thin");
+          await db.query(
+            "update public.lyads_alert_settings set target_cpa=null,target_roas=null where ad_account_id=$1",
+            [a.account],
+          );
+          assert.deepEqual(
+            (await compute()).rows.map((r: any) => r.detector).sort(),
+            ["budget_imbalance", "creative_fatigue"],
+          );
+          await db.exec("rollback to savepoint thin");
+          await db.query(
+            "update public.lyads_ad_sets set source_data=source_data-'attribution_spec' where id=$1",
+            [peer],
+          );
+          assert.ok(
+            !(await compute()).rows.some(
+              (r: any) => r.detector === "budget_imbalance",
+            ),
+          );
+          await db.exec("rollback to savepoint thin");
+          // Short observation periods cannot trigger fatigue.
+          const short = (
+            await db.query<{ result: any }>(
+              "select public.lyads_compute_alerts($1,'2026-08-12','2026-08-14') result",
+              [a.account],
+            )
+          ).rows[0].result;
+          assert.ok(
+            !short.rows.some((r: any) => r.detector === "creative_fatigue"),
+          );
+          await asUser(alice);
+          const query =
+            "select public.lyads_request_alert_scan($1,'2026-08-08','2026-08-14') id";
+          const job = (await db.query<{ id: string }>(query, [a.account]))
+            .rows[0].id;
+          assert.equal(
+            (await db.query<{ id: string }>(query, [a.account])).rows[0].id,
+            job,
+          );
+          await db.query(
+            "update public.lyads_alert_settings set target_cpa=11 where ad_account_id=$1",
+            [a.account],
+          );
+          assert.notEqual(
+            (await db.query<{ id: string }>(query, [a.account])).rows[0].id,
+            job,
+          );
+          await db.exec("savepoint denied");
+          await sqlError(query, [b.account], "42501");
+          await db.exec("rollback to savepoint denied");
+          await sqlError(
+            "select public.lyads_compute_alerts($1,'2026-08-08','2026-08-14')",
+            [a.account],
+            "42501",
+          );
+          await db.exec("rollback to savepoint denied");
+          await sqlError(
+            "update public.lyads_alert_settings set min_purchases=0 where ad_account_id=$1",
+            [a.account],
+            "23514",
+          );
+          await db.exec("rollback to savepoint denied");
+          await asUser(bob);
+          assert.equal(
+            (
+              await db.query(
+                "select * from public.lyads_alert_settings where ad_account_id=$1",
+                [a.account],
+              )
+            ).rows.length,
+            0,
+          );
+        } finally {
+          await db.exec("rollback");
+        }
+      },
+    );
+    await t.test(
       "Worker can append but cannot alter or delete audit events",
       async () => {
         await admin();

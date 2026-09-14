@@ -1,5 +1,8 @@
 import { renderDashboard } from "@/lib/dashboard/render";
-import { renderOrganization } from "@/lib/onboarding/organization";
+import {
+  canSwitchOrganization,
+  renderOrganization,
+} from "@/lib/onboarding/organization";
 import { NextRequest, NextResponse } from "next/server";
 import { onboardingData, onboardingDestination } from "@/lib/onboarding/data";
 import { renderOnboarding, onboardingStep } from "@/lib/onboarding/render";
@@ -90,6 +93,8 @@ export async function GET(request: NextRequest) {
           return client.redirect(
             stepPaths[Math.min(8, Math.max(0, data.state.current_step - 1))],
           );
+        if (ref === "C1.2" && !canSwitchOrganization(data.organizations || []))
+          return client.redirect("/app/tableau-de-bord");
         return client.apply(
           new NextResponse(
             renderOrganization(

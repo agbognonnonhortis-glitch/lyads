@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { formatPerformanceAlert } from "@/lib/alerts/format";
 import { authenticated, apiFailure, ApiError, uuid } from "@/lib/backend/http";
 import {
   dashboardZones,
@@ -99,7 +100,7 @@ export async function GET(
           : null,
       sufficientData: false,
       sufficiencyReason:
-        "Les seuils de jugement de performance ne sont pas encore configurés.",
+        "Les métriques brutes ne constituent pas un jugement de performance.",
       conversionMetric: "purchase",
     };
     if (zone === "context") {
@@ -162,6 +163,47 @@ export async function GET(
         "Ces comptes utilisent des devises différentes. Sélectionnez des comptes dans une même devise.",
       );
     if (zone === "alerts") {
+      let performanceAvailable = true;
+      const scanIds = await Promise.all(
+        ids.map(async (id) => {
+          const scan = await client.supabase.rpc("lyads_request_alert_scan", {
+            target_account: id,
+            since_date: period.since,
+            until_date: period.until,
+          });
+          if (scan.error?.code === "P0001")
+            throw new ApiError(
+              "SCAN_COOLDOWN",
+              429,
+              "Plusieurs analyses viennent d’être demandées. Réessayez dans une minute.",
+            );
+          if (scan.error && ["PGRST202", "42883"].includes(scan.error.code)) {
+            performanceAvailable = false;
+            return null;
+          }
+          if (scan.error) throw scan.error;
+          return scan.data;
+        }),
+      );
+      const scans = performanceAvailable
+        ? await client.supabase
+            .from("lyads_jobs")
+            .select(
+              "id,ad_account_id,status,result,progress_done,progress_total",
+            )
+            .eq("workspace_id", organization)
+            .in("id", scanIds)
+        : { data: [], error: null };
+      if (scans.error) throw scans.error;
+      const scanResults = (scans.data || [])
+        .filter((s) => s.status === "succeeded")
+        .map((s) => s.result);
+      const pending = (scans.data || []).some((s) =>
+        ["queued", "running"].includes(s.status),
+      );
+      const failed = (scans.data || []).some((s) =>
+        ["failed", "cancelled"].includes(s.status),
+      );
       const ads = await client.supabase
         .from("lyads_ads")
         .select("id,name,effective_status")
@@ -175,6 +217,9 @@ export async function GET(
         .limit(100);
       if (ads.error) throw ads.error;
       const rows = [
+        ...scanResults.flatMap((result) =>
+          (result?.rows || []).map(formatPerformanceAlert),
+        ),
         ...(ads.data || []).map((a) => ({
           id: a.id,
           title: a.name,
@@ -190,8 +235,32 @@ export async function GET(
         ...common,
         period,
         rows,
-        message:
-          "Les alertes de diffusion sont issues de Meta. Les détecteurs de performance ne sont pas encore activés.",
+        pending,
+        performanceAvailable,
+        scans: scans.data,
+        sufficientData: scanResults.some(
+          (result) => result?.sufficient_entities > 0,
+        ),
+        sufficiencyReason: scanResults.every(
+          (result) => !result?.sufficient_entities,
+        )
+          ? "Données insuffisantes pour juger la performance."
+          : null,
+        message: !performanceAvailable
+          ? "L’analyse de performance est temporairement indisponible. Réessayez plus tard."
+          : pending
+            ? "Analyse des performances en cours…"
+            : failed
+              ? "L’analyse des performances a échoué. Réessayez la synchronisation."
+              : scanResults.every((result) => !result?.source_rows)
+                ? "Aucune métrique importée sur cette période. Synchronisez ce compte pour analyser ses performances."
+                : scanResults.every((result) => !result?.sufficient_entities)
+                  ? "Données insuffisantes : aucune conclusion de performance pour cette période."
+                  : "",
+        needsTargets: scanResults.some(
+          (result) =>
+            !result?.settings?.target_cpa || !result?.settings?.target_roas,
+        ),
       });
     }
     if (zone === "recommendations")
@@ -199,8 +268,7 @@ export async function GET(
         ...common,
         period,
         rows: [],
-        message:
-          "Aucune recommandation validée disponible. Le moteur d’optimisation n’est pas encore activé.",
+        message: "Aucune recommandation disponible pour le moment.",
       });
     const result = await client.supabase.rpc("lyads_dashboard_metrics", {
       target_workspace: organization,

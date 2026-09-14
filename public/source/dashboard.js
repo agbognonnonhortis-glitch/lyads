@@ -17,6 +17,7 @@
     data: {},
     busy: false,
     poll: null,
+    alertPoll: null,
     jobs: [],
     context: null,
   };
@@ -294,13 +295,23 @@
             .join("")
         : "<p>" +
           (zone === "alerts"
-            ? data.freshness?.complete
-              ? "Aucune alerte de diffusion remontée."
-              : "Synchronisez vos comptes pour connaître les alertes de diffusion."
+            ? data.message
+              ? esc(data.message)
+              : data.freshness?.complete
+                ? "Aucune alerte détectée."
+                : "Synchronisez vos comptes pour connaître les alertes de diffusion."
             : esc(data.message)) +
           "</p>";
-      if (zone === "alerts")
-        html += `<p class="dashboard-note">${esc(data.message)}</p>`;
+      if (zone === "alerts") {
+        if (data.message && data.rows.length)
+          html += `<p role="status">${esc(data.message)}</p>`;
+        if (data.needsTargets)
+          html +=
+            '<p class="dashboard-note">Renseignez vos cibles CPA et ROAS pour activer les alertes correspondantes.</p>';
+        if (data.performanceAvailable !== false)
+          html +=
+            '<button type="button" data-dashboard-action="alert-settings">Régler les seuils d’alerte</button>';
+      }
       text("[data-recommendation-count]", "");
     } else {
       const total = data.rows.reduce((sum, r) => sum + Number(r.spend || 0), 0);
@@ -321,7 +332,8 @@
             )
             .join("")
         : "<p>Aucune donnée disponible pour cette période.</p>";
-      html += `<p class="dashboard-note">${zone === "creatives" ? "Cinq publicités avec les dépenses les plus élevées. Aucun classement de rentabilité sans seuil configuré." : zone === "campaigns" ? "Campagnes classées par dépense (50 maximum)." : "Répartition des dépenses remontées par Meta."}</p>`;
+      if (data.rows.length)
+        html += `<p class="dashboard-note">${zone === "creatives" ? "Publicités classées par dépense." : zone === "campaigns" ? "Campagnes classées par dépense (50 maximum)." : "Répartition des dépenses remontées par Meta."}</p>`;
     }
     all(`[data-zone="${zone}"]`).forEach((el) => {
       el.innerHTML = html;
@@ -334,6 +346,13 @@
       if (epoch !== state.epoch) return;
       state.data[zone] = data;
       renderZone(zone, data);
+      if (zone === "alerts") {
+        clearTimeout(state.alertPoll);
+        if (data.pending)
+          state.alertPoll = setTimeout(() => {
+            if (epoch === state.epoch) loadZone("alerts", epoch);
+          }, 4000);
+      }
     } catch (err) {
       if (epoch === state.epoch) errorBox(zone, err);
     }
@@ -396,6 +415,7 @@
     const epoch = ++state.epoch;
     clearTimeout(state.poll);
     state.data = {};
+    clearTimeout(state.alertPoll);
     text("[data-metric]", "—");
     text("[data-metric-note]", "Chargement…");
     all("[data-zone]").forEach((e) => {
@@ -489,8 +509,10 @@
   }
   function periodDialog() {
     const d = dialog(
-      `<form><strong>Choisir la période</strong><label>Raccourci<select name="preset"><option value="">Personnalisée</option><option value="today">Aujourd’hui</option><option value="yesterday">Hier</option><option value="7">7 derniers jours</option><option value="30">30 derniers jours</option><option value="90">90 derniers jours</option></select></label><label>Du<input type="date" name="since" value="${state.since}" max="${accountToday()}" required></label><label>Au<input type="date" name="until" value="${state.until}" max="${accountToday()}" required></label><p class="dashboard-note" role="alert"></p><button type="submit">Appliquer</button><button type="button" data-close>Annuler</button></form>`,
+      `<form><h2 id="dashboard-period-title">Choisir la période</h2><label>Raccourci<select name="preset"><option value="">Personnalisée</option><option value="today">Aujourd’hui</option><option value="yesterday">Hier</option><option value="7">7 derniers jours</option><option value="30">30 derniers jours</option><option value="90">90 derniers jours</option></select></label><div class="dashboard-period-dates"><label>Du<input type="date" name="since" value="${state.since}" max="${accountToday()}" required></label><label>Au<input type="date" name="until" value="${state.until}" max="${accountToday()}" required></label></div><p class="dashboard-note" role="alert"></p><div class="dashboard-period-actions"><button type="button" data-close>Annuler</button><button type="submit">Appliquer</button></div></form>`,
     );
+    d.classList.add("dashboard-period-dialog");
+    d.setAttribute("aria-labelledby", "dashboard-period-title");
     const f = d.querySelector("form");
     f.elements.namedItem("preset").addEventListener("change", () => {
       const preset = f.elements.namedItem("preset").value;
@@ -523,9 +545,78 @@
       refresh();
     };
   }
+  async function alertSettingsDialog() {
+    const accounts = state.accounts.filter((a) => state.ids.includes(a.id));
+    if (!accounts.length) return;
+    const d = dialog(
+      `<form><h2>Seuils des alertes</h2><label>Compte publicitaire<select name="account">${accounts.map((a) => `<option value="${esc(a.id)}">${esc(a.name)} (${esc(a.currency)})</option>`).join("")}</select></label><p class="dashboard-note">Les cibles CPA et ROAS sont facultatives. Les autres détecteurs fonctionnent sans cible. CPA et achats utilisent les conversions « purchase » de Meta.</p><div data-alert-fields></div><p role="alert"></p><div class="dashboard-period-actions"><button type="button" data-close>Annuler</button><button type="submit" disabled>Enregistrer</button></div></form>`,
+    );
+    d.classList.add("dashboard-period-dialog");
+    const form = d.querySelector("form"),
+      account = form.elements.namedItem("account"),
+      save = d.querySelector('[type="submit"]');
+    let fields = {},
+      generation = 0;
+    const load = async () => {
+      const request = ++generation;
+      save.disabled = true;
+      d.querySelector("[data-alert-fields]").textContent = "Chargement…";
+      d.querySelector('[role="alert"]').textContent = "";
+      try {
+        const data = await api(`/api/accounts/${account.value}/alert-settings`);
+        if (request !== generation) return;
+        fields = data.fields;
+        d.querySelector("[data-alert-fields]").innerHTML = Object.entries(
+          fields,
+        )
+          .map(
+            ([key, field]) =>
+              `<label>${esc(field.label)}${["target_cpa", "min_spend"].includes(key) ? ` (${esc(data.currency)})` : ""}<input name="${esc(key)}" type="number" min="${field.min}" max="${field.max}" step="${field.integer ? "1" : "any"}" value="${esc(data.settings[key] ?? "")}" ${field.value === null ? "" : "required"} ${data.canEdit ? "" : "disabled"}></label>`,
+          )
+          .join("");
+        save.disabled = !data.canEdit;
+        if (!data.canEdit)
+          d.querySelector('[role="alert"]').textContent =
+            "Seuls les membres autorisés à modifier ce compte peuvent changer ses seuils.";
+      } catch (error) {
+        if (request === generation)
+          d.querySelector('[role="alert"]').textContent = error.message;
+      }
+    };
+    account.onchange = load;
+    d.querySelector("[data-close]").onclick = () => d.close();
+    form.onsubmit = async (event) => {
+      event.preventDefault();
+      save.disabled = true;
+      account.disabled = true;
+      try {
+        const values = Object.fromEntries(
+          Object.keys(fields).map((key) => [
+            key,
+            form.elements.namedItem(key).value === ""
+              ? null
+              : Number(form.elements.namedItem(key).value),
+          ]),
+        );
+        await api(`/api/accounts/${account.value}/alert-settings`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+        d.close();
+        await loadZone("alerts");
+      } catch (error) {
+        d.querySelector('[role="alert"]').textContent = error.message;
+        save.disabled = false;
+        account.disabled = false;
+      }
+    };
+    await load();
+  }
   function action(name, el) {
     if (name === "sync") sync();
     else if (name === "period") periodDialog();
+    else if (name === "alert-settings") alertSettingsDialog();
     else if (name === "credits") location.assign(paths["C11.4"]);
     else if (name === "chart" || name === "alerts")
       el.closest("[data-source-width]")

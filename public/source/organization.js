@@ -1,5 +1,5 @@
 (() => {
-  const { current } = JSON.parse(
+  const { current, canSwitch = false } = JSON.parse(
     document.getElementById("company-context").textContent,
   );
   const pickerPath = JSON.parse(
@@ -11,6 +11,7 @@
     for (const el of document.querySelectorAll("div,span"))
       if (
         !el.children.length &&
+        !el.hasAttribute("data-company-name") &&
         el.textContent.trim() === "Kola Distribution"
       ) {
         el.textContent = current.name;
@@ -25,6 +26,30 @@
             avatar.textContent = current.name.slice(0, 2).toUpperCase();
         }
       }
+    for (const avatar of document.querySelectorAll("div,span")) {
+      if (
+        !avatar.children.length &&
+        avatar.textContent.trim() === "KD" &&
+        !avatar.matches("[data-company-picker], [data-company-static]")
+      ) {
+        avatar.textContent = current.name.slice(0, 2).toUpperCase();
+        avatar.setAttribute("aria-label", current.name);
+        avatar.setAttribute("title", current.name);
+        avatar.dataset.companyPicker = "";
+        avatar.setAttribute("role", "button");
+        avatar.tabIndex = 0;
+      }
+    }
+    if (!canSwitch) {
+      for (const picker of document.querySelectorAll("[data-company-picker]")) {
+        picker.removeAttribute("role");
+        picker.removeAttribute("tabindex");
+        picker.dataset.companyStatic = "";
+        delete picker.dataset.companyPicker;
+        picker.style.cursor = "default";
+        picker.querySelector(".ph-caret-up-down")?.remove();
+      }
+    }
     for (const frame of document.querySelectorAll("[data-source-width]"))
       if (!frame.querySelector("[data-company-name]")) {
         const heading = [...frame.querySelectorAll("div,span,h1")]
@@ -53,10 +78,13 @@
     "click",
     async (e) => {
       const row = e.target.closest("[data-company-id]");
-      const picker = e.target.closest("[data-company-picker]");
+      const picker = e.target.closest(
+        "[data-company-picker], [data-company-static]",
+      );
       if (!row && !picker) return;
       e.preventDefault();
       e.stopImmediatePropagation();
+      if (!canSwitch) return;
       if (picker) {
         location.assign(pickerPath);
         return;

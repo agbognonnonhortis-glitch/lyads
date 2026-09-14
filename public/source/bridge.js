@@ -8,6 +8,10 @@
   const norm = (s) =>
     (s || "").replace(/\s+/g, " ").trim().replace(/[’‘]/g, "'");
   const go = (target) => {
+    if (target === "C1.2") {
+      const company = document.getElementById("company-context");
+      if (company && !JSON.parse(company.textContent).canSwitch) return;
+    }
     if (paths[target]) window.location.assign(paths[target]);
   };
   const exact = {

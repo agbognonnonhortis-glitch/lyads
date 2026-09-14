@@ -1,5 +1,8 @@
 import { parseHTML } from "linkedom";
 type Organization = { id: string; name: string };
+export function canSwitchOrganization(organizations: Organization[]) {
+  return new Set(organizations.map((org) => org.id)).size >= 2;
+}
 export function renderOrganization(
   html: string,
   ref: string,
@@ -7,6 +10,7 @@ export function renderOrganization(
   organizations: Organization[],
 ) {
   const doc = parseHTML(html).document;
+  const canSwitch = canSwitchOrganization(organizations);
   const norm = (v: string) => v.replace(/\s+/g, " ").trim();
   for (const frame of doc.querySelectorAll("[data-source-width]")) {
     for (const label of frame.querySelectorAll("div,span"))
@@ -97,6 +101,19 @@ export function renderOrganization(
         script.remove();
     }
   }
+  if (!canSwitch) {
+    for (const picker of doc.querySelectorAll("[data-company-picker]")) {
+      picker.removeAttribute("role");
+      picker.removeAttribute("tabindex");
+      picker.setAttribute("data-company-static", "");
+      picker.removeAttribute("data-company-picker");
+      picker.setAttribute(
+        "style",
+        `${picker.getAttribute("style") || ""};cursor:default`,
+      );
+      picker.querySelector(".ph-caret-up-down")?.remove();
+    }
+  }
   for (const icon of doc.querySelectorAll("i.ph-bell")) {
     const bell = icon.parentElement!;
     bell.removeAttribute("data-dashboard-action");
@@ -118,7 +135,10 @@ export function renderOrganization(
   const context = doc.createElement("script");
   context.type = "application/json";
   context.id = "company-context";
-  context.textContent = JSON.stringify({ current }).replaceAll("<", "\\u003c");
+  context.textContent = JSON.stringify({ current, canSwitch }).replaceAll(
+    "<",
+    "\\u003c",
+  );
   doc.body.append(context);
   const script = doc.createElement("script");
   script.src = "/source/organization.js";

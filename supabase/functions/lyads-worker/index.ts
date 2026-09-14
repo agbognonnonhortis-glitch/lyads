@@ -169,6 +169,33 @@ async function processWebsite(job: Job) {
   }
 }
 async function process(job: Job) {
+  if (job.kind === "alerts.scan") {
+    const { data, error } = await db.rpc("lyads_compute_alerts", {
+      target_account: job.ad_account_id,
+      since_date: job.payload.since,
+      until_date: job.payload.until,
+    });
+    const { data: done } = await db.rpc("lyads_finish_job", {
+      target_job: job.id,
+      worker_lease: job.lease_token,
+      success: !error,
+      job_result: error ? null : data,
+      failure_code: error ? "ALERT_SCAN_FAILED" : null,
+      retry_seconds: error ? 30 : null,
+    });
+    if (done && !error && data?.rows?.length && job.requested_by) {
+      await db.from("lyads_notifications").upsert({
+        workspace_id: job.workspace_id,
+        ad_account_id: job.ad_account_id,
+        user_id: job.requested_by,
+        event_key: "job:" + job.id,
+        kind: "alerts.ready",
+        message:
+          `${data.rows.length} alerte(s) de performance détectée(s). Consultez le tableau de bord.`,
+      }, { onConflict: "user_id,event_key", ignoreDuplicates: true });
+    }
+    return;
+  }
   if (job.kind === "website.analyze") return processWebsite(job);
   let credentialVersion: string | undefined;
   try {
