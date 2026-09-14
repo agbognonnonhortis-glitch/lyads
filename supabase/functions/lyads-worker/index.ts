@@ -7,6 +7,7 @@ import {
   WebsiteFailure,
 } from "../_shared/website.ts";
 import { inventory } from "../_shared/inventory.ts";
+import { type AdMedia, creativeMedia, mediaUrl } from "../_shared/media.ts";
 import { inspectToken } from "../_shared/token.ts";
 import { createClient } from "@supabase/supabase-js";
 import {
@@ -74,7 +75,9 @@ async function finish(job: Job, result: unknown, error?: MetaFailure) {
         .eq("workspace_id", job.workspace_id);
     }
     if (
-      job.requested_by && !(job.kind === "meta.refresh_permissions" && !error)
+      job.requested_by &&
+      job.kind !== "meta.media" &&
+      !(job.kind === "meta.refresh_permissions" && !error)
     ) {
       await db.from("lyads_notifications").upsert(
         {
@@ -83,8 +86,11 @@ async function finish(job: Job, result: unknown, error?: MetaFailure) {
           user_id: job.requested_by,
           event_key: "job:" + job.id,
           kind: error &&
-              ["META_RECONNECT", "META_APP_CHANGED", "META_TOKEN_UNVERIFIED"]
-                .includes(error.code)
+              [
+                "META_RECONNECT",
+                "META_APP_CHANGED",
+                "META_TOKEN_UNVERIFIED",
+              ].includes(error.code)
             ? "meta.reconnect"
             : error
             ? "sync.failed"
@@ -114,8 +120,11 @@ async function checkpoint(
 }
 async function processWebsite(job: Job) {
   try {
-    const { data: org, error: orgError } = await db.from("lyads_workspaces")
-      .select("owner_id").eq("id", job.workspace_id).single();
+    const { data: org, error: orgError } = await db
+      .from("lyads_workspaces")
+      .select("owner_id")
+      .eq("id", job.workspace_id)
+      .single();
     if (orgError || !job.requested_by || org?.owner_id !== job.requested_by) {
       throw new WebsiteFailure("WEBSITE_ACCESS_REVOKED");
     }
@@ -131,7 +140,8 @@ async function processWebsite(job: Job) {
       }
       if (page) pages.push(page);
       const remaining = pages.length === 1 && page
-        ? [...new Set([...rest, ...page.links])].filter((u) => u !== page.url)
+        ? [...new Set([...rest, ...page.links])]
+          .filter((u) => u !== page.url)
           .slice(0, 4)
         : rest;
       await checkpoint(job, { ...job.payload, pages, pending: remaining }, 1);
@@ -171,13 +181,16 @@ async function processWebsite(job: Job) {
       retry_seconds: null,
     });
     if (finished && job.requested_by) {
-      await db.from("lyads_notifications").upsert({
-        workspace_id: job.workspace_id,
-        user_id: job.requested_by,
-        event_key: "job:" + job.id,
-        kind: "website.failed",
-        message: WEBSITE_MESSAGES[code],
-      }, { onConflict: "user_id,event_key", ignoreDuplicates: true });
+      await db.from("lyads_notifications").upsert(
+        {
+          workspace_id: job.workspace_id,
+          user_id: job.requested_by,
+          event_key: "job:" + job.id,
+          kind: "website.failed",
+          message: WEBSITE_MESSAGES[code],
+        },
+        { onConflict: "user_id,event_key", ignoreDuplicates: true },
+      );
     }
   }
 }
@@ -197,15 +210,18 @@ async function process(job: Job) {
       retry_seconds: error ? 30 : null,
     });
     if (done && !error && data?.rows?.length && job.requested_by) {
-      await db.from("lyads_notifications").upsert({
-        workspace_id: job.workspace_id,
-        ad_account_id: job.ad_account_id,
-        user_id: job.requested_by,
-        event_key: "job:" + job.id,
-        kind: "alerts.ready",
-        message:
-          `${data.rows.length} alerte(s) de performance détectée(s). Consultez le tableau de bord.`,
-      }, { onConflict: "user_id,event_key", ignoreDuplicates: true });
+      await db.from("lyads_notifications").upsert(
+        {
+          workspace_id: job.workspace_id,
+          ad_account_id: job.ad_account_id,
+          user_id: job.requested_by,
+          event_key: "job:" + job.id,
+          kind: "alerts.ready",
+          message:
+            `${data.rows.length} alerte(s) de performance détectée(s). Consultez le tableau de bord.`,
+        },
+        { onConflict: "user_id,event_key", ignoreDuplicates: true },
+      );
     }
     return;
   }
@@ -458,6 +474,63 @@ async function process(job: Job) {
       .eq("workspace_id", job.workspace_id)
       .single();
     if (!account) throw new MetaFailure("META_ACCESS_REVOKED");
+    if (job.kind === "meta.media") {
+      const { data: ad, error: adError } = await db
+        .from("lyads_ads")
+        .select("meta_ad_id")
+        .eq("id", job.payload.ad_id)
+        .eq("workspace_id", job.workspace_id)
+        .eq("ad_account_id", account.id)
+        .single();
+      if (adError || !ad || account.connection_id !== connection.id) {
+        throw new MetaFailure("META_ACCESS_REVOKED");
+      }
+      if (!Array.isArray(job.payload.media)) {
+        const source = await get(ad.meta_ad_id, {
+          fields:
+            "creative{id,video_id,image_url,thumbnail_url,object_story_spec,asset_feed_spec}",
+        });
+        const media = creativeMedia(source.creative || {});
+        if (!media.some((m) => m.videoId)) {
+          await finish(job, { media });
+          return;
+        }
+        await checkpoint(job, { ...job.payload, media, index: 0 }, 1);
+        return;
+      }
+      const media = job.payload.media as AdMedia[];
+      const index = media.findIndex(
+        (m, i) => i >= Number(job.payload.index || 0) && m.videoId,
+      );
+      if (index < 0) {
+        await finish(job, { media });
+        return;
+      }
+      try {
+        const video = await get(media[index].videoId!, {
+          fields: "source,picture",
+        });
+        media[index].url = mediaUrl(video.source);
+        media[index].poster = mediaUrl(video.picture) || media[index].poster;
+      } catch (error) {
+        if (
+          !(error instanceof MetaFailure) ||
+          error.retryable ||
+          !["META_PERMISSION_REQUIRED", "META_REQUEST_UNAVAILABLE"].includes(
+            error.code,
+          )
+        ) {
+          throw error;
+        }
+        // Preserve a truthful unavailable video instead of substituting an image.
+      }
+      if (!media.slice(index + 1).some((m) => m.videoId)) {
+        await finish(job, { media });
+      } else {
+        await checkpoint(job, { ...job.payload, media, index: index + 1 }, 1);
+      }
+      return;
+    }
     if (job.payload.stage === undefined) job.payload.sync_plan = 2;
     const newestFirst = job.payload.sync_plan === 2;
     const stage = Number(job.payload.stage || 0);
@@ -749,7 +822,8 @@ async function process(job: Job) {
       : new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
     if (
       ["META_RECONNECT", "META_APP_CHANGED"].includes(failure.code) &&
-      job.payload.connection_id && credentialVersion
+      job.payload.connection_id &&
+      credentialVersion
     ) {
       await db.rpc("lyads_invalidate_meta_token", {
         target_connection: job.payload.connection_id,

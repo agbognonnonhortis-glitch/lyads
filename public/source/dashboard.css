@@ -530,3 +530,46 @@
   :is([data-sync-label], i) {
   color: #3b4fd1 !important;
 }
+
+.dashboard-ad-media {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  align-items: flex-start;
+  padding: 8px 0;
+}
+.dashboard-ad-media > a,
+.dashboard-video {
+  flex: 0 0 auto;
+  width: min(100%, 320px);
+}
+.dashboard-content .dashboard-ad-media img,
+.dashboard-content .dashboard-ad-media video {
+  display: block;
+  width: 100%;
+  height: 280px;
+  max-width: 320px;
+  object-fit: contain;
+  background: #f4f1ea;
+  border-radius: 12px;
+}
+.dashboard-video {
+  position: relative;
+}
+.dashboard-video-play {
+  position: absolute;
+  left: 50%;
+  top: 120px;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  color: white;
+  background: #b44a26;
+  cursor: pointer;
+  font-size: 22px;
+}
+.dashboard-video-play[hidden] {
+  display: none;
+}

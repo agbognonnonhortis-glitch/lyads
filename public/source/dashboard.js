@@ -451,6 +451,122 @@
       alertSettingsDialog();
     });
   }
+  const mediaRequests = new Map();
+  function mediaMarkup(media, name) {
+    if (!media.length)
+      return '<p class="dashboard-note">Aperçu indisponible sur Meta.</p>';
+    return media
+      .map((m) => {
+        const safe = (url) =>
+          /^https:\/\//.test(url || "") &&
+          !/[?&](access_token|appsecret_proof)=/i.test(url);
+        if (m.type === "video")
+          return `<div class="dashboard-video">${safe(m.url) ? `<video src="${esc(m.url)}" ${safe(m.poster) ? `poster="${esc(m.poster)}"` : ""} controls playsinline muted preload="none" aria-label="${esc(name)}"><p>Votre navigateur ne peut pas lire cette vidéo.</p></video><button type="button" class="dashboard-video-play" aria-label="Lire la vidéo ${esc(name)}">▶</button>` : `${safe(m.poster) ? `<img src="${esc(m.poster)}" alt="${esc(name)}" loading="lazy">` : ""}<p class="dashboard-note">Vidéo indisponible avec les autorisations Meta actuelles.</p>`}</div>`;
+        return safe(m.url)
+          ? `<a href="${esc(m.url)}" target="_blank" rel="noopener noreferrer"><img src="${esc(m.url)}" alt="${esc(name)}" loading="lazy"></a>`
+          : "";
+      })
+      .join("");
+  }
+  function bindMedia(container) {
+    container.querySelectorAll(".dashboard-video").forEach((box) => {
+      const video = box.querySelector("video"),
+        play = box.querySelector("button");
+      if (!video || !play) return;
+      let hovering = false,
+        chosen = false;
+      const start = async () => {
+        try {
+          await video.play();
+          if (!hovering && !chosen) video.pause();
+        } catch {
+          play.hidden = false;
+        }
+      };
+      box.addEventListener("mouseenter", () => {
+        if (!chosen) {
+          hovering = true;
+          video.muted = true;
+          start();
+        }
+      });
+      box.addEventListener("mouseleave", () => {
+        hovering = false;
+        if (!chosen) video.pause();
+      });
+      play.addEventListener("click", () => {
+        chosen = true;
+        video.muted = false;
+        start();
+      });
+      video.addEventListener("pointerdown", () => {
+        chosen = true;
+      });
+      video.addEventListener("play", () => {
+        play.hidden = true;
+      });
+      video.addEventListener("pause", () => {
+        play.hidden = false;
+      });
+      video.addEventListener("ended", () => {
+        chosen = false;
+        play.hidden = false;
+      });
+      video.addEventListener("error", () => {
+        play.hidden = true;
+        if (!box.querySelector("[role=status]")) {
+          const error = document.createElement("p");
+          error.className = "dashboard-note";
+          error.setAttribute("role", "status");
+          error.textContent =
+            "La vidéo n’est plus accessible. Rechargez la page pour réessayer.";
+          box.append(error);
+        }
+      });
+    });
+  }
+  async function loadMedia(row) {
+    if (!mediaRequests.has(row.bucket)) {
+      mediaRequests.set(
+        row.bucket,
+        (async () => {
+          for (let attempt = 0; attempt < 60; attempt++) {
+            const result = await api(
+              `/api/ads/${encodeURIComponent(row.bucket)}/media`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: "{}",
+              },
+            );
+            if (result.status === "succeeded")
+              return mediaMarkup(result.media, row.name || "Publicité");
+            if (["failed", "cancelled"].includes(result.status))
+              throw new Error(
+                result.message ||
+                  "Ce média est indisponible. Réessayez plus tard.",
+              );
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+          }
+          throw new Error(
+            "Le média est encore en préparation. Rechargez la page dans quelques instants.",
+          );
+        })().catch(
+          (error) =>
+            `<p class="dashboard-note" role="status">${esc(error.message)}</p>`,
+        ),
+      );
+    }
+    const html = await mediaRequests.get(row.bucket);
+    all("[data-ad-media]")
+      .filter((el) => el.dataset.adMedia === row.bucket)
+      .forEach((el) => {
+        if (el.dataset.mediaReady === "true") return;
+        el.innerHTML = html;
+        el.dataset.mediaReady = "true";
+        bindMedia(el);
+      });
+  }
   function renderZone(zone, data) {
     if (zone === "kpis") {
       kpis(data);
@@ -472,7 +588,7 @@
         ? data.rows
             .map(
               (r) =>
-                `<details class="dashboard-row"><summary>${esc(r.name || r.bucket)}</summary>${zone === "creatives" && /^https:\/\//.test(r.thumbnail || "") ? `<a href="${esc(r.thumbnail)}" target="_blank" rel="noopener noreferrer"><img src="${esc(r.thumbnail)}" alt="${esc(r.name)}" loading="lazy"></a>` : ""}<dl>${Object.keys(
+                `<details class="dashboard-row" ${zone === "creatives" ? "open" : ""}><summary>${esc(r.name || r.bucket)}</summary>${zone === "creatives" ? `<div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}">${/^https:\/\//.test(r.thumbnail || "") ? `<img src="${esc(r.thumbnail)}" alt="${esc(r.name)}" loading="lazy">` : ""}<p class="dashboard-note" role="status">Chargement du média…</p></div>` : ""}<dl>${Object.keys(
                   labels,
                 )
                   .map(
@@ -492,6 +608,7 @@
       el.innerHTML = html;
       el.setAttribute("aria-busy", "false");
     });
+    if (zone === "creatives") data.rows.forEach(loadMedia);
   }
   async function loadZone(zone, epoch = state.epoch) {
     try {

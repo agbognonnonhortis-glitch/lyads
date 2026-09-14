@@ -140,6 +140,48 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
     const b = await seed(wb);
 
     await t.test(
+      "Media discovery enforces account access, deduplicates requests and protects payloads",
+      async () => {
+        await asUser(alice);
+        const one = await db.query<{ id: string }>(
+          "select lyads_request_ad_media($1) id",
+          [a.ad],
+        );
+        const two = await db.query<{ id: string }>(
+          "select lyads_request_ad_media($1) id",
+          [a.ad],
+        );
+        assert.equal(one.rows[0].id, two.rows[0].id);
+        await sqlError(
+          "select payload from lyads_jobs where id=$1",
+          [one.rows[0].id],
+          "42501",
+        );
+        await asUser(bob);
+        await sqlError("select lyads_request_ad_media($1)", [a.ad], "42501");
+        assert.equal(
+          (
+            await db.query("select result from lyads_jobs where id=$1", [
+              one.rows[0].id,
+            ])
+          ).rows.length,
+          0,
+        );
+        await admin();
+        await db.query(
+          "update lyads_jobs set status='succeeded',result='{}' where id=$1",
+          [one.rows[0].id],
+        );
+        await asUser(alice);
+        const cached = await db.query<{ id: string }>(
+          "select lyads_request_ad_media($1) id",
+          [a.ad],
+        );
+        assert.equal(cached.rows[0].id, one.rows[0].id);
+      },
+    );
+
+    await t.test(
       "Every table has RLS and both users see only their own rows",
       async () => {
         await db.exec("reset role");
