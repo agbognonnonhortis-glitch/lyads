@@ -1,6 +1,11 @@
 import { NextRequest } from "next/server";
 import { authenticated, apiFailure, ApiError, uuid } from "@/lib/backend/http";
-import { dashboardZones, periodDates, freshness } from "@/lib/dashboard/model";
+import {
+  dashboardZones,
+  periodDates,
+  freshness,
+  connectionIssues,
+} from "@/lib/dashboard/model";
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ zone: string }> },
@@ -72,6 +77,18 @@ export async function GET(
         "Sélectionnez un compte publicitaire connecté à cette entreprise.",
       );
     const accounts = available.filter((a) => ids.includes(a.id));
+    let issues: ReturnType<typeof connectionIssues> = [];
+    if (["context", "alerts"].includes(zone) && accounts.length) {
+      const connections = await client.supabase
+        .from("lyads_meta_connections")
+        .select(
+          "id,connection_status,token_checked_at,expires_at,data_access_expires_at,revoked_at,granted_scopes",
+        )
+        .eq("workspace_id", organization)
+        .in("id", [...new Set(accounts.map((a) => a.connection_id))]);
+      if (connections.error) throw connections.error;
+      issues = connectionIssues(connections.data || []);
+    }
     const fresh = freshness(accounts);
     const common = {
       freshness: fresh,
@@ -118,6 +135,7 @@ export async function GET(
         credits: credits.data?.[0] || null,
         displayName: profile.data?.display_name || "",
         role: role.data,
+        connectionIssues: issues,
       });
     }
     let period;
@@ -144,24 +162,18 @@ export async function GET(
         "Ces comptes utilisent des devises différentes. Sélectionnez des comptes dans une même devise.",
       );
     if (zone === "alerts") {
-      const [ads, connections] = await Promise.all([
-        client.supabase
-          .from("lyads_ads")
-          .select("id,name,effective_status")
-          .eq("workspace_id", organization)
-          .in("ad_account_id", ids)
-          .in("effective_status", [
-            "DISAPPROVED",
-            "PENDING_REVIEW",
-            "WITH_ISSUES",
-          ])
-          .limit(100),
-        client.supabase
-          .from("lyads_meta_connections")
-          .select("id,connection_status,expires_at,revoked_at")
-          .in("id", [...new Set(accounts.map((a) => a.connection_id))]),
-      ]);
-      if (ads.error || connections.error) throw ads.error || connections.error;
+      const ads = await client.supabase
+        .from("lyads_ads")
+        .select("id,name,effective_status")
+        .eq("workspace_id", organization)
+        .in("ad_account_id", ids)
+        .in("effective_status", [
+          "DISAPPROVED",
+          "PENDING_REVIEW",
+          "WITH_ISSUES",
+        ])
+        .limit(100);
+      if (ads.error) throw ads.error;
       const rows = [
         ...(ads.data || []).map((a) => ({
           id: a.id,
@@ -172,19 +184,7 @@ export async function GET(
               : "Cette publicité nécessite une vérification dans Meta.",
           kind: "ad",
         })),
-        ...(connections.data || [])
-          .filter(
-            (c) =>
-              c.revoked_at ||
-              c.connection_status === "expired" ||
-              (c.expires_at && Date.parse(c.expires_at) <= Date.now()),
-          )
-          .map((c) => ({
-            id: c.id,
-            title: "Connexion Meta à renouveler",
-            message: "Reconnectez votre compte dans les paramètres.",
-            kind: "connection",
-          })),
+        ...issues,
       ];
       return client.json({
         ...common,

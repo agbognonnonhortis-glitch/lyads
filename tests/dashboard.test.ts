@@ -3,7 +3,42 @@ import assert from "node:assert/strict";
 import { parseHTML } from "linkedom";
 import { renderSource } from "../src/lib/source/render";
 import { renderDashboard } from "../src/lib/dashboard/render";
-import { freshness, periodDates } from "../src/lib/dashboard/model";
+import {
+  freshness,
+  periodDates,
+  connectionIssues,
+} from "../src/lib/dashboard/model";
+test("Dashboard flags unverified tokens, missing ads access and data-access expiry without hiding valid partial page grants", () => {
+  const valid = {
+    id: "conn",
+    connection_status: "connected",
+    token_checked_at: "2026-09-01T00:00:00Z",
+    expires_at: null,
+    data_access_expires_at: null,
+    revoked_at: null,
+    granted_scopes: ["ads_read"],
+  };
+  assert.deepEqual(connectionIssues([valid]), []);
+  assert.deepEqual(
+    connectionIssues([{ ...valid, connection_status: "partial" }]),
+    [],
+  );
+  assert.match(
+    connectionIssues([{ ...valid, token_checked_at: null }])[0].message,
+    /vérifiée/,
+  );
+  assert.match(
+    connectionIssues([
+      { ...valid, data_access_expires_at: "2000-01-01T00:00:00Z" },
+    ])[0].message,
+    /ne permet plus/,
+  );
+  assert.match(
+    connectionIssues([{ ...valid, granted_scopes: ["pages_show_list"] }])[0]
+      .message,
+    /autorisation/,
+  );
+});
 test("Dashboard replaces source examples in all sizes and exposes working widget hooks", () => {
   const document = parseHTML(
     renderDashboard(renderSource("C1.1")!, {

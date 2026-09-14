@@ -23,3 +23,10 @@ Les détecteurs de performance et le moteur de recommandations ne sont pas encor
 ## Vérifications
 
 Tests PostgreSQL : calculs décimaux, exclusion des répartitions, achats non doublés, valeurs absentes, comptes non autorisés. Tests du contrôleur : doubles clics, date conservée pendant/à l’échec de l’import, rechargement des zones après réussite. Tests de rendu : retrait des exemples et présence des contrôles aux trois largeurs. Essais navigateur réalisés avec un serveur de fixtures isolé ; aucune synchronisation réelle n’est déclenchée par ces essais.
+# Diagnostic de données absentes — 14 septembre 2026
+
+Le contrôle a confirmé un compte sélectionné, un onboarding terminé et zéro ligne dans les métriques importées. Des imports antérieurs étaient marqués réussis avec 267 éléments traités ; ce compteur comprend les structures publicitaires et ne prouve pas la présence de métriques. La vérification du jeton existant a échoué avec `META_TOKEN_UNVERIFIED`. Aucune autorisation Marketing plus récente n'était enregistrée au moment de la lecture.
+
+Le dashboard expose désormais les problèmes de connexion dès son chargement, y compris les jetons non vérifiés et l'expiration de l'accès aux données. Le contrôle de synchronisation devient « Reconnecter Meta » et conduit au parcours existant, sans ajouter de deuxième bouton principal. Les données historiques disponibles restent consultables ; les métriques absentes ne deviennent pas zéro. Un import vide n'est plus présenté comme une actualisation des chiffres réussie.
+
+La cause de l'absence de métriques dans les imports précédant ce contrôle reste à établir avec un accès Meta vérifié et les réponses Insights du compte/période concernés. La reconnexion OAuth du connecteur technique Supabase a échoué pendant l'investigation ; aucune lecture supplémentaire ni comparaison Ads Manager n'a donc été annoncée comme réussie. Tests du correctif : 52 tests applicatifs et compilation de production réussis.

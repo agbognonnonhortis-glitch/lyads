@@ -11,7 +11,12 @@ const controller = readFileSync(
   "utf8",
 );
 const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
-function harness(fail = false, currency = "EUR", href = "http://localhost/") {
+function harness(
+  fail = false,
+  currency = "EUR",
+  href = "http://localhost/",
+  scenario = { blocked: false, empty: false },
+) {
   const { document, window } = parseHTML(
     renderDashboard(renderSource("C1.1")!, {
       organization: { id: "org" },
@@ -24,6 +29,7 @@ function harness(fail = false, currency = "EUR", href = "http://localhost/") {
     job = "none",
     timestamp = "2026-09-01T12:00:00Z";
   const reads: string[] = [];
+  const navigations: string[] = [];
   const requests: URL[] = [];
   const fetch = async (url: string, options: any) => {
     if (options.method === "POST") {
@@ -57,6 +63,15 @@ function harness(fail = false, currency = "EUR", href = "http://localhost/") {
             },
           ],
           selected: ["account"],
+          connectionIssues: scenario.blocked
+            ? [
+                {
+                  id: "conn",
+                  message:
+                    "Connexion Meta non vérifiée. Reconnectez votre Business Manager.",
+                },
+              ]
+            : [],
           jobs:
             job === "none"
               ? []
@@ -74,7 +89,7 @@ function harness(fail = false, currency = "EUR", href = "http://localhost/") {
         ...common,
         period,
         rows:
-          zone === "kpis"
+          zone === "kpis" && !scenario.empty
             ? [{ bucket: "current", spend: 100, accounts_count: 1 }]
             : [],
         message: "Aucune donnée",
@@ -89,7 +104,12 @@ function harness(fail = false, currency = "EUR", href = "http://localhost/") {
     Date,
     fetch,
     crypto: { randomUUID: () => String(posts) },
-    location: { href, assign() {} },
+    location: {
+      href,
+      assign(url: string) {
+        navigations.push(url);
+      },
+    },
     history: { replaceState() {} },
     setInterval() {},
     setTimeout: (cb: () => void) => {
@@ -107,6 +127,7 @@ function harness(fail = false, currency = "EUR", href = "http://localhost/") {
     click,
     reads,
     requests,
+    navigations,
     get posts() {
       return posts;
     },
@@ -120,6 +141,47 @@ function harness(fail = false, currency = "EUR", href = "http://localhost/") {
     },
   };
 }
+test("Unverified Meta connection is visible on load and the existing sync button opens reconnection without queueing a doomed sync", async () => {
+  const h = harness(false, "USD", "http://localhost/", {
+    blocked: true,
+    empty: true,
+  });
+  await wait();
+  assert.match(
+    h.document.querySelector("[data-dashboard-status]")!.textContent,
+    /non vérifiée/,
+  );
+  assert.equal(
+    h.document.querySelector("[data-sync-label]")!.textContent,
+    "Reconnecter Meta",
+  );
+  assert.match(
+    h.document.querySelector('[data-metric-note="spend"]')!.textContent,
+    /non vérifiée/,
+  );
+  h.click();
+  await wait();
+  assert.equal(h.posts, 0);
+  assert.deepEqual(h.navigations, ["/configuration/meta"]);
+});
+test("An empty successful sync never announces that dashboard metrics were updated", async () => {
+  const h = harness(false, "USD", "http://localhost/", {
+    blocked: false,
+    empty: true,
+  });
+  await wait();
+  h.click();
+  await wait();
+  await h.finish();
+  assert.match(
+    h.document.querySelector("[data-dashboard-status]")!.textContent,
+    /Aucune métrique importée/,
+  );
+  assert.equal(
+    h.document.querySelector('[data-metric="spend"]')!.textContent,
+    "—",
+  );
+});
 test("Sync debounces clicks, preserves last successful date while running and reloads all widgets after success", async () => {
   const h = harness();
   await wait();

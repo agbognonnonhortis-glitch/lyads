@@ -75,6 +75,17 @@
   function message(value) {
     text("[data-dashboard-status]", value);
   }
+  const connectionProblem = () => state.context?.connectionIssues?.[0];
+  function loadedMessage() {
+    if (connectionProblem()) return connectionProblem().message;
+    if (!state.ids?.length)
+      return "Connectez un compte publicitaire pour afficher ses données.";
+    if (!state.data.kpis)
+      return "Les métriques n’ont pas pu être chargées. Utilisez Réessayer dans les zones concernées.";
+    if (!state.data.kpis.rows.some((row) => row.bucket === "current"))
+      return "Aucune métrique importée pour cette période. Vérifiez le compte et les dates sélectionnés, puis lancez une synchronisation.";
+    return "Données du tableau de bord chargées · cliquez sur Synchronisé pour lancer une nouvelle synchronisation.";
+  }
   function params() {
     return new URLSearchParams({
       organization: config.organization,
@@ -132,13 +143,15 @@
       : null;
     text(
       "[data-sync-label]",
-      state.busy
-        ? "Synchronisation…"
-        : pending.length
-          ? `Synchronisation en cours (${pending.length})`
-          : at
-            ? `Synchronisé ${minutes < 1 ? "à l’instant" : minutes < 60 ? "il y a " + minutes + " min" : "le " + new Date(at).toLocaleDateString("fr-FR")}`
-            : "Synchroniser",
+      connectionProblem()
+        ? "Reconnecter Meta"
+        : state.busy
+          ? "Synchronisation…"
+          : pending.length
+            ? `Synchronisation en cours (${pending.length})`
+            : at
+              ? `Synchronisé ${minutes < 1 ? "à l’instant" : minutes < 60 ? "il y a " + minutes + " min" : "le " + new Date(at).toLocaleDateString("fr-FR")}`
+              : "Synchroniser",
     );
     text(
       "[data-sync-date]",
@@ -147,7 +160,10 @@
         : "Aucune synchronisation complète",
     );
     all('[data-dashboard-action="sync"]').forEach((e) => {
-      e.setAttribute("aria-disabled", String(state.busy || !!pending.length));
+      e.setAttribute(
+        "aria-disabled",
+        String(!connectionProblem() && (state.busy || !!pending.length)),
+      );
       e.title = c.freshness.accounts
         .map(
           (a) =>
@@ -198,7 +214,8 @@
       previous = data.rows.find((r) => r.bucket === "previous");
     for (const key of Object.keys(labels)) {
       text(`[data-metric="${key}"]`, fmt(current?.[key], key, data.currency));
-      let note = "Aucune donnée sur cette période";
+      let note =
+        connectionProblem()?.message || "Aucune donnée sur cette période";
       if (current?.[key] != null) {
         note =
           previous?.[key] != null && Number(previous[key]) !== 0
@@ -272,7 +289,7 @@
         ? data.rows
             .map(
               (r) =>
-                `<details class="dashboard-row"><summary>${esc(r.title)}</summary><p>${esc(r.message)}</p>${r.kind === "connection" ? `<a href="${paths["C11.2"]}">Reconnecter Meta</a>` : ""}</details>`,
+                `<details class="dashboard-row"><summary>${esc(r.title)}</summary><p>${esc(r.message)}</p>${r.kind === "connection" ? `<a href="/configuration/meta">Reconnecter mon Business Manager</a>` : ""}</details>`,
             )
             .join("")
         : "<p>" +
@@ -349,8 +366,7 @@
           );
           await loadWidgets(epoch);
           if (epoch !== state.epoch) return;
-          if (!failed && !pending)
-            message("Données du tableau de bord actualisées.");
+          if (!failed && !pending) message(loadedMessage());
         }
         schedulePoll();
       } catch (err) {
@@ -400,11 +416,7 @@
       );
       await loadWidgets(epoch);
       if (epoch !== state.epoch) return;
-      message(
-        state.ids.length
-          ? "Données enregistrées dans Meta · cliquez sur Synchronisé pour lancer une nouvelle synchronisation."
-          : "Connectez un compte publicitaire pour afficher ses données.",
-      );
+      message(loadedMessage());
       schedulePoll();
     } catch (err) {
       if (epoch !== state.epoch) return;
@@ -422,6 +434,11 @@
     }
   }
   async function sync() {
+    if (connectionProblem()) {
+      message(connectionProblem().message);
+      location.assign("/configuration/meta");
+      return;
+    }
     if (
       state.busy ||
       state.jobs.some((j) => ["queued", "running"].includes(j.status))

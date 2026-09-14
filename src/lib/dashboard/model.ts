@@ -8,6 +8,48 @@ export const dashboardZones = [
   "alerts",
   "recommendations",
 ] as const;
+export function connectionIssues(
+  connections: {
+    id: string;
+    connection_status: string;
+    token_checked_at: string | null;
+    expires_at: string | null;
+    data_access_expires_at: string | null;
+    revoked_at: string | null;
+    granted_scopes: string[];
+  }[],
+  now = Date.now(),
+) {
+  return connections.flatMap((c) => {
+    const unavailable =
+      c.revoked_at ||
+      c.connection_status === "expired" ||
+      [c.expires_at, c.data_access_expires_at].some(
+        (expiry) => expiry && Date.parse(expiry) <= now,
+      );
+    const unverified = !c.token_checked_at;
+    const noAdsRead = !c.granted_scopes.some((s) =>
+      ["ads_read", "ads_management"].includes(s),
+    );
+    if (!unavailable && !unverified && !noAdsRead) return [];
+    return [
+      {
+        id: c.id,
+        kind: "connection",
+        title: unavailable
+          ? "Connexion Meta à renouveler"
+          : unverified
+            ? "Connexion Meta non vérifiée"
+            : "Accès aux performances manquant",
+        message: unavailable
+          ? "La connexion Meta ne permet plus de synchroniser les données. Reconnectez votre Business Manager."
+          : unverified
+            ? "La connexion Meta n’a pas pu être vérifiée. Reconnectez votre Business Manager pour reprendre la remontée des données."
+            : "L’autorisation de lire les performances publicitaires manque. Reconnectez votre Business Manager pour l’accorder.",
+      },
+    ];
+  });
+}
 export function validDate(value: string | null): value is string {
   return (
     !!value &&
