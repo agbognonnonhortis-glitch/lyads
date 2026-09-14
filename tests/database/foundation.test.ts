@@ -1458,6 +1458,165 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Token validation and invalidation cannot overwrite a replacement OAuth credential",
+      async () => {
+        await admin();
+        await db.exec("begin");
+        try {
+          const scopes = [
+            "ads_read",
+            "ads_management",
+            "business_management",
+            "pages_show_list",
+            "pages_read_engagement",
+          ];
+          const save =
+            "select public.lyads_save_verified_meta_connection($1,'90210',$2,'{}',null,$3,'123',null) as id";
+          const conn = (
+            await db.query<{ id: string }>(save, [wa, scopes, "cipher-old"])
+          ).rows[0].id;
+          assert.equal(
+            (
+              await db.query<{ connection_status: string }>(
+                "select connection_status from public.lyads_meta_connections where id=$1",
+                [conn],
+              )
+            ).rows[0].connection_status,
+            "connected",
+          );
+          await db.query(save, [wa, scopes, "cipher-new"]);
+          const validate =
+            "select public.lyads_record_meta_validation($1,$2,'123',null,null) as ok";
+          assert.equal(
+            (await db.query<{ ok: boolean }>(validate, [conn, "cipher-old"]))
+              .rows[0].ok,
+            false,
+          );
+          assert.equal(
+            (
+              await db.query<{ ok: boolean }>(
+                "select public.lyads_invalidate_meta_token($1,'cipher-old') as ok",
+                [conn],
+              )
+            ).rows[0].ok,
+            false,
+          );
+          assert.equal(
+            (
+              await db.query<{ ok: boolean }>(
+                "select public.lyads_record_meta_permissions($1,'cipher-old','{}','{}') as ok",
+                [conn],
+              )
+            ).rows[0].ok,
+            false,
+          );
+          assert.equal(
+            (await db.query<{ ok: boolean }>(validate, [conn, "cipher-new"]))
+              .rows[0].ok,
+            true,
+          );
+          await db.query(
+            "select public.lyads_record_meta_permissions($1,'cipher-new',array['ads_read'],'{}')",
+            [conn],
+          );
+          assert.equal(
+            (
+              await db.query<{ connection_status: string }>(
+                "select connection_status from public.lyads_meta_connections where id=$1",
+                [conn],
+              )
+            ).rows[0].connection_status,
+            "partial",
+          );
+          await asUser(alice);
+          await db.exec("savepoint denied");
+          await sqlError(validate, [conn, "cipher-new"], "42501");
+          await db.exec("rollback to savepoint denied");
+        } finally {
+          await db.exec("rollback");
+        }
+      },
+    );
+    await t.test(
+      "Signed webhook ingestion is service-only, deduplicated, and limited to selected accounts of its app",
+      async () => {
+        await admin();
+        await db.exec("begin");
+        try {
+          await db.query(
+            "update public.lyads_meta_connections set meta_app_id='123',connection_status='connected',revoked_at=null where id=$1",
+            [a.connection],
+          );
+          await db.query(
+            "update public.lyads_meta_connections set meta_app_id='456',connection_status='connected',revoked_at=null where id=$1",
+            [b.connection],
+          );
+          await db.query(
+            "update public.lyads_ad_accounts set meta_account_id='act_121' where id=any($1::uuid[])",
+            [[a.account, b.account]],
+          );
+          for (const [workspace, account] of [
+            [wa, a.account],
+            [wb, b.account],
+          ]) {
+            await db.query(
+              "insert into public.lyads_onboarding(workspace_id,ad_account_ids) values($1,array[$2::uuid]) on conflict(workspace_id) do update set ad_account_ids=excluded.ad_account_ids",
+              [workspace, account],
+            );
+            await db.query(
+              "insert into public.lyads_meta_sync_settings(workspace_id,ad_account_id,next_sync_at) values($1,$2,now()+interval '1 day') on conflict(ad_account_id) do update set next_sync_at=excluded.next_sync_at,enabled=true",
+              [workspace, account],
+            );
+          }
+          const receive =
+            "select public.lyads_receive_meta_webhook('123',$1,array['act_121','act_999']) as ok";
+          assert.equal(
+            (await db.query<{ ok: boolean }>(receive, ["a".repeat(64)])).rows[0]
+              .ok,
+            true,
+          );
+          const due =
+            "select next_sync_at<now()+interval '2 minutes' as due from public.lyads_meta_sync_settings where ad_account_id=$1";
+          assert.equal(
+            (await db.query<{ due: boolean }>(due, [a.account])).rows[0].due,
+            true,
+          );
+          assert.equal(
+            (await db.query<{ due: boolean }>(due, [b.account])).rows[0].due,
+            false,
+          );
+          await db.query(
+            "update public.lyads_meta_sync_settings set next_sync_at=now()+interval '1 day' where ad_account_id=$1",
+            [a.account],
+          );
+          assert.equal(
+            (await db.query<{ ok: boolean }>(receive, ["a".repeat(64)])).rows[0]
+              .ok,
+            false,
+          );
+          assert.equal(
+            (await db.query<{ due: boolean }>(due, [a.account])).rows[0].due,
+            false,
+          );
+          await db.query(
+            "update public.lyads_onboarding set ad_account_ids='{}' where workspace_id=$1",
+            [wa],
+          );
+          await db.query(receive, ["b".repeat(64)]);
+          assert.equal(
+            (await db.query<{ due: boolean }>(due, [a.account])).rows[0].due,
+            false,
+          );
+          await asUser(alice);
+          await db.exec("savepoint denied");
+          await sqlError(receive, ["c".repeat(64)], "42501");
+          await db.exec("rollback to savepoint denied");
+        } finally {
+          await db.exec("rollback");
+        }
+      },
+    );
+    await t.test(
       "Worker can append but cannot alter or delete audit events",
       async () => {
         await admin();

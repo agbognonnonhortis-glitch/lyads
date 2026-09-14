@@ -23,7 +23,9 @@ export async function onboardingData(
       .maybeSingle(),
     db
       .from("lyads_meta_connections")
-      .select("id,granted_scopes,connection_status,checked_at,expires_at")
+      .select(
+        "id,granted_scopes,connection_status,checked_at,expires_at,token_checked_at,data_access_expires_at",
+      )
       .eq("workspace_id", org.id)
       .is("revoked_at", null)
       .order("checked_at", { ascending: false })

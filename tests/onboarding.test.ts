@@ -133,9 +133,16 @@ test("Business form starts blank, preserves values and rejects invented fields/p
 });
 
 test("Advertising authorization buttons survive footer wiring in every viewport", () => {
-  for (const connected of [false, true]) {
+  for (const state of [null, "connected", "partial", "expired", "unverified"]) {
     const data = fixture();
-    if (connected) data.connection = { id: "connection" };
+    const connected = state === "connected";
+    if (state)
+      data.connection = {
+        id: "connection",
+        connection_status: state === "unverified" ? "connected" : state,
+        token_checked_at:
+          state === "unverified" ? null : "2026-09-14T00:00:00Z",
+      };
     const doc = parseHTML(renderOnboarding("B2", data)).document;
     assert.equal(
       doc.querySelectorAll(

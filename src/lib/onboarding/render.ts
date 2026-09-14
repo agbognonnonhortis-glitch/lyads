@@ -439,7 +439,10 @@ export function renderOnboarding(
         )
           action(
             e,
-            data.connection ? "connected" : "connect",
+            data.connection?.connection_status === "connected" &&
+              data.connection?.token_checked_at
+              ? "connected"
+              : "connect",
             "Connecter mon Business Manager",
           );
       const connectButtons = all(

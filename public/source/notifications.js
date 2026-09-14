@@ -23,7 +23,7 @@
         })[c],
     );
   const types = {
-    "meta.reconnect": ["Connexion Meta", "/app/parametres/meta"],
+    "meta.reconnect": ["Connexion Meta", "/configuration/meta"],
     "website.complete": [
       "Analyse du site terminée",
       "/configuration/entreprise?section=review",

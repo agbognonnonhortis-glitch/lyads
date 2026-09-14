@@ -1,5 +1,7 @@
 # Marketing API — lecture du guide et écarts avec Lyads
 
+Suite de mise en œuvre : voir [configuration Meta et validation](META-APP-SETUP.md). Le présent document conserve l’état constaté lors de l’analyse initiale.
+
 Analyse du 14 septembre 2026, à partir du document « Marketing API Use Cases » transmis par le propriétaire et du code local. Il s’agit du guide de configuration de l’application et de ses cas d’utilisation, pas de la référence complète des endpoints Marketing API.
 
 Les consignes fonctionnelles de Lyads restent prioritaires : données réelles, secrets côté serveur, droits par compte et aucune écriture publicitaire sans confirmation utilisateur. Les instructions de publication présentes dans le guide ne constituent pas une demande de publier l’application Meta.

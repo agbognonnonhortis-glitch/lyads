@@ -6,6 +6,7 @@ import {
   WebsiteFailure,
 } from "../_shared/website.ts";
 import { inventory } from "../_shared/inventory.ts";
+import { inspectToken } from "../_shared/token.ts";
 import { createClient } from "@supabase/supabase-js";
 import {
   META_MESSAGES,
@@ -161,6 +162,7 @@ async function processWebsite(job: Job) {
 }
 async function process(job: Job) {
   if (job.kind === "website.analyze") return processWebsite(job);
+  let credentialVersion: string | undefined;
   try {
     const version = graphVersion();
     const { data: org } = await db
@@ -187,6 +189,7 @@ async function process(job: Job) {
     if (
       !connection ||
       connection.revoked_at ||
+      connection.connection_status === "expired" ||
       (connection.expires_at &&
         Date.parse(connection.expires_at) <= Date.now()) ||
       (connection.data_access_expires_at &&
@@ -200,6 +203,7 @@ async function process(job: Job) {
       .eq("connection_id", connection.id)
       .single();
     if (!secret) throw new MetaFailure("META_NOT_CONFIGURED");
+    credentialVersion = secret.ciphertext;
     const token = await openToken(
       secret.ciphertext,
       await encryptionKey(db),
@@ -259,6 +263,40 @@ async function process(job: Job) {
     };
     const get = (path: string, params: Record<string, string> = {}) =>
       readMeta({ version, path, params, token, before, after });
+    const appId = Deno.env.get("META_APP_ID") || "";
+    if (!/^\d+$/.test(appId)) throw new MetaFailure("META_NOT_CONFIGURED");
+    if (connection.meta_app_id && connection.meta_app_id !== appId) {
+      throw new MetaFailure("META_APP_CHANGED");
+    }
+    if (
+      !connection.token_checked_at ||
+      Date.parse(connection.token_checked_at) < Date.now() - 6 * 3600000 ||
+      !connection.meta_app_id
+    ) {
+      const verified = await inspectToken({
+        version,
+        token,
+        appId,
+        appSecret: Deno.env.get("META_APP_SECRET") || "",
+        userId: connection.meta_user_id,
+        before,
+        after,
+      });
+      const { data: recorded, error } = await db.rpc(
+        "lyads_record_meta_validation",
+        {
+          target_connection: connection.id,
+          expected_ciphertext: secret.ciphertext,
+          token_app: verified.appId,
+          token_expiry: verified.expiresAt,
+          data_expiry: verified.dataAccessExpiresAt,
+        },
+      );
+      if (error) {
+        throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
+      }
+      if (!recorded) throw new MetaFailure("META_RECONNECT");
+    }
     if (job.kind === "meta.inventory") {
       const outcome = await inventory(db, job, get);
       if (outcome.complete) await finish(job, outcome.result);
@@ -266,18 +304,19 @@ async function process(job: Job) {
     }
     if (job.kind === "meta.refresh_permissions") {
       const actual = permissions((await get("me/permissions")).data);
-      const { error } = await db
-        .from("lyads_meta_connections")
-        .update({
-          granted_scopes: actual.granted,
-          permission_status: actual.statuses,
-          checked_at: new Date().toISOString(),
-          connection_status: actual.canReadAds ? "connected" : "partial",
-        })
-        .eq("id", connection.id);
+      const { data: recorded, error } = await db.rpc(
+        "lyads_record_meta_permissions",
+        {
+          target_connection: connection.id,
+          expected_ciphertext: secret.ciphertext,
+          scopes: actual.granted,
+          permissions: actual.statuses,
+        },
+      );
       if (error) {
         throw new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
       }
+      if (!recorded) throw new MetaFailure("META_RECONNECT");
       await finish(job, { permissions: actual.statuses });
       return;
     }
@@ -644,12 +683,14 @@ async function process(job: Job) {
     const failure = error instanceof MetaFailure
       ? error
       : new MetaFailure("META_TEMPORARILY_UNAVAILABLE", true, 10);
-    if (failure.code === "META_RECONNECT" && job.payload.connection_id) {
-      await db
-        .from("lyads_meta_connections")
-        .update({ connection_status: "expired" })
-        .eq("id", job.payload.connection_id)
-        .eq("workspace_id", job.workspace_id);
+    if (
+      ["META_RECONNECT", "META_APP_CHANGED"].includes(failure.code) &&
+      job.payload.connection_id && credentialVersion
+    ) {
+      await db.rpc("lyads_invalidate_meta_token", {
+        target_connection: job.payload.connection_id,
+        expected_ciphertext: credentialVersion,
+      });
     }
     console.error("[worker]", failure.code);
     await finish(job, null, failure);

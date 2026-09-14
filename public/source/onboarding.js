@@ -25,8 +25,11 @@
   ];
   const errors = {
     META_PERMISSION_REQUIRED:
-      "Meta n’a pas accordé toutes les autorisations nécessaires. Actualisez les autorisations à l’étape de connexion.",
-    META_RECONNECT: "La connexion Meta a expiré. Reconnectez le compte.",
+      "Meta n’a pas accordé toutes les autorisations nécessaires. Reconnectez votre Business Manager pour les accorder.",
+    META_RECONNECT:
+      "La connexion Meta doit être renouvelée. Reconnectez votre Business Manager.",
+    META_APP_CHANGED:
+      "L’application Meta a changé. Reconnectez votre Business Manager pour autoriser la nouvelle application.",
     META_EVENT_COUNTS_UNAVAILABLE:
       "Les volumes d’événements ne sont pas disponibles. Aucun chiffre n’est estimé.",
     META_REQUEST_UNAVAILABLE:
@@ -542,6 +545,10 @@
     };
     void pollAnalysis();
   }
+  if (ref === "B2" && data.connection?.connection_status === "partial")
+    status(errors.META_PERMISSION_REQUIRED);
+  if (ref === "B2" && data.connection?.connection_status === "expired")
+    status(errors.META_RECONNECT);
   if (ref === "B11") {
     const error = sessionStorage.getItem("lyads-onboarding-sync-error");
     if (error) {

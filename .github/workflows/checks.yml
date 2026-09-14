@@ -24,7 +24,7 @@ jobs:
       - uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed
         with:
           deno-version: "2.9.5"
-      - run: deno check --config supabase/functions/deno.json supabase/functions/lyads-meta/index.ts supabase/functions/lyads-worker/index.ts
+      - run: deno check --config supabase/functions/deno.json supabase/functions/lyads-meta/index.ts supabase/functions/lyads-worker/index.ts supabase/functions/lyads-meta-webhook/index.ts
       - run: deno test --config supabase/functions/deno.json supabase/functions/_shared/*_test.ts
       - run: npm ci
       - run: npm test

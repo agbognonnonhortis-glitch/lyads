@@ -418,3 +418,9 @@ entrypoint = "./functions/lyads-meta/index.ts"
 verify_jwt = false
 import_map = "./functions/deno.json"
 entrypoint = "./functions/lyads-worker/index.ts"
+
+# Meta authenticates deliveries with X-Hub-Signature-256 over the raw body.
+[functions.lyads-meta-webhook]
+verify_jwt = false
+import_map = "./functions/deno.json"
+entrypoint = "./functions/lyads-meta-webhook/index.ts"
