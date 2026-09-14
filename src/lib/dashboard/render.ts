@@ -113,6 +113,14 @@ export function renderDashboard(html: string, data: OnboardingData) {
       content.className = "dashboard-content";
       content.textContent = "Chargement…";
       box.replaceChildren(header, content);
+      if (zone === "alerts") {
+        box.setAttribute("data-dashboard-alerts", "");
+        box.setAttribute("hidden", "");
+        const count = doc.createElement("span");
+        count.className = "dashboard-alert-count";
+        count.setAttribute("data-alert-count", "");
+        header.append(count);
+      }
       if (zone === "series") {
         const tabs = doc.createElement("div");
         tabs.className = "dashboard-tabs";
@@ -206,7 +214,7 @@ export function renderDashboard(html: string, data: OnboardingData) {
       const toolbar = doc.createElement("div");
       toolbar.className = "dashboard-toolbar";
       toolbar.innerHTML =
-        '<label>Comptes publicitaires <select data-dashboard-accounts aria-label="Comptes publicitaires" multiple></select></label><p class="dashboard-note" data-dashboard-status role="status"></p>';
+        '<label>Comptes publicitaires <select data-dashboard-accounts aria-label="Comptes publicitaires" multiple></select></label><p class="dashboard-note" data-dashboard-status role="status"></p><p class="dashboard-note" data-alert-status role="status"></p><button type="button" data-dashboard-action="alert-settings">Régler les seuils d’alerte</button>';
       alerts.before(toolbar);
     }
     for (const [icon, ref] of [

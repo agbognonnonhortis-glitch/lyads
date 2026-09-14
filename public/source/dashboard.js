@@ -20,6 +20,8 @@
     alertPoll: null,
     jobs: [],
     context: null,
+    alertRows: [],
+    alertError: null,
   };
   const labels = {
     spend: "Dépense",
@@ -116,6 +118,17 @@
   }
   const endpoint = (z) => "/api/dashboard/" + z + "?" + params();
   function errorBox(zone, err) {
+    if (zone === "alerts") {
+      state.alertError = {
+        id: "alerts-unavailable",
+        kind: "technical",
+        severity: "medium",
+        title: "Impossible de charger les alertes",
+        message: err.message,
+      };
+      renderAlerts();
+      return;
+    }
     all(`[data-zone="${zone}"]`).forEach((el) => {
       el.innerHTML = `<p>${esc(err.message)}</p><button type="button" data-retry-zone="${zone}">Réessayer</button>`;
     });
@@ -278,6 +291,102 @@
     };
     return `<p class="dashboard-note">${esc(period.since)} – ${esc(period.until)} · comparaison ${esc(period.previousSince)} – ${esc(period.previousUntil)}</p><svg class="dashboard-graph" viewBox="0 0 730 255" role="img" aria-label="${esc(labels[key])} : période sélectionnée et période précédente"><text x="4" y="28" fill="#6e6862" font-size="11">${esc(fmt(maximum, key, data.currency))}</text><text x="20" y="230" fill="#6e6862" font-size="11">0</text><path d="M45 30V225H710" fill="none" stroke="#e8e3d9"/><path d="${path("previous")}" fill="none" stroke="#a9a196" stroke-width="2" stroke-dasharray="6 5"/><path d="${path("current")}" fill="none" stroke="#b44a26" stroke-width="3"/>${pairs.map((p, i) => (p.current === null ? "" : `<circle cx="${x(i)}" cy="${y(p.current)}" r="4" fill="#b44a26"><title>${esc(p.date + " : " + fmt(p.current, key, data.currency) + " ; précédente : " + fmt(p.previous, key, data.currency))}</title></circle>`)).join("")}</svg><p class="dashboard-note">Orange : période sélectionnée · pointillés : période précédente. Les jours sans données restent vides.</p><details><summary>Voir les valeurs par jour</summary><div class="dashboard-table-wrap"><table><thead><tr><th>Date</th><th>${esc(labels[key])}</th><th>Période précédente</th></tr></thead><tbody>${pairs.map((p) => `<tr><td>${p.date}</td><td>${esc(fmt(p.current, key, data.currency))}</td><td>${esc(fmt(p.previous, key, data.currency))}</td></tr>`).join("")}</tbody></table></div></details>`;
   }
+  const alertStyles = {
+    critical: { label: "Critique", symbol: "▼", rank: 0 },
+    high: { label: "Élevée", symbol: "◆", rank: 1 },
+    medium: { label: "Moyenne", symbol: "●", rank: 2 },
+    recommendation: { label: "Recommandation", symbol: "✦", rank: 3 },
+  };
+  function alertTone(row) {
+    return Object.hasOwn(alertStyles, row.severity)
+      ? row.severity
+      : row.kind === "recommendation"
+        ? "recommendation"
+        : "medium";
+  }
+  function alertCard(row) {
+    const tone = alertTone(row),
+      style = alertStyles[tone];
+    const action =
+      row.kind === "connection"
+        ? '<a class="dashboard-alert-action dashboard-alert-primary" href="/configuration/meta">Reconnecter Meta</a>'
+        : row.id === "alerts-unavailable"
+          ? '<button type="button" class="dashboard-alert-action" data-retry-zone="alerts">Réessayer</button>'
+          : `<button type="button" class="dashboard-alert-action" data-dashboard-action="alert-detail" data-alert-id="${esc(row.id)}" data-alert-kind="${esc(row.kind)}">${row.kind === "performance" ? "Voir l’analyse" : row.kind === "recommendation" ? "Voir la recommandation" : "Voir le détail"}</button>`;
+    return `<article class="dashboard-alert-card" data-alert-tone="${tone}" data-alert-kind="${esc(row.kind)}"><span class="dashboard-alert-badge"><span aria-hidden="true">${style.symbol}</span> ${style.label}</span><div class="dashboard-alert-copy"><h3>${esc(row.title)}</h3><p>${esc(row.message)}</p></div>${action}</article>`;
+  }
+  function renderAlerts() {
+    const alerts = state.data.alerts;
+    // Delivery statuses are never a source for this view. Only qualified
+    // performance results, technical issues and agent recommendations belong here.
+    const rows = [
+      ...(alerts?.rows || []).filter(
+        (r) =>
+          ["connection", "technical", "recommendation"].includes(r.kind) ||
+          (r.kind === "performance" && r.sufficientData === true),
+      ),
+      ...(state.data.recommendations?.rows || []).map((r) => ({
+        ...r,
+        kind: "recommendation",
+      })),
+      ...(state.alertError ? [state.alertError] : []),
+    ];
+    const seen = new Set();
+    state.alertRows = rows
+      .filter((r) => {
+        const key = `${r.kind}:${r.id}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .sort(
+        (a, b) =>
+          alertStyles[alertTone(a)].rank - alertStyles[alertTone(b)].rank ||
+          (Number(b.priority) || 0) - (Number(a.priority) || 0),
+      );
+    all("[data-dashboard-alerts]").forEach((section) => {
+      section.hidden = !state.alertRows.length;
+      section.querySelector("[data-alert-count]").textContent = String(
+        state.alertRows.length,
+      );
+      const content = section.querySelector('[data-zone="alerts"]');
+      content.innerHTML = state.alertRows.map(alertCard).join("");
+      content.setAttribute("aria-busy", "false");
+    });
+    text(
+      "[data-alert-status]",
+      [
+        alerts?.message,
+        alerts?.needsTargets
+          ? "Renseignez vos cibles CPA et ROAS pour activer les alertes correspondantes."
+          : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
+    );
+  }
+  function alertDetail(id, kind) {
+    const row = state.alertRows.find(
+      (r) => String(r.id) === id && r.kind === kind,
+    );
+    if (!row) return;
+    const account = state.accounts.find((a) => a.id === row.account_id);
+    const source =
+      row.kind === "performance"
+        ? "Analyse de performance Lyads"
+        : row.kind === "recommendation"
+          ? "Agent Lyads"
+          : "Diagnostic technique Lyads";
+    const d = dialog(
+      `<form method="dialog"><h2 id="dashboard-alert-title">${esc(row.title)}</h2><p class="dashboard-note">${esc(source)}${account ? ` · ${esc(account.name)} (${esc(account.currency)})` : ""}</p><p>${esc(row.message)}</p>${row.since && row.until ? `<p class="dashboard-note">Période analysée : ${esc(row.since)} – ${esc(row.until)}</p>` : ""}<div class="dashboard-period-actions">${row.kind === "performance" ? '<button type="button" data-edit-thresholds>Régler les seuils</button>' : ""}<button type="submit">Fermer</button></div></form>`,
+    );
+    d.classList.add("dashboard-period-dialog");
+    d.setAttribute("aria-labelledby", "dashboard-alert-title");
+    d.querySelector("[data-edit-thresholds]")?.addEventListener("click", () => {
+      d.close();
+      alertSettingsDialog();
+    });
+  }
   function renderZone(zone, data) {
     if (zone === "kpis") {
       kpis(data);
@@ -286,33 +395,13 @@
     let html = "";
     if (zone === "series") html = seriesHtml(data);
     else if (zone === "alerts" || zone === "recommendations") {
-      html = data.rows.length
-        ? data.rows
-            .map(
-              (r) =>
-                `<details class="dashboard-row"><summary>${esc(r.title)}</summary><p>${esc(r.message)}</p>${r.kind === "connection" ? `<a href="/configuration/meta">Reconnecter mon Business Manager</a>` : ""}</details>`,
-            )
-            .join("")
-        : "<p>" +
-          (zone === "alerts"
-            ? data.message
-              ? esc(data.message)
-              : data.freshness?.complete
-                ? "Aucune alerte détectée."
-                : "Synchronisez vos comptes pour analyser leurs performances."
-            : esc(data.message)) +
-          "</p>";
-      if (zone === "alerts") {
-        if (data.message && data.rows.length)
-          html += `<p role="status">${esc(data.message)}</p>`;
-        if (data.needsTargets)
-          html +=
-            '<p class="dashboard-note">Renseignez vos cibles CPA et ROAS pour activer les alertes correspondantes.</p>';
-        if (data.performanceAvailable !== false)
-          html +=
-            '<button type="button" data-dashboard-action="alert-settings">Régler les seuils d’alerte</button>';
-      }
-      text("[data-recommendation-count]", "");
+      renderAlerts();
+      if (zone === "alerts") return;
+      const rows = state.alertRows.filter((r) => r.kind === "recommendation");
+      html = rows.length
+        ? rows.map(alertCard).join("")
+        : `<p>${esc(data.message)}</p>`;
+      text("[data-recommendation-count]", rows.length || "");
     } else {
       const total = data.rows.reduce((sum, r) => sum + Number(r.spend || 0), 0);
       html = data.rows.length
@@ -345,6 +434,7 @@
       const data = await api(endpoint(zone));
       if (epoch !== state.epoch) return;
       state.data[zone] = data;
+      if (zone === "alerts") state.alertError = null;
       renderZone(zone, data);
       if (zone === "alerts") {
         clearTimeout(state.alertPoll);
@@ -415,6 +505,12 @@
     const epoch = ++state.epoch;
     clearTimeout(state.poll);
     state.data = {};
+    state.alertError = null;
+    state.alertRows = [];
+    all("[data-dashboard-alerts]").forEach((section) => {
+      section.hidden = true;
+    });
+    text("[data-alert-status]", "");
     clearTimeout(state.alertPoll);
     text("[data-metric]", "—");
     text("[data-metric-note]", "Chargement…");
@@ -617,6 +713,8 @@
     if (name === "sync") sync();
     else if (name === "period") periodDialog();
     else if (name === "alert-settings") alertSettingsDialog();
+    else if (name === "alert-detail")
+      alertDetail(el.dataset.alertId, el.dataset.alertKind);
     else if (name === "credits") location.assign(paths["C11.4"]);
     else if (name === "chart" || name === "alerts")
       el.closest("[data-source-width]")

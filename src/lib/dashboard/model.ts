@@ -36,6 +36,7 @@ export function connectionIssues(
       {
         id: c.id,
         kind: "connection",
+        severity: unavailable || noAdsRead ? "critical" : "medium",
         title: unavailable
           ? "Connexion Meta à renouveler"
           : unverified

@@ -15,7 +15,12 @@ function harness(
   fail = false,
   currency = "EUR",
   href = "http://localhost/",
-  scenario = { blocked: false, empty: false },
+  scenario: {
+    blocked: boolean;
+    empty: boolean;
+    alerts?: any[];
+    recommendations?: any[];
+  } = { blocked: false, empty: false },
 ) {
   const { document, window } = parseHTML(
     renderDashboard(renderSource("C1.1")!, {
@@ -91,7 +96,11 @@ function harness(
         rows:
           zone === "kpis" && !scenario.empty
             ? [{ bucket: "current", spend: 100, accounts_count: 1 }]
-            : [],
+            : zone === "alerts"
+              ? scenario.alerts || []
+              : zone === "recommendations"
+                ? scenario.recommendations || []
+                : [],
         message: "Aucune donnée",
       }),
     };
@@ -118,6 +127,10 @@ function harness(
     },
     clearTimeout: (id: number) => timers.delete(id),
   });
+  const clickElement = (selector: string) =>
+    document
+      .querySelector(selector)!
+      .dispatchEvent(new window.Event("click", { bubbles: true }));
   const click = () =>
     document
       .querySelector('[data-dashboard-action="sync"]')!
@@ -125,6 +138,7 @@ function harness(
   return {
     document,
     click,
+    clickElement,
     reads,
     requests,
     navigations,
@@ -265,5 +279,95 @@ test("Monetary figures use the account currency's precision, including zero-deci
   assert.doesNotMatch(
     h.document.querySelector('[data-metric="spend"]')!.textContent,
     /,00/,
+  );
+});
+
+test("Alert cards combine only allowed sources, exclude insufficient performance, and prioritize real severity", async () => {
+  const h = harness(false, "USD", "http://localhost/", {
+    blocked: false,
+    empty: false,
+    alerts: [
+      { id: "ad", kind: "ad", title: "Excluded delivery status" },
+      {
+        id: "insufficient",
+        kind: "performance",
+        sufficientData: false,
+        title: "Excluded low volume",
+      },
+      {
+        id: "perf",
+        kind: "performance",
+        sufficientData: true,
+        severity: "high",
+        title: '<img src=x onerror="bad()">',
+        message: "CPA observé : 20 USD ; cible : 10 USD.",
+      },
+      {
+        id: "conn",
+        kind: "connection",
+        severity: "critical",
+        title: "Connexion expirée",
+        message: "Reconnectez Meta.",
+      },
+    ],
+    recommendations: [
+      {
+        id: "rec",
+        title: "Proposition de l’agent",
+        message: "Justification disponible.",
+      },
+    ],
+  });
+  await wait();
+  for (const section of h.document.querySelectorAll(
+    "[data-dashboard-alerts]",
+  )) {
+    assert.equal(section.hasAttribute("hidden"), false);
+    assert.equal(section.querySelector("[data-alert-count]")!.textContent, "3");
+    assert.equal(section.querySelectorAll("details").length, 0);
+    assert.equal(section.querySelectorAll("img").length, 0);
+    assert.doesNotMatch(section.textContent, /Excluded/);
+    assert.deepEqual(
+      [...section.querySelectorAll("article")].map((el) =>
+        el.getAttribute("data-alert-tone"),
+      ),
+      ["critical", "high", "recommendation"],
+    );
+    assert.equal(
+      section.querySelector("a")!.getAttribute("href"),
+      "/configuration/meta",
+    );
+    assert.match(section.textContent, /Voir l’analyse/);
+    assert.match(section.textContent, /Voir la recommandation/);
+  }
+  // The detail button shows the actual explanation, never triggers a Meta write.
+  const create = h.document.createElement.bind(h.document);
+  h.document.createElement = ((tag: string) => {
+    const el = create(tag);
+    if (tag === "dialog")
+      (el as any).showModal = () => el.setAttribute("open", "");
+    return el;
+  }) as any;
+  h.clickElement('[data-alert-id="perf"]');
+  assert.match(
+    h.document.querySelector("dialog")!.textContent,
+    /CPA observé : 20 USD/,
+  );
+  assert.equal(h.posts, 0);
+});
+
+test("No active alerts leaves no reserved space; threshold settings remain accessible", async () => {
+  const h = harness();
+  await wait();
+  for (const section of h.document.querySelectorAll(
+    "[data-dashboard-alerts]",
+  )) {
+    assert.equal(section.hasAttribute("hidden"), true);
+    assert.equal(section.querySelectorAll("article").length, 0);
+  }
+  assert.ok(
+    h.document.querySelector(
+      '.dashboard-toolbar [data-dashboard-action="alert-settings"]',
+    ),
   );
 });

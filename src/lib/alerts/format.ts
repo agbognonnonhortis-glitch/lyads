@@ -34,6 +34,8 @@ export function formatPerformanceAlert(row: any) {
   const [title, message] = messages[row.detector];
   return {
     ...row,
+    // All current detectors report a measured drift, not a confirmed outage.
+    severity: "high",
     title: `${title} · ${row.entity_name}`,
     message: `${message} Période : ${row.since} au ${row.until} ; ${e.days} jours observés, ${e.purchases} achats, ${money(e.spend)} dépensés.`,
   };
