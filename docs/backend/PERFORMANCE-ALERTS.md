@@ -35,6 +35,8 @@ Les données de test ne sont jamais insérées dans Supabase hébergé. Sans mé
 
 ## État du déploiement au 14 septembre 2026
 
-Implémentation et migration testées localement. L'enregistrement Git et le déploiement Edge ont été refusés par le contrôle automatique d'approbation (modèle à capacité). La migration n'a donc pas été appliquée sur Supabase. Déployer le worker puis la migration, vérifier un job `alerts.scan` réel et les advisors avant de déclarer cette fonctionnalité active. Si la fonction de scan n'existe pas encore, le tableau de bord continue à afficher les alertes de diffusion Meta et signale l'indisponibilité de l'analyse de performance.
+Code envoyé sur GitHub (`4bbec4a`), migration `20260914072853` appliquée par l'intégration Supabase, worker déployé et actif (version 23). La lecture du statut des checks GitHub a été refusée par le contrôle automatique (modèle indisponible) ; leur succès n'est pas affirmé.
 
-Diagnostic en lecture sur le projet : zéro snapshot de métrique ; les alertes de performance ne peuvent pas encore être validées sur ce compte réel. Aucun jeton ou compte publicitaire n'a été modifié dans ce lot.
+Vérification de bout en bout via la file et le worker hébergés : scan `75881efb-bd85-440a-b468-d283547b6702`, statut `succeeded`, une tentative, processeur `alerts-v1`, terminé le 14 septembre à 08:00:50 UTC. Sur la période testée du compte déjà sélectionné : zéro ligne de métrique, zéro entité significative, zéro alerte. Aucun jeton ou compte publicitaire n'a été modifié. Les déclenchements positifs sont couverts par les jeux isolés PostgreSQL ; la validation sur les performances réelles reste conditionnée à leur import.
+
+Les advisors de sécurité ne signalent aucune anomalie sur les nouveaux objets. Ils relèvent les six tables serveur volontairement sans politique utilisateur, et l'avertissement Auth préexistant concernant la [protection contre les mots de passe compromis](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection), encore désactivée.
