@@ -422,7 +422,7 @@
       [
         alerts?.message,
         alerts?.needsTargets
-          ? "Renseignez vos cibles CPA et ROAS pour activer les alertes correspondantes."
+          ? "Renseignez vos cibles CPA et ROAS pour activer des recommandations d'optimisation."
           : "",
       ]
         .filter(Boolean)
