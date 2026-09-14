@@ -313,7 +313,7 @@
         : row.id === "alerts-unavailable"
           ? '<button type="button" class="dashboard-alert-action" data-retry-zone="alerts">Réessayer</button>'
           : `<button type="button" class="dashboard-alert-action" data-dashboard-action="alert-detail" data-alert-id="${esc(row.id)}" data-alert-kind="${esc(row.kind)}">${row.kind === "performance" ? "Voir l’analyse" : row.kind === "recommendation" ? "Voir la recommandation" : "Voir le détail"}</button>`;
-    return `<article class="dashboard-alert-card" data-alert-tone="${tone}" data-alert-kind="${esc(row.kind)}"><span class="dashboard-alert-badge"><span aria-hidden="true">${style.symbol}</span> ${style.label}</span><div class="dashboard-alert-copy"><h3>${esc(row.title)}</h3><p>${esc(row.message)}</p></div>${action}</article>`;
+    return `<article class="dashboard-alert-card" data-alert-tone="${tone}" data-alert-kind="${esc(row.kind)}"><span class="dashboard-alert-badge"><span aria-hidden="true">${style.symbol}</span> ${style.label}</span><div class="dashboard-alert-copy"><h3>${esc(row.title)}</h3><p>${esc(row.message)}</p></div>${action}<i class="ph ph-caret-right dashboard-alert-chevron" aria-hidden="true"></i></article>`;
   }
   function renderAlerts() {
     const alerts = state.data.alerts;

@@ -289,53 +289,57 @@
 }
 [data-dashboard-alerts] > .dashboard-heading {
   justify-content: flex-start;
+  gap: 10px;
 }
 .dashboard-alert-count {
-  padding: 2px 14px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 7px;
+  text-align: center;
   border-radius: 999px;
-  background: #c4321c;
+  background: #c0311f;
   color: #fff;
   font:
-    700 14px/1.5 "Figtree",
-    sans-serif;
+    700 11px/20px "Space Grotesk",
+    monospace;
 }
 :is([data-zone="alerts"], [data-zone="recommendations"]) {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 .dashboard-alert-card {
-  --alert-color: #91610a;
+  --alert-color: #8f5f08;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   min-width: 0;
-  padding: 16px 20px;
+  padding: 13px 16px;
   border: 1px solid #e8e3d9;
   border-left: 4px solid var(--alert-color);
-  border-radius: 14px;
+  border-radius: 12px;
   background: #fff;
   text-align: left;
 }
 .dashboard-alert-card[data-alert-tone="critical"] {
-  --alert-color: #c4321c;
+  --alert-color: #c0311f;
 }
 .dashboard-alert-card[data-alert-tone="high"] {
-  --alert-color: #91610a;
+  --alert-color: #8f5f08;
 }
 .dashboard-alert-card[data-alert-tone="medium"] {
-  --alert-color: #75603d;
+  --alert-color: #3b4fd1;
 }
 .dashboard-alert-card[data-alert-tone="recommendation"] {
-  --alert-color: #4946b6;
+  --alert-color: #3b4fd1;
 }
 .dashboard-alert-badge {
   flex: 0 0 auto;
-  padding: 4px 10px;
+  padding: 4px 9px;
   border-radius: 999px;
   background: var(--alert-color);
   color: #fff;
   font:
-    700 12px/1.4 "Figtree",
+    700 11px/1.3 "Figtree",
     sans-serif;
   white-space: nowrap;
 }
@@ -345,17 +349,17 @@
   overflow-wrap: anywhere;
 }
 .dashboard-alert-copy h3 {
-  margin: 0 0 2px;
+  margin: 0;
   color: #1b1916;
   font:
-    700 16px/1.35 "Figtree",
+    700 14px/1.35 "Figtree",
     sans-serif;
 }
 .dashboard-alert-copy p {
   margin: 0;
-  color: #6e6862;
+  color: #5c564e;
   font:
-    400 14px/1.5 "Figtree",
+    400 13px/1.4 "Figtree",
     sans-serif;
 }
 .dashboard-content .dashboard-alert-action {
@@ -363,20 +367,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 9px 16px;
-  border: 1px solid #d6cfc2;
+  min-height: 0;
+  padding: 9px 14px;
+  border: 1.5px solid #d6cfc2;
   border-radius: 10px;
   background: #fff;
   color: #423d37;
   font:
-    600 14px/1.4 "Figtree",
+    600 13px/1 "Figtree",
     sans-serif;
   text-decoration: none;
   cursor: pointer;
 }
 .dashboard-content .dashboard-alert-primary {
-  border-color: #b44a26;
+  border: 0;
+  padding: 10px 15px;
+  font-weight: 700;
   background: #b44a26;
   color: #fff;
 }
@@ -401,16 +407,71 @@
   display: none;
 }
 [data-zone="recommendations"] .dashboard-alert-card,
-[data-source-width="768"] .dashboard-alert-card,
 [data-source-width="375"] .dashboard-alert-card {
   flex-wrap: wrap;
 }
 [data-zone="recommendations"] .dashboard-alert-copy,
-[data-source-width="768"] .dashboard-alert-copy,
 [data-source-width="375"] .dashboard-alert-copy {
   flex-basis: 100%;
 }
 [data-source-width="375"] .dashboard-alert-card {
-  padding: 16px;
+  padding: 14px;
+  gap: 10px;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.dashboard-alert-chevron {
+  font-size: 16px;
+  color: #a9a196;
+  flex: 0 0 auto;
+}
+[data-source-width="768"] .dashboard-alert-card {
+  padding: 12px 14px;
   gap: 12px;
+}
+[data-source-width="768"] .dashboard-alert-copy h3 {
+  line-height: 1.3;
+}
+[data-source-width="768"] .dashboard-alert-copy p {
+  font-size: 12px;
+}
+[data-source-width="768"] .dashboard-alert-action {
+  padding: 9px 13px;
+}
+[data-source-width="768"] .dashboard-alert-primary {
+  padding: 10px 14px;
+}
+:is([data-source-width="375"], [data-source-width="768"])
+  [data-dashboard-alerts]
+  > .dashboard-heading {
+  gap: 9px;
+}
+:is([data-source-width="375"], [data-source-width="768"])
+  .dashboard-alert-count {
+  min-width: 19px;
+  height: 19px;
+  padding: 0 6px;
+  line-height: 19px;
+}
+[data-source-width="375"] .dashboard-alert-badge {
+  align-self: flex-start;
+}
+[data-source-width="375"] .dashboard-alert-copy h3 {
+  font-size: 15px;
+}
+[data-source-width="375"] .dashboard-alert-copy p {
+  line-height: 1.45;
+}
+[data-source-width="375"] .dashboard-alert-action {
+  padding: 14px;
+  font-size: 15px;
+}
+:is(
+    [data-source-width="375"],
+    [data-source-width="768"],
+    [data-zone="recommendations"]
+  )
+  .dashboard-alert-chevron {
+  display: none;
 }
