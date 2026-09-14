@@ -783,7 +783,7 @@
     if (!data.rows.length)
       return "<p>Aucune publicité importée pour cette sélection.</p>";
     const onlyPurchases = data.rows.every((r) => r.result_event === "purchase");
-    const table = `<div class="dashboard-ad-table-wrap"><table class="dashboard-ad-table"><thead><tr><th>Publicité</th><th>Dépense</th><th>${onlyPurchases ? "CPA" : "CPR"}</th><th>ROAS</th><th>État</th></tr></thead><tbody>${data.rows
+    const table = `<div class="dashboard-ad-table-wrap"><table class="dashboard-ad-table"><thead><tr><th>Publicité</th><th>Dépense</th><th>${onlyPurchases ? "CPA" : "CPR"}</th><th>ROAS</th></tr></thead><tbody>${data.rows
       .map((r) => {
         const tone = performance(r),
           event = r.result_event;
@@ -798,7 +798,7 @@
         const safeThumb =
           /^https:\/\//.test(r.thumbnail || "") &&
           !/[?&](access_token|appsecret_proof)=/i.test(r.thumbnail);
-        return `<tr data-best-ad="${esc(r.bucket)}"><td><button type="button" class="dashboard-ad-trigger" data-preview-ad="${esc(r.bucket)}" aria-label="Aperçu de ${esc(r.name)}"><span class="dashboard-ad-thumb">${safeThumb ? `<img src="${esc(r.thumbnail)}" alt="" loading="lazy">` : `<i class="ph ${r.media_type === "video" ? "ph-play-circle" : "ph-image"}" aria-hidden="true"></i>`}${r.media_type === "video" && safeThumb ? '<span class="dashboard-thumb-play">▶</span>' : ""}</span><span class="dashboard-ad-caption"><strong>${esc(r.name)}</strong><small>${r.media_type ? `${{ video: "Vidéo", image: "Image", carousel: "Carrousel" }[r.media_type]} · ` : ""}${esc(eventLabel)}${r.results != null ? " · " + number(r.results) + " résultat(s)" : ""}</small></span></button></td><td>${esc(fmt(r.spend, "spend", r.currency))}</td><td title="Coût par ${esc(eventLabel.toLowerCase())}">${esc(fmt(r.cost_per_result, "cpa", r.currency))}</td><td data-tone="${tone}">${esc(number(r.roas))}</td><td><span class="dashboard-performance-badge" data-tone="${tone}">${tone === "good" ? "▲ Performe" : tone === "bad" ? "◆ À surveiller" : "— Non évalué"}</span></td></tr>`;
+        return `<tr data-best-ad="${esc(r.bucket)}"><td><button type="button" class="dashboard-ad-trigger" data-preview-ad="${esc(r.bucket)}" aria-label="Aperçu de ${esc(r.name)}"><span class="dashboard-ad-thumb">${safeThumb ? `<img src="${esc(r.thumbnail)}" alt="" loading="lazy">` : `<i class="ph ${r.media_type === "video" ? "ph-play-circle" : "ph-image"}" aria-hidden="true"></i>`}${r.media_type === "video" && safeThumb ? '<span class="dashboard-thumb-play">▶</span>' : ""}</span><span class="dashboard-ad-caption"><strong>${esc(r.name)}</strong><small>${r.media_type ? `${{ video: "Vidéo", image: "Image", carousel: "Carrousel" }[r.media_type]} · ` : ""}${esc(eventLabel)}${r.results != null ? " · " + number(r.results) + " résultat(s)" : ""}</small></span></button></td><td>${esc(fmt(r.spend, "spend", r.currency))}</td><td title="Coût par ${esc(eventLabel.toLowerCase())}">${esc(fmt(r.cost_per_result, "cpa", r.currency))}</td><td data-tone="${tone}">${esc(number(r.roas))}</td></tr>`;
       })
       .join("")}</tbody></table></div>`;
     return (

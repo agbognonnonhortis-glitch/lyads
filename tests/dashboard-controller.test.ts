@@ -711,7 +711,7 @@ test("Chart footer uses actual daily totals and preserves missing days and weigh
   );
 });
 
-test("Placement families sum spend and weight ROAS; performance badges require configured targets", async () => {
+test("Placement families sum spend and weight ROAS; ROAS colors require configured targets", async () => {
   const h = harness(
     false,
     "EUR",
@@ -774,9 +774,9 @@ test("Placement families sum spend and weight ROAS; performance badges require c
   );
   assert.match(placements.textContent, /Fil d’actualité100,00.*2,8/);
   assert.match(placements.textContent, /Reels20,00.*—/);
-  const badges = h.document
+  const roasCells = h.document
     .querySelector('[data-zone="creatives"]')!
-    .querySelectorAll(".dashboard-performance-badge");
-  assert.equal(badges[0].getAttribute("data-tone"), "good");
-  assert.equal(badges[1].getAttribute("data-tone"), "neutral");
+    .querySelectorAll("td[data-tone]");
+  assert.equal(roasCells[0].getAttribute("data-tone"), "good");
+  assert.equal(roasCells[1].getAttribute("data-tone"), "neutral");
 });

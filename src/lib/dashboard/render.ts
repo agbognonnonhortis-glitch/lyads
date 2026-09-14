@@ -301,7 +301,7 @@ export function renderDashboard(html: string, data: OnboardingData) {
   }
   const style = doc.createElement("link");
   style.rel = "stylesheet";
-  style.href = "/source/dashboard.css?v=20260914-maquette";
+  style.href = "/source/dashboard.css?v=20260914-maquette-no-state";
   doc.head.append(style);
   const config = doc.createElement("script");
   config.id = "dashboard-context";
@@ -311,7 +311,7 @@ export function renderDashboard(html: string, data: OnboardingData) {
   }).replaceAll("<", "\\u003c");
   doc.body.append(config);
   const script = doc.createElement("script");
-  script.src = "/source/dashboard.js?v=20260914-maquette";
+  script.src = "/source/dashboard.js?v=20260914-maquette-no-state";
   script.defer = true;
   doc.body.append(script);
   return doc.toString();
