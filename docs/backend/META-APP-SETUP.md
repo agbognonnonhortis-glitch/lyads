@@ -2,6 +2,14 @@
 
 État du 14 septembre 2026. Le guide transmis par le propriétaire sert de référence de configuration. Les essais avec un compte interne ne constituent pas une approbation Meta pour les comptes de clients externes.
 
+## Vérifications du déploiement
+
+La migration `20260913235607` est appliquée sur le projet Supabase. Les fonctions OAuth, worker et webhook sont actives. Vérifications locales : 49 tests applicatifs, 20 tests PostgreSQL et 17 tests Deno, compilation de production réussie. Les vérifications GitHub et Supabase du premier déploiement ont réussi.
+
+Le contrôle réel du jeton enregistré a été refusé par Meta : aucune application émettrice n’a donc été enregistrée comme vérifiée. Le contrôle reste fermé aux lectures publicitaires tant que le jeton n’est pas vérifié ; renouveler l’autorisation OAuth permet de repartir du jeton délivré par l’application configurée. La permission `pages_read_engagement` est absente des octrois actuellement enregistrés.
+
+Le health check OAuth répond HTTP 200, une livraison webhook sans signature est rejetée avec HTTP 401. La vérification du callback webhook répond HTTP 503 tant que `META_WEBHOOK_VERIFY_TOKEN` n’est pas configuré. Aucun abonnement Meta ni validation de chiffres dans Ads Manager n’est déclaré terminé.
+
 ## Contrôles implémentés
 
 - À chaque nouvelle autorisation Marketing, introspection du jeton via `debug_token` avec les identifiants de l’application côté serveur. Vérification de `is_valid`, de l’application émettrice, du type utilisateur et de l’identité ; enregistrement distinct de l’expiration du jeton et de l’accès aux données. Le retour `me` doit confirmer la même identité.

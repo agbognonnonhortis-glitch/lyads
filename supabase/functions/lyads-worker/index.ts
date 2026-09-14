@@ -70,14 +70,22 @@ async function finish(job: Job, result: unknown, error?: MetaFailure) {
         .eq("request_key", job.id)
         .eq("workspace_id", job.workspace_id);
     }
-    if (job.requested_by) {
+    if (
+      job.requested_by && !(job.kind === "meta.refresh_permissions" && !error)
+    ) {
       await db.from("lyads_notifications").upsert(
         {
           workspace_id: job.workspace_id,
           ad_account_id: job.ad_account_id,
           user_id: job.requested_by,
           event_key: "job:" + job.id,
-          kind: error ? "sync.failed" : "sync.complete",
+          kind: error &&
+              ["META_RECONNECT", "META_APP_CHANGED", "META_TOKEN_UNVERIFIED"]
+                .includes(error.code)
+            ? "meta.reconnect"
+            : error
+            ? "sync.failed"
+            : "sync.complete",
           message: error
             ? META_MESSAGES[error.code] ||
               META_MESSAGES.META_REQUEST_UNAVAILABLE

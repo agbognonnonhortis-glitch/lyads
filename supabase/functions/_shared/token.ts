@@ -72,6 +72,16 @@ export async function inspectToken(options: {
     if (error instanceof MetaFailure && error.code === "META_RECONNECT") {
       throw new MetaFailure("META_NOT_CONFIGURED");
     }
+    if (
+      error instanceof MetaFailure &&
+      ["META_REQUEST_UNAVAILABLE", "META_PERMISSION_REQUIRED"].includes(
+        error.code,
+      )
+    ) {
+      // Meta can refuse introspection across applications. Do not infer an
+      // issuer or mark the token valid/expired from an inaccessible response.
+      throw new MetaFailure("META_TOKEN_UNVERIFIED");
+    }
     throw error;
   }
   return tokenMetadata(response, options.appId, options.userId);

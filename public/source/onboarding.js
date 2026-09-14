@@ -30,6 +30,8 @@
       "La connexion Meta doit être renouvelée. Reconnectez votre Business Manager.",
     META_APP_CHANGED:
       "L’application Meta a changé. Reconnectez votre Business Manager pour autoriser la nouvelle application.",
+    META_TOKEN_UNVERIFIED:
+      "Meta n’a pas permis de vérifier cette connexion. Reconnectez votre Business Manager pour renouveler son autorisation.",
     META_EVENT_COUNTS_UNAVAILABLE:
       "Les volumes d’événements ne sont pas disponibles. Aucun chiffre n’est estimé.",
     META_REQUEST_UNAVAILABLE:

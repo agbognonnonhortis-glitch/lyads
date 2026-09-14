@@ -172,6 +172,8 @@ export const META_MESSAGES: Record<string, string> = {
     "La connexion Meta doit être renouvelée. Reconnectez le compte.",
   META_APP_CHANGED:
     "L’application Meta a changé. Reconnectez votre Business Manager pour autoriser la nouvelle application.",
+  META_TOKEN_UNVERIFIED:
+    "Meta n’a pas permis de vérifier cette connexion. Reconnectez votre Business Manager pour renouveler son autorisation.",
   META_PERMISSION_REQUIRED:
     "Certaines autorisations Meta manquent. Reconnectez le compte et accordez les permissions nécessaires.",
   META_RATE_LIMIT:

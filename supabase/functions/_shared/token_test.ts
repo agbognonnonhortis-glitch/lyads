@@ -72,6 +72,16 @@ Deno.test("Introspection uses app credentials server-side and distinguishes inva
       ...options,
       fetcher: async () =>
         Response.json({
+          error: { code: 100, message: "PRIVATE TOKEN DETAILS" },
+        }, { status: 400 }),
+    }),
+    /META_TOKEN_UNVERIFIED/,
+  );
+  await assert.rejects(
+    inspectToken({
+      ...options,
+      fetcher: async () =>
+        Response.json({
           error: { code: 190, message: "SECRET PROVIDER DETAIL" },
         }, { status: 400 }),
     }),
