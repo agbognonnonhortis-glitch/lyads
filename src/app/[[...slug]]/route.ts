@@ -1,3 +1,4 @@
+import { renderAppShell } from "@/lib/shell/render";
 import { renderDashboard } from "@/lib/dashboard/render";
 import {
   canSwitchOrganization,
@@ -97,19 +98,26 @@ export async function GET(request: NextRequest) {
           return client.redirect("/app/tableau-de-bord");
         return client.apply(
           new NextResponse(
-            renderOrganization(
-              ref === "C1.1"
-                ? renderDashboard(
-                    renderSource(
+            renderAppShell(
+              renderOrganization(
+                ref === "C1.1"
+                  ? renderDashboard(
+                      renderSource(
+                        ref,
+                        url.searchParams.get("view") ?? undefined,
+                      )!,
+                      data,
+                    )
+                  : renderSource(
                       ref,
                       url.searchParams.get("view") ?? undefined,
                     )!,
-                    data,
-                  )
-                : renderSource(ref, url.searchParams.get("view") ?? undefined)!,
+                ref,
+                data.organization,
+                data.organizations || [],
+              ),
               ref,
-              data.organization,
-              data.organizations || [],
+              data,
             ),
             {
               headers: {
