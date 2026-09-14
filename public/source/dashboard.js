@@ -603,13 +603,26 @@
             event.replace("offsite_conversion.custom.", "");
         const rows = data.rows.filter((r) => r.result_event === event);
         return (
-          `<h3>${esc(label)}</h3><p class="dashboard-note">${event === "purchase" ? "ROAS décroissant, puis coût par achat croissant, puis nombre d’achats décroissant." : "Coût par résultat croissant, puis nombre de résultats décroissant."}</p>` +
+          `<h3 class="dashboard-best-event">${esc(label)}</h3>` +
           rows
-            .map(
-              (r) =>
-                `<details class="dashboard-row" open><summary>${esc(r.rank)}. ${esc(r.name)}</summary><div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div><dl><dt>${esc(label)}</dt><dd>${number(r.results)}</dd><dt>${event === "purchase" ? "Coût par achat" : "Coût par résultat"}</dt><dd>${fmt(r.cost_per_result, "cpa", r.currency)}</dd>${event === "purchase" ? `<dt>ROAS</dt><dd>${number(r.roas)}</dd>` : ""}<dt>Dépense</dt><dd>${fmt(r.spend, "spend", r.currency)}</dd><dt>Impressions</dt><dd>${number(r.impressions)}</dd><dt>Clics</dt><dd>${number(r.clicks)}</dd></dl></details>`,
-            )
-            .join("")
+            .map((r) => {
+              const costLabel =
+                event === "purchase"
+                  ? "Coût par achat"
+                  : event === "lead"
+                    ? "Coût par lead"
+                    : event === "complete_registration"
+                      ? "Coût par inscription"
+                      : "Coût par résultat";
+              const primary = [
+                ...(event === "purchase" ? [["ROAS", number(r.roas)]] : []),
+                [costLabel, fmt(r.cost_per_result, "cpa", r.currency)],
+                [label, number(r.results)],
+              ];
+              return `<article class="dashboard-best-ad"><header class="dashboard-best-heading"><span class="dashboard-best-rank" aria-label="Rang ${esc(r.rank)}">${esc(r.rank)}</span><h4>${esc(r.name)}</h4></header><div class="dashboard-best-layout"><div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div><div class="dashboard-best-stats"><dl class="dashboard-best-primary">${primary.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl><dl class="dashboard-best-secondary"><dt>Dépense</dt><dd>${fmt(r.spend, "spend", r.currency)}</dd><dt>Impressions</dt><dd>${number(r.impressions)}</dd><dt>Clics</dt><dd>${number(r.clicks)}</dd><dt>CPC</dt><dd>${fmt(r.cpc, "cpc", r.currency)}</dd></dl></div></div></article>`;
+            })
+            .join("") +
+          `<p class="dashboard-best-order">${event === "purchase" ? "Tri : ROAS, puis coût par achat, puis nombre d’achats." : "Tri : coût par résultat, puis nombre de résultats."}</p>`
         );
       })
       .join("");
