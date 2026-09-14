@@ -899,22 +899,41 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  min-height: 44px;
+  height: 48px;
+  min-height: 48px;
+  padding: 10px 14px;
+  line-height: 24px;
   box-sizing: border-box;
   list-style: none;
+  overflow: hidden;
 }
 .dashboard-filters .dashboard-account-picker > summary::after {
   content: "⌄";
   margin-left: auto;
+  flex: 0 0 auto;
 }
 .dashboard-scope-picker > summary[aria-disabled="true"] {
   color: #817b73;
   background: #f5f2ed;
   cursor: default;
 }
-.dashboard-scope-picker .dashboard-account-menu {
-  width: max(100%, 300px);
+.dashboard-filters .dashboard-filter-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dashboard-filters .dashboard-account-menu {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+.dashboard-filters .dashboard-account-menu input[type="checkbox"],
+.dashboard-filters .dashboard-account-menu input[type="radio"] {
+  flex-shrink: 0;
 }
 .dashboard-scope-picker [data-scope-options] {
   max-height: 280px;

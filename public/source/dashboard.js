@@ -265,8 +265,8 @@
       `<span class="dashboard-status-dot ${row.effective_status === "ACTIVE" ? "is-active" : ""}" aria-label="${row.effective_status === "ACTIVE" ? "Active" : "Inactive"}"></span>`;
     all(`[data-scope-label="${kind}"]`).forEach((el) => {
       el.innerHTML = selected
-        ? `${dot(selected)}<span>${esc(selected.name)}</span>`
-        : esc(emptyLabel);
+        ? `${dot(selected)}<span class="dashboard-filter-value">${esc(selected.name)}</span>`
+        : `<span class="dashboard-filter-value">${esc(emptyLabel)}</span>`;
       el.setAttribute(
         "aria-disabled",
         String(kind === "adset" && !state.campaign),
