@@ -498,7 +498,7 @@
       return;
     }
     if (action === "dashboard") {
-      go("/app/tableau-de-bord");
+      go("/app/agent");
       return;
     }
     if (action === "resume") {

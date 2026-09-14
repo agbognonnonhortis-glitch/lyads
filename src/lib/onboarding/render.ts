@@ -255,7 +255,13 @@ function navigation(frame: El, ref: string, completed: boolean, step: number) {
     row.append(back);
   }
   if (ref !== "B8") {
-    const next = button(doc, "Suivant", primaryAction);
+    const next = button(
+      doc,
+      ref === "B11" && completed
+        ? "Accéder aux analyses de l’agent"
+        : "Suivant",
+      primaryAction,
+    );
     next.setAttribute("data-onboarding-primary", "");
     row.append(next);
   }
@@ -1120,19 +1126,10 @@ export function renderOnboarding(
       );
       main.append(
         summary,
-        card(
-          doc,
-          "Synchronisation des données",
-          data.jobs.some(
-            (j: any) => j.kind === "meta.sync" && j.status === "succeeded",
-          )
-            ? "Un import Meta a terminé. La fraîcheur est consultable par compte."
-            : "La synchronisation des comptes sélectionnés sera lancée en arrière-plan. Aucun scan ni recommandation n’est annoncé comme terminé.",
-        ),
         button(
           doc,
           state.completed_at
-            ? "Aller au tableau de bord"
+            ? "Accéder aux analyses de l’agent"
             : "Reprendre ma configuration",
           state.completed_at ? "dashboard" : "resume",
         ),
