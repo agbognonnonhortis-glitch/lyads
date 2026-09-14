@@ -980,9 +980,9 @@
     const accounts = state.accounts.filter((a) => state.ids.includes(a.id));
     if (!accounts.length) return;
     const d = dialog(
-      `<form><h2>Seuils des alertes</h2><label>Compte publicitaire<select name="account">${accounts.map((a) => `<option value="${esc(a.id)}">${esc(a.name)} (${esc(a.currency)})</option>`).join("")}</select></label><p class="dashboard-note">Renseignez les objectifs utiles à votre activité. La cible achat s’applique aux ventes, la cible inscription aux leads. Le CPR cible s’applique aux autres résultats et sert de référence si aucune cible spécifique n’est renseignée. Lyads gère automatiquement les autres réglages.</p><div data-alert-fields></div><p role="alert"></p><div class="dashboard-period-actions"><button type="button" data-close>Annuler</button><button type="submit" disabled>Enregistrer</button></div></form>`,
+      `<form><h2>Seuils des alertes</h2><label>Compte publicitaire<select name="account">${accounts.map((a) => `<option value="${esc(a.id)}">${esc(a.name)} (${esc(a.currency)})</option>`).join("")}</select></label><p class="dashboard-note">Renseignez les cibles utiles à votre activité. Le CPR sert de référence lorsqu’aucune cible spécifique n’est renseignée. Lyads gère automatiquement les autres réglages.</p><div data-alert-fields></div><p role="alert"></p><div class="dashboard-period-actions"><button type="button" data-close>Annuler</button><button type="submit" disabled>Enregistrer</button></div></form>`,
     );
-    d.classList.add("dashboard-period-dialog");
+    d.classList.add("dashboard-period-dialog", "dashboard-targets-dialog");
     const form = d.querySelector("form"),
       account = form.elements.namedItem("account"),
       save = d.querySelector('[type="submit"]');
