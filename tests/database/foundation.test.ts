@@ -1324,6 +1324,83 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Additional accounts preserve completed onboarding and start sync with strict business authorization",
+      async () => {
+        await admin();
+        const saved = (
+          await db.query<any>(
+            "select * from lyads_onboarding where brain#>>'{activity,name}'='Client business'",
+          )
+        ).rows[0];
+        const extra = await uuid(
+          "insert into lyads_ad_accounts(workspace_id,connection_id,meta_account_id,name,currency,timezone_name) values($1,$2,'act_9999','Additional account','EUR','UTC')",
+          [saved.workspace_id, saved.connection_id],
+        );
+        await db.query(
+          "insert into lyads_business_accounts(workspace_id,connection_id,business_meta_id,ad_account_id) values($1,$2,$3,$4)",
+          [
+            saved.workspace_id,
+            saved.connection_id,
+            saved.business_meta_id,
+            extra,
+          ],
+        );
+        const sql = "select lyads_connect_ad_accounts($1,$2,$3::uuid[]) ids";
+        await asUser(bob);
+        await sqlError(
+          sql,
+          [saved.workspace_id, saved.revision, [extra]],
+          "42501",
+        );
+        await asUser(alice);
+        await sqlError(
+          sql,
+          [saved.workspace_id, saved.revision, [b.account]],
+          "42501",
+        );
+        await sqlError(
+          sql,
+          [saved.workspace_id, saved.revision - 1, [extra]],
+          "40001",
+        );
+        const connected = (
+          await db.query<any>(sql, [
+            saved.workspace_id,
+            saved.revision,
+            [extra],
+          ])
+        ).rows[0].ids;
+        assert.equal(connected.length, saved.ad_account_ids.length + 1);
+        const after = (
+          await db.query<any>(
+            "select * from lyads_onboarding where workspace_id=$1",
+            [saved.workspace_id],
+          )
+        ).rows[0];
+        assert.deepEqual(after.completed_at, saved.completed_at);
+        assert.deepEqual(after.brain, saved.brain);
+        assert.deepEqual(after.pixels, saved.pixels);
+        assert.equal(after.current_step, 10);
+        const job = (
+          await db.query<any>(
+            "select id from lyads_jobs where ad_account_id=$1 and kind='meta.sync'",
+            [extra],
+          )
+        ).rows;
+        assert.equal(job.length, 1);
+        await db.query(sql, [saved.workspace_id, after.revision, [extra]]);
+        assert.equal(
+          (
+            await db.query<any>(
+              "select id from lyads_jobs where ad_account_id=$1 and kind='meta.sync'",
+              [extra],
+            )
+          ).rows.length,
+          1,
+        );
+      },
+    );
+    await t.test(
       "Website jobs isolate tenants, validate evidence and preserve concurrent manual edits",
       async () => {
         await admin();

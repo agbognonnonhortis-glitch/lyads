@@ -272,6 +272,21 @@
         .join("");
       select.size = Math.min(3, Math.max(1, c.accounts.length));
     });
+    text(
+      "[data-account-picker-label]",
+      c.accounts
+        .filter((a) => state.ids.includes(a.id))
+        .map((a) => `${a.name} (${a.currency})`)
+        .join(", ") || "Choisir un compte publicitaire",
+    );
+    all("[data-account-picker-options]").forEach((el) => {
+      el.innerHTML = c.accounts
+        .map(
+          (a) =>
+            `<label><input type="checkbox" data-account-choice value="${esc(a.id)}" ${state.ids.includes(a.id) ? "checked" : ""}>${esc(a.name)} (${esc(a.currency)})</label>`,
+        )
+        .join("");
+    });
     text("[data-credit-balance]", number(c.credits?.available));
     text(
       "[data-account-currency]",
@@ -784,6 +799,100 @@
     d.showModal();
     return d;
   }
+  async function addAccountDialog() {
+    all(".dashboard-account-picker").forEach((el) =>
+      el.removeAttribute("open"),
+    );
+    const d = dialog(
+      '<form><h2 id="add-account-title">Ajouter un nouveau compte publicitaire</h2><p data-business-name class="dashboard-note"></p><label>Rechercher un compte<input type="search" data-account-search placeholder="Nom ou identifiant du compte"></label><div data-available-accounts>Chargement des comptes…</div><p role="alert"></p><div class="dashboard-period-actions"><button type="button" data-close>Annuler</button><button type="submit" disabled>Ajouter les comptes sélectionnés</button></div><button type="button" class="dashboard-connect-business" data-connect-business disabled>Connecter un nouveau Business Manager</button></form>',
+    );
+    d.classList.add("dashboard-period-dialog", "dashboard-accounts-dialog");
+    d.setAttribute("aria-labelledby", "add-account-title");
+    const form = d.querySelector("form"),
+      error = form.querySelector("[role=alert]"),
+      list = form.querySelector("[data-available-accounts]"),
+      submit = form.querySelector("[type=submit]"),
+      connect = form.querySelector("[data-connect-business]");
+    let loaded;
+    form.querySelector("[data-close]").onclick = () => d.close();
+    const selected = () =>
+      [...list.querySelectorAll("input:checked:not(:disabled)")].map(
+        (el) => el.value,
+      );
+    list.addEventListener("change", () => {
+      submit.disabled = !selected().length;
+    });
+    form
+      .querySelector("[data-account-search]")
+      .addEventListener("input", (event) => {
+        const q = event.target.value.toLocaleLowerCase("fr");
+        list.querySelectorAll("[data-account-search-text]").forEach((el) => {
+          el.hidden = !el.dataset.accountSearchText.includes(q);
+        });
+      });
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!loaded || !selected().length) return;
+      submit.disabled = true;
+      error.textContent = "";
+      try {
+        await api(
+          `/api/organizations/${encodeURIComponent(config.organization)}/accounts/connect`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              revision: loaded.revision,
+              accountIds: selected(),
+            }),
+          },
+        );
+        d.close();
+        await refresh();
+      } catch (e) {
+        error.textContent = e.message;
+        submit.disabled = false;
+      }
+    });
+    connect.onclick = async () => {
+      connect.disabled = true;
+      error.textContent = "";
+      try {
+        const result = await api("/api/meta/connect", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ workspaceId: config.organization }),
+        });
+        location.assign(result.redirect);
+      } catch (e) {
+        error.textContent = e.message;
+        connect.disabled = false;
+      }
+    };
+    try {
+      loaded = await api(
+        `/api/organizations/${encodeURIComponent(config.organization)}/accounts/connect`,
+      );
+      if (!d.isConnected) return;
+      form.querySelector("[data-business-name]").textContent =
+        loaded.businessName || "Business Manager sélectionné";
+      list.innerHTML = loaded.accounts.length
+        ? loaded.accounts
+            .map((a) => {
+              const connected = loaded.connected.includes(a.id);
+              return `<label class="dashboard-connect-account" data-account-search-text="${esc((a.name + " " + a.meta_account_id).toLocaleLowerCase("fr"))}"><input type="checkbox" value="${esc(a.id)}" ${connected ? "checked disabled" : !loaded.editable ? "disabled" : ""}><span><strong>${esc(a.name)}</strong><small>${esc(a.meta_account_id)} · ${esc(a.currency)}${connected ? " · Déjà connecté" : ""}</small></span></label>`;
+            })
+            .join("")
+        : "<p>Aucun compte publicitaire accessible trouvé pour ce Business Manager.</p>";
+      connect.disabled = !loaded.editable;
+      if (!loaded.editable)
+        error.textContent =
+          "Le propriétaire de l’entreprise doit connecter les nouveaux comptes.";
+    } catch (e) {
+      list.textContent = "";
+      error.textContent = e.message;
+    }
+  }
   function periodDialog() {
     const d = dialog(
       `<form><h2 id="dashboard-period-title">Choisir la période</h2><label>Raccourci<select name="preset"><option value="">Personnalisée</option><option value="today">Aujourd’hui</option><option value="yesterday">Hier</option><option value="7">7 derniers jours</option><option value="30">30 derniers jours</option><option value="90">90 derniers jours</option></select></label><div class="dashboard-period-dates"><label>Du<input type="date" name="since" value="${state.since}" max="${accountToday()}" required></label><label>Au<input type="date" name="until" value="${state.until}" max="${accountToday()}" required></label></div><p class="dashboard-note" role="alert"></p><div class="dashboard-period-actions"><button type="button" data-close>Annuler</button><button type="submit">Appliquer</button></div></form>`,
@@ -891,6 +1000,10 @@
     await load();
   }
   function action(name, el) {
+    if (name === "add-account") {
+      addAccountDialog();
+      return;
+    }
     if (name === "sync") sync();
     else if (name === "period") periodDialog();
     else if (name === "alert-settings") alertSettingsDialog();
@@ -962,6 +1075,20 @@
     }
   });
   document.addEventListener("change", (e) => {
+    if (e.target.matches("[data-account-choice]")) {
+      const chosen = e.target.value;
+      const ids = e.target.checked
+        ? [...new Set([...state.ids, chosen])]
+        : state.ids.filter((id) => id !== chosen);
+      if (!ids.length) {
+        e.target.checked = true;
+        message("Sélectionnez au moins un compte publicitaire.");
+        return;
+      }
+      state.ids = ids;
+      refresh();
+      return;
+    }
     if (!e.target.matches("[data-dashboard-accounts]")) return;
     const ids = [...e.target.selectedOptions].map((o) => o.value);
     if (!ids.length) {

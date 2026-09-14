@@ -573,3 +573,102 @@
 .dashboard-video-play[hidden] {
   display: none;
 }
+
+.dashboard-account-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.dashboard-account-picker {
+  position: relative;
+  min-width: 240px;
+  max-width: 100%;
+}
+.dashboard-account-picker > summary {
+  background: #fff;
+  border: 1px solid #d6cfc2;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 400;
+}
+.dashboard-account-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  min-width: 100%;
+  width: max-content;
+  max-width: min(430px, 85vw);
+  padding: 12px;
+  background: white;
+  border: 1px solid #e8e3d9;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px #2c29251f;
+}
+.dashboard-account-menu [data-account-picker-options] {
+  max-height: 260px;
+  overflow-y: auto;
+}
+.dashboard-account-menu label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 4px;
+  cursor: pointer;
+}
+.dashboard-account-menu button {
+  display: block;
+  width: 100%;
+  background: none;
+  border: 0;
+  border-top: 1px solid #e8e3d9;
+  margin-top: 8px;
+  padding: 12px 4px 3px;
+  color: #b44a26;
+  text-align: left;
+  font:
+    600 14px Figtree,
+    sans-serif;
+  cursor: pointer;
+}
+.dashboard-accounts-dialog [data-available-accounts] {
+  max-height: 42vh;
+  overflow-y: auto;
+}
+.dashboard-accounts-dialog .dashboard-connect-account {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e8e3d9;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+.dashboard-accounts-dialog .dashboard-connect-account[hidden] {
+  display: none;
+}
+.dashboard-accounts-dialog .dashboard-connect-account input {
+  width: 18px;
+  min-height: 18px;
+  flex-shrink: 0;
+  accent-color: #b44a26;
+}
+.dashboard-connect-account small {
+  display: block;
+  color: #6e6862;
+  margin-top: 4px;
+}
+.dashboard-accounts-dialog .dashboard-connect-business {
+  width: 100%;
+  margin-top: 20px;
+  color: #b44a26;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid #e8e3d9;
+  border-radius: 0;
+  padding-top: 18px;
+}

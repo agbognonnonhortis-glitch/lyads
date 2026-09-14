@@ -214,7 +214,7 @@ export function renderDashboard(html: string, data: OnboardingData) {
       const toolbar = doc.createElement("div");
       toolbar.className = "dashboard-toolbar";
       toolbar.innerHTML =
-        '<label>Comptes publicitaires <select data-dashboard-accounts aria-label="Comptes publicitaires" multiple></select></label><p class="dashboard-note" data-dashboard-status role="status"></p><p class="dashboard-note" data-alert-status role="status"></p><button type="button" data-dashboard-action="alert-settings">Régler les seuils d’alerte</button>';
+        '<div class="dashboard-account-control"><span>Comptes publicitaires</span><select data-dashboard-accounts aria-label="Comptes publicitaires" multiple hidden></select><details class="dashboard-account-picker"><summary data-account-picker-label>Choisir un compte publicitaire</summary><div class="dashboard-account-menu"><div data-account-picker-options></div><button type="button" data-dashboard-action="add-account">+ Ajouter un nouveau compte publicitaire</button></div></details></div><p class="dashboard-note" data-dashboard-status role="status"></p><p class="dashboard-note" data-alert-status role="status"></p><button type="button" data-dashboard-action="alert-settings">Régler les seuils d’alerte</button>';
       const progress = doc.createElement("section");
       progress.className = "dashboard-sync-progress";
       progress.setAttribute("data-sync-progress", "");
