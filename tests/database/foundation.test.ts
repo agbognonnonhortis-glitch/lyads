@@ -1748,6 +1748,78 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
             all.find((r: any) => r.bucket === volumeWinner).bar_ratio,
             1,
           );
+          const scopedBrowse =
+            "select public.lyads_scoped_account_ads($1,$2,'2026-09-01','2026-09-07',$3,5,$4,$5) result";
+          const scopedRows: any[] = [];
+          let offset: number | null = 0;
+          while (offset !== null) {
+            const page: any = (
+              await db.query<any>(scopedBrowse, [
+                wa,
+                [a.account],
+                offset,
+                a.campaign,
+                null,
+              ])
+            ).rows[0].result;
+            assert.ok(page.rows.length <= 5);
+            scopedRows.push(...page.rows);
+            offset = page.nextOffset;
+          }
+          assert.equal(scopedRows.length, first.totalAds);
+          const buys = scopedRows.filter(
+            (r: any) => r.result_event === "purchase",
+          );
+          assert.equal(
+            buys[0].name,
+            "Tiny sample",
+            "Low spend and volume no longer exclude the best ROAS",
+          );
+          assert.equal(buys[1].name, "Too recent", "A one-day ad can rank");
+          assert.deepEqual(
+            buys.slice(2, 5).map((r: any) => r.bucket),
+            [volumeWinner, costWinner, winner],
+          );
+          assert.equal(
+            scopedRows.find((r: any) => r.bucket === noData).spend,
+            null,
+          );
+          const oneSet = (
+            await db.query<any>(scopedBrowse, [
+              wa,
+              [a.account],
+              0,
+              a.campaign,
+              a.adset,
+            ])
+          ).rows[0].result;
+          assert.equal(oneSet.totalAds, 1);
+          assert.equal(oneSet.rows[0].bucket, a.ad);
+          await db.exec("savepoint scope_denied");
+          await sqlError(
+            scopedBrowse,
+            [wa, [a.account], 0, b.campaign, null],
+            "42501",
+          );
+          await db.exec("rollback to savepoint scope_denied");
+          // A day with clicks but no purchase entry must not erase purchases on other days.
+          await admin();
+          await db.query(
+            "update public.lyads_insight_snapshots set metrics=jsonb_set(jsonb_set(metrics,'{actions}','[{\"action_type\":\"link_click\",\"value\":\"2\"}]'),'{action_values}','[]') where ad_id=$1 and date_start='2026-09-03'",
+            [costWinner],
+          );
+          await asUser(alice);
+          const sparse = (
+            await db.query<any>(
+              "select public.lyads_scoped_account_ads($1,$2,'2026-09-01','2026-09-07',0,100) result",
+              [wa, [a.account]],
+            )
+          ).rows[0].result.rows.find((r: any) => r.bucket === costWinner);
+          assert.equal(sparse.results, 40);
+          assert.equal(sparse.revenue, 400);
+          assert.equal(sparse.spend, 60);
+          assert.equal(sparse.cost_per_result, 1.5);
+          assert.ok(Math.abs(sparse.roas - 400 / 60) < 1e-10);
           await db.exec("savepoint invalid_page");
           await sqlError(browse, [wa, [a.account], -1], "22023");
           await db.exec("rollback to savepoint invalid_page");
@@ -1880,6 +1952,205 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
           ).rows[0].result;
           assert.deepEqual(empty, []);
         } finally {
+          await db.exec("rollback");
+        }
+      },
+    );
+    await t.test(
+      "Campaign/ad set dashboard scope isolates metrics, placements, alerts and tenants",
+      async () => {
+        await admin();
+        await db.exec("begin");
+        try {
+          await db.query(
+            "delete from public.lyads_insight_snapshots where ad_account_id=$1",
+            [a.account],
+          );
+          const otherCampaign = await uuid(
+            "insert into public.lyads_campaigns(workspace_id,ad_account_id,meta_campaign_id,name,effective_status,source_data,synchronized_at) values($1,$2,'scope-other','Inactive campaign','PAUSED','{}',now())",
+            [wa, a.account],
+          );
+          const otherSet = await uuid(
+            "insert into public.lyads_ad_sets(workspace_id,ad_account_id,campaign_id,meta_ad_set_id,name,source_data,synchronized_at) values($1,$2,$3,'scope-other','Other set','{}',now())",
+            [wa, a.account, otherCampaign],
+          );
+          await db.query(
+            "update public.lyads_campaigns set effective_status='ACTIVE' where id=$1",
+            [a.campaign],
+          );
+          for (const [level, id, spend] of [
+            ["account", null, 999],
+            ["campaign", a.campaign, 50],
+            ["campaign", otherCampaign, 700],
+            ["ad_set", a.adset, 20],
+            ["ad_set", otherSet, 600],
+          ] as const) {
+            for (const breakdown of [
+              "",
+              "publisher_platform,platform_position",
+            ]) {
+              for (const date of ["2026-08-25", "2026-09-01", "2026-09-08"]) {
+                await db.query(
+                  "insert into public.lyads_insight_snapshots(workspace_id,ad_account_id,sync_run_id,level,campaign_id,ad_set_id,date_start,date_stop,query_context,deduplication_key,currency,metrics,fetched_at) values($1,$2,$3,$4,$5,$6,$7,$7,$8,$9,'EUR',$10,now())",
+                  [
+                    wa,
+                    a.account,
+                    a.sync,
+                    level,
+                    level === "campaign" ? id : null,
+                    level === "ad_set" ? id : null,
+                    date,
+                    JSON.stringify({
+                      breakdowns: breakdown,
+                      breakdown_values: {
+                        publisher_platform: "instagram",
+                        platform_position: "story",
+                      },
+                    }),
+                    [level, id, breakdown, date].join(":"),
+                    JSON.stringify({
+                      spend: String(date === "2026-09-01" ? spend : spend / 2),
+                    }),
+                  ],
+                );
+              }
+            }
+          }
+          await asUser(alice);
+          const filtersQuery =
+            "select public.lyads_dashboard_scope($1,$2,$3,$4,true) result";
+          const filters = (
+            await db.query<any>(filtersQuery, [
+              wa,
+              [a.account],
+              a.campaign,
+              null,
+            ])
+          ).rows[0].result;
+          assert.ok(
+            filters.campaigns.some(
+              (c: any) =>
+                c.id === a.campaign && c.effective_status === "ACTIVE",
+            ),
+          );
+          assert.ok(
+            filters.campaigns.some(
+              (c: any) =>
+                c.id === otherCampaign && c.effective_status === "PAUSED",
+            ),
+          );
+          assert.deepEqual(
+            filters.adSets.map((s: any) => s.id),
+            [a.adset],
+          );
+          const metricsQuery =
+            "select public.lyads_scoped_dashboard_metrics($1,$2,'2026-09-01','2026-09-07',$3,$4,$5) result";
+          for (const [campaign, set, spend] of [
+            [null, null, 999],
+            [a.campaign, null, 50],
+            [a.campaign, a.adset, 20],
+            [otherCampaign, null, 700],
+          ] as const) {
+            for (const zone of ["kpis", "series", "placements", "campaigns"]) {
+              const rows = (
+                await db.query<any>(metricsQuery, [
+                  wa,
+                  [a.account],
+                  zone,
+                  campaign,
+                  set,
+                ])
+              ).rows[0].result;
+              if (zone === "campaigns" && !campaign) {
+                assert.equal(rows.length, 2);
+                continue;
+              }
+              const current = rows.find(
+                (r: any) =>
+                  r.bucket ===
+                  (zone === "kpis"
+                    ? "current"
+                    : zone === "series"
+                      ? "2026-09-01"
+                      : zone === "placements"
+                        ? "instagram / story"
+                        : campaign),
+              );
+              assert.equal(current.spend, spend, zone);
+              if (zone === "kpis")
+                assert.equal(
+                  rows.find((r: any) => r.bucket === "previous").spend,
+                  spend / 2,
+                );
+              if (zone === "series")
+                assert.deepEqual(
+                  rows.map((r: any) => r.bucket),
+                  ["2026-08-25", "2026-09-01"],
+                );
+              if (zone === "placements") assert.equal(rows.length, 1);
+            }
+          }
+          const alerts = [
+            { account_id: a.account, level: "campaign", entity_id: a.campaign },
+            {
+              account_id: a.account,
+              level: "campaign",
+              entity_id: otherCampaign,
+            },
+            { account_id: a.account, level: "ad_set", entity_id: a.adset },
+            { account_id: a.account, level: "ad_set", entity_id: otherSet },
+            { account_id: a.account, level: "ad", entity_id: a.ad },
+            { account_id: b.account, level: "ad", entity_id: b.ad },
+          ];
+          const alertQuery =
+            "select public.lyads_scoped_performance_alerts($1,$2,$3,$4,$5) result";
+          assert.deepEqual(
+            (
+              await db.query<any>(alertQuery, [
+                wa,
+                [a.account],
+                a.campaign,
+                null,
+                JSON.stringify(alerts),
+              ])
+            ).rows[0].result.map((r: any) => r.entity_id),
+            [a.campaign, a.adset, a.ad],
+          );
+          assert.deepEqual(
+            (
+              await db.query<any>(alertQuery, [
+                wa,
+                [a.account],
+                a.campaign,
+                a.adset,
+                JSON.stringify(alerts),
+              ])
+            ).rows[0].result.map((r: any) => r.entity_id),
+            [a.adset, a.ad],
+          );
+          for (const [campaign, set] of [
+            [a.campaign, otherSet],
+            [null, a.adset],
+            [b.campaign, null],
+          ]) {
+            await db.exec("savepoint invalid_scope");
+            await sqlError(
+              metricsQuery,
+              [wa, [a.account], "kpis", campaign, set],
+              "42501",
+            );
+            await db.exec("rollback to savepoint invalid_scope");
+          }
+          await asUser(bob);
+          await db.exec("savepoint tenant");
+          await sqlError(
+            filtersQuery,
+            [wa, [a.account], a.campaign, null],
+            "42501",
+          );
+          await db.exec("rollback to savepoint tenant");
+        } finally {
+          await admin();
           await db.exec("rollback");
         }
       },

@@ -78,6 +78,32 @@ export async function GET(
         "Sélectionnez un compte publicitaire connecté à cette entreprise.",
       );
     const accounts = available.filter((a) => ids.includes(a.id));
+    const campaign = q.get("campaign") || null;
+    const adSet = q.get("adset") || null;
+    if ((campaign && !uuid(campaign)) || (adSet && !uuid(adSet)))
+      throw new ApiError(
+        "INVALID_SCOPE",
+        400,
+        "Sélectionnez une campagne et un ensemble valides.",
+      );
+    const scopeArgs = {
+      target_workspace: organization,
+      target_accounts: ids,
+      target_campaign: campaign,
+      target_ad_set: adSet,
+    };
+    const scope = await client.supabase.rpc("lyads_dashboard_scope", {
+      ...scopeArgs,
+      include_options: zone === "context",
+    });
+    if (scope.error?.code === "42501")
+      throw new ApiError(
+        "INVALID_SCOPE",
+        403,
+        "Cette campagne ou cet ensemble n’appartient pas aux comptes sélectionnés.",
+      );
+    if (scope.error) throw scope.error;
+
     let issues: ReturnType<typeof connectionIssues> = [];
     if (["context", "alerts"].includes(zone) && accounts.length) {
       const connections = await client.supabase
@@ -92,6 +118,7 @@ export async function GET(
     }
     const fresh = freshness(accounts);
     const common = {
+      scope: { campaign, adSet },
       freshness: fresh,
       selected: ids,
       currency:
@@ -130,6 +157,7 @@ export async function GET(
         throw jobs.error || credits.error || profile.error;
       return client.json({
         ...common,
+        ...scope.data,
         accounts: available,
         selected: ids,
         jobs: jobs.data,
@@ -224,12 +252,16 @@ export async function GET(
       const failed = (scans.data || []).some((s) =>
         ["failed", "cancelled"].includes(s.status),
       );
-      const rows = [
-        ...scanResults.flatMap((result) =>
-          (result?.rows || []).map(formatPerformanceAlert),
-        ),
-        ...issues,
-      ];
+      const filtered = await client.supabase.rpc(
+        "lyads_scoped_performance_alerts",
+        {
+          ...scopeArgs,
+          alerts: scanResults.flatMap((result) => result?.rows || []),
+        },
+      );
+      if (filtered.error) throw filtered.error;
+      const performanceRows = (filtered.data || []).map(formatPerformanceAlert);
+      const rows = [...performanceRows, ...issues];
       return client.json({
         ...common,
         period,
@@ -237,9 +269,9 @@ export async function GET(
         pending,
         performanceAvailable,
         scans: scans.data,
-        sufficientData: scanResults.some(
-          (result) => result?.sufficient_entities > 0,
-        ),
+        sufficientData: campaign
+          ? performanceRows.length > 0
+          : scanResults.some((result) => result?.sufficient_entities > 0),
         sufficiencyReason: scanResults.every(
           (result) => !result?.sufficient_entities,
         )
@@ -251,11 +283,13 @@ export async function GET(
             ? "Analyse des performances en cours…"
             : failed
               ? "L’analyse des performances a échoué. Réessayez la synchronisation."
-              : scanResults.every((result) => !result?.source_rows)
-                ? "Aucune métrique importée sur cette période. Synchronisez ce compte pour analyser ses performances."
-                : scanResults.every((result) => !result?.sufficient_entities)
-                  ? "Données insuffisantes : aucune conclusion de performance pour cette période."
-                  : "",
+              : campaign
+                ? ""
+                : scanResults.every((result) => !result?.source_rows)
+                  ? "Aucune métrique importée sur cette période. Synchronisez ce compte pour analyser ses performances."
+                  : scanResults.every((result) => !result?.sufficient_entities)
+                    ? "Données insuffisantes : aucune conclusion de performance pour cette période."
+                    : "",
         needsTargets: scanResults.some((result) =>
           Boolean(result?.needs_targets),
         ),
@@ -276,13 +310,12 @@ export async function GET(
           400,
           "Rechargez la liste des publicités.",
         );
-      const ranking = await client.supabase.rpc("lyads_account_ads", {
-        target_workspace: organization,
-        target_accounts: ids,
+      const ranking = await client.supabase.rpc("lyads_scoped_account_ads", {
+        ...scopeArgs,
         since_date: period.since,
         until_date: period.until,
         page_offset: offset,
-        page_size: 10,
+        page_size: 5,
       });
       if (ranking.error) throw ranking.error;
       if (
@@ -306,9 +339,8 @@ export async function GET(
         conversionMetric: "configured_event",
       });
     }
-    const result = await client.supabase.rpc("lyads_dashboard_metrics", {
-      target_workspace: organization,
-      target_accounts: ids,
+    const result = await client.supabase.rpc("lyads_scoped_dashboard_metrics", {
+      ...scopeArgs,
       since_date: period.since,
       until_date: period.until,
       zone,

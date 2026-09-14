@@ -84,6 +84,28 @@ function harness(
               timezone_name: "UTC",
             },
           ],
+          campaigns: [
+            {
+              id: "campaign-a",
+              name: "Campagne active",
+              effective_status: "ACTIVE",
+            },
+            {
+              id: "campaign-b",
+              name: "Campagne arrêtée",
+              effective_status: "PAUSED",
+            },
+          ],
+          adSets:
+            u.searchParams.get("campaign") === "campaign-a"
+              ? [
+                  {
+                    id: "set-a",
+                    name: "Ensemble A",
+                    effective_status: "ACTIVE",
+                  },
+                ]
+              : [],
           selected: ["account"],
           connectionIssues: scenario.blocked
             ? [
@@ -129,7 +151,7 @@ function harness(
           scenario.paginatedAds &&
           zone === "creatives" &&
           !u.searchParams.has("offset")
-            ? 10
+            ? 5
             : null,
         rows:
           zone === "kpis" && !scenario.empty
@@ -140,7 +162,7 @@ function harness(
                 ? scenario.recommendations || []
                 : zone === "creatives" && scenario.paginatedAds
                   ? Array.from(
-                      { length: u.searchParams.has("offset") ? 1 : 10 },
+                      { length: u.searchParams.has("offset") ? 1 : 5 },
                       (_, i) => ({
                         bucket: `ad-${i + Number(u.searchParams.get("offset") || 0)}`,
                         name: `Annonce ${i + Number(u.searchParams.get("offset") || 0)}`,
@@ -513,7 +535,7 @@ test("Real media renders a player, hover previews muted, click keeps playback af
   assert.equal(pauses, 2);
 });
 
-test("Ads load ten at a time and stay collapsed until the user opens one", async () => {
+test("Ads load five at a time and stay collapsed until the user opens one", async () => {
   const h = harness(
     false,
     "EUR",
@@ -522,20 +544,106 @@ test("Ads load ten at a time and stay collapsed until the user opens one", async
   );
   await wait();
   const zone = h.document.querySelector('[data-zone="creatives"]')!;
-  assert.equal(zone.querySelectorAll("[data-best-ad]").length, 10);
+  assert.equal(zone.querySelectorAll("[data-best-ad]").length, 5);
   assert.equal(zone.querySelectorAll("[data-best-ad][open]").length, 0);
   assert.equal(zone.querySelectorAll("video").length, 0);
-  assert.equal(zone.querySelectorAll(".dashboard-best-bar").length, 10);
+  assert.equal(zone.querySelectorAll(".dashboard-best-bar").length, 5);
   zone
     .querySelector('[data-dashboard-action="more-ads"]')!
     .dispatchEvent(new h.window.Event("click", { bubbles: true }));
   await wait();
-  assert.equal(zone.querySelectorAll("[data-best-ad]").length, 11);
+  assert.equal(zone.querySelectorAll("[data-best-ad]").length, 6);
   assert.equal(zone.querySelector('[data-dashboard-action="more-ads"]'), null);
   const request = h.requests.find(
-    (u: URL) => u.searchParams.get("offset") === "10",
+    (u: URL) => u.searchParams.get("offset") === "5",
   )!;
   assert.equal(request.searchParams.get("accounts"), "account");
   assert.equal(request.searchParams.get("since"), "2026-09-01");
   assert.equal(request.searchParams.get("until"), "2026-09-07");
+});
+
+test("Campaign and ad set filters scope every widget and reset child selections", async () => {
+  const h = harness(
+    false,
+    "EUR",
+    "http://localhost/?since=2026-09-01&until=2026-09-07",
+  );
+  await wait();
+  assert.equal(
+    h.document
+      .querySelector('[data-scope-label="adset"]')!
+      .getAttribute("aria-disabled"),
+    "true",
+  );
+  const choose = async (kind: string, value: string) => {
+    const input = h.document.querySelector(
+      `[data-scope-choice="${kind}"][value="${value}"]`,
+    )!;
+    assert.ok(input);
+    input.dispatchEvent(new h.window.Event("change", { bubbles: true }));
+    await wait();
+  };
+  const verify = (campaign: string | null, adset: string | null) => {
+    for (const zone of [
+      "kpis",
+      "series",
+      "creatives",
+      "campaigns",
+      "placements",
+      "alerts",
+      "recommendations",
+    ]) {
+      const request = h.requests
+        .filter((u: URL) => u.pathname.endsWith("/" + zone))
+        .at(-1)!;
+      assert.equal(request.searchParams.get("campaign"), campaign, zone);
+      assert.equal(request.searchParams.get("adset"), adset, zone);
+    }
+  };
+  assert.ok(
+    h.document
+      .querySelector('[value="campaign-a"]')!
+      .parentElement!.querySelector(".is-active"),
+  );
+  assert.equal(
+    h.document
+      .querySelector('[value="campaign-b"]')!
+      .parentElement!.querySelector(".is-active"),
+    null,
+  );
+  await choose("campaign", "campaign-a");
+  verify("campaign-a", null);
+  await choose("adset", "set-a");
+  verify("campaign-a", "set-a");
+  await choose("campaign", "campaign-b");
+  verify("campaign-b", null);
+  await choose("campaign", "");
+  verify(null, null);
+  await choose("campaign", "campaign-a");
+  const account = h.document.querySelector("[data-account-choice]")! as any;
+  account.checked = true;
+  account.dispatchEvent(new h.window.Event("change", { bubbles: true }));
+  await wait();
+  verify(null, null);
+});
+
+test("Restored scope is preserved when loading more ads; no event headings or volume warnings", async () => {
+  const h = harness(
+    false,
+    "EUR",
+    "http://localhost/?campaign=campaign-a&adset=set-a&since=2026-09-01&until=2026-09-07",
+    { blocked: false, empty: false, paginatedAds: true },
+  );
+  await wait();
+  h.clickElement('[data-dashboard-action="more-ads"]');
+  await wait();
+  const request = h.requests.find((u: URL) => u.searchParams.has("offset"))!;
+  assert.equal(request.searchParams.get("campaign"), "campaign-a");
+  assert.equal(request.searchParams.get("adset"), "set-a");
+  const zone = h.document.querySelector('[data-zone="creatives"]')!;
+  assert.equal(zone.querySelector(".dashboard-best-event"), null);
+  assert.doesNotMatch(
+    zone.textContent,
+    /non classées|Tri :|Données insuffisantes/,
+  );
 });

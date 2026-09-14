@@ -10,6 +10,10 @@
   const state = {
     ids: null,
     accounts: [],
+    campaign: "",
+    adset: "",
+    campaigns: [],
+    adSets: [],
     since: "",
     until: "",
     epoch: 0,
@@ -93,6 +97,8 @@
     return new URLSearchParams({
       organization: config.organization,
       ...(state.ids?.length ? { accounts: state.ids.join(",") } : {}),
+      ...(state.campaign ? { campaign: state.campaign } : {}),
+      ...(state.adset ? { adset: state.adset } : {}),
       since: state.since,
       until: state.until,
     });
@@ -141,6 +147,10 @@
   function persist() {
     const url = new URL(location.href);
     url.searchParams.set("accounts", state.ids.join(","));
+    for (const key of ["campaign", "adset"]) {
+      if (state[key]) url.searchParams.set(key, state[key]);
+      else url.searchParams.delete(key);
+    }
     url.searchParams.set("since", state.since);
     url.searchParams.set("until", state.until);
     history.replaceState(null, "", url);
@@ -249,12 +259,45 @@
         ].join(":"),
       )
       .join(",");
+  function renderScopePicker(kind, rows, emptyLabel) {
+    const selected = rows.find((r) => r.id === state[kind]);
+    const dot = (row) =>
+      `<span class="dashboard-status-dot ${row.effective_status === "ACTIVE" ? "is-active" : ""}" aria-label="${row.effective_status === "ACTIVE" ? "Active" : "Inactive"}"></span>`;
+    all(`[data-scope-label="${kind}"]`).forEach((el) => {
+      el.innerHTML = selected
+        ? `${dot(selected)}<span>${esc(selected.name)}</span>`
+        : esc(emptyLabel);
+      el.setAttribute(
+        "aria-disabled",
+        String(kind === "adset" && !state.campaign),
+      );
+    });
+    all(`[data-scope-picker="${kind}"]`).forEach((picker, index) => {
+      if (kind === "adset" && !state.campaign) picker.open = false;
+      picker.querySelector(`[data-scope-search]`).value = "";
+      picker.querySelector(`[data-scope-options]`).innerHTML =
+        `<label><input type="radio" name="${kind}-${index}" data-scope-choice="${kind}" value="" ${!state[kind] ? "checked" : ""}>${esc(emptyLabel)}</label>` +
+        rows
+          .map(
+            (row) =>
+              `<label data-scope-row><input type="radio" name="${kind}-${index}" data-scope-choice="${kind}" value="${esc(row.id)}" ${state[kind] === row.id ? "checked" : ""}>${dot(row)}<span>${esc(row.name)}</span></label>`,
+          )
+          .join("") +
+        (!rows.length
+          ? `<p class="dashboard-note">${kind === "adset" && !state.campaign ? "Sélectionnez une campagne." : "Aucun élément importé pour cette sélection."}</p>`
+          : "");
+    });
+  }
   async function context(epoch) {
     const c = await api(endpoint("context"));
     if (epoch !== state.epoch) return null;
     state.context = c;
     state.accounts = c.accounts;
     state.ids = c.selected;
+    state.campaigns = c.campaigns || [];
+    state.adSets = c.adSets || [];
+    renderScopePicker("campaign", state.campaigns, "Toutes les campagnes");
+    renderScopePicker("adset", state.adSets, "Tous les ensembles");
     // Only the latest job for each account controls the sync state.
     state.jobs = c.selected
       .map((id) => c.jobs.find((j) => j.ad_account_id === id))
@@ -596,55 +639,29 @@
       post_engagement: "Interactions",
       like: "Mentions J’aime",
     };
-    const groups = [
-      ...new Set(
-        data.rows.map(
-          (r) =>
-            `${r.rank == null ? "unranked" : "ranked"}:${r.result_event || ""}`,
-        ),
-      ),
-    ];
-    let html = groups
-      .map((group) => {
-        const [kind, event] = group.split(":");
+    let html = data.rows
+      .map((r) => {
+        const event = r.result_event;
         const label =
           eventNames[event] ||
-          (event
-            ? "Conversion personnalisée " +
-              event.replace("offsite_conversion.custom.", "")
-            : "Résultats");
-        const rows = data.rows.filter(
-          (r) =>
-            (r.result_event || "") === event &&
-            (r.rank == null ? "unranked" : "ranked") === kind,
-        );
-        return (
-          `<h3 class="dashboard-best-event">${kind === "unranked" ? `${esc(label)} · non classées` : esc(label)}</h3>` +
-          rows
-            .map((r) => {
-              const costLabel =
-                event === "purchase"
-                  ? "Coût par achat"
-                  : event === "lead"
-                    ? "Coût par lead"
-                    : event === "complete_registration"
-                      ? "Coût par inscription"
-                      : "Coût par résultat";
-              const primary = [
-                ...(event === "purchase" ? [["ROAS", number(r.roas)]] : []),
-                [costLabel, fmt(r.cost_per_result, "cpa", r.currency)],
-                [label, number(r.results)],
-              ];
-              return `<details class="dashboard-best-ad" data-best-ad="${esc(r.bucket)}"><summary class="dashboard-best-heading"><span class="dashboard-best-caret" aria-hidden="true">▶</span>${r.rank == null ? "" : `<span class="dashboard-best-rank" aria-label="Rang ${esc(r.rank)}">${esc(r.rank)}</span>`}<span class="dashboard-best-name">${esc(r.name)}</span></summary><div class="dashboard-best-layout"><div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div><div class="dashboard-best-stats"><dl class="dashboard-best-primary">${primary.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl><dl class="dashboard-best-secondary"><dt>Dépense</dt><dd>${fmt(r.spend, "spend", r.currency)}</dd><dt>Impressions</dt><dd>${number(r.impressions)}</dd><dt>Clics</dt><dd>${number(r.clicks)}</dd><dt>CPC</dt><dd>${fmt(r.cpc, "cpc", r.currency)}</dd></dl>${r.rank == null ? `<p class="dashboard-note">${!r.result_event ? "Événement de conversion indisponible." : !r.sufficient_data ? "Données insuffisantes pour un classement." : "ROAS indisponible pour ce classement."}</p>` : ""}</div></div></details><div class="dashboard-bar dashboard-best-bar" aria-hidden="true"><span style="width:${r.rank == null ? 0 : Math.max(0, Math.min(100, Number(r.bar_ratio || 0) * 100))}%"></span></div>`;
-            })
-            .join("") +
-          (kind === "ranked"
-            ? `<p class="dashboard-best-order">${event === "purchase" ? "Tri : ROAS, puis coût par achat, puis nombre d’achats." : "Tri : coût par résultat, puis nombre de résultats."}</p>`
-            : "")
-        );
+          (event ? "Conversions personnalisées" : "Résultats");
+        const costLabel =
+          event === "purchase"
+            ? "Coût par achat"
+            : event === "lead"
+              ? "Coût par lead"
+              : event === "complete_registration"
+                ? "Coût par inscription"
+                : "Coût par résultat";
+        const primary = [
+          ...(event === "purchase" ? [["ROAS", number(r.roas)]] : []),
+          [costLabel, fmt(r.cost_per_result, "cpa", r.currency)],
+          [label, number(r.results)],
+        ];
+        return `<details class="dashboard-best-ad" data-best-ad="${esc(r.bucket)}"><summary class="dashboard-best-heading"><span class="dashboard-best-caret" aria-hidden="true">▶</span>${r.rank == null ? "" : `<span class="dashboard-best-rank" aria-label="Rang ${esc(r.rank)}">${esc(r.rank)}</span>`}<span class="dashboard-best-name">${esc(r.name)}</span></summary><div class="dashboard-best-layout"><div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div><div class="dashboard-best-stats"><dl class="dashboard-best-primary">${primary.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl><dl class="dashboard-best-secondary"><dt>Dépense</dt><dd>${fmt(r.spend, "spend", r.currency)}</dd><dt>Impressions</dt><dd>${number(r.impressions)}</dd><dt>Clics</dt><dd>${number(r.clicks)}</dd><dt>CPC</dt><dd>${fmt(r.cpc, "cpc", r.currency)}</dd></dl></div></div></details><div class="dashboard-bar dashboard-best-bar" aria-hidden="true"><span style="width:${r.rank == null ? 0 : Math.max(0, Math.min(100, Number(r.bar_ratio || 0) * 100))}%"></span></div>`;
       })
       .join("");
-    if (!html) html = "<p>Aucune publicité importée pour ce compte.</p>";
+    if (!html) html = "<p>Aucune publicité importée pour cette sélection.</p>";
     if (data.nextOffset != null)
       html +=
         '<button type="button" class="dashboard-more-ads" data-dashboard-action="more-ads">Afficher plus de publicités</button><p class="dashboard-note" data-more-ads-status role="status"></p>';
@@ -1196,6 +1213,16 @@
     }
   });
   document.addEventListener("change", (e) => {
+    if (e.target.matches("[data-scope-choice]")) {
+      const kind = e.target.dataset.scopeChoice;
+      state[kind] = e.target.value;
+      if (kind === "campaign") state.adset = "";
+      all("[data-scope-picker]").forEach((el) => {
+        el.open = false;
+      });
+      refresh();
+      return;
+    }
     if (e.target.matches("[data-account-choice]")) {
       const chosen = e.target.value;
       const ids = e.target.checked
@@ -1207,6 +1234,7 @@
         return;
       }
       state.ids = ids;
+      state.campaign = state.adset = "";
       refresh();
       return;
     }
@@ -1220,9 +1248,28 @@
       return;
     }
     state.ids = ids;
+    state.campaign = state.adset = "";
     refresh();
   });
+  document.addEventListener("click", (e) => {
+    const summary = e.target.closest(
+      '[data-scope-label][aria-disabled="true"]',
+    );
+    if (summary) e.preventDefault();
+  });
+  document.addEventListener("input", (e) => {
+    if (!e.target.matches("[data-scope-search]")) return;
+    const term = e.target.value.toLocaleLowerCase("fr").trim();
+    e.target
+      .closest("[data-scope-picker]")
+      .querySelectorAll("[data-scope-row]")
+      .forEach((row) => {
+        row.hidden = !row.textContent.toLocaleLowerCase("fr").includes(term);
+      });
+  });
   const q = new URL(location.href).searchParams;
+  state.campaign = q.get("campaign") || "";
+  state.adset = q.get("adset") || "";
   if (q.get("accounts")) state.ids = q.get("accounts").split(",");
   if (
     /^\d{4}-\d{2}-\d{2}$/.test(q.get("since") || "") &&
