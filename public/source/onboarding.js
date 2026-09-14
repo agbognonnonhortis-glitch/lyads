@@ -158,6 +158,7 @@
       if (navigating) return;
       try {
         const { job } = await api("/api/jobs/" + jobId);
+        if (navigating) return;
         if (["failed", "cancelled"].includes(job.status)) {
           const message =
             errors[job.error_code] ||
@@ -399,8 +400,16 @@
         "Les paiements par carte et Mobile Money ne sont pas encore disponibles. Vous pouvez activer le plan gratuit.",
       );
     if (action === "previous") {
-      await save({ current_step: Math.max(1, step - 1) });
-      go(paths[Math.max(0, step - 2)]);
+      // The analysis screen redirects on completion; return to the editable URL instead.
+      const previousStep = step === 7 ? 5 : Math.max(1, step - 1);
+      navigating = true;
+      try {
+        await save({ current_step: previousStep });
+        go(paths[previousStep - 1]);
+      } catch (error) {
+        navigating = false;
+        throw error;
+      }
       return;
     }
     if (action === "brain") {
@@ -484,7 +493,7 @@
       WEBSITE_INVALID_URL:
         "Indiquez le lien public de votre site ou de votre page de vente.",
       WEBSITE_UNAVAILABLE:
-        "Le site ne répond pas. Vérifiez le lien ou complétez les informations manuellement.",
+        "La lecture du site n’a pas abouti depuis notre serveur. Réessayez ou complétez les informations manuellement.",
       WEBSITE_BLOCKED:
         "Ce site ne permet pas la lecture automatique. Vous pouvez compléter vos informations manuellement.",
       WEBSITE_EMPTY:
@@ -519,6 +528,7 @@
       }
       try {
         const { job } = await api("/api/jobs/" + state.analysis_job_id);
+        if (navigating) return;
         if (job.status === "succeeded") {
           go(paths[6]);
           return;

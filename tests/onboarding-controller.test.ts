@@ -153,7 +153,8 @@ test("Website submit queues analysis; reload resumes success or offers manual re
   );
   await new Promise((resolve) => setTimeout(resolve, 20));
   assert.equal(
-    failed.document.querySelector<HTMLElement>("[data-analysis-recovery]")!.hidden,
+    failed.document.querySelector<HTMLElement>("[data-analysis-recovery]")!
+      .hidden,
     false,
   );
   failed.document
@@ -209,4 +210,60 @@ test("Refreshing business resources fetches both business list and selected busi
   assert.deepEqual(h.scopes, ["root", "business"]);
   assert.deepEqual(h.errors, []);
   assert.deepEqual(h.writes, []);
+});
+
+test("Back works on every onboarding viewport without validating forward selections", async () => {
+  const cases = [
+    ["B3", "activity", 2, 1, "/configuration/meta"],
+    ["B5", "activity", 3, 2, "/configuration/business-manager"],
+    ["B6", "activity", 4, 3, "/configuration/pages"],
+    ["B7", "activity", 5, 4, "/configuration/pixel"],
+    ["B8", "activity", 6, 5, "/configuration/entreprise?section=activity"],
+    ["B7", "review", 7, 5, "/configuration/entreprise?section=activity"],
+    ["B9", "review", 8, 7, "/configuration/entreprise?section=review"],
+    ["B10", "activity", 9, 8, "/configuration/recapitulatif"],
+    ["B11", "activity", 10, 9, "/configuration/plan"],
+  ] as const;
+  for (const [ref, section, step, previousStep, destination] of cases) {
+    for (const width of [375, 768, 1440]) {
+      const h = harness(ref, { current_step: step }, section);
+      const frame = h.document.querySelector(`[data-source-width="${width}"]`)!;
+      const buttons = frame.querySelectorAll(
+        '[data-onboarding-action="previous"]',
+      );
+      assert.equal(buttons.length, 1, `${ref}/${section}/${width}`);
+      assert.equal(buttons[0].tagName, "BUTTON");
+      // Clicking the arrow must trigger the same action as clicking the label.
+      buttons[0]
+        .querySelector("i")!
+        .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      assert.deepEqual(
+        h.destinations,
+        [destination],
+        `${ref}/${section}/${width}`,
+      );
+      assert.equal(h.state.current_step, previousStep);
+      assert.deepEqual(h.errors, []);
+      assert.deepEqual(h.analyses, []);
+    }
+  }
+});
+
+test("Returning from the editable profile saves pending answers before leaving", async () => {
+  const h = harness();
+  const input = h.document.querySelector<HTMLInputElement>(
+    '[data-field="name"]',
+  )!;
+  input.value = "Entreprise modifiée";
+  input.dispatchEvent(new h.window.Event("input", { bubbles: true }));
+  h.document
+    .querySelector('[data-onboarding-action="previous"]')!
+    .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(h.state.brain.activity.name, "Entreprise modifiée");
+  assert.deepEqual(h.destinations, [
+    "/configuration/entreprise?section=activity",
+  ]);
+  assert.deepEqual(h.errors, []);
 });

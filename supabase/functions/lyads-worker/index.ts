@@ -3,6 +3,7 @@ import {
   readPage,
   type SourcePage,
   WEBSITE_MESSAGES,
+  websiteDiagnostic,
   WebsiteFailure,
 } from "../_shared/website.ts";
 import { inventory } from "../_shared/inventory.ts";
@@ -143,18 +144,28 @@ async function processWebsite(job: Job) {
       "lyads_complete_website_analysis",
       { target_job: job.id, worker_lease: job.lease_token, extracted },
     );
-    if (error || !done) throw new WebsiteFailure("WEBSITE_INVALID_RESULT");
+    if (error || !done) {
+      throw new WebsiteFailure("WEBSITE_INVALID_RESULT", {
+        stage: "persist",
+        reason: error?.code && /^[A-Z0-9]{5}$/.test(error.code)
+          ? error.code
+          : "not_applied",
+      });
+    }
   } catch (error) {
     const code = error instanceof WebsiteFailure
       ? error.code
       : "WEBSITE_UNAVAILABLE";
-    console.error("[website]", code);
+    const diagnostic = error instanceof WebsiteFailure
+      ? error.diagnostic || { stage: "analysis", reason: code }
+      : websiteDiagnostic(error, "analysis");
+    console.error("[website]", code, diagnostic);
     const { data: finished } = await db.rpc("lyads_finish_job", {
       target_job: job.id,
       worker_lease: job.lease_token,
       success: false,
       failure_code: code,
-      job_result: null,
+      job_result: { diagnostic },
       retry_seconds: null,
     });
     if (finished && job.requested_by) {

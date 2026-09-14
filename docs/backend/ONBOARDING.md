@@ -55,3 +55,13 @@ Une nouvelle analyse conserve les valeurs manuelles (y compris les effacements) 
 Validation : tests d’extraction, de blocage des réseaux internes, des robots et preuves source ; tests PostgreSQL des permissions, limites, reprise et corrections concurrentes ; contrôleur URL/attente/formulaire ; parcours visuel isolé ordinateur/mobile ; lecture HTTP réelle d’une page publique. L’essai réel avec la clé du projet et une URL commerciale choisie par le propriétaire est distinct des réponses fournisseur simulées utilisées en tests.
 
 Références d’implémentation : [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs), [secrets Edge Functions](https://supabase.com/docs/guides/functions/secrets).
+
+### Correction de la lecture et des citations — 14 septembre 2026
+
+Le `lookup` personnalisé de `node:http`/`node:https` provoquait `ERR_NOT_IMPLEMENTED` dans le runtime hébergé Supabase, alors que le test Deno local passait. La lecture utilise maintenant `Deno.connect` vers l’IPv4 publique validée, puis `Deno.startTls` avec le nom du site pour vérifier le certificat et transmettre SNI. Le lecteur HTTP/1.1 borne les en-têtes et le corps, gère les réponses chunked et conserve les contrôles de redirection et robots.txt. Les erreurs conservent une étape et un code de diagnostic sans secret ni contenu de page.
+
+Le modèle sélectionne désormais l’identifiant d’un extrait serveur (650 caractères maximum). Le serveur résout cet identifiant vers une citation exacte et son URL avant la validation existante et l’enregistrement en base ; les identifiants inexistants sont refusés. Cela supprime les erreurs de transcription de citations sans accepter de sources inventées. Les valeurs manuelles et le prix restent préservés.
+
+Tests : transport HTTP fragmenté/UTF-8/chunked, limites et troncatures, réseaux privés, robots, extraction, citations et identifiants de source. Deux URLs utilisateur récupérées en local avec le transport corrigé : `https://lionelhortis.com/guide-de-la-publicite-facebook/` et `https://go.lionelhortis.com/fbadstarter`.
+
+Validation hébergée : le job utilisateur `f401c274-35f1-45bc-862b-fa455676b352` a réussi le 14 septembre 2026 à 09:03 UTC sur le worker v30, après lecture de deux pages. Produit identifié : « Guide de la publicité Facebook ». Sept champs ont été enregistrés ; les valeurs manuelles sont conservées. Coût utilisateur : 0 crédit. La notification de cet essai relancé a été mise à jour pour refléter sa réussite.

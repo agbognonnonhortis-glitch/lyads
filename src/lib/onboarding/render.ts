@@ -157,7 +157,7 @@ function setFooter(frame: El, step: number) {
       );
 }
 function navigation(frame: El, ref: string, completed: boolean, step: number) {
-  if (ref === "B2" || ref === "B8") return;
+  if (ref === "B2") return;
   const doc = frame.ownerDocument;
   const title = frame.querySelector("h1")?.parentElement;
   const main = title?.parentElement;
@@ -183,6 +183,7 @@ function navigation(frame: El, ref: string, completed: boolean, step: number) {
         "refresh",
         "skip-pages",
         "skip-pixels",
+        "previous",
       ].includes(act) ||
       act === primaryAction
     ) {
@@ -235,7 +236,7 @@ function navigation(frame: El, ref: string, completed: boolean, step: number) {
     "display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px",
   );
   row.setAttribute("data-onboarding-navigation", "");
-  if (ref === "B7" && step === 5) {
+  if (step > 1) {
     const back = action(
       node(
         doc,
@@ -253,9 +254,11 @@ function navigation(frame: El, ref: string, completed: boolean, step: number) {
     back.prepend(icon);
     row.append(back);
   }
-  const next = button(doc, "Suivant", primaryAction);
-  next.setAttribute("data-onboarding-primary", "");
-  row.append(next);
+  if (ref !== "B8") {
+    const next = button(doc, "Suivant", primaryAction);
+    next.setAttribute("data-onboarding-primary", "");
+    row.append(next);
+  }
   if (ref === "B6") {
     const skip = action(
       node(
