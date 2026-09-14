@@ -299,7 +299,7 @@
               ? esc(data.message)
               : data.freshness?.complete
                 ? "Aucune alerte détectée."
-                : "Synchronisez vos comptes pour connaître les alertes de diffusion."
+                : "Synchronisez vos comptes pour analyser leurs performances."
             : esc(data.message)) +
           "</p>";
       if (zone === "alerts") {

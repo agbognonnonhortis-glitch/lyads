@@ -204,31 +204,10 @@ export async function GET(
       const failed = (scans.data || []).some((s) =>
         ["failed", "cancelled"].includes(s.status),
       );
-      const ads = await client.supabase
-        .from("lyads_ads")
-        .select("id,name,effective_status")
-        .eq("workspace_id", organization)
-        .in("ad_account_id", ids)
-        .in("effective_status", [
-          "DISAPPROVED",
-          "PENDING_REVIEW",
-          "WITH_ISSUES",
-        ])
-        .limit(100);
-      if (ads.error) throw ads.error;
       const rows = [
         ...scanResults.flatMap((result) =>
           (result?.rows || []).map(formatPerformanceAlert),
         ),
-        ...(ads.data || []).map((a) => ({
-          id: a.id,
-          title: a.name,
-          message:
-            a.effective_status === "PENDING_REVIEW"
-              ? "Publicité en cours de révision par Meta."
-              : "Cette publicité nécessite une vérification dans Meta.",
-          kind: "ad",
-        })),
         ...issues,
       ];
       return client.json({
