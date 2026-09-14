@@ -18,7 +18,7 @@ Le clic appelle `POST /api/accounts/{id}/sync` pour les comptes sélectionnés, 
 
 ## Limites explicites
 
-Les détecteurs de performance et le moteur de recommandations ne sont pas encore activés : aucune recommandation ni badge de rentabilité n’est fabriqué. `sufficientData` reste faux tant que les règles de jugement ne sont pas configurées. Les alertes disponibles concernent les statuts de diffusion Meta et les connexions expirées. Les cinq publicités affichées sont ordonnées par dépense, pas déclarées gagnantes. Les listes de campagnes et placements sont limitées à 50 résultats.
+Les détecteurs de performance utilisent les seuils configurés et les données suffisantes ; leurs résultats sont différés pendant un import actif. Le moteur de recommandations ne fournit pas encore de recommandations : aucune n’est fabriquée. La vue conserve les problèmes techniques et alertes de performance Lyads, et exclut les statuts de diffusion Meta. Les cinq publicités affichées sont ordonnées par dépense, pas déclarées gagnantes. Les listes de campagnes et placements sont limitées à 50 résultats.
 
 ## Vérifications
 
@@ -44,3 +44,5 @@ Le bandeau supérieur affiche compte, étape et éléments réellement traités 
 Diagnostic du compte testé : le 14 septembre à 09:45 UTC, l’ancien import démarré à 09:25 avait traité 9 399 éléments sans erreur, mais aucune métrique n’était encore publiée. Cette attente provenait de la publication globale différée et du parcours des jeux de données, pas d’une absence de données Meta. La durée dépend du nombre d’entités/pages et des quotas ; aucun délai fixe n’est promis.
 
 Références : [Supabase, limites du worker](https://supabase.com/docs/guides/functions/limits), [Meta, modèle officiel des rapports asynchrones](https://github.com/facebook/facebook-python-business-sdk/blob/main/facebook_business/adobjects/adreportrun.py). Les appels Insights actuels restent bornés par semaine et paginés dans notre file durable ; aucun traitement de l’historique complet dans la requête HTTP utilisateur.
+
+Validation en production : migration `20260914093844` et worker déployés. L’ancien import complet a terminé à 09:47:15 UTC après 21 min 28 s (11 283 éléments traités). L’actualisation de contrôle déclenchée depuis le dashboard a réussi de 09:49:39 à 09:51:39 UTC (2 098 éléments, environ 2 minutes). Ces deux durées portent sur des périmètres différents et ne mesurent pas un facteur d’accélération. Après actualisation, le navigateur affiche les données réelles du compte en EUR : pour la période du 7 au 14 septembre, 128,65 EUR, 36 863 impressions et 3 032 clics ; campagne et placements sont également présents. Le délai exact du premier lot d’un nouvel import initial reste à mesurer en conditions réelles ; le déclenchement anticipé et la publication des lots avant la fin sont vérifiés par les tests PostgreSQL.

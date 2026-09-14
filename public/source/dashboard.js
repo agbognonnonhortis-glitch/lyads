@@ -210,7 +210,7 @@
       panel.innerHTML =
         `<div class="dashboard-sync-heading"><i class="ph ph-arrows-clockwise" aria-hidden="true"></i><strong>${heading}</strong></div>` +
         (active.length
-          ? "<p>Les données apparaissent au fur et à mesure. L’historique de 90 jours continue de se charger en arrière-plan ; les chiffres et comparaisons peuvent encore être incomplets.</p>"
+          ? "<p>Les données apparaissent au fur et à mesure. L’import continue en arrière-plan ; les chiffres et comparaisons peuvent encore être incomplets.</p>"
           : "") +
         shown
           .map((j) => {
