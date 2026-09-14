@@ -235,6 +235,24 @@ function navigation(frame: El, ref: string, completed: boolean, step: number) {
     "display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px",
   );
   row.setAttribute("data-onboarding-navigation", "");
+  if (ref === "B7" && step === 5) {
+    const back = action(
+      node(
+        doc,
+        "button",
+        styles.text +
+          ";border:0;background:transparent;padding:4px 0;cursor:pointer;display:inline-flex;align-items:center;gap:6px",
+        "Retour",
+      ),
+      "previous",
+    );
+    back.setAttribute("type", "button");
+    const icon = node(doc, "i", "font-size:16px");
+    icon.className = "ph ph-arrow-left";
+    icon.setAttribute("aria-hidden", "true");
+    back.prepend(icon);
+    row.append(back);
+  }
   const next = button(doc, "Suivant", primaryAction);
   next.setAttribute("data-onboarding-primary", "");
   row.append(next);
