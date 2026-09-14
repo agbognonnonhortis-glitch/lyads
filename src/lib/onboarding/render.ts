@@ -1119,6 +1119,17 @@ export function renderOnboarding(
         ),
       );
     }
+    const errorBox = node(
+      doc,
+      "div",
+      styles.text +
+        ";background:#FFF4F2;border:1px solid #E9B8AE;border-radius:10px;padding:14px 18px;color:#9C3424",
+    );
+    errorBox.setAttribute("data-onboarding-error", "");
+    errorBox.setAttribute("role", "alert");
+    errorBox.setAttribute("tabindex", "-1");
+    errorBox.hidden = true;
+    frame.querySelector("h1")?.parentElement?.after(errorBox);
     navigation(frame, ref, !!state.completed_at, step);
   }
   const visibility = doc.createElement("style");

@@ -24,7 +24,7 @@ function harness(
   const scopes: string[] = [];
   const analyses: any[] = [];
   const destinations: string[] = [];
-  const errors: string[] = [];
+  const nativeDialogs: string[] = [];
   const data: any = {
     organization: { id: "workspace" },
     organizations: [],
@@ -43,7 +43,7 @@ function harness(
     document,
     window: {
       addEventListener() {},
-      alert: (text: string) => errors.push(text),
+      alert: (text: string) => nativeDialogs.push(text),
     },
     location: {
       href: "http://localhost/configuration/entreprise?section=activity",
@@ -103,7 +103,13 @@ function harness(
     scopes,
     analyses,
     destinations,
-    errors,
+    nativeDialogs,
+    get errors() {
+      const box = document.querySelector<HTMLElement>(
+        "[data-onboarding-error]",
+      );
+      return box && !box.hidden ? [box.textContent] : [];
+    },
     get state() {
       return state;
     },
@@ -266,4 +272,42 @@ test("Returning from the editable profile saves pending answers before leaving",
     "/configuration/entreprise?section=activity",
   ]);
   assert.deepEqual(h.errors, []);
+});
+
+test("Missing company name is shown in-page and next to the field without a native dialog", async () => {
+  const h = harness();
+  h.document
+    .querySelector('[data-onboarding-action="next"]')!
+    .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.deepEqual(h.nativeDialogs, []);
+  assert.deepEqual(h.destinations, []);
+  for (const frame of h.document.querySelectorAll("[data-source-width]")) {
+    const box = frame.querySelector<HTMLElement>("[data-onboarding-error]")!;
+    assert.equal(box.hidden, false);
+    assert.equal(box.getAttribute("role"), "alert");
+    assert.match(box.textContent!, /nom de votre entreprise/);
+    const input = frame.querySelector('[data-field="name"]')!;
+    assert.equal(input.getAttribute("aria-invalid"), "true");
+    assert.equal(
+      input.getAttribute("aria-describedby"),
+      frame.querySelector("[data-onboarding-field-error]")!.id,
+    );
+  }
+  const input = h.document.querySelector<HTMLInputElement>(
+    '[data-field="name"]',
+  )!;
+  input.value = "Entreprise";
+  input.dispatchEvent(new h.window.Event("input", { bubbles: true }));
+  assert.equal(h.document.querySelectorAll('[aria-invalid="true"]').length, 0);
+  assert.equal(
+    h.document.querySelectorAll("[data-onboarding-field-error]").length,
+    0,
+  );
+  h.document
+    .querySelector('[data-onboarding-action="next"]')!
+    .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.deepEqual(h.destinations, ["/configuration/recapitulatif"]);
+  assert.deepEqual(h.nativeDialogs, []);
 });

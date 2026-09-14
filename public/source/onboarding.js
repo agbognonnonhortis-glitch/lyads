@@ -42,6 +42,66 @@
       e.textContent = message;
       e.setAttribute("role", "status");
     });
+  function clearErrors() {
+    document.querySelectorAll("[data-onboarding-error]").forEach((box) => {
+      box.hidden = true;
+      box.textContent = "";
+    });
+    document
+      .querySelectorAll("[data-onboarding-field-error]")
+      .forEach((label) => {
+        const input = label.previousElementSibling;
+        if (input) {
+          input.removeAttribute("aria-invalid");
+          const describedBy = (input.getAttribute("aria-describedby") || "")
+            .split(" ")
+            .filter((id) => id && id !== label.id)
+            .join(" ");
+          if (describedBy) input.setAttribute("aria-describedby", describedBy);
+          else input.removeAttribute("aria-describedby");
+        }
+        label.remove();
+      });
+  }
+  function fieldError(message, selector) {
+    return Object.assign(new Error(message), { fieldSelector: selector });
+  }
+  function showError(error, origin, focus = false) {
+    const message = typeof error === "string" ? error : error.message;
+    const frames = [...document.querySelectorAll("[data-source-width]")];
+    let target;
+    for (const frame of frames) {
+      const box = frame.querySelector("[data-onboarding-error]");
+      if (!box) continue;
+      box.textContent = message;
+      box.hidden = false;
+      const input =
+        error.fieldSelector && frame.querySelector(error.fieldSelector);
+      if (input) {
+        const label = document.createElement("p");
+        label.id =
+          "onboarding-field-error-" + frame.getAttribute("data-source-width");
+        label.setAttribute("data-onboarding-field-error", "");
+        label.style.cssText =
+          "color:#9C3424;font:400 13px/1.6 'Figtree',sans-serif;margin:4px 0";
+        label.textContent = message;
+        input.after(label);
+        input.setAttribute("aria-invalid", "true");
+        input.setAttribute(
+          "aria-describedby",
+          [input.getAttribute("aria-describedby"), label.id]
+            .filter(Boolean)
+            .join(" "),
+        );
+      }
+      if (frame === origin || (!origin && frame.getClientRects?.().length))
+        target = input || box;
+    }
+    if (focus && target) {
+      target.scrollIntoView?.({ block: "center", behavior: "smooth" });
+      target.focus?.({ preventScroll: true });
+    }
+  }
   async function api(path, body) {
     if (body?.changes) pending++;
     try {
@@ -81,7 +141,7 @@
     });
     saving = operation.catch((e) => {
       failed = true;
-      status(
+      showError(
         e.message + " Vos dernières modifications ne sont pas enregistrées.",
       );
     });
@@ -138,7 +198,7 @@
         })
         .catch((e) => {
           failed = true;
-          status(e.message + " Cette modification n’est pas enregistrée.");
+          showError(e.message + " Cette modification n’est pas enregistrée.");
         });
     };
     timers.set(key, { run, timer: setTimeout(run, 500) });
@@ -164,7 +224,7 @@
             errors[job.error_code] ||
             "La récupération Meta a échoué. Actualisez les ressources pour réessayer.";
           if (wait) throw new Error(message);
-          status(message);
+          showError(message);
           return;
         }
         if (job.status === "succeeded") {
@@ -197,7 +257,7 @@
         return poll();
       } catch (e) {
         if (wait) throw e;
-        status(e.message);
+        showError(e.message);
       }
     };
     if (wait) await poll();
@@ -331,8 +391,9 @@
           ? state.brain.activity?.website
           : frame.querySelector("[data-website-url]")?.value?.trim();
       if (!raw)
-        throw new Error(
+        throw fieldError(
           "Indiquez le lien de votre site ou de votre page de vente.",
+          "[data-website-url]",
         );
       const url = /^https?:\/\//i.test(raw) ? raw : "https://" + raw;
       await api("/api/onboarding", {
@@ -371,8 +432,9 @@
           "Sélectionnez un pixel ou choisissez explicitement « Continuer sans pixel ».",
         );
       if ([7, 8].includes(step) && !state.brain.activity?.name?.trim())
-        throw new Error(
+        throw fieldError(
           "Renseignez le nom de votre entreprise avant de continuer.",
+          '[data-field="name"]',
         );
       await save({
         current_step: Math.min(9, step + 1),
@@ -436,6 +498,7 @@
     }
   }
   document.addEventListener("input", (e) => {
+    if (e.target.getAttribute("aria-invalid") === "true") clearErrors();
     if (e.target.matches("[data-resource-search]")) {
       const frame = e.target.closest("[data-source-width]");
       const query = e.target.value.toLocaleLowerCase("fr");
@@ -468,10 +531,12 @@
     if (!el) return;
     e.preventDefault();
     actions = actions
-      .then(() => handle(el))
+      .then(() => {
+        clearErrors();
+        return handle(el);
+      })
       .catch((err) => {
-        status(err.message);
-        window.alert(err.message);
+        showError(err, el.closest("[data-source-width]"), true);
       });
   });
   document.addEventListener("keydown", (e) => {
@@ -569,5 +634,5 @@
     }
   }
   if (["B3", "B5", "B6"].includes(ref) && data.connection)
-    void inventory(scope()).catch((e) => status(e.message));
+    void inventory(scope()).catch((e) => showError(e));
 })();
