@@ -461,7 +461,7 @@
           /^https:\/\//.test(url || "") &&
           !/[?&](access_token|appsecret_proof)=/i.test(url);
         if (m.type === "video")
-          return `<div class="dashboard-video">${safe(m.url) ? `<video src="${esc(m.url)}" ${safe(m.poster) ? `poster="${esc(m.poster)}"` : ""} controls playsinline muted preload="none" aria-label="${esc(name)}"><p>Votre navigateur ne peut pas lire cette vidéo.</p></video><button type="button" class="dashboard-video-play" aria-label="Lire la vidéo ${esc(name)}">▶</button>` : `${safe(m.poster) ? `<img src="${esc(m.poster)}" alt="${esc(name)}" loading="lazy">` : ""}<p class="dashboard-note">Vidéo indisponible avec les autorisations Meta actuelles.</p>`}</div>`;
+          return `<div class="dashboard-video">${safe(m.url) ? `<video src="${esc(m.url)}" ${safe(m.poster) ? `poster="${esc(m.poster)}"` : ""} controls playsinline muted preload="none" aria-label="${esc(name)}"><p>Votre navigateur ne peut pas lire cette vidéo.</p></video><button type="button" class="dashboard-video-play" aria-label="Lire la vidéo ${esc(name)}">▶</button>` : `${safe(m.poster) ? `<img src="${esc(m.poster)}" alt="${esc(name)}" loading="lazy">` : ""}<p class="dashboard-note">Meta ne fournit pas de vidéo lisible pour cette publicité.</p>`}</div>`;
         return safe(m.url)
           ? `<a href="${esc(m.url)}" target="_blank" rel="noopener noreferrer"><img src="${esc(m.url)}" alt="${esc(name)}" loading="lazy"></a>`
           : "";

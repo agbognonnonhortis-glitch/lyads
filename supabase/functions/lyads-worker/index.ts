@@ -488,17 +488,61 @@ async function process(job: Job) {
       if (!Array.isArray(job.payload.media)) {
         const source = await get(ad.meta_ad_id, {
           fields:
-            "creative{id,video_id,image_url,thumbnail_url,object_story_spec,asset_feed_spec}",
+            "creative{id,actor_id,video_id,image_url,thumbnail_url,object_story_spec,asset_feed_spec}",
         });
         const media = creativeMedia(source.creative || {});
         if (!media.some((m) => m.videoId)) {
           await finish(job, { media });
           return;
         }
-        await checkpoint(job, { ...job.payload, media, index: 0 }, 1);
+        await checkpoint(job, {
+          ...job.payload,
+          media,
+          index: 0,
+          page_id: source.creative?.object_story_spec?.page_id ||
+            source.creative?.actor_id || null,
+        }, 1);
         return;
       }
       const media = job.payload.media as AdMedia[];
+      if (job.payload.page_video && /^\d+$/.test(String(job.payload.page_id))) {
+        try {
+          const page = await get(String(job.payload.page_id), {
+            fields: "access_token",
+          });
+          const index = media.findIndex((m) => m.videoId && !m.url);
+          if (typeof page.access_token === "string" && index >= 0) {
+            await new Promise((resolve) => setTimeout(resolve, 1100));
+            const video = await readMeta({
+              version,
+              path: media[index].videoId!,
+              params: { fields: "source,picture" },
+              token: page.access_token,
+              before,
+              after,
+            });
+            media[index].url = mediaUrl(video.source);
+            media[index].poster = mediaUrl(video.picture) ||
+              media[index].poster;
+          }
+        } catch (error) {
+          if (
+            !(error instanceof MetaFailure) || error.retryable ||
+            !["META_PERMISSION_REQUIRED", "META_REQUEST_UNAVAILABLE"].includes(
+              error.code,
+            )
+          ) throw error;
+        }
+        if (media.some((m) => m.videoId && !m.url)) {
+          await checkpoint(job, {
+            ...job.payload,
+            media,
+            page_video: false,
+            video_library: true,
+          }, 1);
+        } else await finish(job, { media });
+        return;
+      }
       if (job.payload.video_library) {
         const page = await get(account.meta_account_id + "/advideos", {
           fields: "id,source,picture",
@@ -566,7 +610,8 @@ async function process(job: Job) {
             ...job.payload,
             media,
             index: index + 1,
-            video_library: true,
+            page_video: Boolean(job.payload.page_id),
+            video_library: !job.payload.page_id,
           }, 1);
         } else await finish(job, { media });
       } else {

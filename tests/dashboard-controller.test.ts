@@ -20,6 +20,7 @@ function harness(
     empty: boolean;
     alerts?: any[];
     recommendations?: any[];
+    media?: boolean;
   } = { blocked: false, empty: false },
 ) {
   const { document, window } = parseHTML(
@@ -38,6 +39,20 @@ function harness(
   const navigations: string[] = [];
   const requests: URL[] = [];
   const fetch = async (url: string, options: any) => {
+    if (url.startsWith("/api/ads/"))
+      return {
+        ok: true,
+        json: async () => ({
+          status: "succeeded",
+          media: [
+            {
+              type: "video",
+              url: "https://video.xx.fbcdn.net/real.mp4",
+              poster: "https://x.fbcdn.net/poster.jpg",
+            },
+          ],
+        }),
+      };
     if (options.method === "POST") {
       posts++;
       job = "running";
@@ -116,7 +131,9 @@ function harness(
               ? scenario.alerts || []
               : zone === "recommendations"
                 ? scenario.recommendations || []
-                : [],
+                : zone === "creatives" && scenario.media
+                  ? [{ bucket: "ad", name: "Video test", spend: 10, currency }]
+                  : [],
         message: "Aucune donnée",
       }),
     };
@@ -153,6 +170,7 @@ function harness(
       .dispatchEvent(new window.Event("click", { bubbles: true }));
   return {
     document,
+    window,
     click,
     clickElement,
     reads,
@@ -415,4 +433,42 @@ test("Sync progress stays visible and refreshes metrics when a slice arrives bef
   assert.ok(h.reads.filter((z) => z === "kpis").length > count);
   await h.finish();
   assert.equal(panel.hasAttribute("hidden"), true);
+});
+
+test("Real media renders a player, hover previews muted, click keeps playback after leaving", async () => {
+  const h = harness(false, "EUR", "http://localhost/", {
+    blocked: false,
+    empty: false,
+    media: true,
+  });
+  await wait();
+  const box = h.document.querySelector(".dashboard-video")!;
+  const video = box.querySelector("video")! as any;
+  assert.equal(
+    video.getAttribute("src"),
+    "https://video.xx.fbcdn.net/real.mp4",
+  );
+  assert.equal(video.hasAttribute("controls"), true);
+  let plays = 0,
+    pauses = 0;
+  video.play = async () => {
+    plays++;
+  };
+  video.pause = () => {
+    pauses++;
+  };
+  box.dispatchEvent(new h.window.Event("mouseenter"));
+  await wait();
+  assert.equal(plays, 1);
+  assert.equal(video.muted, true);
+  box.dispatchEvent(new h.window.Event("mouseleave"));
+  assert.equal(pauses, 1);
+  box
+    .querySelector("button")!
+    .dispatchEvent(new h.window.Event("click", { bubbles: true }));
+  await wait();
+  assert.equal(plays, 2);
+  assert.equal(video.muted, false);
+  box.dispatchEvent(new h.window.Event("mouseleave"));
+  assert.equal(pauses, 1);
 });
