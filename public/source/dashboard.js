@@ -629,12 +629,8 @@
     if (!html)
       html =
         "<p>Aucune publicité ne dispose encore des données nécessaires pour ce classement sur la période sélectionnée.</p>";
-    html +=
-      '<p class="dashboard-note">Jusqu’à 5 publicités par événement de conversion · campagnes actives et arrêtées · seuils de volume du compte appliqués.</p>';
     if (data.unknownObjectiveAds)
       html += `<p class="dashboard-note">${number(data.unknownObjectiveAds)} publicité(s) : événement de conversion indisponible. Actualisez la synchronisation.</p>`;
-    if (data.insufficientDataAds)
-      html += `<p class="dashboard-note">${number(data.insufficientDataAds)} publicité(s) : données insuffisantes pour être classées.</p>`;
     if (data.missingRoasAds)
       html += `<p class="dashboard-note">${number(data.missingRoasAds)} publicité(s) d’achat : ROAS indisponible.</p>`;
     return html;
