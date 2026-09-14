@@ -499,11 +499,47 @@ async function process(job: Job) {
         return;
       }
       const media = job.payload.media as AdMedia[];
+      if (job.payload.video_library) {
+        const page = await get(account.meta_account_id + "/advideos", {
+          fields: "id,source,picture",
+          limit: "100",
+          ...(job.payload.library_after
+            ? { after: String(job.payload.library_after) }
+            : {}),
+        });
+        if (!Array.isArray(page.data)) {
+          throw new MetaFailure("META_INVALID_RESPONSE");
+        }
+        for (const asset of media.filter((m) => m.videoId && !m.url)) {
+          const found = page.data.find((v: { id: string }) =>
+            v.id === asset.videoId
+          );
+          if (found) {
+            asset.url = mediaUrl(found.source);
+            asset.poster = mediaUrl(found.picture) || asset.poster;
+          }
+        }
+        const next = page.paging?.next && page.paging?.cursors?.after;
+        if (next && media.some((m) => m.videoId && !m.url)) {
+          await checkpoint(
+            job,
+            { ...job.payload, media, library_after: next },
+            page.data.length,
+          );
+        } else await finish(job, { media });
+        return;
+      }
       const index = media.findIndex(
         (m, i) => i >= Number(job.payload.index || 0) && m.videoId,
       );
       if (index < 0) {
-        await finish(job, { media });
+        if (media.some((m) => m.videoId && !m.url)) {
+          await checkpoint(
+            job,
+            { ...job.payload, media, video_library: true },
+            0,
+          );
+        } else await finish(job, { media });
         return;
       }
       try {
@@ -525,7 +561,14 @@ async function process(job: Job) {
         // Preserve a truthful unavailable video instead of substituting an image.
       }
       if (!media.slice(index + 1).some((m) => m.videoId)) {
-        await finish(job, { media });
+        if (media.some((m) => m.videoId && !m.url)) {
+          await checkpoint(job, {
+            ...job.payload,
+            media,
+            index: index + 1,
+            video_library: true,
+          }, 1);
+        } else await finish(job, { media });
       } else {
         await checkpoint(job, { ...job.payload, media, index: index + 1 }, 1);
       }
