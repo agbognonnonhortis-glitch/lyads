@@ -802,6 +802,159 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
       },
     );
     await t.test(
+      "Progressive sync publishes complete slices only, preserves other slices and never advances the complete-sync date",
+      async () => {
+        await admin();
+        const before = (
+          await db.query(
+            "select synchronized_at from public.lyads_ad_accounts where id=$1",
+            [a.account],
+          )
+        ).rows[0];
+        const job = await uuid(
+          "insert into public.lyads_jobs(workspace_id,ad_account_id,kind,idempotency_key,priority) values($1,$2,'meta.sync','progressive-test',100)",
+          [wa, a.account],
+        );
+        const run = await uuid(
+          "insert into public.lyads_sync_runs(workspace_id,ad_account_id,request_key,status) values($1,$2,$3,'running')",
+          [wa, a.account, job],
+        );
+        const row = (date: string, spend: string) => ({
+          workspace_id: wa,
+          ad_account_id: a.account,
+          sync_run_id: run,
+          level: "account",
+          date_start: date,
+          date_stop: date,
+          query_context: { breakdowns: "" },
+          deduplication_key: "progressive-" + date,
+          currency: "EUR",
+          metrics: { spend },
+          fetched_at: new Date().toISOString(),
+        });
+        const claim = async () =>
+          (
+            await db.query<{ id: string; lease_token: string }>(
+              "select * from public.lyads_claim_job(60)",
+            )
+          ).rows[0];
+        let lease = await claim();
+        assert.equal(lease.id, job);
+        const rpc =
+          "select public.lyads_stage_insights_page($1,$2,$3,$4,$5,$6) ok";
+        const slice = JSON.stringify({
+          level: "account",
+          breakdowns: "",
+          since: "2026-09-03",
+          until: "2026-09-04",
+        });
+        assert.equal(
+          (
+            await db.query<{ ok: boolean }>(rpc, [
+              job,
+              bob,
+              "[]",
+              "{}",
+              0,
+              slice,
+            ])
+          ).rows[0].ok,
+          false,
+        );
+        await db.query(rpc, [
+          job,
+          lease.lease_token,
+          JSON.stringify([row("2026-09-03", "10")]),
+          JSON.stringify({ stage: 3, after: "cursor" }),
+          1,
+          null,
+        ]);
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_insight_snapshots where deduplication_key like 'progressive-%'",
+            )
+          ).rows.length,
+          0,
+        );
+        lease = await claim();
+        await db.query(rpc, [
+          job,
+          lease.lease_token,
+          JSON.stringify([row("2026-09-04", "20")]),
+          JSON.stringify({ stage: 3, after: null, completed_slices: 1 }),
+          2,
+          slice,
+        ]);
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_insight_snapshots where deduplication_key like 'progressive-%'",
+            )
+          ).rows.length,
+          2,
+        );
+        assert.deepEqual(
+          (
+            await db.query(
+              "select synchronized_at from public.lyads_ad_accounts where id=$1",
+              [a.account],
+            )
+          ).rows[0],
+          before,
+        );
+        await asUser(bob);
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_insight_snapshots where deduplication_key like 'progressive-%'",
+            )
+          ).rows.length,
+          0,
+        );
+        await sqlError(rpc, [job, bob, "[]", "{}", 0, slice], "42501");
+        await admin();
+        await db.query(
+          "update public.lyads_jobs set status='cancelled' where id=$1",
+          [job],
+        );
+        const revised = await uuid(
+          "insert into public.lyads_jobs(workspace_id,ad_account_id,kind,idempotency_key,priority) values($1,$2,'meta.sync','progressive-empty',100)",
+          [wa, a.account],
+        );
+        lease = await claim();
+        assert.equal(lease.id, revised);
+        await db.query(rpc, [
+          revised,
+          lease.lease_token,
+          "[]",
+          JSON.stringify({ stage: 3, after: null, completed_slices: 1 }),
+          0,
+          slice,
+        ]);
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_insight_snapshots where deduplication_key like 'progressive-%'",
+            )
+          ).rows.length,
+          0,
+        );
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_insight_snapshots where deduplication_key='atomic-row'",
+            )
+          ).rows.length,
+          1,
+        );
+        await db.query(
+          "update public.lyads_jobs set status='cancelled' where id=$1",
+          [revised],
+        );
+      },
+    );
+    await t.test(
       "Structure ingestion preserves identity and journals real field changes once",
       async () => {
         await admin();
@@ -945,6 +1098,17 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
           ])
         ).rows[0];
         assert.equal(saved.revision, 1);
+        assert.equal(
+          (
+            await db.query(
+              "select id from public.lyads_jobs where ad_account_id=$1 and kind='meta.sync' and status='queued'",
+              [account],
+            )
+          ).rows.length,
+          1,
+          "Import starts at account selection, before page, pixel, website and plan",
+        );
+
         await sqlError(rpc, [ws, 0, "{}"], "40001");
         await sqlError(
           rpc,

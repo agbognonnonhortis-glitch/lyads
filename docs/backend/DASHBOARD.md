@@ -30,3 +30,17 @@ Le contrôle a confirmé un compte sélectionné, un onboarding terminé et zér
 Le dashboard expose désormais les problèmes de connexion dès son chargement, y compris les jetons non vérifiés et l'expiration de l'accès aux données. Le contrôle de synchronisation devient « Reconnecter Meta » et conduit au parcours existant, sans ajouter de deuxième bouton principal. Les données historiques disponibles restent consultables ; les métriques absentes ne deviennent pas zéro. Un import vide n'est plus présenté comme une actualisation des chiffres réussie.
 
 La cause de l'absence de métriques dans les imports précédant ce contrôle reste à établir avec un accès Meta vérifié et les réponses Insights du compte/période concernés. La reconnexion OAuth du connecteur technique Supabase a échoué pendant l'investigation ; aucune lecture supplémentaire ni comparaison Ads Manager n'a donc été annoncée comme réussie. Tests du correctif : 52 tests applicatifs et compilation de production réussis.
+
+## Import progressif (14 septembre 2026)
+
+Le déclencheur de sauvegarde de l’onboarding lance la synchronisation dans la même transaction que la validation Business Manager/comptes (passage à l’étape des pages). Aucun besoin de page, pixel, site ou plan pour ce lancement. Un import actif est réutilisé ; la fin d’onboarding ne déclenche plus une deuxième demande depuis le navigateur.
+
+Les nouveaux imports visitent d’abord les sept jours les plus récents : compte, campagnes, publicités, placements, puis autres répartitions. Ils poursuivent les semaines précédentes jusqu’aux 90 jours convenus. Les anciens curseurs conservent leur ordre pour éviter de perdre des pages à la mise à jour. Le dispatch passe de cinq à deux secondes, sans augmenter la concurrence maximale ni supprimer la limitation Meta par compte ou le recul sur quota.
+
+Chaque combinaison niveau/répartition/semaine est publiée atomiquement après sa dernière page Meta. Une page intermédiaire ne devient pas visible. Un résultat vide remplace les anciennes lignes du même lot, sans effacer les autres niveaux ou semaines. Le staging est conservé jusqu’au remplacement final atomique de l’import complet. Une interruption conserve les lots achevés ; les valeurs affichées peuvent donc être partielles, signalées dans le bandeau. La date de dernière synchronisation complète n’avance qu’à la réussite finale.
+
+Le bandeau supérieur affiche compte, étape et éléments réellement traités ; la progression des lots est déterminée par les checkpoints. Le navigateur recharge les zones quand un checkpoint change, pas seulement quand le job termine. Les alertes de performance sont différées jusqu’à la fin de l’import pour éviter de juger un jeu de données encore incomplet.
+
+Diagnostic du compte testé : le 14 septembre à 09:45 UTC, l’ancien import démarré à 09:25 avait traité 9 399 éléments sans erreur, mais aucune métrique n’était encore publiée. Cette attente provenait de la publication globale différée et du parcours des jeux de données, pas d’une absence de données Meta. La durée dépend du nombre d’entités/pages et des quotas ; aucun délai fixe n’est promis.
+
+Références : [Supabase, limites du worker](https://supabase.com/docs/guides/functions/limits), [Meta, modèle officiel des rapports asynchrones](https://github.com/facebook/facebook-python-business-sdk/blob/main/facebook_business/adobjects/adreportrun.py). Les appels Insights actuels restent bornés par semaine et paginés dans notre file durable ; aucun traitement de l’historique complet dans la requête HTTP utilisateur.

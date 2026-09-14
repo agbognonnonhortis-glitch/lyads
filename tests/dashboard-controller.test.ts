@@ -31,6 +31,7 @@ function harness(
   const timers = new Map<number, () => void>();
   let n = 0,
     posts = 0,
+    progress = 0,
     job = "none",
     timestamp = "2026-09-01T12:00:00Z";
   const reads: string[] = [];
@@ -80,7 +81,22 @@ function harness(
           jobs:
             job === "none"
               ? []
-              : [{ id: "job", ad_account_id: "account", status: job }],
+              : [
+                  {
+                    id: "job",
+                    ad_account_id: "account",
+                    status: job,
+                    progress_done: progress,
+                    result: {
+                      sync_progress: {
+                        phase: "metrics",
+                        completed_slices: progress,
+                        total_slices: 12,
+                        published_at: String(progress),
+                      },
+                    },
+                  },
+                ],
           credits: { available: "60" },
         }),
       };
@@ -144,6 +160,13 @@ function harness(
     navigations,
     get posts() {
       return posts;
+    },
+    advance: async () => {
+      progress++;
+      const pending = [...timers.values()];
+      timers.clear();
+      for (const cb of pending) await cb();
+      await wait();
     },
     finish: async () => {
       job = fail ? "failed" : "succeeded";
@@ -370,4 +393,26 @@ test("No active alerts leaves no reserved space; threshold settings remain acces
       '.dashboard-toolbar [data-dashboard-action="alert-settings"]',
     ),
   );
+});
+
+test("Sync progress stays visible and refreshes metrics when a slice arrives before the job finishes", async () => {
+  const h = harness();
+  await wait();
+  h.click();
+  await wait();
+  const count = h.reads.filter((z) => z === "kpis").length;
+  await h.advance();
+  const panel = h.document.querySelector("[data-sync-progress]")!;
+  assert.equal(panel.hasAttribute("hidden"), false);
+  assert.match(panel.textContent, /Synchronisation Meta en cours/);
+  assert.match(panel.textContent, /1\/12 lots terminés/);
+  assert.equal(
+    h.document
+      .querySelector('[data-dashboard-action="sync"]')!
+      .getAttribute("data-sync-active"),
+    "true",
+  );
+  assert.ok(h.reads.filter((z) => z === "kpis").length > count);
+  await h.finish();
+  assert.equal(panel.hasAttribute("hidden"), true);
 });

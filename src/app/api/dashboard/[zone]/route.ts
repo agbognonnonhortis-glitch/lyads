@@ -109,7 +109,7 @@ export async function GET(
           ? client.supabase
               .from("lyads_jobs")
               .select(
-                "id,ad_account_id,status,progress_done,progress_total,result,error_code,created_at",
+                "id,ad_account_id,status,progress_done,progress_total,result,error_code,created_at,updated_at",
               )
               .eq("workspace_id", organization)
               .eq("kind", "meta.sync")
@@ -163,6 +163,26 @@ export async function GET(
         "Ces comptes utilisent des devises différentes. Sélectionnez des comptes dans une même devise.",
       );
     if (zone === "alerts") {
+      const activeImport = await client.supabase
+        .from("lyads_jobs")
+        .select("id")
+        .eq("workspace_id", organization)
+        .eq("kind", "meta.sync")
+        .in("ad_account_id", ids)
+        .in("status", ["queued", "running"])
+        .limit(1);
+      if (activeImport.error) throw activeImport.error;
+      if (activeImport.data?.length)
+        return client.json({
+          ...common,
+          period,
+          rows: issues,
+          pending: false,
+          performanceAvailable: true,
+          sufficientData: false,
+          message:
+            "L’analyse des performances reprendra à la fin de la synchronisation.",
+        });
       let performanceAvailable = true;
       const scanIds = await Promise.all(
         ids.map(async (id) => {

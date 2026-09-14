@@ -19,9 +19,11 @@ import {
 } from "../_shared/meta.ts";
 import {
   accountDate,
+  dashboardDatasetOrder,
   datasets,
   dateWindows,
   insightFields,
+  nextSlice,
   structures,
 } from "../_shared/sync.ts";
 const db = createClient(
@@ -456,6 +458,8 @@ async function process(job: Job) {
       .eq("workspace_id", job.workspace_id)
       .single();
     if (!account) throw new MetaFailure("META_ACCESS_REVOKED");
+    if (job.payload.stage === undefined) job.payload.sync_plan = 2;
+    const newestFirst = job.payload.sync_plan === 2;
     const stage = Number(job.payload.stage || 0);
     if (stage < structures.length) {
       const spec = structures[stage];
@@ -497,7 +501,11 @@ async function process(job: Job) {
       );
     const datasetIndex = Number(job.payload.dataset || 0);
     const windowIndex = Number(job.payload.window || 0);
-    if (datasetIndex >= datasets.length) {
+    if (
+      newestFirst
+        ? windowIndex >= dates.length
+        : datasetIndex >= datasets.length
+    ) {
       const { data, error } = await db.rpc("lyads_complete_sync", {
         target_job: job.id,
         worker_lease: job.lease_token,
@@ -522,9 +530,13 @@ async function process(job: Job) {
       }
       return;
     }
-    const spec = datasets[datasetIndex];
+    const spec = datasets[
+      newestFirst ? dashboardDatasetOrder[datasetIndex] : datasetIndex
+    ];
     const period = dates[windowIndex];
-    if (!period) throw new MetaFailure("META_INVALID_REQUEST");
+    if (!period) {
+      throw new MetaFailure("META_INVALID_REQUEST");
+    }
     const { error: createError } = await db.from("lyads_sync_runs").upsert(
       {
         workspace_id: job.workspace_id,
@@ -701,12 +713,11 @@ async function process(job: Job) {
       });
     }
     const next = page.paging?.next ? page.paging?.cursors?.after : undefined;
-    const nextWindow = next ? windowIndex : (windowIndex + 1) % dates.length;
-    const nextDataset = !next && nextWindow === 0
-      ? datasetIndex + 1
-      : datasetIndex;
+    const following = next
+      ? { dataset: datasetIndex, window: windowIndex }
+      : nextSlice(datasetIndex, windowIndex, dates.length, newestFirst);
     const { data: staged, error: stageError } = await db.rpc(
-      "lyads_stage_insights",
+      "lyads_stage_insights_page",
       {
         target_job: job.id,
         worker_lease: job.lease_token,
@@ -715,11 +726,18 @@ async function process(job: Job) {
           ...job.payload,
           stage,
           windows: dates,
-          dataset: nextDataset,
-          window: nextWindow,
+          dataset: following.dataset,
+          window: following.window,
+          completed_slices: Number(job.payload.completed_slices || 0) +
+            (next ? 0 : 1),
           after: next || null,
         },
         done: job.progress_done + rows.length,
+        completed_slice: next ? null : {
+          ...period,
+          level: spec.level === "adset" ? "ad_set" : spec.level,
+          breakdowns: spec.breakdowns,
+        },
       },
     );
     if (stageError || !staged) {

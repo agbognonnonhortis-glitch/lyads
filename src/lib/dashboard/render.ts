@@ -215,7 +215,13 @@ export function renderDashboard(html: string, data: OnboardingData) {
       toolbar.className = "dashboard-toolbar";
       toolbar.innerHTML =
         '<label>Comptes publicitaires <select data-dashboard-accounts aria-label="Comptes publicitaires" multiple></select></label><p class="dashboard-note" data-dashboard-status role="status"></p><p class="dashboard-note" data-alert-status role="status"></p><button type="button" data-dashboard-action="alert-settings">Régler les seuils d’alerte</button>';
-      alerts.before(toolbar);
+      const progress = doc.createElement("section");
+      progress.className = "dashboard-sync-progress";
+      progress.setAttribute("data-sync-progress", "");
+      progress.setAttribute("role", "status");
+      progress.setAttribute("aria-live", "polite");
+      progress.hidden = true;
+      alerts.before(progress, toolbar);
     }
     for (const [icon, ref] of [
       ["ph-squares-four", "C1.1"],

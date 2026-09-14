@@ -1,6 +1,6 @@
 # Alertes de performance
 
-Les alertes de diffusion Meta et les alertes déterministes Lyads sont affichées ensemble dans le tableau de bord. Aucun appel d'écriture Meta, crédit ou modèle de langage n'intervient dans ces détections. Ce lot ne crée pas de recommandations applicables ni de promesses de gain.
+Les problèmes techniques de connexion et les alertes déterministes Lyads sont affichés dans le tableau de bord. Les statuts de diffusion Meta sont exclus de cette vue. Les détections de performance attendent la fin des imports actifs pour ne pas juger des lots partiels. Aucun appel d'écriture Meta, crédit ou modèle de langage n'intervient dans ces détections. Ce lot ne crée pas de recommandations applicables ni de promesses de gain.
 
 ## Exécution et droits
 

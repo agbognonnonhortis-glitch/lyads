@@ -455,14 +455,6 @@
     }
     if (action === "free") {
       await save({ plan_key: "free", complete: true });
-      for (const id of state.ad_account_ids)
-        try {
-          await api(`/api/accounts/${id}/sync`, {
-            requestKey: "onboarding:" + state.workspace_id + ":" + id,
-          });
-        } catch (e) {
-          sessionStorage.setItem("lyads-onboarding-sync-error", e.message);
-        }
       go(paths[9]);
       return;
     }

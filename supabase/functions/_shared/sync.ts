@@ -16,11 +16,12 @@ export function shiftDate(date: string, days: number) {
 export function dateWindows(end: string, days: number) {
   const windows: { since: string; until: string }[] = [];
   // Newest first, exactly `days` calendar days in the account timezone.
-  for (let offset = 0; offset < days; offset += 7)
+  for (let offset = 0; offset < days; offset += 7) {
     windows.push({
       since: shiftDate(end, -Math.min(days - 1, offset + 6)),
       until: shiftDate(end, -offset),
     });
+  }
   return windows;
 }
 export const datasets = ["account", "campaign", "adset", "ad"].flatMap(
@@ -36,10 +37,10 @@ export function insightFields(level: string) {
     ...(level === "campaign"
       ? ["campaign_id"]
       : level === "adset"
-        ? ["adset_id"]
-        : level === "ad"
-          ? ["ad_id"]
-          : []),
+      ? ["adset_id"]
+      : level === "ad"
+      ? ["ad_id"]
+      : []),
     "date_start",
     "date_stop",
     "spend",
@@ -69,3 +70,23 @@ export const structures = [
     fields: "id,name,effective_status,adset_id,creative{id,name,thumbnail_url}",
   },
 ];
+
+// Plan 2 visits the newest week across every dataset before older weeks.
+// Keep the original array stable so in-flight plan 1 jobs resume safely.
+export const dashboardDatasetOrder = [0, 3, 9, 1, 6, 4, 10, 7, 2, 5, 8, 11];
+export function nextSlice(
+  dataset: number,
+  window: number,
+  windows: number,
+  newestFirst: boolean,
+) {
+  return newestFirst
+    ? {
+      dataset: (dataset + 1) % datasets.length,
+      window: window + (dataset + 1 === datasets.length ? 1 : 0),
+    }
+    : {
+      dataset: dataset + (window + 1 === windows ? 1 : 0),
+      window: (window + 1) % windows,
+    };
+}

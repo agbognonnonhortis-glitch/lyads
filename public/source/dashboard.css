@@ -475,3 +475,58 @@
   .dashboard-alert-chevron {
   display: none;
 }
+
+.dashboard-sync-progress[hidden] {
+  display: none;
+}
+.dashboard-sync-progress {
+  padding: 18px 20px;
+  border: 1px solid #b8c0f4;
+  border-left: 4px solid #3b4fd1;
+  border-radius: 12px;
+  background: #edeffc;
+  color: #28399c;
+  font:
+    400 14px/1.5 "Figtree",
+    sans-serif;
+}
+.dashboard-sync-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+.dashboard-sync-progress p {
+  margin: 8px 0 0;
+}
+.dashboard-sync-heading i {
+  font-size: 20px;
+}
+.dashboard-sync-account {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+}
+.dashboard-sync-account span {
+  font-size: 13px;
+}
+.dashboard-sync-account progress {
+  width: 100%;
+  height: 7px;
+  accent-color: #3b4fd1;
+}
+.dashboard-sync-progress[data-sync-state="failed"] {
+  background: #fff4f2;
+  border-color: #c0311f;
+  color: #94391d;
+}
+[data-dashboard-action="sync"][data-sync-active="true"] {
+  opacity: 1 !important;
+  background: #edeffc !important;
+  border-color: #3b4fd1 !important;
+  box-shadow: 0 0 0 2px #3b4fd11a;
+}
+[data-dashboard-action="sync"][data-sync-active="true"]
+  :is([data-sync-label], i) {
+  color: #3b4fd1 !important;
+}

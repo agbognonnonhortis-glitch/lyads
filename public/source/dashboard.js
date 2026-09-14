@@ -178,6 +178,10 @@
         "aria-disabled",
         String(!connectionProblem() && (state.busy || !!pending.length)),
       );
+      e.setAttribute(
+        "data-sync-active",
+        String(state.busy || !!pending.length),
+      );
       e.title = c.freshness.accounts
         .map(
           (a) =>
@@ -186,6 +190,65 @@
         .join("\n");
     });
   }
+  function syncProgress() {
+    const active = state.jobs.filter((j) =>
+      ["queued", "running"].includes(j.status),
+    );
+    const failed = state.jobs.filter((j) =>
+      ["failed", "cancelled"].includes(j.status),
+    );
+    const shown = [...active, ...failed];
+    all("[data-sync-progress]").forEach((panel) => {
+      panel.hidden = !shown.length && !state.busy;
+      panel.dataset.syncState =
+        failed.length && !active.length ? "failed" : "running";
+      if (panel.hidden) return;
+      const heading =
+        active.length || state.busy
+          ? "Synchronisation Meta en cours"
+          : "Synchronisation interrompue";
+      panel.innerHTML =
+        `<div class="dashboard-sync-heading"><i class="ph ph-arrows-clockwise" aria-hidden="true"></i><strong>${heading}</strong></div>` +
+        (active.length
+          ? "<p>Les données apparaissent au fur et à mesure. L’historique de 90 jours continue de se charger en arrière-plan ; les chiffres et comparaisons peuvent encore être incomplets.</p>"
+          : "") +
+        shown
+          .map((j) => {
+            const p = j.result?.sync_progress;
+            const name =
+              state.accounts.find((a) => a.id === j.ad_account_id)?.name ||
+              "Compte publicitaire";
+            if (["failed", "cancelled"].includes(j.status))
+              return `<p><strong>${esc(name)}</strong> — ${connectionProblem() ? esc(connectionProblem().message) : "L’import n’a pas pu se terminer. Les données déjà reçues sont conservées. Relancez-le avec le bouton Synchroniser."}</p>`;
+            const phase =
+              {
+                campaigns: "Campagnes",
+                adsets: "Ensembles de publicités",
+                ads: "Publicités et créatives",
+                metrics: "Performances et répartitions",
+              }[p?.phase] || "Préparation de l’import";
+            const known =
+              Number.isInteger(p?.total_slices) && p.total_slices > 0;
+            const completed = known
+              ? Math.min(p.total_slices, p.completed_slices || 0)
+              : 0;
+            return `<div class="dashboard-sync-account"><strong>${esc(name)}</strong><span>${phase} · ${number(j.progress_done || 0)} éléments traités${known ? ` · ${completed}/${p.total_slices} lots terminés` : ""}</span><progress aria-label="Progression de l’import de ${esc(name)}" ${known ? `value="${completed}" max="${p.total_slices}"` : ""}></progress></div>`;
+          })
+          .join("");
+    });
+  }
+  const syncFingerprint = () =>
+    state.jobs
+      .map((j) =>
+        [
+          j.id,
+          j.status,
+          j.progress_done,
+          j.updated_at,
+          j.result?.sync_progress?.published_at,
+        ].join(":"),
+      )
+      .join(",");
   async function context(epoch) {
     const c = await api(endpoint("context"));
     if (epoch !== state.epoch) return null;
@@ -221,6 +284,7 @@
       ].join(" / "),
     );
     syncLabel();
+    syncProgress();
     return c;
   }
   function kpis(data) {
@@ -454,11 +518,10 @@
     state.poll = setTimeout(async () => {
       const epoch = state.epoch;
       try {
-        const old = state.jobs.map((j) => j.id + ":" + j.status).join(",");
+        const old = syncFingerprint();
         const c = await context(epoch);
         if (!c) return;
-        const changed =
-          old !== state.jobs.map((j) => j.id + ":" + j.status).join(",");
+        const changed = old !== syncFingerprint();
         if (changed) {
           const failed = state.jobs.some((j) =>
             ["failed", "cancelled"].includes(j.status),
@@ -566,6 +629,7 @@
     }
     state.busy = true;
     syncLabel();
+    syncProgress();
     const epoch = state.epoch;
     const ids = [...state.ids];
     message("Demande de synchronisation envoyée à Meta…");
