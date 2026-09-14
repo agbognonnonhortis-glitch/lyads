@@ -55,7 +55,7 @@ Le titre « Meilleures publicités » est conservé. Le classement utilise déso
 
 Le worker lit la créative puis le fichier vidéo. Pour les vidéos appartenant à une page, il utilise son jeton uniquement en mémoire côté serveur, puis, si nécessaire, parcourt la bibliothèque vidéo autorisée du compte. Les requêtes sont paginées et soumises au quota commun. Les résultats ne contiennent que les URLs HTTPS de médias, jamais le HTML du fournisseur ni un jeton d’accès. L’absence de fichier lisible est explicitée, sans transformer une vidéo en image.
 
-Le lecteur possède Play, les contrôles natifs et une prélecture muette au survol ; quitter la zone arrête cette prélecture, tandis qu’une lecture lancée par clic continue. Les images et éléments de carrousel sont chargés à l’ouverture de chaque ligne. Tests : droits et cache dans PostgreSQL, URLs sans credentials, identification des formats, survol muet et maintien après clic. Vérification réelle : le fichier de la publicité test est résolu avec le jeton de sa page, alors que la lecture avec le jeton utilisateur ne retournait pas de source.
+Le lecteur possède Play, les contrôles natifs et une prélecture muette au survol ; quitter la zone arrête cette prélecture, tandis qu’une lecture lancée par clic continue. Les images et éléments de carrousel sont chargés à l’ouverture de l’aperçu agrandi. Tests : droits et cache dans PostgreSQL, URLs sans credentials, identification des formats, survol muet et maintien après clic. Vérification réelle : le fichier de la publicité test est résolu avec le jeton de sa page, alors que la lecture avec le jeton utilisateur ne retournait pas de source.
 
 
 ## Classement par événement de conversion
@@ -77,14 +77,15 @@ Le moteur `alerts-v2` choisit la cible à partir de l’événement réellement 
 Une campagne n’est évaluée globalement que si tous ses ensembles partagent un même événement identifié. Sinon, les dépassements sont évalués par ensemble, sans mélanger achats et leads. Fatigue et déséquilibre utilisent également le coût du résultat configuré ; les comparaisons budgétaires restent séparées par événement, objectif d’optimisation et attribution. Les preuves affichent le nombre d’achats, d’inscriptions ou de résultats correspondant. La nouvelle version de clé de cache déclenche une nouvelle analyse après migration et après changement de cibles.
 
 
-### Liste repliable de toutes les publicités
+### Tableau de toutes les publicités
 
 `lyads_scoped_account_ads` remplace l’appel du widget à `lyads_account_ads`. Toutes les publicités importées dans la sélection sont consultables, y compris les actives sans métriques sur la période. Le serveur renvoie cinq lignes et `nextOffset`; « Afficher plus de publicités » charge les cinq suivantes. Le tri précède la pagination ; le navigateur écarte les doublons si une synchronisation actualise le classement entre deux pages. Aucun titre de regroupement par événement ni mention « non classées » n’est affiché.
 
-La barre représente le ROAS rapporté au meilleur ROAS du même événement et de la même devise, ou le meilleur CPR divisé par celui de la publicité. Elle ne représente pas la dépense. Une métrique inconnue ne remplit pas la barre.
+La présentation reprend le tableau de la maquette : vignette et nom, dépense, CPA ou CPR selon les événements affichés, ROAS et état. Le survol ou le clic ouvre le média en superposition. Le clic maintient l’aperçu ouvert ; sa fermeture arrête la vidéo. Les états vert/ocre utilisent les cibles enregistrées ; sans cible exploitable, l’état est neutre. Aucune fiabilité ou projection n’est inventée.
 
-Chaque ligne est repliée initialement. L’ouverture affiche le média à gauche et les statistiques à droite et déclenche seulement alors la résolution du média. La fermeture met la vidéo en pause. Les mentions globales sur la limite et le nombre de données insuffisantes ne sont pas affichées.
+Le graphe compare les deux périodes avec une infobulle et affiche le total réel de la période, la moyenne journalière et le jour le plus élevé. Une journée manquante empêche d’afficher un total complet. Le CPA et le ROAS de période viennent des agrégats API et ne sont jamais additionnés. Les mini-graphes des indicateurs utilisent les mêmes séries réelles.
 
+Les placements sont regroupés en Fil d’actualité, Reels, Stories, Audience Network et Autres placements, avec une barre segmentée et une légende. Leur dépense est additionnée une seule fois, et leur ROAS est recalculé à partir des valeurs de conversion et de la dépense ; une valeur manquante reste inconnue. Les campagnes conservent une barre de dépense colorée selon les cibles, ou neutre sans évaluation. Les alertes conservent les cartes horizontales de la maquette. Les recommandations utilisent les cartes lavande lorsqu’un résultat réel est disponible ; les actions « vu » et « reporter » sont pour l’instant locales à la page.
 
 Vérification des filtres : tests PostgreSQL des niveaux/périodes/répartitions distincts, des relations campagne/ensemble et du refus inter-comptes/inter-utilisateurs ; tests navigateur simulé des changements de parents, persistance du périmètre sur chaque zone et pagination à cinq lignes. Les tests incluent les publicités à faible volume et les tableaux de conversions quotidiens creux.
 

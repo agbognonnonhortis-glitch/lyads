@@ -131,7 +131,7 @@ export async function GET(
       conversionMetric: "purchase",
     };
     if (zone === "context") {
-      const [jobs, credits, profile] = await Promise.all([
+      const [jobs, credits, profile, targets] = await Promise.all([
         ids.length
           ? client.supabase
               .from("lyads_jobs")
@@ -152,12 +152,22 @@ export async function GET(
           .select("display_name")
           .eq("user_id", client.user.id)
           .maybeSingle(),
+        ids.length
+          ? client.supabase
+              .from("lyads_alert_settings")
+              .select(
+                "ad_account_id,target_roas,target_cpa,target_cpl,target_cpr",
+              )
+              .eq("workspace_id", organization)
+              .in("ad_account_id", ids)
+          : Promise.resolve({ data: [], error: null }),
       ]);
-      if (jobs.error || credits.error || profile.error)
-        throw jobs.error || credits.error || profile.error;
+      if (jobs.error || credits.error || profile.error || targets.error)
+        throw jobs.error || credits.error || profile.error || targets.error;
       return client.json({
         ...common,
         ...scope.data,
+        targets: targets.data || [],
         accounts: available,
         selected: ids,
         jobs: jobs.data,
@@ -318,6 +328,34 @@ export async function GET(
         page_size: 5,
       });
       if (ranking.error) throw ranking.error;
+      const adIds = (ranking.data?.rows || []).map(
+        (row: { bucket: string }) => row.bucket,
+      );
+      const mediaInfo = adIds.length
+        ? await client.supabase
+            .from("lyads_ads")
+            .select("id,ad_account_id,effective_status,source_data")
+            .eq("workspace_id", organization)
+            .in("ad_account_id", ids)
+            .in("id", adIds)
+        : { data: [], error: null };
+      if (mediaInfo.error) throw mediaInfo.error;
+      for (const row of ranking.data?.rows || []) {
+        const ad = mediaInfo.data?.find((item) => item.id === row.bucket);
+        const creative = ad?.source_data?.creative || {};
+        row.ad_account_id = ad?.ad_account_id;
+        row.effective_status = ad?.effective_status;
+        row.media_type =
+          creative.video_id ||
+          creative.object_story_spec?.video_data ||
+          creative.asset_feed_spec?.videos?.length
+            ? "video"
+            : creative.object_story_spec?.link_data?.child_attachments?.length
+              ? "carousel"
+              : creative.image_url || creative.image_hash
+                ? "image"
+                : null;
+      }
       if (
         (ranking.data?.rows || []).some(
           (row: { currency: string }) => row.currency !== accounts[0].currency,

@@ -345,47 +345,129 @@
     syncProgress();
     return c;
   }
+  const shortDate = (date) =>
+    new Intl.DateTimeFormat("fr-FR", {
+      weekday: "short",
+      day: "numeric",
+      timeZone: "UTC",
+    }).format(new Date(date));
+  function targetFor(row = {}) {
+    const targets = state.context?.targets || [];
+    const id =
+      row.ad_account_id ||
+      state.campaigns.find((c) => c.id === row.bucket)?.ad_account_id;
+    if (id) return targets.find((t) => t.ad_account_id === id) || {};
+    const selected = state.ids.map(
+      (id) => targets.find((t) => t.ad_account_id === id) || {},
+    );
+    return Object.fromEntries(
+      ["target_roas", "target_cpa", "target_cpl", "target_cpr"].map((key) => [
+        key,
+        selected.length &&
+        selected.every((t) => t[key] != null && t[key] === selected[0][key])
+          ? selected[0][key]
+          : null,
+      ]),
+    );
+  }
+  function performance(row) {
+    const target = targetFor(row),
+      event = row.result_event || "purchase";
+    const costTarget =
+      event === "purchase"
+        ? target.target_cpa
+        : ["lead", "complete_registration"].includes(event)
+          ? target.target_cpl
+          : target.target_cpr;
+    const cost = row.cost_per_result ?? row.cpa;
+    const checks = [];
+    if (event === "purchase" && target.target_roas != null && row.roas != null)
+      checks.push(Number(row.roas) >= Number(target.target_roas));
+    if (costTarget != null && cost != null)
+      checks.push(Number(cost) <= Number(costTarget));
+    return checks.length ? (checks.every(Boolean) ? "good" : "bad") : "neutral";
+  }
   function kpis(data) {
     const current = data.rows.find((r) => r.bucket === "current"),
       previous = data.rows.find((r) => r.bucket === "previous");
     for (const key of Object.keys(labels)) {
       text(`[data-metric="${key}"]`, fmt(current?.[key], key, data.currency));
+      const delta =
+        current?.[key] != null &&
+        previous?.[key] != null &&
+        Number(previous[key]) !== 0
+          ? (Number(current[key]) / Number(previous[key]) - 1) * 100
+          : null;
+      const tone =
+        delta === null ||
+        ["spend", "impressions", "clicks"].includes(key) ||
+        delta === 0
+          ? "neutral"
+          : (["cpc", "cpa"].includes(key) ? delta < 0 : delta > 0)
+            ? "good"
+            : "bad";
+      all(`[data-kpi-trend="${key}"]`).forEach((el) => {
+        el.dataset.tone = tone;
+        el.textContent =
+          delta === null
+            ? ""
+            : `${delta >= 0 ? "▲" : "▼"} ${number(Math.abs(delta))} %`;
+      });
       let note =
-        connectionProblem()?.message || "Aucune donnée sur cette période";
-      if (current?.[key] != null) {
-        note =
-          previous?.[key] != null && Number(previous[key]) !== 0
-            ? `${number((Number(current[key]) / Number(previous[key]) - 1) * 100)} % par rapport à la période précédente`
-            : "Comparaison indisponible";
-        if (["cpa", "roas"].includes(key)) note += " · achats";
-      } else if (["cpa", "roas"].includes(key) && current)
-        note = "Achats ou valeur des achats indisponibles";
+        current?.[key] == null
+          ? connectionProblem()?.message || "Aucune donnée sur cette période"
+          : delta === null
+            ? "Comparaison indisponible"
+            : ["cpa", "roas"].includes(key)
+              ? "Achats"
+              : `${fmt(current[key], key, data.currency)} exact`;
+      const target = targetFor();
+      if (key === "cpa" && current?.cpa != null && target.target_cpa != null)
+        note = `Cible ${fmt(target.target_cpa, "cpa", data.currency)}`;
+      if (key === "roas" && current?.roas != null && target.target_roas != null)
+        note = `Cible ${number(target.target_roas)}`;
       if (current && current.accounts_count < state.ids.length)
-        note +=
-          " · données partielles : " +
-          current.accounts_count +
-          "/" +
-          state.ids.length +
-          " comptes";
+        note += " · données partielles";
       text(`[data-metric-note="${key}"]`, note);
     }
-    all("[data-kpi]").forEach((e) => e.setAttribute("aria-busy", "false"));
+    all("[data-kpi]").forEach((el) => el.setAttribute("aria-busy", "false"));
+    renderSparks();
+  }
+  function renderSparks() {
+    const data = state.data.series;
+    if (!data) return;
+    const rows = Array.from({ length: data.period.days }, (_, i) =>
+      data.rows.find((r) => r.bucket === shift(data.period.since, i)),
+    );
+    all("[data-kpi-spark]").forEach((el) => {
+      el.dataset.tone =
+        el.parentElement.querySelector("[data-kpi-trend]")?.dataset.tone ||
+        "neutral";
+      const key = el.dataset.kpiSpark,
+        max = Math.max(0.000001, ...rows.map((r) => Number(r?.[key]) || 0));
+      el.innerHTML = rows
+        .map(
+          (r) =>
+            `<span style="height:${r?.[key] == null ? 0 : Math.max(3, (Number(r[key]) / max) * 100)}%;opacity:${r?.[key] == null ? 0 : 0.3 + (Number(r[key]) / max) * 0.7}" title="${esc(r ? `${shortDate(r.bucket)} : ${fmt(r[key], key, data.currency)}` : "Donnée indisponible")}"></span>`,
+        )
+        .join("");
+    });
   }
   function seriesHtml(data) {
     const key = state.metric,
-      period = data.period;
-    const rows = data.rows;
-    const days = period.days;
-    const pairs = Array.from({ length: days }, (_, i) => {
-      const date = shift(period.since, i),
-        previousDate = shift(period.previousSince, i);
-      return {
-        date,
-        previousDate,
-        current: rows.find((r) => r.bucket === date)?.[key] ?? null,
-        previous: rows.find((r) => r.bucket === previousDate)?.[key] ?? null,
-      };
-    });
+      period = data.period,
+      days = period.days;
+    const pairs = Array.from({ length: days }, (_, i) => ({
+      date: shift(period.since, i),
+      previousDate: shift(period.previousSince, i),
+      current:
+        data.rows.find((r) => r.bucket === shift(period.since, i))?.[key] ??
+        null,
+      previous:
+        data.rows.find((r) => r.bucket === shift(period.previousSince, i))?.[
+          key
+        ] ?? null,
+    }));
     if (!pairs.some((p) => p.current !== null || p.previous !== null))
       return "<p>Aucune donnée disponible pour cette métrique sur les périodes sélectionnées.</p>";
     const maximum = Math.max(
@@ -395,8 +477,8 @@
         Number(p.previous) || 0,
       ]),
     );
-    const x = (i) => 45 + (days === 1 ? 0 : (i * 650) / (days - 1)),
-      y = (v) => 225 - (Number(v) / maximum) * 190;
+    const x = (i) => 54 + (days === 1 ? 500 : (i * 1000) / (days - 1)),
+      y = (v) => 230 - (Number(v) / maximum) * 190;
     const path = (field) => {
       let started = false;
       return pairs
@@ -405,13 +487,80 @@
             started = false;
             return "";
           }
-          const command = started ? "L" : "M";
+          const c = started ? "L" : "M";
           started = true;
-          return `${command}${x(i)},${y(p[field])}`;
+          return `${c}${x(i)},${y(p[field])}`;
         })
         .join(" ");
     };
-    return `<p class="dashboard-note">${esc(period.since)} – ${esc(period.until)} · comparaison ${esc(period.previousSince)} – ${esc(period.previousUntil)}</p><svg class="dashboard-graph" viewBox="0 0 730 255" role="img" aria-label="${esc(labels[key])} : période sélectionnée et période précédente"><text x="4" y="28" fill="#6e6862" font-size="11">${esc(fmt(maximum, key, data.currency))}</text><text x="20" y="230" fill="#6e6862" font-size="11">0</text><path d="M45 30V225H710" fill="none" stroke="#e8e3d9"/><path d="${path("previous")}" fill="none" stroke="#a9a196" stroke-width="2" stroke-dasharray="6 5"/><path d="${path("current")}" fill="none" stroke="#b44a26" stroke-width="3"/>${pairs.map((p, i) => (p.current === null ? "" : `<circle cx="${x(i)}" cy="${y(p.current)}" r="4" fill="#b44a26"><title>${esc(p.date + " : " + fmt(p.current, key, data.currency) + " ; précédente : " + fmt(p.previous, key, data.currency))}</title></circle>`)).join("")}</svg><p class="dashboard-note">Orange : période sélectionnée · pointillés : période précédente. Les jours sans données restent vides.</p><details><summary>Voir les valeurs par jour</summary><div class="dashboard-table-wrap"><table><thead><tr><th>Date</th><th>${esc(labels[key])}</th><th>Période précédente</th></tr></thead><tbody>${pairs.map((p) => `<tr><td>${p.date}</td><td>${esc(fmt(p.current, key, data.currency))}</td><td>${esc(fmt(p.previous, key, data.currency))}</td></tr>`).join("")}</tbody></table></div></details>`;
+    const values = pairs.filter((p) => p.current !== null),
+      complete = values.length === days;
+    const additive = ["spend", "clicks", "impressions"].includes(key);
+    const total =
+      complete && additive
+        ? values.reduce((s, p) => s + Number(p.current), 0)
+        : null;
+    // Ratios are weighted using the period totals returned by the API, never added.
+    const aggregate = additive
+      ? total
+      : (state.data.kpis?.rows.find((r) => r.bucket === "current")?.[key] ??
+        null);
+    const avg = complete
+      ? values.reduce((sum, p) => sum + Number(p.current), 0) / days
+      : null;
+    const peak = values.reduce(
+      (best, p) =>
+        !best || Number(p.current) > Number(best.current) ? p : best,
+      null,
+    );
+    const labelStep = Math.max(1, Math.ceil(days / 7));
+    return `<div class="dashboard-chart-legend"><span><i></i>${esc(period.since)} – ${esc(period.until)}</span><span><i></i>${esc(period.previousSince)} – ${esc(period.previousUntil)}</span></div><div class="dashboard-chart-wrap"><svg class="dashboard-graph" viewBox="0 0 1080 270" role="img" aria-label="${esc(labels[key])} : période sélectionnée et période précédente">${Array.from(
+      { length: 5 },
+      (_, i) => {
+        const v = (maximum * i) / 4;
+        return `<line x1="54" x2="1054" y1="${y(v)}" y2="${y(v)}" stroke="#E8E3D9" stroke-width="0.6"/><text x="0" y="${y(v) + 4}" fill="#6E6862" font-size="11">${esc(new Intl.NumberFormat("fr-FR", { notation: "compact", maximumFractionDigits: 1 }).format(v))}</text>`;
+      },
+    ).join(
+      "",
+    )}<path d="${path("previous")}" fill="none" stroke="#A9A196" stroke-width="2" stroke-dasharray="6 5"/><path d="${path("current")}" fill="none" stroke="#B44A26" stroke-width="2.5"/>${pairs.map((p, i) => `${i % labelStep === 0 || i === days - 1 ? `<text x="${x(i)}" y="254" text-anchor="middle" fill="#6E6862" font-size="11">${esc(shortDate(p.date))}</text>` : ""}${p.previous !== null ? `<circle cx="${x(i)}" cy="${y(p.previous)}" r="2.5" fill="#A9A196"/>` : ""}${p.current !== null ? `<circle cx="${x(i)}" cy="${y(p.current)}" r="3.5" fill="#B44A26"/>` : ""}<rect data-chart-point="${i}" x="${Math.max(40, x(i) - Math.max(8, 500 / days))}" y="25" width="${Math.max(16, 1000 / days)}" height="210" fill="transparent" tabindex="0" aria-label="${esc(shortDate(p.date) + ": " + fmt(p.current, key, data.currency))}"><title>${esc(p.date + " : " + fmt(p.current, key, data.currency) + " ; précédente : " + fmt(p.previous, key, data.currency))}</title></rect>`).join("")}</svg><div class="dashboard-chart-tooltip" role="tooltip" hidden></div></div><div class="dashboard-chart-footer"><div><span>${additive ? "Total période" : `${esc(labels[key])} sur la période`}</span><strong>${esc(fmt(aggregate, key, data.currency))}</strong></div><div><span>Moyenne / jour</span><strong>${esc(fmt(avg, key, data.currency))}</strong></div><div><span>Jour le plus élevé${!complete ? " · données disponibles" : ""}</span><strong>${peak ? `${esc(fmt(peak.current, key, data.currency))} · ${esc(shortDate(peak.date))}` : "—"}</strong></div></div>`;
+  }
+  function bindChart() {
+    const data = state.data.series;
+    if (!data) return;
+    all("[data-chart-point]").forEach((el) => {
+      const show = () => {
+        const i = Number(el.dataset.chartPoint),
+          date = shift(data.period.since, i),
+          previousDate = shift(data.period.previousSince, i),
+          current =
+            data.rows.find((r) => r.bucket === date)?.[state.metric] ?? null,
+          previous =
+            data.rows.find((r) => r.bucket === previousDate)?.[state.metric] ??
+            null;
+        const delta =
+          current !== null && previous !== null
+            ? Number(current) - Number(previous)
+            : null;
+        const relative =
+          delta !== null && Number(previous) !== 0
+            ? (delta / Number(previous)) * 100
+            : null;
+        const tooltip = el
+          .closest(".dashboard-chart-wrap")
+          .querySelector("[role=tooltip]");
+        tooltip.innerHTML = `<strong>${esc(shortDate(date))}</strong><span>Période : ${esc(fmt(current, state.metric, data.currency))}</span><span>Précédente : ${esc(fmt(previous, state.metric, data.currency))}</span><span>Écart : ${esc(fmt(delta, state.metric, data.currency))} · ${relative === null ? "—" : number(relative) + " %"}</span>`;
+        tooltip.hidden = false;
+      };
+      const hide = () => {
+        el
+          .closest(".dashboard-chart-wrap")
+          .querySelector("[role=tooltip]").hidden = true;
+      };
+      el.addEventListener("mouseenter", show);
+      el.addEventListener("focus", show);
+      el.addEventListener("mouseleave", hide);
+      el.addEventListener("blur", hide);
+    });
   }
   const alertStyles = {
     critical: { label: "Critique", symbol: "▼", rank: 0 },
@@ -435,7 +584,7 @@
         : row.id === "alerts-unavailable"
           ? '<button type="button" class="dashboard-alert-action" data-retry-zone="alerts">Réessayer</button>'
           : `<button type="button" class="dashboard-alert-action" data-dashboard-action="alert-detail" data-alert-id="${esc(row.id)}" data-alert-kind="${esc(row.kind)}">${row.kind === "performance" ? "Voir l’analyse" : row.kind === "recommendation" ? "Voir la recommandation" : "Voir le détail"}</button>`;
-    return `<article class="dashboard-alert-card" data-alert-tone="${tone}" data-alert-kind="${esc(row.kind)}"><span class="dashboard-alert-badge"><span aria-hidden="true">${style.symbol}</span> ${style.label}</span><div class="dashboard-alert-copy"><h3>${esc(row.title)}</h3><p>${esc(row.message)}</p></div>${action}<i class="ph ph-caret-right dashboard-alert-chevron" aria-hidden="true"></i></article>`;
+    return `<article class="dashboard-alert-card" data-alert-tone="${tone}" data-alert-kind="${esc(row.kind)}" data-seen="${state.seenAlerts?.has(`${row.kind}:${row.id}:${row.message}`) || false}"><span class="dashboard-alert-badge"><span aria-hidden="true">${style.symbol}</span> ${style.label}</span><div class="dashboard-alert-copy"><h3>${esc(row.title)}</h3><p>${esc(row.message)}</p></div>${action}<i class="ph ph-caret-right dashboard-alert-chevron" aria-hidden="true"></i></article>`;
   }
   function renderAlerts() {
     const alerts = state.data.alerts;
@@ -509,6 +658,9 @@
       alertSettingsDialog();
     });
   }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePreview();
+  });
   const mediaRequests = new Map();
   function mediaMarkup(media, name) {
     if (!media.length)
@@ -628,57 +780,193 @@
       });
   }
   function rankedAdsHtml(data) {
-    const eventNames = {
-      purchase: "Achats",
-      lead: "Leads",
-      complete_registration: "Inscriptions",
-      add_to_cart: "Ajouts au panier",
-      initiate_checkout: "Paiements initiés",
-      link_click: "Clics sur un lien",
-      landing_page_view: "Vues de page de destination",
-      post_engagement: "Interactions",
-      like: "Mentions J’aime",
-    };
-    let html = data.rows
+    if (!data.rows.length)
+      return "<p>Aucune publicité importée pour cette sélection.</p>";
+    const onlyPurchases = data.rows.every((r) => r.result_event === "purchase");
+    const table = `<div class="dashboard-ad-table-wrap"><table class="dashboard-ad-table"><thead><tr><th>Publicité</th><th>Dépense</th><th>${onlyPurchases ? "CPA" : "CPR"}</th><th>ROAS</th><th>État</th></tr></thead><tbody>${data.rows
       .map((r) => {
-        const event = r.result_event;
-        const label =
-          eventNames[event] ||
-          (event ? "Conversions personnalisées" : "Résultats");
-        const costLabel =
-          event === "purchase"
-            ? "Coût par achat"
-            : event === "lead"
-              ? "Coût par lead"
-              : event === "complete_registration"
-                ? "Coût par inscription"
-                : "Coût par résultat";
-        const primary = [
-          ...(event === "purchase" ? [["ROAS", number(r.roas)]] : []),
-          [costLabel, fmt(r.cost_per_result, "cpa", r.currency)],
-          [label, number(r.results)],
-        ];
-        return `<details class="dashboard-best-ad" data-best-ad="${esc(r.bucket)}"><summary class="dashboard-best-heading"><span class="dashboard-best-caret" aria-hidden="true">▶</span>${r.rank == null ? "" : `<span class="dashboard-best-rank" aria-label="Rang ${esc(r.rank)}">${esc(r.rank)}</span>`}<span class="dashboard-best-name">${esc(r.name)}</span></summary><div class="dashboard-best-layout"><div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div><div class="dashboard-best-stats"><dl class="dashboard-best-primary">${primary.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl><dl class="dashboard-best-secondary"><dt>Dépense</dt><dd>${fmt(r.spend, "spend", r.currency)}</dd><dt>Impressions</dt><dd>${number(r.impressions)}</dd><dt>Clics</dt><dd>${number(r.clicks)}</dd><dt>CPC</dt><dd>${fmt(r.cpc, "cpc", r.currency)}</dd></dl></div></div></details><div class="dashboard-bar dashboard-best-bar" aria-hidden="true"><span style="width:${r.rank == null ? 0 : Math.max(0, Math.min(100, Number(r.bar_ratio || 0) * 100))}%"></span></div>`;
+        const tone = performance(r),
+          event = r.result_event;
+        const eventLabel =
+          {
+            purchase: "Achat",
+            lead: "Lead",
+            complete_registration: "Inscription",
+            add_to_cart: "Ajout au panier",
+            initiate_checkout: "Paiement initié",
+          }[event] || "Résultat";
+        const safeThumb =
+          /^https:\/\//.test(r.thumbnail || "") &&
+          !/[?&](access_token|appsecret_proof)=/i.test(r.thumbnail);
+        return `<tr data-best-ad="${esc(r.bucket)}"><td><button type="button" class="dashboard-ad-trigger" data-preview-ad="${esc(r.bucket)}" aria-label="Aperçu de ${esc(r.name)}"><span class="dashboard-ad-thumb">${safeThumb ? `<img src="${esc(r.thumbnail)}" alt="" loading="lazy">` : `<i class="ph ${r.media_type === "video" ? "ph-play-circle" : "ph-image"}" aria-hidden="true"></i>`}${r.media_type === "video" && safeThumb ? '<span class="dashboard-thumb-play">▶</span>' : ""}</span><span class="dashboard-ad-caption"><strong>${esc(r.name)}</strong><small>${r.media_type ? `${{ video: "Vidéo", image: "Image", carousel: "Carrousel" }[r.media_type]} · ` : ""}${esc(eventLabel)}${r.results != null ? " · " + number(r.results) + " résultat(s)" : ""}</small></span></button></td><td>${esc(fmt(r.spend, "spend", r.currency))}</td><td title="Coût par ${esc(eventLabel.toLowerCase())}">${esc(fmt(r.cost_per_result, "cpa", r.currency))}</td><td data-tone="${tone}">${esc(number(r.roas))}</td><td><span class="dashboard-performance-badge" data-tone="${tone}">${tone === "good" ? "▲ Performe" : tone === "bad" ? "◆ À surveiller" : "— Non évalué"}</span></td></tr>`;
       })
-      .join("");
-    if (!html) html = "<p>Aucune publicité importée pour cette sélection.</p>";
-    if (data.nextOffset != null)
-      html +=
-        '<button type="button" class="dashboard-more-ads" data-dashboard-action="more-ads">Afficher plus de publicités</button><p class="dashboard-note" data-more-ads-status role="status"></p>';
-    return html;
+      .join("")}</tbody></table></div>`;
+    return (
+      table +
+      (data.nextOffset != null
+        ? '<button type="button" class="dashboard-more-ads" data-dashboard-action="more-ads">Afficher plus de publicités</button><p class="dashboard-note" data-more-ads-status role="status"></p>'
+        : "")
+    );
+  }
+  let preview = null,
+    previewTimer = null;
+  function closePreview() {
+    clearTimeout(previewTimer);
+    if (!preview) return;
+    preview.box.querySelectorAll("video").forEach((v) => v.pause());
+    preview.box.remove();
+    preview = null;
+  }
+  function showPreview(row, trigger, pinned = false) {
+    clearTimeout(previewTimer);
+    if (preview?.id === row.bucket) {
+      preview.pinned ||= pinned;
+      return;
+    }
+    if (preview?.pinned && !pinned) return;
+    closePreview();
+    const box = document.createElement("details");
+    box.open = true;
+    box.className = "dashboard-ad-preview";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-label", `Aperçu de ${row.name}`);
+    box.innerHTML = `<summary hidden>Aperçu</summary><div class="dashboard-preview-header"><strong>${esc(row.name)}</strong><button type="button" aria-label="Fermer l’aperçu">×</button></div><div class="dashboard-ad-media" data-ad-media="${esc(row.bucket)}"><p class="dashboard-note" role="status">Chargement du média…</p></div>`;
+    document.body.append(box);
+    const rect = trigger.getBoundingClientRect(),
+      w = Math.min(440, window.innerWidth - 32);
+    box.style.width = w + "px";
+    box.style.left =
+      Math.max(16, Math.min(rect.left + 68, window.innerWidth - w - 16)) + "px";
+    box.style.top =
+      Math.max(16, Math.min(rect.top, window.innerHeight - 520)) + "px";
+    preview = { id: row.bucket, box, pinned };
+    box.querySelector("button").onclick = () => {
+      closePreview();
+      trigger.focus();
+    };
+    box.addEventListener("mouseenter", () => clearTimeout(previewTimer));
+    box.addEventListener("mouseleave", () => {
+      if (!preview?.pinned)
+        previewTimer = setTimeout(() => {
+          if (!preview?.pinned) closePreview();
+        }, 250);
+    });
+    box.addEventListener("pointerdown", () => {
+      clearTimeout(previewTimer);
+      if (preview) preview.pinned = true;
+    });
+    loadMedia(row);
   }
   function bindAdRows() {
-    all("[data-best-ad]").forEach((details) => {
-      details.addEventListener("toggle", () => {
-        if (details.open) {
-          const row = state.data.creatives?.rows.find(
-            (r) => r.bucket === details.dataset.bestAd,
-          );
-          if (row) loadMedia(row);
-        } else
-          details.querySelectorAll("video").forEach((video) => video.pause());
+    all("[data-preview-ad]").forEach((trigger) => {
+      const row = state.data.creatives?.rows.find(
+        (r) => r.bucket === trigger.dataset.previewAd,
+      );
+      if (!row) return;
+      trigger.addEventListener("mouseenter", () => showPreview(row, trigger));
+      trigger.addEventListener("mouseleave", () => {
+        if (!preview?.pinned)
+          previewTimer = setTimeout(() => {
+            if (!preview?.pinned) closePreview();
+          }, 250);
       });
+      trigger.addEventListener("click", () => showPreview(row, trigger, true));
     });
+  }
+  function placementName(bucket) {
+    const [platform, position] = (bucket || "").split(" / ");
+    if (platform === "audience_network") return "Audience Network";
+    const name = /reels/.test(position)
+      ? "Reels"
+      : /stor/.test(position)
+        ? "Stories"
+        : position === "feed"
+          ? "Fil d’actualité"
+          : {
+              marketplace: "Marketplace",
+              search: "Recherche",
+              instream_video: "Vidéos intégrées",
+              status: "Statut",
+              facebook_profile_feed: "Fil de profil",
+            }[position] ||
+            position ||
+            platform;
+    return (
+      name +
+      " · " +
+      ({ facebook: "Facebook", instagram: "Instagram", whatsapp: "WhatsApp" }[
+        platform
+      ] || platform)
+    );
+  }
+  function groupedPlacements(rows) {
+    const groups = new Map();
+    for (const row of rows) {
+      const [platform, position] = String(row.bucket || "").split(" / ");
+      const name =
+        platform === "audience_network"
+          ? "Audience Network"
+          : /reels/.test(position)
+            ? "Reels"
+            : /stor/.test(position)
+              ? "Stories"
+              : ["feed", "facebook_profile_feed"].includes(position)
+                ? "Fil d’actualité"
+                : "Autres placements";
+      if (!groups.has(name)) groups.set(name, []);
+      groups.get(name).push(row);
+    }
+    const colors = {
+      "Fil d’actualité": "#B44A26",
+      Reels: "#DE805C",
+      Stories: "#EBAD91",
+      "Audience Network": "#F3CDBB",
+      "Autres placements": "#A9A196",
+    };
+    return [...groups.entries()]
+      .map(([name, items]) => {
+        const sum = (key) =>
+          items.some((r) => r[key] != null)
+            ? items.reduce((v, r) => v + Number(r[key] || 0), 0)
+            : null;
+        const spend = items.every((r) => r.spend != null) ? sum("spend") : null;
+        const revenue = items.some(
+          (r) => Number(r.purchases) > 0 && r.revenue == null,
+        )
+          ? null
+          : sum("revenue");
+        return {
+          bucket: name,
+          name,
+          currency: items[0].currency,
+          spend,
+          revenue,
+          roas: spend > 0 && revenue != null ? revenue / spend : null,
+          color: colors[name],
+          breakdown: items
+            .map(
+              (r) =>
+                `${placementName(r.bucket)} : ${fmt(r.spend, "spend", r.currency)}`,
+            )
+            .join(" · "),
+        };
+      })
+      .sort((a, b) => Number(b.spend) - Number(a.spend));
+  }
+  function breakdownHtml(zone, data) {
+    if (!data.rows.length)
+      return "<p>Aucune donnée disponible pour cette période.</p>";
+    if (zone === "placements")
+      data = { ...data, rows: groupedPlacements(data.rows) };
+    const total = data.rows.reduce((sum, r) => sum + Number(r.spend || 0), 0);
+    if (zone === "placements")
+      return `<div class="dashboard-placement-stack" aria-label="Répartition de la dépense par placement">${data.rows.map((r, i) => `<span style="width:${total ? (Number(r.spend || 0) / total) * 100 : 0}%;background:${r.color}" title="${esc(r.name)} : ${esc(fmt(r.spend, "spend", r.currency))}"></span>`).join("")}</div><div class="dashboard-placement-list">${data.rows.map((r, i) => `<div><span class="dashboard-placement-key" style="background:${r.color}"></span><strong title="${esc(r.breakdown || r.name)}">${esc(r.name)}</strong><span>${esc(fmt(r.spend, "spend", r.currency))}</span><b data-tone="${performance(r)}" title="ROAS">${esc(number(r.roas))}</b></div>`).join("")}</div>`;
+    return `<div class="dashboard-campaign-list">${data.rows.map((r) => `<div class="dashboard-campaign-item"><div><strong title="${esc(r.breakdown || r.name)}">${esc(r.name)}</strong><span>${esc(fmt(r.spend, "spend", r.currency))}</span><b data-tone="${performance(r)}" title="ROAS">${esc(number(r.roas))}</b></div><div class="dashboard-campaign-bar"><span data-tone="${performance(r)}" style="width:${total ? (Number(r.spend || 0) / total) * 100 : 0}%"></span></div></div>`).join("")}</div><div class="dashboard-breakdown-legend"><span><i data-tone="good"></i>Au-dessus du seuil</span><span><i data-tone="bad"></i>Sous le seuil</span><span><i data-tone="neutral"></i>Non évalué</span></div>`;
+  }
+  function recommendationCard(row) {
+    const tone = alertTone(row),
+      style = alertStyles[tone];
+    return `<article class="dashboard-recommendation-card"><div class="dashboard-recommendation-tags"><span>LYADS PROPOSE</span><span data-alert-tone="${tone}">${style.label}</span></div><h3>${esc(row.title)}</h3><p>${esc(row.message)}</p><div class="dashboard-recommendation-actions"><button type="button" data-dashboard-action="alert-detail" data-alert-id="${esc(row.id)}" data-alert-kind="recommendation">Examiner</button><button type="button" data-dashboard-action="defer-recommendation" data-alert-id="${esc(row.id)}">Reporter</button></div></article>`;
   }
   async function moreAds(button) {
     const epoch = state.epoch,
@@ -710,6 +998,7 @@
   function renderZone(zone, data) {
     if (zone === "kpis") {
       kpis(data);
+      if (state.data.series) renderZone("series", state.data.series);
       return;
     }
     let html = "";
@@ -718,50 +1007,29 @@
     else if (zone === "alerts" || zone === "recommendations") {
       renderAlerts();
       if (zone === "alerts") return;
-      const rows = state.alertRows.filter((r) => r.kind === "recommendation");
+      const rows = state.alertRows.filter(
+        (r) =>
+          r.kind === "recommendation" &&
+          !state.deferredRecommendations?.has(String(r.id)),
+      );
       html = rows.length
-        ? rows.map(alertCard).join("")
+        ? rows.map(recommendationCard).join("")
         : `<p>${esc(data.message)}</p>`;
       text("[data-recommendation-count]", rows.length || "");
-    } else {
-      const total = data.rows.reduce((sum, r) => sum + Number(r.spend || 0), 0);
-      html = data.rows.length
-        ? data.rows
-            .map(
-              (r) =>
-                `<details class="dashboard-row" ${zone === "creatives" ? "open" : ""}><summary>${esc(r.name || r.bucket)}</summary>${zone === "creatives" ? `<div class="dashboard-ad-media" data-ad-media="${esc(r.bucket)}">${/^https:\/\//.test(r.thumbnail || "") ? `<img src="${esc(r.thumbnail)}" alt="${esc(r.name)}" loading="lazy">` : ""}<p class="dashboard-note" role="status">Chargement du média…</p></div>` : ""}<dl>${Object.keys(
-                  labels,
-                )
-                  .map(
-                    (key) =>
-                      `<dt>${esc(labels[key])}</dt><dd>${esc(fmt(r[key], key, r.currency))}</dd>`,
-                  )
-                  .join(
-                    "",
-                  )}</dl></details><div class="dashboard-bar" title="Part de dépense parmi les résultats affichés"><span style="width:${total ? (Number(r.spend || 0) / total) * 100 : 0}%"></span></div>`,
-            )
-            .join("")
-        : "<p>Aucune donnée disponible pour cette période.</p>";
-      if (data.rows.length)
-        html += `<p class="dashboard-note">${zone === "creatives" ? "Publicités classées par dépense." : zone === "campaigns" ? "Campagnes classées par dépense (50 maximum)." : "Répartition des dépenses remontées par Meta."}</p>`;
-    }
-    const expanded =
-      zone === "creatives"
-        ? new Set(all("[data-best-ad][open]").map((el) => el.dataset.bestAd))
-        : new Set();
+    } else html = breakdownHtml(zone, data);
     all(`[data-zone="${zone}"]`).forEach((el) => {
       el.innerHTML = html;
       el.setAttribute("aria-busy", "false");
     });
-    if (zone === "creatives") {
-      bindAdRows();
-      all("[data-best-ad]")
-        .filter((el) => expanded.has(el.dataset.bestAd))
-        .forEach((el) => {
-          el.open = true;
-        });
+    if (zone === "creatives") bindAdRows();
+    if (zone === "series") {
+      bindChart();
+      renderSparks();
     }
+    if (zone === "kpis" && state.data.series)
+      renderZone("series", state.data.series);
   }
+
   async function loadZone(zone, epoch = state.epoch) {
     try {
       const data = await api(endpoint(zone));
@@ -834,6 +1102,7 @@
     );
   }
   async function refresh() {
+    closePreview();
     const epoch = ++state.epoch;
     clearTimeout(state.poll);
     state.data = {};
@@ -1127,7 +1396,8 @@
           body: JSON.stringify(values),
         });
         d.close();
-        await loadZone("alerts");
+        await context(state.epoch);
+        await loadWidgets(state.epoch);
       } catch (error) {
         d.querySelector('[role="alert"]').textContent = error.message;
         save.disabled = false;
@@ -1137,6 +1407,19 @@
     await load();
   }
   function action(name, el) {
+    if (name === "alerts-seen") {
+      state.seenAlerts = new Set(
+        state.alertRows.map((r) => `${r.kind}:${r.id}:${r.message}`),
+      );
+      renderAlerts();
+      return;
+    }
+    if (name === "defer-recommendation") {
+      state.deferredRecommendations ||= new Set();
+      state.deferredRecommendations.add(el.dataset.alertId);
+      renderZone("recommendations", state.data.recommendations);
+      return;
+    }
     if (name === "add-account") {
       addAccountDialog();
       return;

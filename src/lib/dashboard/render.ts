@@ -55,7 +55,13 @@ export function renderDashboard(html: string, data: OnboardingData) {
       note.className = "dashboard-note";
       note.setAttribute("data-metric-note", key);
       note.textContent = "Chargement…";
-      box.replaceChildren(title, display, note);
+      const trend = doc.createElement("div");
+      trend.className = "dashboard-kpi-trend";
+      trend.setAttribute("data-kpi-trend", key);
+      const spark = doc.createElement("div");
+      spark.className = "dashboard-spark";
+      spark.setAttribute("data-kpi-spark", key);
+      box.replaceChildren(title, display, trend, note, spark);
       box.setAttribute("data-kpi", key);
       box.setAttribute("aria-busy", "true");
       if (key === "cpa" || key === "roas")
@@ -113,6 +119,24 @@ export function renderDashboard(html: string, data: OnboardingData) {
       content.className = "dashboard-content";
       content.textContent = "Chargement…";
       box.replaceChildren(header, content);
+      box.setAttribute("data-dashboard-card", zone);
+      if (["creatives", "campaigns", "recommendations"].includes(zone)) {
+        const link = doc.createElement("a");
+        link.className = "dashboard-section-link";
+        link.href =
+          zone === "creatives"
+            ? "/app/analyse"
+            : zone === "campaigns"
+              ? "/app/campagnes"
+              : "/app/agent";
+        link.textContent =
+          zone === "creatives"
+            ? "Analyse créative"
+            : zone === "campaigns"
+              ? "Gestionnaire"
+              : "Voir tout →";
+        header.append(link);
+      }
       if (zone === "alerts") {
         box.setAttribute("data-dashboard-alerts", "");
         box.setAttribute("hidden", "");
@@ -120,6 +144,12 @@ export function renderDashboard(html: string, data: OnboardingData) {
         count.className = "dashboard-alert-count";
         count.setAttribute("data-alert-count", "");
         header.append(count);
+        const seen = doc.createElement("button");
+        seen.type = "button";
+        seen.className = "dashboard-alert-seen";
+        seen.setAttribute("data-dashboard-action", "alerts-seen");
+        seen.textContent = "Tout marquer comme vu";
+        header.append(seen);
       }
       if (zone === "series") {
         const tabs = doc.createElement("div");
@@ -271,7 +301,7 @@ export function renderDashboard(html: string, data: OnboardingData) {
   }
   const style = doc.createElement("link");
   style.rel = "stylesheet";
-  style.href = "/source/dashboard.css?v=20260914-filters";
+  style.href = "/source/dashboard.css?v=20260914-maquette";
   doc.head.append(style);
   const config = doc.createElement("script");
   config.id = "dashboard-context";
@@ -281,7 +311,7 @@ export function renderDashboard(html: string, data: OnboardingData) {
   }).replaceAll("<", "\\u003c");
   doc.body.append(config);
   const script = doc.createElement("script");
-  script.src = "/source/dashboard.js?v=20260914-filters";
+  script.src = "/source/dashboard.js?v=20260914-maquette";
   script.defer = true;
   doc.body.append(script);
   return doc.toString();

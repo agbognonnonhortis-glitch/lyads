@@ -22,6 +22,8 @@ function harness(
     recommendations?: any[];
     media?: boolean;
     paginatedAds?: boolean;
+    zoneRows?: Record<string, any[]>;
+    targets?: any[];
   } = { blocked: false, empty: false },
 ) {
   const { document, window } = parseHTML(
@@ -136,6 +138,7 @@ function harness(
                   },
                 ],
           credits: { available: "60" },
+          targets: scenario.targets || [],
         }),
       };
     const period = periodDates(
@@ -154,7 +157,8 @@ function harness(
             ? 5
             : null,
         rows:
-          zone === "kpis" && !scenario.empty
+          scenario.zoneRows?.[zone] ??
+          (zone === "kpis" && !scenario.empty
             ? [{ bucket: "current", spend: 100, accounts_count: 1 }]
             : zone === "alerts"
               ? scenario.alerts || []
@@ -186,13 +190,14 @@ function harness(
                           roas: 4,
                         },
                       ]
-                    : [],
+                    : []),
         message: "Aucune donnée",
       }),
     };
   };
   runInNewContext(controller, {
     document,
+    window: { innerWidth: 1200, innerHeight: 800 },
     URL,
     URLSearchParams,
     Intl,
@@ -496,10 +501,9 @@ test("Real media renders a player, hover previews muted, click keeps playback af
   });
   await wait();
   assert.equal(h.document.querySelector(".dashboard-video"), null);
-  const details = h.document.querySelector("[data-best-ad]")! as any;
-  assert.equal(details.hasAttribute("open"), false);
-  details.open = true;
-  details.dispatchEvent(new h.window.Event("toggle"));
+  const trigger = h.document.querySelector("[data-preview-ad]")! as any;
+  trigger.getBoundingClientRect = () => ({ left: 100, top: 200 });
+  trigger.dispatchEvent(new h.window.Event("mouseenter"));
   await wait();
   const box = h.document.querySelector(".dashboard-video")!;
   const video = box.querySelector("video")! as any;
@@ -530,12 +534,13 @@ test("Real media renders a player, hover previews muted, click keeps playback af
   assert.equal(video.muted, false);
   box.dispatchEvent(new h.window.Event("mouseleave"));
   assert.equal(pauses, 1);
-  details.open = false;
-  details.dispatchEvent(new h.window.Event("toggle"));
+  h.document.dispatchEvent(
+    Object.assign(new h.window.Event("keydown"), { key: "Escape" }),
+  );
   assert.equal(pauses, 2);
 });
 
-test("Ads load five at a time and stay collapsed until the user opens one", async () => {
+test("Ads use the maquette table, load five at a time, and defer the full media until preview", async () => {
   const h = harness(
     false,
     "EUR",
@@ -547,7 +552,8 @@ test("Ads load five at a time and stay collapsed until the user opens one", asyn
   assert.equal(zone.querySelectorAll("[data-best-ad]").length, 5);
   assert.equal(zone.querySelectorAll("[data-best-ad][open]").length, 0);
   assert.equal(zone.querySelectorAll("video").length, 0);
-  assert.equal(zone.querySelectorAll(".dashboard-best-bar").length, 5);
+  assert.equal(zone.querySelectorAll("tbody tr").length, 5);
+  assert.equal(zone.querySelectorAll("details").length, 0);
   zone
     .querySelector('[data-dashboard-action="more-ads"]')!
     .dispatchEvent(new h.window.Event("click", { bubbles: true }));
@@ -646,4 +652,131 @@ test("Restored scope is preserved when loading more ads; no event headings or vo
     zone.textContent,
     /non classées|Tri :|Données insuffisantes/,
   );
+});
+
+test("Chart footer uses actual daily totals and preserves missing days and weighted period ratios", async () => {
+  const h = harness(
+    false,
+    "EUR",
+    "http://localhost/?since=2026-09-01&until=2026-09-02",
+    {
+      blocked: false,
+      empty: false,
+      zoneRows: {
+        kpis: [{ bucket: "current", spend: 100, roas: 2.8, accounts_count: 1 }],
+        series: [
+          { bucket: "2026-09-01", spend: 10, roas: 10 },
+          { bucket: "2026-09-02", spend: 90, roas: 2 },
+          { bucket: "2026-08-30", spend: 5, roas: 4 },
+          { bucket: "2026-08-31", spend: 45, roas: 1 },
+        ],
+      },
+    },
+  );
+  await wait();
+  const zone = h.document.querySelector('[data-zone="series"]')!;
+  assert.match(
+    zone.querySelector(".dashboard-chart-footer")!.textContent,
+    /100,00.*50,00.*90,00/s,
+  );
+  const point = zone.querySelector('[data-chart-point="0"]')!;
+  point.dispatchEvent(new h.window.Event("mouseenter"));
+  assert.match(
+    zone.querySelector('[role="tooltip"]')!.textContent,
+    /5,00.*100 %/s,
+  );
+  h.clickElement('[data-dashboard-metric="roas"]');
+  assert.match(
+    zone.querySelector(".dashboard-chart-footer")!.textContent,
+    /ROAS sur la période2,8/,
+  );
+  assert.doesNotMatch(
+    zone.querySelector(".dashboard-chart-footer")!.textContent,
+    /Total période12/,
+  );
+  const missing = harness(
+    false,
+    "EUR",
+    "http://localhost/?since=2026-09-01&until=2026-09-02",
+    {
+      blocked: false,
+      empty: false,
+      zoneRows: { series: [{ bucket: "2026-09-01", spend: 10 }] },
+    },
+  );
+  await wait();
+  assert.match(
+    missing.document.querySelector(".dashboard-chart-footer")!.textContent,
+    /Total période—Moyenne \/ jour—/,
+  );
+});
+
+test("Placement families sum spend and weight ROAS; performance badges require configured targets", async () => {
+  const h = harness(
+    false,
+    "EUR",
+    "http://localhost/?since=2026-09-01&until=2026-09-02",
+    {
+      blocked: false,
+      empty: false,
+      targets: [{ ad_account_id: "account", target_roas: 3, target_cpa: 10 }],
+      zoneRows: {
+        placements: [
+          {
+            bucket: "facebook / feed",
+            spend: 10,
+            revenue: 100,
+            purchases: 2,
+            currency: "EUR",
+          },
+          {
+            bucket: "instagram / feed",
+            spend: 90,
+            revenue: 180,
+            purchases: 2,
+            currency: "EUR",
+          },
+          {
+            bucket: "facebook / facebook_reels",
+            spend: 20,
+            revenue: null,
+            purchases: null,
+            currency: "EUR",
+          },
+        ],
+        creatives: [
+          {
+            bucket: "one",
+            name: "Vente",
+            ad_account_id: "account",
+            result_event: "purchase",
+            roas: 4,
+            cost_per_result: 5,
+            currency: "EUR",
+          },
+          {
+            bucket: "two",
+            name: "Lead",
+            ad_account_id: "account",
+            result_event: "lead",
+            cost_per_result: 5,
+            currency: "EUR",
+          },
+        ],
+      },
+    },
+  );
+  await wait();
+  const placements = h.document.querySelector('[data-zone="placements"]')!;
+  assert.equal(
+    placements.querySelectorAll(".dashboard-placement-list>div").length,
+    2,
+  );
+  assert.match(placements.textContent, /Fil d’actualité100,00.*2,8/);
+  assert.match(placements.textContent, /Reels20,00.*—/);
+  const badges = h.document
+    .querySelector('[data-zone="creatives"]')!
+    .querySelectorAll(".dashboard-performance-badge");
+  assert.equal(badges[0].getAttribute("data-tone"), "good");
+  assert.equal(badges[1].getAttribute("data-tone"), "neutral");
 });
