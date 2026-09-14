@@ -869,7 +869,12 @@ export function renderOnboarding(
         for (const [key, label] of Object.entries(profileFields)) {
           const wrap = node(doc, "label", styles.stack + ";gap:7px");
           wrap.append(
-            node(doc, "span", styles.title + ";font-size:14px", label),
+            node(
+              doc,
+              "span",
+              styles.title + ";font-size:14px",
+              key === "name" ? `${label} (obligatoire)` : label,
+            ),
           );
           if (key === "price")
             wrap.append(
@@ -910,25 +915,16 @@ export function renderOnboarding(
             doc,
             "span",
             styles.small,
-            source?.source === "inferred"
-              ? "Déduit du site · à vérifier"
-              : source?.source === "site"
-                ? "Extrait du site · à vérifier"
-                : source?.source === "user" || values[key]
-                  ? "Saisi par vous"
-                  : key === "price"
-                    ? "Facultatif · à remplir par vous"
-                    : "Non trouvé · à compléter",
+            !values[key]?.trim()
+              ? "À remplir par vous"
+              : source?.source === "inferred"
+                ? "Déduit du site · à vérifier"
+                : source?.source === "site"
+                  ? "Extrait du site · à vérifier"
+                  : "Saisi par vous",
           );
           sourceLabel.setAttribute("data-field-source", key);
           wrap.append(sourceLabel);
-          if (source?.url && /^https?:\/\//.test(source.url)) {
-            const link = node(doc, "a", styles.small, "Voir la source");
-            link.setAttribute("href", source.url);
-            link.setAttribute("target", "_blank");
-            link.setAttribute("rel", "noopener noreferrer");
-            wrap.append(link);
-          }
           form.append(wrap);
         }
         main.append(

@@ -526,7 +526,9 @@
     if (e.target.matches("[data-field]")) {
       document.querySelectorAll("[data-field-source]").forEach((label) => {
         if (label.dataset.fieldSource === e.target.dataset.field)
-          label.textContent = "Saisi par vous";
+          label.textContent = e.target.value.trim()
+            ? "Saisi par vous"
+            : "À remplir par vous";
       });
       draftField(e.target);
     }
