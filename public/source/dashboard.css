@@ -633,8 +633,14 @@
     sans-serif;
   cursor: pointer;
 }
+.dashboard-accounts-dialog form {
+  gap: 16px;
+}
+.dashboard-accounts-dialog [data-business-name] {
+  margin: 0;
+}
 .dashboard-accounts-dialog [data-available-accounts] {
-  max-height: 42vh;
+  max-height: min(42vh, max(120px, calc(100dvh - 420px)));
   overflow-y: auto;
 }
 .dashboard-accounts-dialog .dashboard-connect-account {
@@ -664,7 +670,7 @@
 }
 .dashboard-accounts-dialog .dashboard-connect-business {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 0;
   color: #b44a26;
   background: transparent;
   border: 0;
