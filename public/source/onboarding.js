@@ -490,7 +490,7 @@
       return;
     }
     if (action === "dashboard") {
-      go("/app/agent");
+      go("/app/tableau-de-bord");
       return;
     }
     if (action === "resume") {
