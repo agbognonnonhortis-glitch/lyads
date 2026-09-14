@@ -437,7 +437,7 @@
       [
         alerts?.message,
         alerts?.needsTargets
-          ? "Renseignez vos cibles CPA et ROAS pour activer des recommandations d'optimisation."
+          ? "Renseignez vos objectifs de ROAS et de coût par résultat pour activer les alertes et recommandations correspondantes."
           : "",
       ]
         .filter(Boolean)
@@ -980,7 +980,7 @@
     const accounts = state.accounts.filter((a) => state.ids.includes(a.id));
     if (!accounts.length) return;
     const d = dialog(
-      `<form><h2>Seuils des alertes</h2><label>Compte publicitaire<select name="account">${accounts.map((a) => `<option value="${esc(a.id)}">${esc(a.name)} (${esc(a.currency)})</option>`).join("")}</select></label><p class="dashboard-note">Les cibles CPA et ROAS sont facultatives. Les autres détecteurs fonctionnent sans cible. CPA et achats utilisent les conversions « purchase » de Meta.</p><div data-alert-fields></div><p role="alert"></p><div class="dashboard-period-actions"><button type="button" data-close>Annuler</button><button type="submit" disabled>Enregistrer</button></div></form>`,
+      `<form><h2>Seuils des alertes</h2><label>Compte publicitaire<select name="account">${accounts.map((a) => `<option value="${esc(a.id)}">${esc(a.name)} (${esc(a.currency)})</option>`).join("")}</select></label><p class="dashboard-note">Renseignez les objectifs utiles à votre activité. La cible achat s’applique aux ventes, la cible inscription aux leads. Le CPR cible s’applique aux autres résultats et sert de référence si aucune cible spécifique n’est renseignée. Lyads gère automatiquement les autres réglages.</p><div data-alert-fields></div><p role="alert"></p><div class="dashboard-period-actions"><button type="button" data-close>Annuler</button><button type="submit" disabled>Enregistrer</button></div></form>`,
     );
     d.classList.add("dashboard-period-dialog");
     const form = d.querySelector("form"),
@@ -1002,7 +1002,7 @@
         )
           .map(
             ([key, field]) =>
-              `<label>${esc(field.label)}${["target_cpa", "min_spend"].includes(key) ? ` (${esc(data.currency)})` : ""}<input name="${esc(key)}" type="number" min="${field.min}" max="${field.max}" step="${field.integer ? "1" : "any"}" value="${esc(data.settings[key] ?? "")}" ${field.value === null ? "" : "required"} ${data.canEdit ? "" : "disabled"}></label>`,
+              `<label>${esc(field.label)}${["target_cpa", "target_cpr", "target_cpl"].includes(key) ? ` (${esc(data.currency)})` : ""}<input name="${esc(key)}" type="number" min="${field.min}" max="${field.max}" step="${field.integer ? "1" : "any"}" value="${esc(data.settings[key] ?? "")}" ${field.value === null ? "" : "required"} ${data.canEdit ? "" : "disabled"}></label>`,
           )
           .join("");
         save.disabled = !data.canEdit;

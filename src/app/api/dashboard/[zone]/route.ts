@@ -256,9 +256,8 @@ export async function GET(
                 : scanResults.every((result) => !result?.sufficient_entities)
                   ? "Données insuffisantes : aucune conclusion de performance pour cette période."
                   : "",
-        needsTargets: scanResults.some(
-          (result) =>
-            !result?.settings?.target_cpa || !result?.settings?.target_roas,
+        needsTargets: scanResults.some((result) =>
+          Boolean(result?.needs_targets),
         ),
       });
     }

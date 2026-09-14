@@ -54,22 +54,20 @@ export async function PUT(request: NextRequest, context: Context) {
       throw new ApiError(
         "INVALID_SETTINGS",
         400,
-        "Vérifiez les seuils : les volumes minimum protègent contre les conclusions prématurées.",
+        "Renseignez des cibles supérieures à zéro, ou laissez les champs inutilisés vides.",
       );
     }
     const { accountId } = await context.params;
     const client = await authenticated(request);
     const permission = await accountPermission(client, accountId, true);
-    const result = await client.supabase
-      .from("lyads_alert_settings")
-      .upsert(
-        {
-          ...settings,
-          ad_account_id: accountId,
-          workspace_id: permission.workspace_id,
-        },
-        { onConflict: "ad_account_id" },
-      );
+    const result = await client.supabase.from("lyads_alert_settings").upsert(
+      {
+        ...settings,
+        ad_account_id: accountId,
+        workspace_id: permission.workspace_id,
+      },
+      { onConflict: "ad_account_id" },
+    );
     if (result.error) throw result.error;
     return client.json({ saved: true });
   } catch (error) {

@@ -2063,7 +2063,7 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
             [a.ad],
           );
           await db.query(
-            `update public.lyads_ad_sets set effective_status='ACTIVE',source_data='{"optimization_goal":"OFFSITE_CONVERSIONS","attribution_spec":[{"event_type":"CLICK_THROUGH","window_days":7}]}' where id=$1`,
+            `update public.lyads_ad_sets set effective_status='ACTIVE',source_data='{"optimization_goal":"OFFSITE_CONVERSIONS","promoted_object":{"custom_event_type":"PURCHASE"},"attribution_spec":[{"event_type":"CLICK_THROUGH","window_days":7}]}' where id=$1`,
             [a.adset],
           );
           const peer = await uuid(
@@ -2120,6 +2120,74 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
                 r.account_id === a.account,
             ),
           );
+          // Lead targets take precedence over generic CPR; purchase targets/ROAS never apply to leads.
+          await db.exec("savepoint objective");
+          await db.query(
+            "update public.lyads_ad_sets set source_data=jsonb_set(source_data,'{promoted_object}','{\"custom_event_type\":\"LEAD\"}') where ad_account_id=$1",
+            [a.account],
+          );
+          await db.query(
+            'update public.lyads_insight_snapshots set metrics=jsonb_set(metrics,\'{actions}\',\'[{"action_type":"lead","value":"2"}]\') where ad_account_id=$1',
+            [a.account],
+          );
+          await db.query(
+            "update public.lyads_alert_settings set target_cpl=10,target_cpr=100,target_cpa=100,target_roas=100 where ad_account_id=$1",
+            [a.account],
+          );
+          let targeted = await compute();
+          assert.equal(
+            targeted.rows.find((r: any) => r.detector === "cpl_high").evidence
+              .target,
+            10,
+          );
+          assert.equal(
+            targeted.rows.find((r: any) => r.detector === "cpl_high").evidence
+              .results,
+            14,
+          );
+          assert.ok(
+            !targeted.rows.some((r: any) =>
+              ["cpa_high", "roas_low", "cpr_high"].includes(r.detector),
+            ),
+          );
+          assert.equal(targeted.needs_targets, false);
+          await db.query(
+            "update public.lyads_alert_settings set target_cpl=null where ad_account_id=$1",
+            [a.account],
+          );
+          assert.ok(
+            !(await compute()).rows.some((r: any) => r.detector === "cpl_high"),
+          );
+          await db.query(
+            "update public.lyads_alert_settings set target_cpr=5 where ad_account_id=$1",
+            [a.account],
+          );
+          assert.equal(
+            (await compute()).rows.find((r: any) => r.detector === "cpl_high")
+              .evidence.target,
+            5,
+          );
+          // Other configured results use the generic CPR target.
+          await db.query(
+            "update public.lyads_ad_sets set source_data=(source_data-'promoted_object')||'{\"optimization_goal\":\"LINK_CLICKS\"}' where ad_account_id=$1",
+            [a.account],
+          );
+          await db.query(
+            'update public.lyads_insight_snapshots set metrics=jsonb_set(metrics,\'{actions}\',\'[{"action_type":"link_click","value":"2"}]\') where ad_account_id=$1',
+            [a.account],
+          );
+          targeted = await compute();
+          assert.equal(
+            targeted.rows.find((r: any) => r.detector === "cpr_high").evidence
+              .target,
+            5,
+          );
+          assert.ok(
+            !targeted.rows.some((r: any) =>
+              ["cpa_high", "cpl_high", "roas_low"].includes(r.detector),
+            ),
+          );
+          await db.exec("rollback to savepoint objective");
           // Missing purchases are unknown, never fabricated zero conversions.
           await db.exec("savepoint thin");
           await db.query(
@@ -2174,6 +2242,10 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
             job,
           );
           await db.query(
+            "insert into public.lyads_alert_settings(workspace_id,ad_account_id,target_roas,target_cpa,target_cpl,target_cpr) values($1,$2,1,10,null,null) on conflict(ad_account_id) do update set workspace_id=excluded.workspace_id,ad_account_id=excluded.ad_account_id,target_roas=excluded.target_roas,target_cpa=excluded.target_cpa,target_cpl=excluded.target_cpl,target_cpr=excluded.target_cpr",
+            [wa, a.account],
+          );
+          await db.query(
             "update public.lyads_alert_settings set target_cpa=11 where ad_account_id=$1",
             [a.account],
           );
@@ -2193,7 +2265,7 @@ test("Pilot migration enforces ownership, provenance and write permissions in Po
           await sqlError(
             "update public.lyads_alert_settings set min_purchases=0 where ad_account_id=$1",
             [a.account],
-            "23514",
+            "42501",
           );
           await db.exec("rollback to savepoint denied");
           await asUser(bob);
